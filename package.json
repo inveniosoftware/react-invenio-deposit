@@ -1,27 +1,7 @@
 {
-  "name": "react-invenio-deposit",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
-    "lodash": "^4.17.15",
-    "semantic-ui-react": "^0.88.0",
-    "formik": "^2.1.4",
-    "react-invenio-forms": "^0.2.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+  "author": {
+    "name": "CERN",
+    "email": "info@inveniosoftware.org"
   },
   "browserslist": {
     "production": [
@@ -34,5 +14,44 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/inveniosoftware/react-invenio-deposit/issues"
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1",
+    "lodash": "^4.17.15",
+    "semantic-ui-react": "^0.88.0",
+    "formik": "^2.1.4",
+    "react-invenio-forms": "^0.2.1"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "homepage": "https://github.com/inveniosoftware/react-invenio-deposit",
+  "keywords": [
+    "react",
+    "react-component",
+    "react-invenio-deposit",
+    "forms",
+    "react forms"
+  ],
+  "license": "MIT",
+  "name": "react-invenio-deposit",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inveniosoftware/react-invenio-deposit.git"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "version": "0.1.0"
 }
