@@ -5,38 +5,35 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { getIn, Field } from "formik";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { getIn, Field } from 'formik';
+import { Form, Icon } from 'semantic-ui-react';
 
-import { FieldLabel, SelectField } from "react-invenio-forms";
-
+import { FieldLabel, SelectField } from 'react-invenio-forms';
 
 export class ResourceTypeField extends Component {
   renderResourceTypeField = (formikBag) => {
     const typeFieldPath = `${this.props.fieldPath}.type`;
     const subtypeFieldPath = `${this.props.fieldPath}.subtype`;
 
-    const resource_type = getIn(
-      formikBag.form.values,
-      typeFieldPath,
-      ""
-    );
+    const resource_type = getIn(formikBag.form.values, typeFieldPath, '');
 
     const handleChange = (event, selectedOption) => {
-      formikBag.form.setFieldValue(
-        typeFieldPath,
-        selectedOption.value
-      );
-      formikBag.form.setFieldValue(subtypeFieldPath, "");
+      formikBag.form.setFieldValue(typeFieldPath, selectedOption.value);
+      formikBag.form.setFieldValue(subtypeFieldPath, '');
     };
 
     const subtypeOptions = this.props.options.subtype.filter(
-      (e) => e["parent-value"] === resource_type
+      (e) => e['parent-value'] === resource_type
     );
     return (
       <div>
-        <FieldLabel htmlFor={this.props.fieldPath} icon={this.props.labelIcon} label={this.props.label} />
+        <FieldLabel
+          htmlFor={this.props.fieldPath}
+          icon={this.props.labelIcon}
+          label={this.props.label}
+        />
         <SelectField
           fieldPath={typeFieldPath}
           label={this.props.typeLabel}
@@ -80,8 +77,8 @@ ResourceTypeField.propTypes = {
     ),
     subtype: PropTypes.arrayOf(
       PropTypes.shape({
-        "parent-text": PropTypes.string,
-        "parent-value": PropTypes.string,
+        'parent-text': PropTypes.string,
+        'parent-value': PropTypes.string,
         text: PropTypes.string,
         value: PropTypes.string,
       })

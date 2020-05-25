@@ -5,9 +5,9 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { connect } from "react-redux";
-import { submitFormData } from "../state/actions";
-import DepositBootstrapComponent from "./DepositBootstrap";
+import { connect } from 'react-redux';
+import { submitFormData } from '../state/actions';
+import DepositBootstrapComponent from './DepositBootstrap';
 
 const mapStateToProps = (state) => ({
   record: state.deposit.record,

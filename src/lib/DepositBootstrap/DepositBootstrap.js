@@ -7,7 +7,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { BaseForm } from 'react_invenio_forms';
+import { BaseForm } from 'react-invenio-forms';
 import { Container } from 'semantic-ui-react';
 
 export default class DepositBootstrap extends Component {

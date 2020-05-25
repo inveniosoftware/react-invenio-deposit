@@ -5,11 +5,11 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { createStore, applyMiddleware, compose } from "redux";
-import thunk from "redux-thunk";
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
 
-import rootReducer from "./state/reducers";
-import { INITIAL_STORE_STATE } from "./storeConfig";
+import rootReducer from './state/reducers';
+import { INITIAL_STORE_STATE } from './storeConfig';
 
 export function configureStore(appConfig) {
   const { record, config, ...apiConfig } = appConfig;

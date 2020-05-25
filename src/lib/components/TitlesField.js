@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button, Icon } from 'semantic-ui-react';
 
-import { ArrayField, TextField } from 'react_invenio_forms';
+import { ArrayField, TextField } from 'react-invenio-forms';
 
 /**
  * Renders a `titles` field with a schema of
@@ -23,18 +23,36 @@ import { ArrayField, TextField } from 'react_invenio_forms';
  */
 export class TitlesField extends Component {
   render() {
+    const {
+      fieldPath,
+      label,
+      labelIcon,
+      languageSegment,
+      titleSegment,
+      typeSegment,
+    } = this.props;
+    const defaultNewValue = {
+      [languageSegment]: '',
+      [titleSegment]: '',
+      [typeSegment]: '',
+    };
     return (
       <ArrayField
         addButtonLabel={'Add another title'}
-        defaultNewValue={this.props.defaultNewValue}
-        fieldPath={this.props.fieldPath}
-        label={this.props.label}
-        label_icon={this.props.label_icon}
+        defaultNewValue={defaultNewValue}
+        fieldPath={fieldPath}
+        label={label}
+        labelIcon={labelIcon}
       >
         {({ array, arrayHelpers, indexPath, key }) => (
           <Form.Group inline>
-            <TextField fieldPath={`${key}.title`} />
-            {array.length === 1 ? null : (
+            <TextField fieldPath={`${key}.${titleSegment}`} label={'Title'} />
+            <TextField
+              fieldPath={`${key}.${languageSegment}`}
+              label={'Language'}
+            />
+            <TextField fieldPath={`${key}.${typeSegment}`} label={'Type'} />
+            {array.length !== 1 && (
               <Button icon>
                 <Icon
                   name="close"
@@ -51,13 +69,27 @@ export class TitlesField extends Component {
 }
 
 TitlesField.propTypes = {
-  label: PropTypes.string.isRequired,
   fieldPath: PropTypes.string.isRequired,
-  defaultNewValue: PropTypes.shape({
-    title: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  labelIcon: PropTypes.string,
+  options: PropTypes.shape({
+    type: PropTypes.arrayOf(
+      PropTypes.shape({
+        icon: PropTypes.string,
+        text: PropTypes.string,
+        value: PropTypes.string,
+      })
+    ),
   }),
+  languageSegment: PropTypes.string.isRequired,
+  titleSegment: PropTypes.string.isRequired,
+  typeSegment: PropTypes.string.isRequired,
 };
 
 TitlesField.defaultProps = {
-  defaultNewValue: { title: '', type: '', lang: '' },
+  languageSegment: 'lang',
+  titleSegment: 'title',
+  typeSegment: 'type',
 };
+
+// TODO: Pass options to TitlesField

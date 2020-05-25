@@ -10,7 +10,7 @@ import {
   FORM_ACTION_FAILED,
   PUBLISH_SUCCESS,
   SAVE_SUCCESS,
-} from "../types";
+} from '../types';
 
 export default (state = {}, action) => {
   switch (action.type) {
