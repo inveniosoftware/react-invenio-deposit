@@ -1,13 +1,98 @@
 {
+  "name": "react-invenio-deposit",
+  "version": "0.1.0",
+  "description": "React components to build forms in Invenio",
+  "main": "dist/cjs/index.js",
+  "browser": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "rimraf dist && NODE_ENV=production rollup -c",
+    "edit-linked-package": "json -I -f ./dist/package.json -e 'this.module=\"esm/index.js\", this.main=\"cjs/index.js\"' ",
+    "prelink-dist": "cp package.json ./dist && npm run edit-linked-package",
+    "link-dist": "cd dist && npm link",
+    "postlink-dist": "cd dist && rm -rf node_modules",
+    "unlink-dist": "cd dist && npm unlink && rm package*",
+    "watch": "NODE_ENV=development rollup --watch -c",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint src/**/*.js",
+    "format": "prettier --config ./.prettierrc --ignore-path ./.prettierignore --write \"src/**/*.js\""
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "formik": "^2.1.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-invenio-forms": "^0.3.0",
+    "lodash": "^4.17.15",
+    "semantic-ui-react": "^0.88.0",
+    "semantic-ui-css": "^2.4.1",
+    "@babel/runtime": "^7.9.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@rollup/plugin-babel": "^5.0.0",
+    "@rollup/plugin-commonjs": "^11.1.0",
+    "@rollup/plugin-node-resolve": "^7.1.3",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "coveralls": "^3.0.7",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
+    "enzyme-to-json": "^3.4.3",
+    "expect": "^26.0.1",
+    "formik": "^2.1.4",
+    "json": "^9.0.6",
+    "lodash": "^4.17.15",
+    "prettier": "^2.0.5",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-invenio-forms": "^0.2.1",
+    "react-scripts": "3.4.1",
+    "rimraf": "^3.0.0",
+    "rollup": "^2.10.0",
+    "rollup-plugin-local-resolve": "^1.0.7",
+    "rollup-plugin-peer-deps-external": "^2.2.0",
+    "rollup-plugin-postcss": "^3.1.1",
+    "rollup-plugin-url": "^3.0.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.88.0"
+  },
   "author": {
     "name": "CERN",
     "email": "info@inveniosoftware.org"
+  },
+  "homepage": "https://inveniosoftware.github.io/react-invenio-deposit/",
+  "bugs": {
+    "url": "https://github.com/inveniosoftware/react-invenio-deposit/issues"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inveniosoftware/react-invenio-deposit.git"
+  },
+  "keywords": [
+    "react",
+    "react-component",
+    "react-invenio-deposit",
+    "deposit",
+    "invenio",
+    "react deposit"
+  ],
+  "eslintConfig": {
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [
       ">0.2%",
       "not dead",
-      "not op_mini all"
+      "not op_mini all",
+      "not IE 11"
     ],
     "development": [
       "last 1 chrome version",
@@ -15,43 +100,12 @@
       "last 1 safari version"
     ]
   },
-  "bugs": {
-    "url": "https://github.com/inveniosoftware/react-invenio-deposit/issues"
+  "engines": {
+    "node": ">=10.0.0"
   },
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
-    "lodash": "^4.17.15",
-    "semantic-ui-react": "^0.88.0",
-    "formik": "^2.1.4",
-    "react-invenio-forms": "^0.2.1"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "homepage": "https://github.com/inveniosoftware/react-invenio-deposit",
-  "keywords": [
-    "react",
-    "react-component",
-    "react-invenio-deposit",
-    "forms",
-    "react forms"
-  ],
-  "license": "MIT",
-  "name": "react-invenio-deposit",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/inveniosoftware/react-invenio-deposit.git"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "version": "0.1.0"
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
+  }
 }
