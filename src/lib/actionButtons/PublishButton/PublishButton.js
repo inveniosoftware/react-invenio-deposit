@@ -5,10 +5,10 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Icon, Button, Modal } from "semantic-ui-react";
-import { ActionButton } from "../../../react_invenio_forms";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Icon, Button, Modal } from 'semantic-ui-react';
+import { ActionButton } from 'react_invenio_forms';
 
 export default class PublishButton extends Component {
   state = { confirmOpen: false };
@@ -36,13 +36,13 @@ export default class PublishButton extends Component {
           primary
         >
           {(formik) =>
-            formik.isSubmitting && this.props.formAction == "publish" ? (
+            formik.isSubmitting && this.props.formAction == 'publish' ? (
               <>
                 <Icon size="large" loading name="spinner" />
                 Publish
               </>
             ) : (
-              "Publish"
+              'Publish'
             )
           }
         </ActionButton>

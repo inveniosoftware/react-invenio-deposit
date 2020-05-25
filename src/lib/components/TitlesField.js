@@ -5,11 +5,11 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Form, Button, Icon } from "semantic-ui-react";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Form, Button, Icon } from 'semantic-ui-react';
 
-import { ArrayField, TextField } from "../../react_invenio_forms";
+import { ArrayField, TextField } from 'react_invenio_forms';
 
 /**
  * Renders a `titles` field with a schema of
@@ -25,27 +25,26 @@ export class TitlesField extends Component {
   render() {
     return (
       <ArrayField
-        addButtonLabel={"Add another title"}
+        addButtonLabel={'Add another title'}
         defaultNewValue={this.props.defaultNewValue}
         fieldPath={this.props.fieldPath}
         label={this.props.label}
         label_icon={this.props.label_icon}
       >
-        {
-          ({ array, arrayHelpers, indexPath, key }) => (
-            <Form.Group inline>
-              <TextField fieldPath={`${key}.title`} />
-              {
-                array.length === 1
-                ? null
-                :
-                <Button icon>
-                  <Icon name="close" size="large" onClick={() => arrayHelpers.remove(indexPath)} />
-                </Button>
-              }
-            </Form.Group>
-          )
-        }
+        {({ array, arrayHelpers, indexPath, key }) => (
+          <Form.Group inline>
+            <TextField fieldPath={`${key}.title`} />
+            {array.length === 1 ? null : (
+              <Button icon>
+                <Icon
+                  name="close"
+                  size="large"
+                  onClick={() => arrayHelpers.remove(indexPath)}
+                />
+              </Button>
+            )}
+          </Form.Group>
+        )}
       </ArrayField>
     );
   }
@@ -60,5 +59,5 @@ TitlesField.propTypes = {
 };
 
 TitlesField.defaultProps = {
-  defaultNewValue: { title: "", type: "", lang: "" },
+  defaultNewValue: { title: '', type: '', lang: '' },
 };

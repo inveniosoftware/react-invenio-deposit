@@ -5,10 +5,10 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Icon } from "semantic-ui-react";
-import { ActionButton } from "../../../react_invenio_forms";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Icon } from 'semantic-ui-react';
+import { ActionButton } from 'react_invenio_forms';
 
 export default class SaveButton extends Component {
   onSaveClick = (event, formik) => {
@@ -28,13 +28,13 @@ export default class SaveButton extends Component {
         positive
       >
         {(formik) =>
-          formik.isSubmitting && this.props.formAction == "save" ? (
+          formik.isSubmitting && this.props.formAction == 'save' ? (
             <>
               <Icon size="large" loading name="spinner" />
               Save draft
             </>
           ) : (
-            "Save draft"
+            'Save draft'
           )
         }
       </ActionButton>
