@@ -5,7 +5,6 @@ import { Form, Formik } from 'formik';
 
 import { ResourceTypeField } from './ResourceTypeField';
 
-
 it('renders without crashing', () => {
   const div = document.createElement('div');
   const options = {
@@ -19,7 +18,7 @@ it('renders without crashing', () => {
         icon: 'frown outline',
         text: 'type Text 2',
         value: 'typeValue2',
-      }
+      },
     ],
     subtype: [
       {
@@ -27,18 +26,15 @@ it('renders without crashing', () => {
         'parent-value': 'typeValue2',
         text: 'subtype Text',
         value: 'subtypeValue',
-      }
-    ]
-  }
+      },
+    ],
+  };
 
   ReactDOM.render(
     <Formik>
       {(props) => (
         <Form>
-          <ResourceTypeField
-            fieldPath={'fieldPath'}
-            options={options}
-          />
+          <ResourceTypeField fieldPath={'fieldPath'} options={options} />
         </Form>
       )}
     </Formik>,

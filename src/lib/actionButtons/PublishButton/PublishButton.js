@@ -8,7 +8,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Button, Modal } from 'semantic-ui-react';
-import { ActionButton } from 'react_invenio_forms';
+import { ActionButton } from 'react-invenio-forms';
 
 export default class PublishButton extends Component {
   state = { confirmOpen: false };

@@ -8,7 +8,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from 'semantic-ui-react';
-import { ActionButton } from 'react_invenio_forms';
+import { ActionButton } from 'react-invenio-forms';
 
 export default class SaveButton extends Component {
   onSaveClick = (event, formik) => {
@@ -22,7 +22,8 @@ export default class SaveButton extends Component {
   render() {
     return (
       <ActionButton
-        isDisabled={this.isDisabled}
+        // TODO: use `isDisabled`
+        isDisabled={() => true}
         name="save"
         onClick={this.onSaveClick}
         positive

@@ -5,5 +5,11 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-export { TitlesField } from "./TitlesField";
-export { ResourceTypeField } from "./ResourceTypeField";
+export { AccessRightField } from './AccessRightField';
+export { AffiliationField } from './AffiliationField';
+export { CreatorOrContributorField } from './CreatorOrContributorField';
+export { ContributorsField } from './ContributorsField';
+export { CreatorsField } from './CreatorsField';
+export { IdentifierField } from './IdentifierField';
+export { ResourceTypeField } from './ResourceTypeField';
+export { TitlesField } from './TitlesField';
