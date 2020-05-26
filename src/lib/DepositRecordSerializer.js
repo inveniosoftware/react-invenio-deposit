@@ -18,7 +18,7 @@ export class DepositRecordSerializer {
   removeEmptyObjects(obj) {
     if (_.isArray(obj)) {
       let mappedValues = obj.map((value) => this.removeEmptyObjects(value));
-      let filterValues = _.filter(mappedValues, (value) => !_.isEmpty(value));
+      let filterValues = mappedValues.filter((value) => !_.isEmpty(value));
       return filterValues;
     } else if (_.isObject(obj)) {
       let mappedValues = _.mapValues(obj, (value) =>
