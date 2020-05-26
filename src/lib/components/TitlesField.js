@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button, Icon } from 'semantic-ui-react';
 
-import { ArrayField, TextField } from 'react-invenio-forms';
+import { ArrayField, TextField, GroupField } from 'react-invenio-forms';
 
 /**
  * Renders a `titles` field with a schema of
@@ -43,15 +43,24 @@ export class TitlesField extends Component {
         fieldPath={fieldPath}
         label={label}
         labelIcon={labelIcon}
+        required
       >
         {({ array, arrayHelpers, indexPath, key }) => (
-          <Form.Group inline>
-            <TextField fieldPath={`${key}.${titleSegment}`} label={'Title'} />
+          <GroupField widths="equal">
+            <TextField
+              fieldPath={`${key}.${titleSegment}`}
+              label={'Title'}
+              required
+            />
+            <TextField
+              fieldPath={`${key}.${typeSegment}`}
+              label={'Type'}
+              required
+            />
             <TextField
               fieldPath={`${key}.${languageSegment}`}
               label={'Language'}
             />
-            <TextField fieldPath={`${key}.${typeSegment}`} label={'Type'} />
             {array.length !== 1 && (
               <Button icon>
                 <Icon
@@ -61,7 +70,7 @@ export class TitlesField extends Component {
                 />
               </Button>
             )}
-          </Form.Group>
+          </GroupField>
         )}
       </ArrayField>
     );

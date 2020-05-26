@@ -5,38 +5,38 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import _ from 'lodash';
+
 export class DepositRecordSerializer {
+  constructor() {
+    this.removeEmptyObjects = this.removeEmptyObjects.bind(this);
+  }
   deserialize(record) {
     return record;
   }
 
-  _isNullEquivalent = (obj) => {
-    // Identifies null equivalent obj
-    if (obj === null) {
-      return true;
-    } else if (Array.isArray(obj)) {
-      return obj.every(this._isNullEquivalent);
-    } else if (typeof obj == 'object') {
-      return Object.values(obj).every(this._isNullEquivalent);
-    } else {
-      return false;
+  removeEmptyObjects(obj) {
+    if (_.isArray(obj)) {
+      let mappedValues = obj.map((value) => this.removeEmptyObjects(value));
+      let filterValues = _.filter(mappedValues, (value) => !_.isEmpty(value));
+      return filterValues;
+    } else if (_.isObject(obj)) {
+      let mappedValues = _.mapValues(obj, (value) =>
+        this.removeEmptyObjects(value)
+      );
+      let pickedValues = _.pickBy(mappedValues, (value) => {
+        if (_.isArray(value) || _.isObject(value)) {
+          return !_.isEmpty(value);
+        }
+        return !_.isNull(value);
+      });
+      return pickedValues;
     }
-  };
-
-  stripNullEquivalentFields(obj) {
-    // Returns Object with top-level null equivalent fields stripped
-    const result = {};
-
-    for (const key of Object.keys(obj)) {
-      if (!this._isNullEquivalent(obj[key])) {
-        result[key] = obj[key];
-      }
-    }
-    return result;
+    return obj ? obj : null;
   }
 
   serialize(record) {
-    let stripped_record = this.stripNullEquivalentFields(record);
+    let stripped_record = this.removeEmptyObjects(record);
     // TODO: Remove when fields are implemented and
     // we use deposit backend API
     let _missingRecordFields = {
