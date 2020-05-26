@@ -8,7 +8,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getIn, Field } from 'formik';
-import { Form, Icon } from 'semantic-ui-react';
 
 import { FieldLabel, SelectField } from 'react-invenio-forms';
 
