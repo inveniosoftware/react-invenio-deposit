@@ -5,38 +5,44 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import _ from 'lodash';
+import _isNumber from 'lodash/isNumber';
+import _isEmpty from 'lodash/isEmpty';
+import _isObject from 'lodash/isObject';
+import _isArray from 'lodash/isArray';
+import _isNull from 'lodash/isNull';
+import _pickBy from 'lodash/pickBy';
+import _mapValues from 'lodash/mapValues';
 
 export class DepositRecordSerializer {
   constructor() {
-    this.removeEmptyObjects = this.removeEmptyObjects.bind(this);
+    this.removeEmptyValues = this.removeEmptyValues.bind(this);
   }
   deserialize(record) {
     return record;
   }
 
-  removeEmptyObjects(obj) {
-    if (_.isArray(obj)) {
-      let mappedValues = obj.map((value) => this.removeEmptyObjects(value));
-      let filterValues = mappedValues.filter((value) => !_.isEmpty(value));
+  removeEmptyValues(obj) {
+    if (_isArray(obj)) {
+      let mappedValues = obj.map((value) => this.removeEmptyValues(value));
+      let filterValues = mappedValues.filter((value) => !_isEmpty(value));
       return filterValues;
-    } else if (_.isObject(obj)) {
-      let mappedValues = _.mapValues(obj, (value) =>
-        this.removeEmptyObjects(value)
+    } else if (_isObject(obj)) {
+      let mappedValues = _mapValues(obj, (value) =>
+        this.removeEmptyValues(value)
       );
-      let pickedValues = _.pickBy(mappedValues, (value) => {
-        if (_.isArray(value) || _.isObject(value)) {
-          return !_.isEmpty(value);
+      let pickedValues = _pickBy(mappedValues, (value) => {
+        if (_isArray(value) || _isObject(value)) {
+          return !_isEmpty(value);
         }
-        return !_.isNull(value);
+        return !_isNull(value);
       });
       return pickedValues;
     }
-    return obj ? obj : null;
+    return _isNumber(obj) || obj ? obj : null;
   }
 
   serialize(record) {
-    let stripped_record = this.removeEmptyObjects(record);
+    let stripped_record = this.removeEmptyValues(record);
     // TODO: Remove when fields are implemented and
     // we use deposit backend API
     let _missingRecordFields = {
@@ -46,15 +52,6 @@ export class DepositRecordSerializer {
       },
       _owners: [1],
       _created_by: 1,
-      // titles: [
-      //   {
-      //     lang: 'eng',
-      //     type: 'MainTitle',
-      //     title: stripped_record['titles']
-      //       ? stripped_record['titles'][0]['title']
-      //       : '',
-      //   },
-      // ],
       // TODO: Remove this when we fix the `Identifiers` schema
       creators: [],
       contributors: [],
