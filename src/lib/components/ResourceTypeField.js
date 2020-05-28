@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getIn, Field } from 'formik';
 
-import { FieldLabel, SelectField } from 'react-invenio-forms';
+import { FieldLabel, GroupField, SelectField } from 'react-invenio-forms';
 
 export class ResourceTypeField extends Component {
   hasGroupErrors = (errors) => {
@@ -37,7 +37,7 @@ export class ResourceTypeField extends Component {
     );
 
     return (
-      <>
+      <GroupField widths="equal">
         <SelectField
           error={
             this.hasGroupErrors(formikBag.form.errors)
@@ -57,8 +57,8 @@ export class ResourceTypeField extends Component {
           placeholder="Select general resource type"
           required
         />
-        {subtypeOptions.length > 0 ? (
-          <SelectField
+        {subtypeOptions.length > 0 && (
+      		<SelectField
             fieldPath={subtypeFieldPath}
             label={
               <FieldLabel
@@ -71,8 +71,8 @@ export class ResourceTypeField extends Component {
             placeholder="Select resource subtype"
             required
           />
-        ) : null}
-      </>
+        )}
+      </GroupField>
     );
   };
 
@@ -88,8 +88,8 @@ export class ResourceTypeField extends Component {
 
 ResourceTypeField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
-  labelIcon: PropTypes.string,
   label: PropTypes.string,
+  labelIcon: PropTypes.string,
   options: PropTypes.shape({
     type: PropTypes.arrayOf(
       PropTypes.shape({

@@ -27,6 +27,7 @@ export default class PublishButton extends Component {
   handleClose = () => this.setState({ confirmOpen: false });
 
   render() {
+    const {formAction, publishClick, ...uiProps} = this.props;
     return (
       <>
         <ActionButton
@@ -34,9 +35,10 @@ export default class PublishButton extends Component {
           name="publish"
           onClick={this.confirmPublish}
           primary
+          {...uiProps}
         >
           {(formik) =>
-            formik.isSubmitting && this.props.formAction == 'publish' ? (
+            formik.isSubmitting && formAction == 'publish' ? (
               <>
                 <Icon size="large" loading name="spinner" />
                 Publish

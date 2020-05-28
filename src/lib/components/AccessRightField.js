@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { FieldLabel, RadioField } from 'react-invenio-forms';
+import { Card } from 'semantic-ui-react';
 
 export class AccessRightField extends Component {
   /** Top-level Access Right Component */
@@ -26,20 +27,22 @@ export class AccessRightField extends Component {
     const { fieldPath, label, labelIcon, options } = this.props;
 
     return (
-      <>
-        <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
-        {options.map((option) => (
-          <RadioField
-            fieldPath={fieldPath}
-            label={option.text}
-            labelIcon={option.icon}
-            key={option.value}
-            value={option.value}
-            checked={this.state.selected === option.value}
-            onChange={this.handleChange}
-          />
-        ))}
-      </>
+      <Card className="access-right">
+        <Card.Content>
+          <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+          {options.map((option) => (
+            <RadioField
+              fieldPath={fieldPath}
+              label={option.text}
+              labelIcon={option.icon}
+              key={option.value}
+              value={option.value}
+              checked={this.state.selected === option.value}
+              onChange={this.handleChange}
+            />
+          ))}
+        </Card.Content>
+      </Card>
     );
   }
 }
