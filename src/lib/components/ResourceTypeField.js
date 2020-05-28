@@ -12,6 +12,15 @@ import { getIn, Field } from 'formik';
 import { FieldLabel, SelectField } from 'react-invenio-forms';
 
 export class ResourceTypeField extends Component {
+  hasGroupErrors = (errors) => {
+    for (const field in errors) {
+      if (field.startsWith(this.props.fieldPath)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   renderResourceTypeField = (formikBag) => {
     const typeFieldPath = `${this.props.fieldPath}.type`;
     const subtypeFieldPath = `${this.props.fieldPath}.subtype`;
@@ -26,29 +35,44 @@ export class ResourceTypeField extends Component {
     const subtypeOptions = this.props.options.subtype.filter(
       (e) => e['parent-value'] === resource_type
     );
+
     return (
-      <div>
-        <FieldLabel
-          htmlFor={this.props.fieldPath}
-          icon={this.props.labelIcon}
-          label={this.props.label}
-        />
+      <>
         <SelectField
+          error={
+            this.hasGroupErrors(formikBag.form.errors)
+              ? { content: getIn(formikBag.form.errors, this.props.fieldPath) }
+              : null
+          }
           fieldPath={typeFieldPath}
-          label={this.props.typeLabel}
+          label={
+            <FieldLabel
+              htmlFor={typeFieldPath}
+              icon={this.props.labelIcon}
+              label={this.props.label}
+            />
+          }
           options={this.props.options.type}
           onChange={handleChange}
           placeholder="Select general resource type"
+          required
         />
         {subtypeOptions.length > 0 ? (
           <SelectField
             fieldPath={subtypeFieldPath}
-            label={this.props.subtypeLabel}
+            label={
+              <FieldLabel
+                htmlFor={subtypeFieldPath}
+                icon={this.props.labelIcon}
+                label={this.props.subtypeLabel}
+              />
+            }
             options={subtypeOptions}
             placeholder="Select resource subtype"
+            required
           />
         ) : null}
-      </div>
+      </>
     );
   };
 
@@ -64,8 +88,8 @@ export class ResourceTypeField extends Component {
 
 ResourceTypeField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
-  label: PropTypes.string,
   labelIcon: PropTypes.string,
+  label: PropTypes.string,
   options: PropTypes.shape({
     type: PropTypes.arrayOf(
       PropTypes.shape({
@@ -84,5 +108,9 @@ ResourceTypeField.propTypes = {
     ),
   }).isRequired,
   subtypeLabel: PropTypes.string,
-  typeLabel: PropTypes.string,
+};
+
+ResourceTypeField.defaultProps = {
+  label: 'Resource type',
+  subtypeLabel: 'Resource Subtype',
 };
