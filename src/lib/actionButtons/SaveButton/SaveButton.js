@@ -20,6 +20,7 @@ export default class SaveButton extends Component {
   };
 
   render() {
+    const { formAction, saveClick, ...uiProps} = this.props;
     return (
       <ActionButton
         // TODO: use `isDisabled`
@@ -27,9 +28,10 @@ export default class SaveButton extends Component {
         name="save"
         onClick={this.onSaveClick}
         positive
+        {...uiProps}
       >
         {(formik) =>
-          formik.isSubmitting && this.props.formAction == 'save' ? (
+          formik.isSubmitting && formAction == 'save' ? (
             <>
               <Icon size="large" loading name="spinner" />
               Save draft
