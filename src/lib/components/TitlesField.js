@@ -46,7 +46,7 @@ export class TitlesField extends Component {
         required
       >
         {({ array, arrayHelpers, indexPath, key }) => (
-          <GroupField widths="equal">
+          <GroupField widths="equal" fieldPath={fieldPath}>
             <TextField
               fieldPath={`${key}.${titleSegment}`}
               label={'Title'}
