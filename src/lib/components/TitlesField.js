@@ -46,29 +46,36 @@ export class TitlesField extends Component {
         required
       >
         {({ array, arrayHelpers, indexPath, key }) => (
-          <GroupField widths="equal" fieldPath={fieldPath}>
-            <TextField
-              fieldPath={`${key}.${titleSegment}`}
-              label={'Title'}
-              required
-            />
-            <TextField
-              fieldPath={`${key}.${typeSegment}`}
-              label={'Type'}
-              required
-            />
-            <TextField
-              fieldPath={`${key}.${languageSegment}`}
-              label={'Language'}
-            />
+          <GroupField fieldPath={fieldPath}>
+            <GroupField widths="equal">
+              <TextField
+                fieldPath={`${key}.${titleSegment}`}
+                label={'Title'}
+                required
+              />
+              <TextField
+                fieldPath={`${key}.${typeSegment}`}
+                label={'Type'}
+                required
+              />
+              <TextField
+                fieldPath={`${key}.${languageSegment}`}
+                label={'Language'}
+              />
+            </GroupField>
             {array.length !== 1 && (
-              <Button icon>
-                <Icon
-                  name="close"
-                  size="large"
-                  onClick={() => arrayHelpers.remove(indexPath)}
-                />
-              </Button>
+              <Form.Field>
+                <Form.Field>
+                  <label>&nbsp;</label>
+                  <Button icon>
+                    <Icon
+                      name="close"
+                      size="large"
+                      onClick={() => arrayHelpers.remove(indexPath)}
+                    />
+                  </Button>
+                </Form.Field>
+              </Form.Field>
             )}
           </GroupField>
         )}
