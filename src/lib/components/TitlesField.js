@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button, Icon } from 'semantic-ui-react';
 
-import { ArrayField, TextField, GroupField } from 'react-invenio-forms';
+import { ArrayField, GroupField, SelectField, TextField } from 'react-invenio-forms';
 
 /**
  * Renders a `titles` field with a schema of
@@ -28,6 +28,7 @@ export class TitlesField extends Component {
       label,
       labelIcon,
       languageSegment,
+      options,
       titleSegment,
       typeSegment,
     } = this.props;
@@ -53,10 +54,10 @@ export class TitlesField extends Component {
                 label={'Title'}
                 required
               />
-              <TextField
+              <SelectField
                 fieldPath={`${key}.${typeSegment}`}
                 label={'Type'}
-                required
+                options={options.type}
               />
               <TextField
                 fieldPath={`${key}.${languageSegment}`}

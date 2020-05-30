@@ -67,11 +67,7 @@ export class DepositRecordSerializer {
           lang: 'eng',
           type: 'Abstract',
         },
-      ],
-      community: {
-        primary: 'Maincom',
-        secondary: ['Subcom One', 'Subcon Two'],
-      },
+      ]
     };
     return { ...stripped_record, ..._missingRecordFields };
   }
