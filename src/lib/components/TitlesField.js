@@ -64,9 +64,11 @@ export class TitlesField extends Component {
               options={options.type}
               clearable
             />
-            <TextField
+            <SelectField
               fieldPath={`${key}.${languageSegment}`}
               label={'Language'}
+              options={options.lang}
+              clearable
             />
             {array.length !== 1 && (
               <Form.Field>
