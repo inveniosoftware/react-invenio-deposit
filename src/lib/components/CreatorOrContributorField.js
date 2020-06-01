@@ -10,7 +10,12 @@ import PropTypes from 'prop-types';
 import { getIn, Field } from 'formik';
 import { Button, Form, Icon } from 'semantic-ui-react';
 
-import { ArrayField, SelectField, TextField } from 'react-invenio-forms';
+import {
+  ArrayField,
+  GroupField,
+  SelectField,
+  TextField
+} from 'react-invenio-forms';
 import { AffiliationField } from './AffiliationField';
 import { IdentifierField } from './IdentifierField';
 
@@ -101,6 +106,9 @@ const _CreatorOrContributorField = ({ field, form, ...props }) => {
               placeholder="Select contributor role"
             />
           )}
+
+          {/*
+            TODO: Implement Affiliations field
           <ArrayField
             addButtonLabel={'Add affiliation'}
             defaultNewValue={{
@@ -112,7 +120,7 @@ const _CreatorOrContributorField = ({ field, form, ...props }) => {
             label={'Affiliation(s)'}
           >
             {({ array, arrayHelpers, indexPath, key }) => (
-              <Form.Group inline>
+              <GroupField widths="equal">
                 <AffiliationField
                   nameFieldPath={`${key}.${affiliationsNameSegment}`}
                   identifierFieldPath={`${key}.${affiliationsIdentifierSegment}`}
@@ -132,9 +140,9 @@ const _CreatorOrContributorField = ({ field, form, ...props }) => {
                     </Form.Field>
                   </Form.Field>
                 )}
-              </Form.Group>
+              </GroupField>
             )}
-          </ArrayField>
+          </ArrayField> */}
         </>
       ) : (
         <>
@@ -150,6 +158,12 @@ const _CreatorOrContributorField = ({ field, form, ...props }) => {
         </>
       )}
 
+      {/*
+        TODO: Implement Identifiers field
+
+        NOTE: These are people or organizations' identifiers
+        TODO: Differentiate this kind of IdentifierField with
+              identifiers from the related identifier field.
       <ArrayField
         addButtonLabel={'Add identifiers'}
         defaultNewValue={{
@@ -161,11 +175,6 @@ const _CreatorOrContributorField = ({ field, form, ...props }) => {
       >
         {({ array, arrayHelpers, indexPath, key }) => (
           <Form.Group>
-            {/*
-                NOTE: These are people or organizations' identifiers
-                TODO: Differentiate this kind of IdentifierField with
-                      identifiers from the related identifier field.
-              */}
             <IdentifierField
               identifierFieldPath={`${key}.${identifiersIdentifierSegment}`}
               schemeFieldPath={`${key}.${identifiersSchemeSegment}`}
@@ -186,7 +195,7 @@ const _CreatorOrContributorField = ({ field, form, ...props }) => {
             )}
           </Form.Group>
         )}
-      </ArrayField>
+      </ArrayField> */}
     </>
   );
 };
