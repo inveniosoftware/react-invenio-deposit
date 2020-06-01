@@ -62,6 +62,7 @@ export class TitlesField extends Component {
               fieldPath={`${key}.${typeSegment}`}
               label={'Type'}
               options={options.type}
+              clearable
             />
             <TextField
               fieldPath={`${key}.${languageSegment}`}
