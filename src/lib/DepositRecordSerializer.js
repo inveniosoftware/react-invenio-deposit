@@ -52,8 +52,6 @@ export class DepositRecordSerializer {
       },
       _owners: [1],
       _created_by: 1,
-      // TODO: Remove this when we fix the `Identifiers` schema
-      creators: [],
       contributors: [],
       // TODO: Remove these when fields are implemented
       // also these fields are making the record landing page
