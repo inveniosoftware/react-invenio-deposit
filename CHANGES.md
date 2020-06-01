@@ -1,5 +1,7 @@
 # Changes
 
+Version 0.2.2 (released 2020-06-01)
+
 Version 0.2.1 (released 2020-05-29)
 
 * Deposit form styling.
