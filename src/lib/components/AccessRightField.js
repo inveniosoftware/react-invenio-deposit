@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { FieldLabel, RadioField, GroupField } from 'react-invenio-forms';
-import { Card } from 'semantic-ui-react';
+import { Card, Form } from 'semantic-ui-react';
 
 export class AccessRightField extends Component {
   /** Top-level Access Right Component */
@@ -30,7 +30,9 @@ export class AccessRightField extends Component {
       <Card className="access-right">
         <Card.Content>
           <GroupField fieldPath={fieldPath} grouped>
-            <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+            <Form.Field required>
+              <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+            </Form.Field>
             {options.map((option) => (
               <RadioField
                 fieldPath={fieldPath}
