@@ -52,7 +52,6 @@ export class DepositRecordSerializer {
       },
       _owners: [1],
       _created_by: 1,
-      contributors: [],
       // TODO: Remove these when fields are implemented
       // also these fields are making the record landing page
       // to fail if they don't exist
