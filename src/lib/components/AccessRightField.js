@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { FieldLabel, RadioField } from 'react-invenio-forms';
+import { FieldLabel, RadioField, GroupField } from 'react-invenio-forms';
 import { Card } from 'semantic-ui-react';
 
 export class AccessRightField extends Component {
@@ -29,18 +29,20 @@ export class AccessRightField extends Component {
     return (
       <Card className="access-right">
         <Card.Content>
-          <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
-          {options.map((option) => (
-            <RadioField
-              fieldPath={fieldPath}
-              label={option.text}
-              labelIcon={option.icon}
-              key={option.value}
-              value={option.value}
-              checked={this.state.selected === option.value}
-              onChange={this.handleChange}
-            />
-          ))}
+          <GroupField fieldPath={fieldPath} grouped>
+            <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+            {options.map((option) => (
+              <RadioField
+                fieldPath={fieldPath}
+                label={option.text}
+                labelIcon={option.icon}
+                key={option.value}
+                value={option.value}
+                checked={this.state.selected === option.value}
+                onChange={this.handleChange}
+              />
+            ))}
+          </GroupField>
         </Card.Content>
       </Card>
     );

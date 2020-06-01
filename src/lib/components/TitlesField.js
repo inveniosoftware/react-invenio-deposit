@@ -9,7 +9,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Button, Icon } from 'semantic-ui-react';
 
-import { ArrayField, GroupField, SelectField, TextField } from 'react-invenio-forms';
+import {
+  ArrayField,
+  GroupField,
+  SelectField,
+  TextField,
+} from 'react-invenio-forms';
 
 /**
  * Renders a `titles` field with a schema of
@@ -47,23 +52,21 @@ export class TitlesField extends Component {
         required
       >
         {({ array, arrayHelpers, indexPath, key }) => (
-          <GroupField fieldPath={fieldPath}>
-            <GroupField widths="equal">
-              <TextField
-                fieldPath={`${key}.${titleSegment}`}
-                label={'Title'}
-                required
-              />
-              <SelectField
-                fieldPath={`${key}.${typeSegment}`}
-                label={'Type'}
-                options={options.type}
-              />
-              <TextField
-                fieldPath={`${key}.${languageSegment}`}
-                label={'Language'}
-              />
-            </GroupField>
+          <GroupField widths="equal" fieldPath={fieldPath}>
+            <TextField
+              fieldPath={`${key}.${titleSegment}`}
+              label={'Title'}
+              required
+            />
+            <SelectField
+              fieldPath={`${key}.${typeSegment}`}
+              label={'Type'}
+              options={options.type}
+            />
+            <TextField
+              fieldPath={`${key}.${languageSegment}`}
+              label={'Language'}
+            />
             {array.length !== 1 && (
               <Form.Field>
                 <Form.Field>
