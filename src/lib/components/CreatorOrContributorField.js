@@ -74,7 +74,7 @@ const _CreatorOrContributorField = ({ field, form, ...props }) => {
     form.setFieldValue(nameFieldPath, `${givenName} ${familyName}`);
   };
 
-  const personValue = 'Personal';
+  const isPerson = getIn(form.values, typeFieldPath, null) === 'Personal'
 
   return (
     // TODO: pass labels as props
@@ -86,7 +86,7 @@ const _CreatorOrContributorField = ({ field, form, ...props }) => {
         placeholder="Select type of creator"
       />
 
-      {getIn(form.values, typeFieldPath, null) === personValue ? (
+      {isPerson ? (
         <>
           <TextField
             fieldPath={familyNameFieldPath}
@@ -147,6 +147,7 @@ const _CreatorOrContributorField = ({ field, form, ...props }) => {
       ) : (
         <>
           <TextField fieldPath={nameFieldPath} label={'Name'} />
+
           {isContributor && (
             <SelectField
               fieldPath={roleFieldPath}
@@ -158,26 +159,22 @@ const _CreatorOrContributorField = ({ field, form, ...props }) => {
         </>
       )}
 
-      {/*
-        TODO: Implement Identifiers field
-
-        NOTE: These are people or organizations' identifiers
-        TODO: Differentiate this kind of IdentifierField with
-              identifiers from the related identifier field.
       <ArrayField
-        addButtonLabel={'Add identifiers'}
-        defaultNewValue={{
-          [identifiersIdentifierSegment]: '',
-          [identifiersSchemeSegment]: '',
-        }}
+        addButtonLabel={'Add identifier'}
+        defaultNewValue={{}}
         fieldPath={identifiersFieldPath}
         label={'Identifier(s)'}
       >
         {({ array, arrayHelpers, indexPath, key }) => (
-          <Form.Group>
+          <GroupField widths="equal">
             <IdentifierField
               identifierFieldPath={`${key}.${identifiersIdentifierSegment}`}
               schemeFieldPath={`${key}.${identifiersSchemeSegment}`}
+              schemeOptions={
+                isPerson
+                  ? [{ text: 'ORCiD', value: 'Orcid' }]
+                  : [{ text: 'ROR', value: 'ror' }]
+              }
             />
             {array.length === 1 ? null : (
               <Form.Field>
@@ -193,9 +190,9 @@ const _CreatorOrContributorField = ({ field, form, ...props }) => {
                 </Form.Field>
               </Form.Field>
             )}
-          </Form.Group>
+          </GroupField>
         )}
-      </ArrayField> */}
+      </ArrayField>
     </>
   );
 };
