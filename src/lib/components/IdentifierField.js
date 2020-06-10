@@ -8,16 +8,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { TextField } from 'react-invenio-forms';
+import { SelectField, TextField } from 'react-invenio-forms';
+
 
 /**Identifier input component */
 export class IdentifierField extends Component {
   render() {
-    const { identifierFieldPath, schemeFieldPath } = this.props;
+    const { identifierFieldPath, schemeFieldPath, schemeOptions } = this.props;
 
     return (
       <>
-        <TextField fieldPath={schemeFieldPath} label="Scheme" />
+        <SelectField
+          fieldPath={schemeFieldPath}
+          label={'Scheme'}
+          options={schemeOptions}
+          clearable
+        />
         <TextField fieldPath={identifierFieldPath} label="Identifier" />
       </>
     );
@@ -27,6 +33,13 @@ export class IdentifierField extends Component {
 IdentifierField.propTypes = {
   identifierFieldPath: PropTypes.string.isRequired,
   schemeFieldPath: PropTypes.string.isRequired,
+  schemeOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      icon: PropTypes.string,
+      text: PropTypes.string,
+      value: PropTypes.string,
+    })
+  ),
   // TODO: Pass labels as props
 };
 

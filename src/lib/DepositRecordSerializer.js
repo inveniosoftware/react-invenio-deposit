@@ -41,8 +41,40 @@ export class DepositRecordSerializer {
     return _isNumber(obj) || obj ? obj : null;
   }
 
+  serializeCreators(record) {
+    const creators = record.creators.map((creator) => {
+      const identifiers = creator.identifiers.reduce((acc, identifier) => {
+        acc[identifier.scheme] = identifier.identifier;
+        return acc;
+      }, {});
+      return {...creator, identifiers};
+    });
+
+    return {...record, creators};
+  }
+
+  serializeContributors(record) {
+    const contributors = record.contributors.map((contributor) => {
+      const identifiers = contributor.identifiers.reduce((acc, identifier) => {
+        acc[identifier.scheme] = identifier.identifier;
+        return acc;
+      }, {});
+      return {...contributor, identifiers};
+    });
+
+    return {...record, contributors};
+  }
+
   serialize(record) {
+    /**Serialize record to send to the backend.
+     *
+     * NOTE: We use a simple "manual" approach for now. If things get more
+     *       complicated, we can create a serialization schema with Yup.
+     */
     let stripped_record = this.removeEmptyValues(record);
+    let serialized_record = this.serializeCreators(stripped_record);
+    serialized_record = this.serializeContributors(serialized_record);
+
     // TODO: Remove when fields are implemented and
     // we use deposit backend API
     let _missingRecordFields = {
@@ -66,6 +98,6 @@ export class DepositRecordSerializer {
         },
       ]
     };
-    return { ...stripped_record, ..._missingRecordFields };
+    return { ...serialized_record, ..._missingRecordFields };
   }
 }
