@@ -14,13 +14,17 @@ import _pickBy from 'lodash/pickBy';
 import _mapValues from 'lodash/mapValues';
 
 export class DepositRecordSerializer {
-  constructor() {
-    this.removeEmptyValues = this.removeEmptyValues.bind(this);
-  }
+
   deserialize(record) {
     return record;
   }
 
+  /**
+  * Remove empty fields from record
+  * @method
+  * @param {object} obj - potentially empty object
+  * @returns {object} record - without empty fields
+  */
   removeEmptyValues(obj) {
     if (_isArray(obj)) {
       let mappedValues = obj.map((value) => this.removeEmptyValues(value));
@@ -41,36 +45,65 @@ export class DepositRecordSerializer {
     return _isNumber(obj) || obj ? obj : null;
   }
 
+  /**
+  * Transform frontend creators structure to API-compatible structure.
+  *
+  * NOTE: Serialization doesn't deal with validation: safely access properties
+  * NOTE: If property absent from input, it should be absent from output
+  * @method
+  * @param {object} record - with creators in frontend format
+  * @returns {object} record - with creators in API format
+  */
   serializeCreators(record) {
-    const creators = record.creators.map((creator) => {
-      const identifiers = creator.identifiers.reduce((acc, identifier) => {
-        acc[identifier.scheme] = identifier.identifier;
-        return acc;
-      }, {});
-      return {...creator, identifiers};
+    const in_creators = record.creators || [];
+    const creators = in_creators.map((creator) => {
+      const in_identifiers = creator.identifiers || [];
+      const identifiers = in_identifiers.reduce(
+        (acc, identifier) => {
+          acc[identifier.scheme] = identifier.identifier;
+          return acc;
+        },
+        {}
+      );
+      return _isEmpty(identifiers) ? creator : { ...creator, identifiers };
     });
 
-    return {...record, creators};
+    return _isEmpty(creators) ? record : {...record, creators};
   }
 
+  /**
+  * Transform frontend contributors structure to API-compatible structure.
+  * @method
+  * @param {object} record - with contributors in frontend format
+  * @returns {object} record - with contributors in API format
+  */
   serializeContributors(record) {
-    const contributors = record.contributors.map((contributor) => {
-      const identifiers = contributor.identifiers.reduce((acc, identifier) => {
-        acc[identifier.scheme] = identifier.identifier;
-        return acc;
-      }, {});
-      return {...contributor, identifiers};
+    const in_contributors = record.contributors || [];
+    const contributors = in_contributors.map((contributor) => {
+      const in_identifiers = contributor.identifiers || [];
+      const identifiers = in_identifiers.reduce(
+        (acc, identifier) => {
+          acc[identifier.scheme] = identifier.identifier;
+          return acc;
+        },
+        {}
+      );
+      return _isEmpty(identifiers) ? contributor : { ...contributor, identifiers };
     });
 
-    return {...record, contributors};
+    return _isEmpty(contributors) ? record : { ...record, contributors };
   }
 
+  /**
+   * Serialize record to send to the backend.
+  * @method
+  * @param {object} record - in frontend format
+  * @returns {object} record - in API format
+   *
+   * NOTE: We use a simple "manual" approach for now. If things get more
+   *       complicated, we can create a serialization schema with Yup.
+   */
   serialize(record) {
-    /**Serialize record to send to the backend.
-     *
-     * NOTE: We use a simple "manual" approach for now. If things get more
-     *       complicated, we can create a serialization schema with Yup.
-     */
     let stripped_record = this.removeEmptyValues(record);
     let serialized_record = this.serializeCreators(stripped_record);
     serialized_record = this.serializeContributors(serialized_record);
