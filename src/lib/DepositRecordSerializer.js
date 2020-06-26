@@ -7,6 +7,7 @@
 
 import _isNumber from 'lodash/isNumber';
 import _isEmpty from 'lodash/isEmpty';
+import _isEqual from 'lodash/isEqual';
 import _isObject from 'lodash/isObject';
 import _isArray from 'lodash/isArray';
 import _isNull from 'lodash/isNull';
@@ -79,7 +80,19 @@ export class DepositRecordSerializer {
   */
   serializeContributors(record) {
     const in_contributors = record.contributors || [];
-    const contributors = in_contributors.map((contributor) => {
+
+    // Remove contributors with only a type
+    // Note: we have to do this because type is filled by default, but
+    // contributors is an optional field
+    let contributors = in_contributors.filter((contributor) => {
+      return !(
+        Object.keys(contributor).length === 1 &&
+        contributor.hasOwnProperty('type')
+      );
+    });
+
+    // Restructure identifiers
+    contributors = contributors.map((contributor) => {
       const in_identifiers = contributor.identifiers || [];
       const identifiers = in_identifiers.reduce(
         (acc, identifier) => {
@@ -91,7 +104,19 @@ export class DepositRecordSerializer {
       return _isEmpty(identifiers) ? contributor : { ...contributor, identifiers };
     });
 
-    return _isEmpty(contributors) ? record : { ...record, contributors };
+    // Did we filter out / change contributors?
+    if (!_isEqual(contributors, in_contributors)) {
+      if (contributors.length === 0) {
+        // Yes and now it is empty so we need to strip it
+        delete record.contributors;
+        return record;
+      } else {
+        // Yes and we simply restructured the identifiers
+        return { ...record, contributors };
+      }
+    } else {
+      return record;
+    }
   }
 
   /**
