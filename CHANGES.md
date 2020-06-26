@@ -1,5 +1,10 @@
 # Changes
 
+Version 0.3.0 (released 2020-06-29)
+
+* Fix contributors to be optional
+* Add creators/contributors identifiers component
+
 Version 0.2.3 (released 2020-06-02)
 
 Version 0.2.2 (released 2020-06-01)
