@@ -145,6 +145,22 @@ describe('Record serializer', () => {
 
       expect(serialized_record).toEqual(record);
 
+      // if contributors only have type defined, empty it out
+      record = {
+        contributors: [
+          {
+            type: "Personal"
+          },
+          {
+            type: "Organizational"
+          }
+        ]
+      };
+
+      serialized_record = serializer.serializeContributors(record);
+
+      expect(serialized_record).toEqual({});
+
       // if identifiers is absent, leave absent
       record = {
         contributors: [
