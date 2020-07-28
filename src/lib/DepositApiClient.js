@@ -8,7 +8,7 @@
 import axios from 'axios';
 
 export class DepositApiClient {
-  API_CREATE_ENDPOINT = '/api/records/';
+  API_CREATE_ENDPOINT = '/api/rdm-records';
   API_SAVE_ENDPOINT = '/';
   API_PUBLISH_ENDPOINT = '/';
 
