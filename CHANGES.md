@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.4.0 (released 2020-08-03)
+
+* Use new API for draft creation and publication
+
 Version 0.3.0 (released 2020-06-29)
 
 * Fix contributors to be optional
