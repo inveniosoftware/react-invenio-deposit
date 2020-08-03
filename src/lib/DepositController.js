@@ -55,17 +55,29 @@ export class DepositController {
     try {
       if (!this.exists(record)) {
         const response = await this.apiClient.create(payload);
-        const newURL = response.data.links.edit;
+        // TODO: Get edit link from response (when generated there)
+        // const newURL = response.data.links.edit;
+        const newURL = '/deposits/{pid_value}/edit'.replace(
+          '{pid_value}', response.data.pid
+        )
         window.history.replaceState(undefined, '', newURL);
         payload = response.data;
       }
+
       const response = await this.apiClient.publish(payload);
+
       store.dispatch({
         type: PUBLISH_SUCCESS,
         payload: response,
       });
+
       formik.setSubmitting(false);
-      window.location.replace(response.data.links.self.split('/api')[1]);
+
+      // TODO: Use response.data.links.self_html when configured properly
+      const htmlURL = '/records/{pid_value}'.replace(
+        '{pid_value}', response.data.pid
+      )
+      window.location.replace(htmlURL);
     } catch (error) {
       store.dispatch(setFormErrorsFromResponse(error, formik));
     }
