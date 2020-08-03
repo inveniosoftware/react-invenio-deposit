@@ -10,11 +10,10 @@ import axios from 'axios';
 export class DepositApiClient {
   API_CREATE_ENDPOINT = '/api/rdm-records';
   API_SAVE_ENDPOINT = '/';
-  API_PUBLISH_ENDPOINT = '/';
+  API_PUBLISH_ENDPOINT = '/api/rdm-records/{pid_value}/draft/actions/publish';
 
   create(record) {
-    // Calls the API to create a new record
-    // TODO: Integrate with deposit backend API
+    // Calls the API to create a new draft
     return axios.post(this.API_CREATE_ENDPOINT, record, {
       headers: { 'Content-Type': 'application/json' },
     });
@@ -36,12 +35,11 @@ export class DepositApiClient {
     // For now publish returns an error when titles array is empty
     // This has the shape of what our current API returns when there are errors
     // in the API call
-    // TODO: Integrate with backend API
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        console.log('Record published', record);
-        resolve({ data: record });
-      }, 500);
+    const publishEndpoint = this.API_PUBLISH_ENDPOINT.replace(
+      '{pid_value}', record.pid
+    );
+    return axios.post(publishEndpoint, {}, {
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 }
