@@ -133,6 +133,9 @@ export class DepositRecordSerializer {
     let serialized_record = this.serializeCreators(stripped_record);
     serialized_record = this.serializeContributors(serialized_record);
 
+    var todayStr = new Date().toISOString();
+    var defaultPublicationDate = todayStr.slice(0, todayStr.indexOf('T'));
+
     // TODO: Remove when fields are implemented and
     // we use deposit backend API
     let _missingRecordFields = {
@@ -154,7 +157,8 @@ export class DepositRecordSerializer {
           lang: 'eng',
           type: 'Abstract',
         },
-      ]
+      ],
+      publication_date: defaultPublicationDate
     };
     return { ...serialized_record, ..._missingRecordFields };
   }

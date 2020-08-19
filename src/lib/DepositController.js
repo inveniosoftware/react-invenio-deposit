@@ -32,8 +32,8 @@ export class DepositController {
     try {
       if (!this.exists(record)) {
         const response = await this.apiClient.create(payload);
-        const newURL = response.data.links.edit;
-        window.history.replaceState(undefined, '', newURL);
+        const draftURL = response.data.links.self_html;
+        window.history.replaceState(undefined, '', draftURL);
         payload = response.data;
       }
       const response = await this.apiClient.save(payload);
@@ -55,12 +55,8 @@ export class DepositController {
     try {
       if (!this.exists(record)) {
         const response = await this.apiClient.create(payload);
-        // TODO: Get edit link from response (when generated there)
-        // const newURL = response.data.links.edit;
-        const newURL = '/deposits/{pid_value}/edit'.replace(
-          '{pid_value}', response.data.pid
-        )
-        window.history.replaceState(undefined, '', newURL);
+        const draftURL = response.data.links.self_html;
+        window.history.replaceState(undefined, '', draftURL);
         payload = response.data;
       }
 
@@ -73,11 +69,8 @@ export class DepositController {
 
       formik.setSubmitting(false);
 
-      // TODO: Use response.data.links.self_html when configured properly
-      const htmlURL = '/records/{pid_value}'.replace(
-        '{pid_value}', response.data.pid
-      )
-      window.location.replace(htmlURL);
+      const recordURL = response.data.links.self_html;
+      window.location.replace(recordURL);
     } catch (error) {
       store.dispatch(setFormErrorsFromResponse(error, formik));
     }
