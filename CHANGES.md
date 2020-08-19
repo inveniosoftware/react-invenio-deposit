@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.5.0 (released 2020-08-19)
+
+* Use links from API response to redirect
+
 Version 0.4.0 (released 2020-08-03)
 
 * Use new API for draft creation and publication
