@@ -40,7 +40,7 @@ export class TitlesField extends Component {
     const defaultNewValue = {
       [languageSegment]: '',
       [titleSegment]: '',
-      [typeSegment]: '',
+      [typeSegment]: 'MainTitle',
     };
     return (
       <ArrayField
