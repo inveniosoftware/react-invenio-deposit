@@ -8,13 +8,14 @@
 import axios from 'axios';
 
 export class DepositApiClient {
-  API_CREATE_ENDPOINT = '/api/rdm-records';
-  API_SAVE_ENDPOINT = '/';
-  API_PUBLISH_ENDPOINT = '/api/rdm-records/{pid_value}/draft/actions/publish';
+
+  constructor(createUrl) {
+    this.createUrl = createUrl;
+  }
 
   create(record) {
     // Calls the API to create a new draft
-    return axios.post(this.API_CREATE_ENDPOINT, record, {
+    return axios.post(this.createUrl, record, {
       headers: { 'Content-Type': 'application/json' },
     });
   }
@@ -31,15 +32,21 @@ export class DepositApiClient {
     });
   }
 
+  /**
+   * Publishes the record by calling its publish link.
+   *
+   * @param {object} record - the payload from create()
+   */
   publish(record) {
     // For now publish returns an error when titles array is empty
     // This has the shape of what our current API returns when there are errors
     // in the API call
-    const publishEndpoint = this.API_PUBLISH_ENDPOINT.replace(
-      '{pid_value}', record.pid
+    return axios.post(
+      record.links.publish,
+      {},
+      {
+        headers: { 'Content-Type': 'application/json' },
+      }
     );
-    return axios.post(publishEndpoint, {}, {
-      headers: { 'Content-Type': 'application/json' },
-    });
   }
 }
