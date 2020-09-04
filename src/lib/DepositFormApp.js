@@ -21,7 +21,7 @@ export class DepositFormApp extends Component {
 
     const apiClient = props.apiClient
       ? props.apiClient
-      : new DepositApiClient();
+      : new DepositApiClient(props.config.createUrl);
 
     const controller = props.controller
       ? props.controller
