@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.6.0 (released 2020-09-04)
+
+* Use link from config and publish link from API response
+
 Version 0.5.0 (released 2020-08-19)
 
 * Use links from API response to redirect
