@@ -11,11 +11,20 @@ import thunk from 'redux-thunk';
 import rootReducer from './state/reducers';
 import { INITIAL_STORE_STATE } from './storeConfig';
 
+const preloadFiles = (files) =>
+  files
+    .map((file) => ({ state: 'finished', ...file }))
+    .reduce((acc, current) => {
+      acc[current.filename] = { ...current };
+      return acc;
+    }, {});
+
 export function configureStore(appConfig) {
   const { record, config, ...apiConfig } = appConfig;
   const initialDepositState = { record, config, ...INITIAL_STORE_STATE };
   const preloadedState = {
     deposit: initialDepositState,
+    files: preloadFiles(record.files || []),
   };
 
   const composeEnhancers =

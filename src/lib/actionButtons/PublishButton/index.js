@@ -9,14 +9,17 @@ import { connect } from 'react-redux';
 import { submitAction } from '../../state/actions';
 import PublishButtonComponent from './PublishButton';
 
+const mapStateToProps = (state) => ({
+  formAction: state.deposit.formAction,
+  fileUploadOngoing: state.files.isFileUploadInProgress,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   publishClick: (event, formik) =>
     dispatch(submitAction('publish', event, formik)),
 });
 
 export const PublishButton = connect(
-  (state) => ({
-    formAction: state.deposit.formAction,
-  }),
+  mapStateToProps,
   mapDispatchToProps
 )(PublishButtonComponent);

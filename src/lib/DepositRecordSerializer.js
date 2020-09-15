@@ -15,17 +15,16 @@ import _pickBy from 'lodash/pickBy';
 import _mapValues from 'lodash/mapValues';
 
 export class DepositRecordSerializer {
-
   deserialize(record) {
     return record;
   }
 
   /**
-  * Remove empty fields from record
-  * @method
-  * @param {object} obj - potentially empty object
-  * @returns {object} record - without empty fields
-  */
+   * Remove empty fields from record
+   * @method
+   * @param {object} obj - potentially empty object
+   * @returns {object} record - without empty fields
+   */
   removeEmptyValues(obj) {
     if (_isArray(obj)) {
       let mappedValues = obj.map((value) => this.removeEmptyValues(value));
@@ -47,37 +46,34 @@ export class DepositRecordSerializer {
   }
 
   /**
-  * Transform frontend creators structure to API-compatible structure.
-  *
-  * NOTE: Serialization doesn't deal with validation: safely access properties
-  * NOTE: If property absent from input, it should be absent from output
-  * @method
-  * @param {object} record - with creators in frontend format
-  * @returns {object} record - with creators in API format
-  */
+   * Transform frontend creators structure to API-compatible structure.
+   *
+   * NOTE: Serialization doesn't deal with validation: safely access properties
+   * NOTE: If property absent from input, it should be absent from output
+   * @method
+   * @param {object} record - with creators in frontend format
+   * @returns {object} record - with creators in API format
+   */
   serializeCreators(record) {
     const in_creators = record.creators || [];
     const creators = in_creators.map((creator) => {
       const in_identifiers = creator.identifiers || [];
-      const identifiers = in_identifiers.reduce(
-        (acc, identifier) => {
-          acc[identifier.scheme] = identifier.identifier;
-          return acc;
-        },
-        {}
-      );
+      const identifiers = in_identifiers.reduce((acc, identifier) => {
+        acc[identifier.scheme] = identifier.identifier;
+        return acc;
+      }, {});
       return _isEmpty(identifiers) ? creator : { ...creator, identifiers };
     });
 
-    return _isEmpty(creators) ? record : {...record, creators};
+    return _isEmpty(creators) ? record : { ...record, creators };
   }
 
   /**
-  * Transform frontend contributors structure to API-compatible structure.
-  * @method
-  * @param {object} record - with contributors in frontend format
-  * @returns {object} record - with contributors in API format
-  */
+   * Transform frontend contributors structure to API-compatible structure.
+   * @method
+   * @param {object} record - with contributors in frontend format
+   * @returns {object} record - with contributors in API format
+   */
   serializeContributors(record) {
     const in_contributors = record.contributors || [];
 
@@ -94,14 +90,13 @@ export class DepositRecordSerializer {
     // Restructure identifiers
     contributors = contributors.map((contributor) => {
       const in_identifiers = contributor.identifiers || [];
-      const identifiers = in_identifiers.reduce(
-        (acc, identifier) => {
-          acc[identifier.scheme] = identifier.identifier;
-          return acc;
-        },
-        {}
-      );
-      return _isEmpty(identifiers) ? contributor : { ...contributor, identifiers };
+      const identifiers = in_identifiers.reduce((acc, identifier) => {
+        acc[identifier.scheme] = identifier.identifier;
+        return acc;
+      }, {});
+      return _isEmpty(identifiers)
+        ? contributor
+        : { ...contributor, identifiers };
     });
 
     // Did we filter out / change contributors?
@@ -121,9 +116,9 @@ export class DepositRecordSerializer {
 
   /**
    * Serialize record to send to the backend.
-  * @method
-  * @param {object} record - in frontend format
-  * @returns {object} record - in API format
+   * @method
+   * @param {object} record - in frontend format
+   * @returns {object} record - in API format
    *
    * NOTE: We use a simple "manual" approach for now. If things get more
    *       complicated, we can create a serialization schema with Yup.
@@ -158,7 +153,7 @@ export class DepositRecordSerializer {
           type: 'Abstract',
         },
       ],
-      publication_date: defaultPublicationDate
+      publication_date: defaultPublicationDate,
     };
     return { ...serialized_record, ..._missingRecordFields };
   }

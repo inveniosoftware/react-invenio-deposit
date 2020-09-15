@@ -13,3 +13,4 @@ export { CreatorsField } from './CreatorsField';
 export { IdentifierField } from './IdentifierField';
 export { ResourceTypeField } from './ResourceTypeField';
 export { TitlesField } from './TitlesField';
+export { FileUploader } from './FileUploader';

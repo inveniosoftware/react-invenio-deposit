@@ -9,32 +9,46 @@
 // Defines what happens when a button is clicked.
 
 import { setFormErrorsFromResponse } from './state/actions';
-import { PUBLISH_SUCCESS, SAVE_SUCCESS } from './state/types';
+import {
+  CREATE_DEPOSIT_SUCCESS,
+  PUBLISH_SUCCESS,
+  SAVE_SUCCESS,
+} from './state/types';
 
 export class DepositController {
-  constructor(apiClient) {
+  constructor(apiClient, fileUploader) {
     this.apiClient = apiClient;
+    this.fileUploader = fileUploader;
   }
 
-  exists(record) {
-    return record.id ? true : false;
+  draftAlreadyCreated(record) {
+    return record.id || record.pid ? true : false;
   }
 
   validate(record) {
     console.log('Validate record', record);
   }
 
-  async save_draft(record, { formik, store }) {
+  async createDraft(draft, { store }) {
+    const recordSerializer = store.config.recordSerializer;
+    const response = await this.apiClient.create(draft);
+    store.dispatch({
+      type: CREATE_DEPOSIT_SUCCESS,
+      payload: { data: recordSerializer.deserialize(response.data) },
+    });
+    const draftURL = response.data.links.self_html;
+    window.history.replaceState(undefined, '', draftURL);
+    return response.data;
+  }
+
+  async saveDraft(record, { formik, store }) {
     // Saves a draft of the record
     const recordSerializer = store.config.recordSerializer;
     let payload = recordSerializer.serialize(record);
-    this.validate(record);
+    this.validate(payload);
     try {
-      if (!this.exists(record)) {
-        const response = await this.apiClient.create(payload);
-        const draftURL = response.data.links.self_html;
-        window.history.replaceState(undefined, '', draftURL);
-        payload = response.data;
+      if (!this.draftAlreadyCreated(payload)) {
+        payload = this.createDraft(payload, { store });
       }
       const response = await this.apiClient.save(payload);
       store.dispatch({
@@ -47,32 +61,58 @@ export class DepositController {
     }
   }
 
-  async publish_draft(record, { formik, store }) {
+  async publishDraft(draft, { formik, store }) {
     // Publishes a draft to make it a full fledged record
     const recordSerializer = store.config.recordSerializer;
-    let payload = recordSerializer.serialize(record);
+    let payload = recordSerializer.serialize(draft);
     this.validate(payload);
     try {
-      if (!this.exists(record)) {
-        const response = await this.apiClient.create(payload);
-        const draftURL = response.data.links.self_html;
-        window.history.replaceState(undefined, '', draftURL);
-        payload = response.data;
+      if (!this.draftAlreadyCreated(payload)) {
+        payload = this.createDraft(payload, { store });
       }
-
       const response = await this.apiClient.publish(payload);
-
       store.dispatch({
         type: PUBLISH_SUCCESS,
         payload: response,
       });
-
       formik.setSubmitting(false);
-
       const recordURL = response.data.links.self_html;
       window.location.replace(recordURL);
     } catch (error) {
       store.dispatch(setFormErrorsFromResponse(error, formik));
+    }
+  }
+
+  uploadDraftFiles = async (record, files, { store }) => {
+    const recordSerializer = store.config.recordSerializer;
+    const payload = recordSerializer.serialize(record);
+    if (!this.draftAlreadyCreated(payload)) {
+      this.createDraft(payload, { store });
+    }
+    store.dispatch({
+      type: 'FILE_UPLOAD_INITIATE',
+      payload: files.map((file) => ({ fileName: file.name, size: file.size })),
+    });
+
+    for (const file of files) {
+      this.fileUploader.upload(file, { store });
+    }
+  };
+
+  async deleteDraftFile(file, { formik, store }) {
+    //Create draft
+    const fileVersionUrl = file.links.version;
+    try {
+      const resp = await this.apiClient.deleteFile(fileVersionUrl);
+      store.dispatch({
+        type: 'FILE_DELETED_SUCCESS',
+        payload: {
+          fileName: file.fileName,
+        },
+      });
+    } catch (e) {
+      console.log('error');
+      store.dispatch({ type: 'FILE_DELETE_FAILED' });
     }
   }
 }

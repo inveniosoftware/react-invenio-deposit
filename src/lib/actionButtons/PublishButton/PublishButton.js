@@ -19,7 +19,7 @@ export default class PublishButton extends Component {
   };
 
   isDisabled = (formik) => {
-    return formik.isSubmitting;
+    return this.props.fileUploadOngoing || formik.isSubmitting;
   };
 
   confirmPublish = () => this.setState({ confirmOpen: true });
@@ -27,7 +27,12 @@ export default class PublishButton extends Component {
   handleClose = () => this.setState({ confirmOpen: false });
 
   render() {
-    const {formAction, publishClick, ...uiProps} = this.props;
+    const {
+      formAction,
+      publishClick,
+      fileUploadOngoing,
+      ...uiProps
+    } = this.props;
     return (
       <>
         <ActionButton
@@ -38,7 +43,7 @@ export default class PublishButton extends Component {
           {...uiProps}
         >
           {(formik) =>
-            formik.isSubmitting && formAction == 'publish' ? (
+            formik.isSubmitting && formAction === 'publish' ? (
               <>
                 <Icon size="large" loading name="spinner" />
                 Publish

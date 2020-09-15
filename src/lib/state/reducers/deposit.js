@@ -8,12 +8,19 @@
 import {
   FORM_ACTION_EVENT_EMITTED,
   FORM_ACTION_FAILED,
+  CREATE_DEPOSIT_SUCCESS,
   PUBLISH_SUCCESS,
   SAVE_SUCCESS,
 } from '../types';
 
 export default (state = {}, action) => {
   switch (action.type) {
+    case CREATE_DEPOSIT_SUCCESS:
+      return {
+        ...state,
+        record: { ...state.record, ...action.payload.data },
+        formAction: null,
+      };
     case FORM_ACTION_EVENT_EMITTED:
       return {
         ...state,
