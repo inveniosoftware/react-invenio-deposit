@@ -7,8 +7,9 @@
 
 import axios from 'axios';
 
-export class DepositApiClient {
+const CancelToken = axios.CancelToken;
 
+export class DepositApiClient {
   constructor(createUrl) {
     this.createUrl = createUrl;
   }
@@ -48,5 +49,25 @@ export class DepositApiClient {
         headers: { 'Content-Type': 'application/json' },
       }
     );
+  }
+
+  uploadFile(file, onUploadProgress, cancel) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const BUCKET_ID = '8e4c2e2d-769e-4bc4-8c1b-1ae9fdc3f07f';
+    const UPLOAD_URL = `/api/files/${BUCKET_ID}`;
+
+    return axios.put(`${UPLOAD_URL}/${file.name}`, file, {
+      headers: {
+        'content-type': 'application/octet-stream',
+      },
+      onUploadProgress,
+      cancelToken: new CancelToken(cancel),
+    });
+  }
+
+  deleteFile(deleteUrl) {
+    return axios.delete(deleteUrl);
   }
 }

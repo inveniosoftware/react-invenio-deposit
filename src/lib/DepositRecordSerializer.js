@@ -21,11 +21,11 @@ export class DepositRecordSerializer {
   }
 
   /**
-  * Remove empty fields from record
-  * @method
-  * @param {object} obj - potentially empty object
-  * @returns {object} record - without empty fields
-  */
+   * Remove empty fields from record
+   * @method
+   * @param {object} obj - potentially empty object
+   * @returns {object} record - without empty fields
+   */
   removeEmptyValues(obj) {
     if (_isArray(obj)) {
       let mappedValues = obj.map((value) =>
@@ -51,14 +51,14 @@ export class DepositRecordSerializer {
   }
 
   /**
-  * Transform frontend creators structure to API-compatible structure.
-  *
-  * NOTE: Serialization doesn't deal with validation: safely access properties
-  * NOTE: If property absent from input, it should be absent from output
-  * @method
-  * @param {object} record - with creators in frontend format
-  * @returns {object} record - with creators in API format
-  */
+   * Transform frontend creators structure to API-compatible structure.
+   *
+   * NOTE: Serialization doesn't deal with validation: safely access properties
+   * NOTE: If property absent from input, it should be absent from output
+   * @method
+   * @param {object} record - with creators in frontend format
+   * @returns {object} record - with creators in API format
+   */
   serializeCreators(record) {
     const in_creators = record.creators || [];
     const creators = in_creators.map((creator) => {
@@ -67,20 +67,18 @@ export class DepositRecordSerializer {
         acc[identifier.scheme] = identifier.identifier;
         return acc;
       }, {});
-      return _isEmpty(identifiers)
-        ? creator
-        : { ...creator, identifiers };
+      return _isEmpty(identifiers) ? creator : { ...creator, identifiers };
     });
 
     return _isEmpty(creators) ? record : { ...record, creators };
   }
 
   /**
-  * Transform frontend contributors structure to API-compatible structure.
-  * @method
-  * @param {object} record - with contributors in frontend format
-  * @returns {object} record - with contributors in API format
-  */
+   * Transform frontend contributors structure to API-compatible structure.
+   * @method
+   * @param {object} record - with contributors in frontend format
+   * @returns {object} record - with contributors in API format
+   */
   serializeContributors(record) {
     const in_contributors = record.contributors || [];
 
@@ -122,14 +120,14 @@ export class DepositRecordSerializer {
   }
 
   /**
-  * Serialize record to send to the backend.
-  * @method
-  * @param {object} record - in frontend format
-  * @returns {object} record - in API format
-  *
-  * NOTE: We use a simple "manual" approach for now. If things get more
-  *       complicated, we can create a serialization schema with Yup.
-  */
+   * Serialize record to send to the backend.
+   * @method
+   * @param {object} record - in frontend format
+   * @returns {object} record - in API format
+   *
+   * NOTE: We use a simple "manual" approach for now. If things get more
+   *       complicated, we can create a serialization schema with Yup.
+   */
   serialize(record) {
     let strippedRecord = this.removeEmptyValues(record);
     let serializedRecord = this.serializeCreators(strippedRecord);
@@ -219,6 +217,7 @@ export class DepositRecordSerializer {
           type: 'Abstract',
         },
       ],
+      publication_date: defaultPublicationDate,
     };
     let metadata = {
       metadata: { ...record['metadata'], ...descriptions },

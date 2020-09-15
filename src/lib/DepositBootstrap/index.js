@@ -12,6 +12,7 @@ import DepositBootstrapComponent from './DepositBootstrap';
 const mapStateToProps = (state) => ({
   record: state.deposit.record,
   formAction: state.deposit.formAction,
+  fileUploadOngoing: state.files.isFileUploadInProgress,
 });
 
 const mapDispatchToProps = (dispatch) => ({
