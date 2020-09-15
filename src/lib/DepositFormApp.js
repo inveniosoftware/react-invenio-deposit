@@ -14,6 +14,7 @@ import { DepositController } from './DepositController';
 import { DepositApiClient } from './DepositApiClient';
 import { DepositErrorHandler } from './DepositErrorHandler';
 import { DepositRecordSerializer } from './DepositRecordSerializer';
+import { DepositFileUploader } from './DepositFileUploader';
 
 export class DepositFormApp extends Component {
   constructor(props) {
@@ -23,9 +24,13 @@ export class DepositFormApp extends Component {
       ? props.apiClient
       : new DepositApiClient(props.config.createUrl);
 
+    const fileUploader = props.fileUploader
+      ? props.fileUploader
+      : new DepositFileUploader(apiClient, props.config.fileUploadConcurrency);
+
     const controller = props.controller
       ? props.controller
-      : new DepositController(apiClient);
+      : new DepositController(apiClient, fileUploader);
 
     const apiErrorHandler = props.apiErrorHandler
       ? props.apiErrorHandler

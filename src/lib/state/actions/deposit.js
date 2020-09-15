@@ -5,14 +5,14 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { FORM_ACTION_EVENT_EMITTED } from '../types';
+import { FORM_ACTION_FAILED, FORM_ACTION_EVENT_EMITTED } from '../types';
 
 export const setFormErrorsFromResponse = (response, formik) => {
   return async (dispatch, getState, config) => {
     const errorHandler = config.apiErrorHandler;
     const extractedErrors = errorHandler.extractErrors(response);
     dispatch({
-      type: 'FORM_ACTION_FAILED',
+      type: FORM_ACTION_FAILED,
     });
     formik.setSubmitting(false);
     formik.setErrors(extractedErrors);
@@ -22,7 +22,7 @@ export const setFormErrorsFromResponse = (response, formik) => {
 export const publish = (record, formik) => {
   return async (dispatch, getState, config) => {
     const controller = config.controller;
-    controller.publish_draft(record, {
+    controller.publishDraft(record, {
       formik,
       store: { dispatch, getState, config },
     });
@@ -32,7 +32,7 @@ export const publish = (record, formik) => {
 export const save = (record, formik) => {
   return async (dispatch, getState, config) => {
     const controller = config.controller;
-    controller.save_draft(record, {
+    controller.saveDraft(record, {
       formik,
       store: { dispatch, getState, config },
     });

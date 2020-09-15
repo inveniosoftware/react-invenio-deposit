@@ -11,6 +11,15 @@ import { BaseForm } from 'react-invenio-forms';
 import { Container } from 'semantic-ui-react';
 
 export default class DepositBootstrap extends Component {
+  componentDidMount() {
+    window.addEventListener('beforeunload', (e) => {
+      if (this.props.fileUploadOngoing) {
+        e.returnValue = '';
+        return '';
+      }
+    });
+  }
+
   onSubmit = (values, formikBag) => {
     this.props.submitFormData(values, formikBag);
   };
