@@ -86,28 +86,21 @@ const _CreatorOrContributorField = ({ field, form, ...props }) => {
         placeholder="Select type of creator"
       />
 
-      {isPerson ? (
-        <>
-          <TextField
-            fieldPath={familyNameFieldPath}
-            onChange={handleGivenOrFamilyNameChange}
-            label={'Family Name'}
-          />
-          <TextField
-            fieldPath={givenNameFieldPath}
-            onChange={handleGivenOrFamilyNameChange}
-            label={'Given Name'}
-          />
-          {isContributor && (
-            <SelectField
-              fieldPath={roleFieldPath}
-              label={'Role'}
-              options={options.role}
-              placeholder="Select contributor role"
-            />
-          )}
+      <TextField
+        fieldPath={nameFieldPath}
+        label={'Name'}
+        required={!isContributor}
+      />
 
-          {/*
+      {isContributor && (
+        <SelectField
+          fieldPath={roleFieldPath}
+          label={'Role'}
+          options={options.role}
+          placeholder="Select contributor role"
+        />
+      )}
+      {/*
             TODO: Implement Affiliations field
           <ArrayField
             addButtonLabel={'Add affiliation'}
@@ -143,21 +136,6 @@ const _CreatorOrContributorField = ({ field, form, ...props }) => {
               </GroupField>
             )}
           </ArrayField> */}
-        </>
-      ) : (
-        <>
-          <TextField fieldPath={nameFieldPath} label={'Name'} />
-
-          {isContributor && (
-            <SelectField
-              fieldPath={roleFieldPath}
-              label={'Role'}
-              options={options.role}
-              placeholder="Select contributor role"
-            />
-          )}
-        </>
-      )}
 
       <ArrayField
         addButtonLabel={'Add identifier'}

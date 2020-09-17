@@ -7,10 +7,18 @@
 
 import { FORM_ACTION_EVENT_EMITTED } from '../types';
 
-export const setFormErrorsFromResponse = (response, formik) => {
+
+/**
+ * Closure over Axios error and formik, returning async error setting function.
+ *
+ * @param {Error} error - Axios error
+ * @param {Formik state} formik
+ */
+export const setFormErrors = (error, formik, record) => {
   return async (dispatch, getState, config) => {
-    const errorHandler = config.apiErrorHandler;
-    const extractedErrors = errorHandler.extractErrors(response);
+    console.log("record", record);
+    const extractedErrors = config.apiErrorHandler.extractErrors(error, record);
+    console.log("extractedErrors", extractedErrors);
     dispatch({
       type: 'FORM_ACTION_FAILED',
     });

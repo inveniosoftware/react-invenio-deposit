@@ -59,6 +59,7 @@ export class CreatorsField extends Component {
         fieldPath={fieldPath}
         label={label}
         labelIcon={labelIcon}
+        required
       >
         {({ array, arrayHelpers, indexPath, key }) => (
           <>

@@ -5,6 +5,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import _get from 'lodash/get';
 import _isNumber from 'lodash/isNumber';
 import _isEmpty from 'lodash/isEmpty';
 import _isEqual from 'lodash/isEqual';
@@ -15,7 +16,6 @@ import _pickBy from 'lodash/pickBy';
 import _mapValues from 'lodash/mapValues';
 
 export class DepositRecordSerializer {
-
   deserialize(record) {
     return record;
   }
@@ -28,8 +28,12 @@ export class DepositRecordSerializer {
   */
   removeEmptyValues(obj) {
     if (_isArray(obj)) {
-      let mappedValues = obj.map((value) => this.removeEmptyValues(value));
-      let filterValues = mappedValues.filter((value) => !_isEmpty(value));
+      let mappedValues = obj.map((value) =>
+        this.removeEmptyValues(value)
+      );
+      let filterValues = mappedValues.filter(
+        (value) => !_isEmpty(value)
+      );
       return filterValues;
     } else if (_isObject(obj)) {
       let mappedValues = _mapValues(obj, (value) =>
@@ -59,17 +63,16 @@ export class DepositRecordSerializer {
     const in_creators = record.creators || [];
     const creators = in_creators.map((creator) => {
       const in_identifiers = creator.identifiers || [];
-      const identifiers = in_identifiers.reduce(
-        (acc, identifier) => {
-          acc[identifier.scheme] = identifier.identifier;
-          return acc;
-        },
-        {}
-      );
-      return _isEmpty(identifiers) ? creator : { ...creator, identifiers };
+      const identifiers = in_identifiers.reduce((acc, identifier) => {
+        acc[identifier.scheme] = identifier.identifier;
+        return acc;
+      }, {});
+      return _isEmpty(identifiers)
+        ? creator
+        : { ...creator, identifiers };
     });
 
-    return _isEmpty(creators) ? record : {...record, creators};
+    return _isEmpty(creators) ? record : { ...record, creators };
   }
 
   /**
@@ -94,14 +97,13 @@ export class DepositRecordSerializer {
     // Restructure identifiers
     contributors = contributors.map((contributor) => {
       const in_identifiers = contributor.identifiers || [];
-      const identifiers = in_identifiers.reduce(
-        (acc, identifier) => {
-          acc[identifier.scheme] = identifier.identifier;
-          return acc;
-        },
-        {}
-      );
-      return _isEmpty(identifiers) ? contributor : { ...contributor, identifiers };
+      const identifiers = in_identifiers.reduce((acc, identifier) => {
+        acc[identifier.scheme] = identifier.identifier;
+        return acc;
+      }, {});
+      return _isEmpty(identifiers)
+        ? contributor
+        : { ...contributor, identifiers };
     });
 
     // Did we filter out / change contributors?
@@ -120,46 +122,108 @@ export class DepositRecordSerializer {
   }
 
   /**
-   * Serialize record to send to the backend.
+  * Serialize record to send to the backend.
   * @method
   * @param {object} record - in frontend format
   * @returns {object} record - in API format
-   *
-   * NOTE: We use a simple "manual" approach for now. If things get more
-   *       complicated, we can create a serialization schema with Yup.
-   */
+  *
+  * NOTE: We use a simple "manual" approach for now. If things get more
+  *       complicated, we can create a serialization schema with Yup.
+  */
   serialize(record) {
-    let stripped_record = this.removeEmptyValues(record);
-    let serialized_record = this.serializeCreators(stripped_record);
-    serialized_record = this.serializeContributors(serialized_record);
+    let strippedRecord = this.removeEmptyValues(record);
+    let serializedRecord = this.serializeCreators(strippedRecord);
+    serializedRecord = this.serializeContributors(serializedRecord);
 
-    var todayStr = new Date().toISOString();
-    var defaultPublicationDate = todayStr.slice(0, todayStr.indexOf('T'));
+    // Temporary injection of fields not covered by frontend but needed by
+    // backend. As the fields get covered by frontend, remove them from here.
+    // TODO: Remove when fields are implemented
+    serializedRecord = this.fillAccess(serializedRecord);
+    serializedRecord = this.fillPublicationDate(serializedRecord);
+    serializedRecord = this.fillIdentifiers(serializedRecord);
+    serializedRecord = this.fillDescriptions(serializedRecord);
 
-    // TODO: Remove when fields are implemented and
-    // we use deposit backend API
-    let _missingRecordFields = {
-      _access: {
+    return serializedRecord;
+  }
+
+  /**
+  * Temporarily fill access field until frontend does it.
+  * @method
+  * @param {object} record - in frontend format
+  * @returns {object} record - in API format
+  */
+  fillAccess(record) {
+    let access = {
+      access: {
         metadata_restricted: false,
         files_restricted: false,
+        owners: [1],
+        created_by: 1,
+        access_right: _get(record, 'access.access_right', ''),
       },
-      _owners: [1],
-      _created_by: 1,
-      // TODO: Remove these when fields are implemented
-      // also these fields are making the record landing page
-      // to fail if they don't exist
+    };
+
+    return { ...record, ...access };
+  }
+
+  /**
+  * Temporarily fill publication date field until frontend does it.
+  * @method
+  * @param {object} record - in frontend format
+  * @returns {object} record - in API format
+  */
+  fillPublicationDate(record) {
+    var todayStr = new Date().toISOString();
+    var defaultPublicationDate = todayStr.slice(0, todayStr.indexOf('T'));
+    let publicationDate = {
+      publication_date: defaultPublicationDate,
+    };
+    let metadata = {
+      metadata: { ...record['metadata'], ...publicationDate },
+    };
+
+    return { ...record, ...metadata };
+  }
+
+  /**
+  * Temporarily fill identifiers field until frontend does it.
+  * @method
+  * @param {object} record - in frontend format
+  * @returns {object} record - in API format
+  */
+  fillIdentifiers(record) {
+    let identifiers = {
       identifiers: {
         DOI: '10.9999/rdm.9999999',
       },
+    };
+    let metadata = {
+      metadata: { ...record['metadata'], ...identifiers },
+    };
+
+    return { ...record, ...metadata };
+  }
+
+  /**
+  * Temporarily fill descriptions field until frontend does it.
+  * @method
+  * @param {object} record - in frontend format
+  * @returns {object} record - in API format
+  */
+  fillDescriptions(record) {
+    let descriptions = {
       descriptions: [
         {
-          description: 'Remove me',
+          description: 'Just a filler description.',
           lang: 'eng',
           type: 'Abstract',
         },
       ],
-      publication_date: defaultPublicationDate
     };
-    return { ...serialized_record, ..._missingRecordFields };
+    let metadata = {
+      metadata: { ...record['metadata'], ...descriptions },
+    };
+
+    return { ...record, ...metadata };
   }
 }
