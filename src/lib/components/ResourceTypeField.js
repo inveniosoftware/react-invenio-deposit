@@ -8,17 +8,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getIn, Field } from 'formik';
+import _get from 'lodash/get';
 
 import { FieldLabel, GroupField, SelectField } from 'react-invenio-forms';
 
 export class ResourceTypeField extends Component {
-  hasGroupErrors = (errors) => {
+
+  groupErrors = (errors) => {
     for (const field in errors) {
       if (field.startsWith(this.props.fieldPath)) {
-        return true;
+        return { content: _get(errors, this.props.fieldPath) };
       }
     }
-    return false;
+    return null;
   };
 
   renderResourceTypeField = (formikBag) => {
@@ -39,11 +41,7 @@ export class ResourceTypeField extends Component {
     return (
       <GroupField widths="equal">
         <SelectField
-          error={
-            this.hasGroupErrors(formikBag.form.errors)
-              ? { content: getIn(formikBag.form.errors, this.props.fieldPath) }
-              : null
-          }
+          error={this.groupErrors(formikBag.form.errors)}
           fieldPath={typeFieldPath}
           label={
             <FieldLabel

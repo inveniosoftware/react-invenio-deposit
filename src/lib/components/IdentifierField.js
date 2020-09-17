@@ -22,7 +22,6 @@ export class IdentifierField extends Component {
           fieldPath={schemeFieldPath}
           label={'Scheme'}
           options={schemeOptions}
-          clearable
         />
         <TextField fieldPath={identifierFieldPath} label="Identifier" />
       </>

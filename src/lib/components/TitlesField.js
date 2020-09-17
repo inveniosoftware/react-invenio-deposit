@@ -62,7 +62,6 @@ export class TitlesField extends Component {
               fieldPath={`${key}.${typeSegment}`}
               label={'Type'}
               options={options.type}
-              clearable
             />
             <SelectField
               fieldPath={`${key}.${languageSegment}`}
@@ -70,7 +69,7 @@ export class TitlesField extends Component {
               options={options.lang}
               clearable
             />
-            {array.length !== 1 && (
+            {array.length > 1 && (
               <Form.Field>
                 <Form.Field>
                   <label>&nbsp;</label>
