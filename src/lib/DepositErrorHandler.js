@@ -9,9 +9,9 @@ import _join from 'lodash/join';
 import _get from 'lodash/get';
 
 export class DepositErrorHandler {
-  extractErrors(response) {
-    const backendErrors = _get(response, 'response.data.errors', []);
-    const backendErrorMessage = _get(response, 'response.data.message', '');
+  extractErrors(error, record) {
+    const backendErrors = _get(error, 'response.data.errors', []);
+    const backendErrorMessage = _get(error, 'response.data.message', '');
     let frontendErrors = { message: backendErrorMessage };
     for (const fieldError of backendErrors) {
       const errorPath = _join([...fieldError.parents, fieldError.field], '.');
