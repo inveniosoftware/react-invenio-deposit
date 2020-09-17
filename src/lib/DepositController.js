@@ -8,7 +8,7 @@
 // Drives the business logic of the InvenioFormApp.
 // Defines what happens when a button is clicked.
 
-import { setFormErrorsFromResponse } from './state/actions';
+import { setFormErrors } from './state/actions';
 import {
   CREATE_DEPOSIT_SUCCESS,
   PUBLISH_SUCCESS,
@@ -79,7 +79,7 @@ export class DepositController {
       const recordURL = response.data.links.self_html;
       window.location.replace(recordURL);
     } catch (error) {
-      store.dispatch(setFormErrorsFromResponse(error, formik));
+      store.dispatch(setFormErrors(error, formik, record));
     }
   }
 

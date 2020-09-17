@@ -5,72 +5,71 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { DepositRecordSerializer } from "./DepositRecordSerializer";
-
+import { DepositRecordSerializer } from './DepositRecordSerializer';
 
 describe('Record serializer', () => {
   describe('removeEmptyValues', () => {
     const serializer = new DepositRecordSerializer();
     const record = {
-      contributors: [
-        { identifiers: [] },
-      ],
+      contributors: [{ identifiers: [] }],
       version: 0,
       cool: false,
-      creators: [
-        null,
-        undefined,
-        {},
-      ],
-      description: ""
-    }
+      creators: [null, undefined, {}],
+      description: '',
+    };
 
     const cleanedRecord = serializer.removeEmptyValues(record);
 
-    expect(cleanedRecord).toEqual({version: 0});
+    expect(cleanedRecord).toEqual({ version: 0 });
   });
 
   describe('creators', () => {
     it('transforms identifiers arrays into objects', () => {
       const serializer = new DepositRecordSerializer();
       const record = {
-        creators: [
-          {
-            identifiers: [
-              { scheme: 'Orcid', identifier: '0000-0002-1825-0097' },
-              { scheme: 'foo', identifier: 'bar' },
-            ],
-          },
-          {
-            identifiers: [
-              { scheme: 'ror', identifier: '03yrm5c26' },
-              { scheme: 'baz', identifier: 'zed' },
-            ],
-          },
-        ],
+        metadata: {
+          creators: [
+            {
+              identifiers: [
+                { scheme: 'Orcid', identifier: '0000-0002-1825-0097' },
+                { scheme: 'foo', identifier: 'bar' },
+              ],
+            },
+            {
+              identifiers: [
+                { scheme: 'ror', identifier: '03yrm5c26' },
+                { scheme: 'baz', identifier: 'zed' },
+              ],
+            },
+          ],
+        },
       };
 
       const serialized_record = serializer.serializeCreators(record);
 
-      expect(serialized_record.creators[0].identifiers).toEqual(
-        { Orcid: '0000-0002-1825-0097', foo: 'bar' },
-      );
-      expect(serialized_record.creators[1].identifiers).toEqual(
-        { ror: '03yrm5c26', baz: 'zed' },
-      );
+      expect(serialized_record.creators[0].identifiers).toEqual({
+        Orcid: '0000-0002-1825-0097',
+        foo: 'bar',
+      });
+      expect(serialized_record.creators[1].identifiers).toEqual({
+        ror: '03yrm5c26',
+        baz: 'zed',
+      });
     });
 
     it('picks last scheme if duplicates', () => {
       const serializer = new DepositRecordSerializer();
       const record = {
-        creators: [
-          {
-            identifiers: [
-              { scheme: 'Orcid', identifier: '0000-0002-1825-0097' },
-              { scheme: 'Orcid', identifier: '0000-0002-1825-0098' },
-            ],
-          },
-        ],
+        metadata: {
+          creators: [
+            {
+              identifiers: [
+                { scheme: 'Orcid', identifier: '0000-0002-1825-0097' },
+                { scheme: 'Orcid', identifier: '0000-0002-1825-0098' },
+              ],
+            },
+          ],
+        },
       };
 
       const serialized_record = serializer.serializeCreators(record);
@@ -85,20 +84,22 @@ describe('Record serializer', () => {
     it('transforms identifiers arrays into objects', () => {
       const serializer = new DepositRecordSerializer();
       const record = {
-        contributors: [
-          {
-            identifiers: [
-              { scheme: 'Orcid', identifier: '0000-0002-1825-0097' },
-              { scheme: 'foo', identifier: 'bar' },
-            ],
-          },
-          {
-            identifiers: [
-              { scheme: 'ror', identifier: '03yrm5c26' },
-              { scheme: 'baz', identifier: 'zed' },
-            ],
-          },
-        ],
+        metadata: {
+          contributors: [
+            {
+              identifiers: [
+                { scheme: 'Orcid', identifier: '0000-0002-1825-0097' },
+                { scheme: 'foo', identifier: 'bar' },
+              ],
+            },
+            {
+              identifiers: [
+                { scheme: 'ror', identifier: '03yrm5c26' },
+                { scheme: 'baz', identifier: 'zed' },
+              ],
+            },
+          ],
+        },
       };
 
       const serialized_record = serializer.serializeContributors(record);
@@ -116,14 +117,16 @@ describe('Record serializer', () => {
     it('picks last scheme if duplicates', () => {
       const serializer = new DepositRecordSerializer();
       const record = {
-        contributors: [
-          {
-            identifiers: [
-              { scheme: 'Orcid', identifier: '0000-0002-1825-0097' },
-              { scheme: 'Orcid', identifier: '0000-0002-1825-0098' },
-            ],
-          },
-        ],
+        metadata: {
+          contributors: [
+            {
+              identifiers: [
+                { scheme: 'Orcid', identifier: '0000-0002-1825-0097' },
+                { scheme: 'Orcid', identifier: '0000-0002-1825-0098' },
+              ],
+            },
+          ],
+        },
       };
 
       const serialized_record = serializer.serializeContributors(record);
@@ -147,25 +150,25 @@ describe('Record serializer', () => {
 
       // if contributors only have type defined, empty it out
       record = {
-        contributors: [
-          {
-            type: "Personal"
-          },
-          {
-            type: "Organizational"
-          }
-        ]
+        metadata: {
+          contributors: [
+            {
+              type: 'Personal',
+            },
+            {
+              type: 'Organizational',
+            },
+          ],
+        },
       };
 
       serialized_record = serializer.serializeContributors(record);
 
-      expect(serialized_record).toEqual({});
+      expect(serialized_record).toEqual({ metadata: {} });
 
       // if identifiers is absent, leave absent
       record = {
-        contributors: [
-          { name: "Alice" }
-        ],
+        contributors: [{ name: 'Alice' }],
       };
 
       serialized_record = serializer.serializeContributors(record);
@@ -177,11 +180,11 @@ describe('Record serializer', () => {
   describe('deserialize', () => {
     const serializer = new DepositRecordSerializer();
     const record = {
-      foo: "bar"
-    }
+      foo: 'bar',
+    };
 
     const deserializedRecord = serializer.deserialize(record);
 
     expect(deserializedRecord).toEqual(record);
   });
-})
+});
