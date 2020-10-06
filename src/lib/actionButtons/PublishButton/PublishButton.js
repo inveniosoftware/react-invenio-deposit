@@ -18,8 +18,15 @@ export default class PublishButton extends Component {
     this.setState({ confirmOpen: false });
   };
 
+  draftAlreadyCreated = (record) => (record.id || record.pid ? true : false);
+
   isDisabled = (formik) => {
-    return this.props.fileUploadOngoing || formik.isSubmitting;
+    const record = formik.values;
+    return (
+      !this.draftAlreadyCreated(record) ||
+      this.props.fileUploadOngoing ||
+      formik.isSubmitting
+    );
   };
 
   confirmPublish = () => this.setState({ confirmOpen: true });

@@ -41,10 +41,10 @@ export class DepositController {
     return response.data;
   }
 
-  async saveDraft(record, { formik, store }) {
+  async saveDraft(draft, { formik, store }) {
     // Saves a draft of the record
     const recordSerializer = store.config.recordSerializer;
-    let payload = recordSerializer.serialize(record);
+    let payload = recordSerializer.serialize(draft);
     this.validate(payload);
     try {
       if (!this.draftAlreadyCreated(payload)) {
@@ -57,7 +57,7 @@ export class DepositController {
       });
       formik.setSubmitting(false);
     } catch (error) {
-      store.dispatch(setFormErrorsFromResponse(error, formik));
+      store.dispatch(setFormErrors(error, formik, draft));
     }
   }
 
@@ -79,7 +79,7 @@ export class DepositController {
       const recordURL = response.data.links.self_html;
       window.location.replace(recordURL);
     } catch (error) {
-      store.dispatch(setFormErrors(error, formik, record));
+      store.dispatch(setFormErrors(error, formik, draft));
     }
   }
 
