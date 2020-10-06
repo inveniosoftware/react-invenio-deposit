@@ -25,11 +25,8 @@ export class DepositApiClient {
     // Calls the API to save a pre-existing record.
     // If the record does not exist, an error is returned.
     // TODO: Integrate with backend API
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        console.log('Record saved', record);
-        resolve({ data: record });
-      }, 500);
+    return axios.put(record.links.self, record, {
+      headers: { 'Content-Type': 'application/json' },
     });
   }
 
