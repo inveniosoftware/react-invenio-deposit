@@ -57,7 +57,7 @@ export class DepositController {
       });
       formik.setSubmitting(false);
     } catch (error) {
-      store.dispatch(setFormErrorsFromResponse(error, formik));
+      store.dispatch(setFormErrors(error, formik));
     }
   }
 
@@ -79,7 +79,7 @@ export class DepositController {
       const recordURL = response.data.links.self_html;
       window.location.replace(recordURL);
     } catch (error) {
-      store.dispatch(setFormErrors(error, formik, record));
+      store.dispatch(setFormErrors(error, formik, draft));
     }
   }
 
