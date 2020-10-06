@@ -24,7 +24,7 @@ export default class SaveButton extends Component {
     return (
       <ActionButton
         // TODO: use `isDisabled`
-        isDisabled={() => true}
+        isDisabled={this.isDisabled}
         name="save"
         onClick={this.onSaveClick}
         positive

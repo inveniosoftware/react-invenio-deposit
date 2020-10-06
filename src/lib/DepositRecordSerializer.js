@@ -217,7 +217,6 @@ export class DepositRecordSerializer {
           type: 'Abstract',
         },
       ],
-      publication_date: defaultPublicationDate,
     };
     let metadata = {
       metadata: { ...record['metadata'], ...descriptions },
