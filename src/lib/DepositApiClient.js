@@ -25,7 +25,8 @@ export class DepositApiClient {
     // Calls the API to save a pre-existing record.
     // If the record does not exist, an error is returned.
     // TODO: Integrate with backend API
-    return axios.post(`${this.createUrl}/${record.id}/draft`, record, {
+    console.log(record.links.self)
+    return axios.post(record.links.self, record, {
       headers: { 'Content-Type': 'application/json' },
     });
   }
@@ -39,10 +40,9 @@ export class DepositApiClient {
     // For now publish returns an error when titles array is empty
     // This has the shape of what our current API returns when there are errors
     // in the API call
+    console.log(record.links.publish)
     return axios.post(
-      record.links.publish,
-      {},
-      {
+      record.links.publish, {}, {
         headers: { 'Content-Type': 'application/json' },
       }
     );
