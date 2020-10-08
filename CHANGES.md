@@ -1,5 +1,10 @@
 # Changes
 
+Version 0.7.0 (released 2020-10-07)
+
+* save and publish draft
+* display errors
+
 Version 0.6.0 (released 2020-09-04)
 
 * Use link from config and publish link from API response
