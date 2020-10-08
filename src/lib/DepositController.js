@@ -48,7 +48,7 @@ export class DepositController {
     this.validate(payload);
     try {
       if (!this.draftAlreadyCreated(payload)) {
-        payload = this.createDraft(payload, { store });
+        payload = await this.createDraft(payload, { store });
       }
       const response = await this.apiClient.save(payload);
       store.dispatch({
@@ -68,7 +68,7 @@ export class DepositController {
     this.validate(payload);
     try {
       if (!this.draftAlreadyCreated(payload)) {
-        payload = this.createDraft(payload, { store });
+        payload = await this.createDraft(payload, { store });
       }
       const response = await this.apiClient.publish(payload);
       store.dispatch({
