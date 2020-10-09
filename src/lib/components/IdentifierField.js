@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 
 import { SelectField, TextField } from 'react-invenio-forms';
 
-
 /**Identifier input component */
 export class IdentifierField extends Component {
   render() {
@@ -22,6 +21,7 @@ export class IdentifierField extends Component {
           fieldPath={schemeFieldPath}
           label={'Scheme'}
           options={schemeOptions}
+          clearable
         />
         <TextField fieldPath={identifierFieldPath} label="Identifier" />
       </>
