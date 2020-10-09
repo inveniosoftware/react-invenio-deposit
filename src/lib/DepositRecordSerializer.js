@@ -66,7 +66,11 @@ export class DepositRecordSerializer {
       return _isEmpty(identifiers) ? creator : { ...creator, identifiers };
     });
 
-    return _isEmpty(creators) ? record : { ...record, creators };
+    return (
+      _isEmpty(creators)
+      ? record
+      : { ...record, metadata: {...record.metadata, creators } }
+    );
   }
 
   /**
@@ -108,7 +112,7 @@ export class DepositRecordSerializer {
         return record;
       } else {
         // Yes and we simply restructured the identifiers
-        return { ...record, contributors };
+        return { ...record, metadata: {...record.metadata, contributors }};
       }
     } else {
       return record;
@@ -134,7 +138,6 @@ export class DepositRecordSerializer {
     // TODO: Remove when fields are implemented
     serializedRecord = this.fillAccess(serializedRecord);
     serializedRecord = this.fillPublicationDate(serializedRecord);
-    serializedRecord = this.fillIdentifiers(serializedRecord);
     serializedRecord = this.fillDescriptions(serializedRecord);
 
     return serializedRecord;
@@ -170,21 +173,6 @@ export class DepositRecordSerializer {
       record.metadata.publication_date ||
       todayStr.slice(0, todayStr.indexOf('T'));
     let metadata = { ...record['metadata'], publication_date };
-    return { ...record, metadata };
-  }
-
-  /**
-   * Temporarily fill identifiers field until frontend does it.
-   * @method
-   * @param {object} record - in frontend format
-   * @returns {object} record - in API format
-   */
-  fillIdentifiers(record) {
-    let identifiers = {
-      DOI: '10.9999/rdm.9999999',
-    };
-    let metadata = { ...record['metadata'], identifiers };
-
     return { ...record, metadata };
   }
 

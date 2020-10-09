@@ -30,7 +30,7 @@ export class AccessRightField extends Component {
             <Form.Field required>
               <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
               {options.map((option) => (
-                <Field>
+                <Field key={option.value}>
                   {({ field }) => {
                     return (
                       <RadioField
