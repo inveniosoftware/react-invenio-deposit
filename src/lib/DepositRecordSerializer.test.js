@@ -46,12 +46,12 @@ describe('Record serializer', () => {
       };
 
       const serialized_record = serializer.serializeCreators(record);
-
-      expect(serialized_record.creators[0].identifiers).toEqual({
+      console.log(serialized_record);
+      expect(serialized_record.metadata.creators[0].identifiers).toEqual({
         Orcid: '0000-0002-1825-0097',
         foo: 'bar',
       });
-      expect(serialized_record.creators[1].identifiers).toEqual({
+      expect(serialized_record.metadata.creators[1].identifiers).toEqual({
         ror: '03yrm5c26',
         baz: 'zed',
       });
@@ -74,7 +74,7 @@ describe('Record serializer', () => {
 
       const serialized_record = serializer.serializeCreators(record);
 
-      expect(serialized_record.creators[0].identifiers).toEqual({
+      expect(serialized_record.metadata.creators[0].identifiers).toEqual({
         Orcid: '0000-0002-1825-0098',
       });
     });
@@ -104,11 +104,11 @@ describe('Record serializer', () => {
 
       const serialized_record = serializer.serializeContributors(record);
 
-      expect(serialized_record.contributors[0].identifiers).toEqual({
+      expect(serialized_record.metadata.contributors[0].identifiers).toEqual({
         Orcid: '0000-0002-1825-0097',
         foo: 'bar',
       });
-      expect(serialized_record.contributors[1].identifiers).toEqual({
+      expect(serialized_record.metadata.contributors[1].identifiers).toEqual({
         ror: '03yrm5c26',
         baz: 'zed',
       });
@@ -131,7 +131,7 @@ describe('Record serializer', () => {
 
       const serialized_record = serializer.serializeContributors(record);
 
-      expect(serialized_record.contributors[0].identifiers).toEqual({
+      expect(serialized_record.metadata.contributors[0].identifiers).toEqual({
         Orcid: '0000-0002-1825-0098',
       });
     });
