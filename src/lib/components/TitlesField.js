@@ -11,65 +11,57 @@ import { Form, Button, Icon } from 'semantic-ui-react';
 
 import {
   ArrayField,
+  FieldLabel,
   GroupField,
   SelectField,
   TextField,
 } from 'react-invenio-forms';
 
-/**
- * Renders a `titles` field with a schema of
- *  titles: [
- *      {
- *          'title': <string>,
- *          'type': <string>,
- *          'lang': <string>
- *      }
- *  ]
- */
+
 export class TitlesField extends Component {
   render() {
     const {
-      fieldPath,
-      label,
-      labelIcon,
-      languageSegment,
       options,
-      titleSegment,
-      typeSegment,
     } = this.props;
+
     const defaultNewValue = {
-      [languageSegment]: '',
-      [titleSegment]: '',
-      [typeSegment]: 'MainTitle',
+      'lang': '',
+      'title': '',
+      'type': 'alternativetitle',
     };
+
     return (
-      <ArrayField
-        addButtonLabel={'Add another title'}
-        defaultNewValue={defaultNewValue}
-        fieldPath={fieldPath}
-        label={label}
-        labelIcon={labelIcon}
-        required
-      >
-        {({ array, arrayHelpers, indexPath, key }) => (
-          <GroupField widths="equal" fieldPath={fieldPath}>
-            <TextField
-              fieldPath={`${key}.${titleSegment}`}
-              label={'Title'}
-              required
-            />
-            <SelectField
-              fieldPath={`${key}.${typeSegment}`}
-              label={'Type'}
-              options={options.type}
-            />
-            <SelectField
-              fieldPath={`${key}.${languageSegment}`}
-              label={'Language'}
-              options={options.lang}
-              clearable
-            />
-            {array.length > 1 && (
+      <>
+        <TextField
+          fieldPath={'metadata.title'}
+          label={
+            <FieldLabel htmlFor={'metadata.title'} icon={'book'} label={'Title'} />
+          }
+          required
+        />
+        <ArrayField
+          addButtonLabel={'Add titles'}
+          defaultNewValue={defaultNewValue}
+          fieldPath={'metadata.additional_titles'}
+        >
+          {({ array, arrayHelpers, indexPath, key }) => (
+            <GroupField widths="equal" fieldPath={'metadata.additional_titles'}>
+              <TextField
+                fieldPath={`${key}.title`}
+                label={'Additional Title'}
+                required
+              />
+              <SelectField
+                fieldPath={`${key}.type`}
+                label={'Type'}
+                options={options.type}
+              />
+              <SelectField
+                fieldPath={`${key}.lang`}
+                label={'Language'}
+                options={options.lang}
+                clearable
+              />
               <Form.Field>
                 <Form.Field>
                   <label>&nbsp;</label>
@@ -82,18 +74,15 @@ export class TitlesField extends Component {
                   </Button>
                 </Form.Field>
               </Form.Field>
-            )}
-          </GroupField>
-        )}
-      </ArrayField>
+            </GroupField>
+          )}
+        </ArrayField>
+      </>
     );
   }
 }
 
 TitlesField.propTypes = {
-  fieldPath: PropTypes.string.isRequired,
-  label: PropTypes.string,
-  labelIcon: PropTypes.string,
   options: PropTypes.shape({
     type: PropTypes.arrayOf(
       PropTypes.shape({
@@ -103,15 +92,4 @@ TitlesField.propTypes = {
       })
     ),
   }),
-  languageSegment: PropTypes.string.isRequired,
-  titleSegment: PropTypes.string.isRequired,
-  typeSegment: PropTypes.string.isRequired,
 };
-
-TitlesField.defaultProps = {
-  languageSegment: 'lang',
-  titleSegment: 'title',
-  typeSegment: 'type',
-};
-
-// TODO: Pass options to TitlesField
