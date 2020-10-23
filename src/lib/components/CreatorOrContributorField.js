@@ -74,7 +74,7 @@ const _CreatorOrContributorField = ({ field, form, ...props }) => {
     form.setFieldValue(nameFieldPath, `${givenName} ${familyName}`);
   };
 
-  const isPerson = getIn(form.values, typeFieldPath, null) === 'Personal'
+  const isPerson = getIn(form.values, typeFieldPath, null) === 'personal'
 
   return (
     // TODO: pass labels as props
@@ -150,7 +150,7 @@ const _CreatorOrContributorField = ({ field, form, ...props }) => {
               schemeFieldPath={`${key}.${identifiersSchemeSegment}`}
               schemeOptions={
                 isPerson
-                  ? [{ text: 'ORCiD', value: 'Orcid' }]
+                  ? [{ text: 'ORCiD', value: 'orcid' }]
                   : [{ text: 'ROR', value: 'ror' }]
               }
             />
