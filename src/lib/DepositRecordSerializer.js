@@ -151,10 +151,9 @@ export class DepositRecordSerializer {
    */
   fillAccess(record) {
     let access = {
-      metadata_restricted: false,
-      files_restricted: false,
-      owners: [1],
-      created_by: 1,
+      files: false,
+      metadata: false,
+      owned_by: [1],
       access_right: _get(record, 'access.access_right', ''),
     };
 
