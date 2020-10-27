@@ -7,17 +7,130 @@
 
 import _get from 'lodash/get';
 import _isNumber from 'lodash/isNumber';
+import _isBoolean from 'lodash/isBoolean';
 import _isEmpty from 'lodash/isEmpty';
 import _isEqual from 'lodash/isEqual';
 import _isObject from 'lodash/isObject';
 import _isArray from 'lodash/isArray';
 import _isNull from 'lodash/isNull';
 import _pickBy from 'lodash/pickBy';
+import _pick from 'lodash/pick';
 import _mapValues from 'lodash/mapValues';
+import { emptyCreator, emptyContributor } from './record';
+import isEmpty from 'lodash/isEmpty';
 
 export class DepositRecordSerializer {
+  defaultRecord = {
+    metadata: {
+      title: '',
+      creators: [emptyCreator],
+      contributors: [emptyContributor],
+      resource_type: '',
+    },
+    access: {
+      metadata: false,
+      files: false,
+      owned_by: [1],
+      access_right: 'open',
+    },
+  };
+
+  deserializeIdentifiers(obj) {
+    const in_identifiers = obj.identifiers || {};
+    const identifiers = Object.keys(in_identifiers).map((identifier) => {
+      return {
+        scheme: identifier,
+        identifier: in_identifiers[identifier],
+      };
+    });
+    return _isEmpty(identifiers) ? obj : { ...obj, identifiers };
+  }
+
+  deserializeAffiliations(affiliations) {
+    return affiliations.map((affiliation) => {
+      affiliation = this.deserializeIdentifiers(affiliation);
+      return affiliation;
+    });
+  }
+
+  deserializeCreators(record) {
+    let in_creators = _get(
+      record,
+      'metadata.creators',
+      this.defaultRecord.metadata.creators
+    );
+    const creators = in_creators.map((creator) => {
+      creator = this.deserializeIdentifiers(creator);
+      const affiliations = this.deserializeAffiliations(
+        creator.affiliations || []
+      );
+      if (!isEmpty(affiliations)) {
+        creator.affiliations = affiliations;
+      }
+      return creator;
+    });
+
+    return creators;
+  }
+
+  deserializeContributors(record) {
+    let in_contributors = _get(
+      record,
+      'metadata.contributors',
+      this.defaultRecord.metadata.contributors
+    );
+    const contributors = in_contributors.map((contributor) => {
+      contributor = this.deserializeIdentifiers(contributor);
+      const affiliations = this.deserializeAffiliations(
+        contributor.affiliations || []
+      );
+      if (!isEmpty(affiliations)) {
+        contributor.affiliations = affiliations;
+      }
+      return contributor;
+    });
+
+    return contributors;
+  }
+
   deserialize(record) {
-    return record;
+    // Remove empty null values from record. This happens when we create a new
+    // draft and the backend produces an empty record filled in with null values,
+    // array of null values etc.
+    let strippedRecord = this.removeEmptyValues(record);
+    strippedRecord = _pick(strippedRecord, [
+      'access',
+      'metadata',
+      'id',
+      'links',
+    ]);
+    let title = _get(
+      strippedRecord,
+      'metadata.title',
+      this.defaultRecord.metadata.title
+    );
+    let creators = this.deserializeCreators(strippedRecord);
+    let contributors = this.deserializeContributors(strippedRecord);
+    let resource_type = _get(
+      strippedRecord,
+      'metadata.resource_type',
+      this.defaultRecord.metadata.resource_type
+    );
+
+    let access = _get(strippedRecord, 'access', this.defaultRecord.access);
+    let metadata = {
+      ...strippedRecord.metadata,
+      title,
+      creators,
+      contributors,
+      resource_type,
+    };
+
+    return {
+      ...strippedRecord,
+      access,
+      metadata,
+    };
   }
 
   /**
@@ -29,7 +142,12 @@ export class DepositRecordSerializer {
   removeEmptyValues(obj) {
     if (_isArray(obj)) {
       let mappedValues = obj.map((value) => this.removeEmptyValues(value));
-      let filterValues = mappedValues.filter((value) => !_isEmpty(value));
+      let filterValues = mappedValues.filter((value) => {
+        if (_isBoolean(value) || _isNumber(value)) {
+          return value;
+        }
+        return !_isEmpty(value);
+      });
       return filterValues;
     } else if (_isObject(obj)) {
       let mappedValues = _mapValues(obj, (value) =>
@@ -43,9 +161,24 @@ export class DepositRecordSerializer {
       });
       return pickedValues;
     }
-    return _isNumber(obj) || obj ? obj : null;
+    return _isNumber(obj) || _isBoolean(obj) || obj ? obj : null;
   }
 
+  serializeIdentifiers(obj) {
+    const in_identifiers = obj.identifiers || [];
+    let identifiers = in_identifiers.reduce((acc, identifier) => {
+      acc[identifier.scheme] = identifier.identifier;
+      return acc;
+    }, {});
+    return _isEmpty(identifiers) ? obj : { ...obj, identifiers };
+  }
+
+  serializeAffiliations(affiliations) {
+    return affiliations.map((affiliation) => {
+      affiliation = this.serializeIdentifiers(affiliation);
+      return affiliation;
+    });
+  }
   /**
    * Transform frontend creators structure to API-compatible structure.
    *
@@ -58,19 +191,19 @@ export class DepositRecordSerializer {
   serializeCreators(record) {
     const in_creators = _get(record, 'metadata.creators', []);
     const creators = in_creators.map((creator) => {
-      const in_identifiers = creator.identifiers || [];
-      const identifiers = in_identifiers.reduce((acc, identifier) => {
-        acc[identifier.scheme] = identifier.identifier;
-        return acc;
-      }, {});
-      return _isEmpty(identifiers) ? creator : { ...creator, identifiers };
+      creator = this.serializeIdentifiers(creator);
+      const affiliations = this.serializeAffiliations(
+        creator.affiliations || []
+      );
+      if (!isEmpty(affiliations)) {
+        creator.affiliations = affiliations;
+      }
+      return creator;
     });
 
-    return (
-      _isEmpty(creators)
+    return _isEmpty(creators)
       ? record
-      : { ...record, metadata: {...record.metadata, creators } }
-    );
+      : { ...record, metadata: { ...record.metadata, creators } };
   }
 
   /**
@@ -94,14 +227,14 @@ export class DepositRecordSerializer {
 
     // Restructure identifiers
     contributors = contributors.map((contributor) => {
-      const in_identifiers = contributor.identifiers || [];
-      const identifiers = in_identifiers.reduce((acc, identifier) => {
-        acc[identifier.scheme] = identifier.identifier;
-        return acc;
-      }, {});
-      return _isEmpty(identifiers)
-        ? contributor
-        : { ...contributor, identifiers };
+      contributor = this.serializeIdentifiers(contributor);
+      const affiliations = this.serializeAffiliations(
+        contributor.affiliations || []
+      );
+      if (!isEmpty(affiliations)) {
+        contributor.affiliations = affiliations;
+      }
+      return contributor;
     });
 
     // Did we filter out / change contributors?
@@ -112,52 +245,11 @@ export class DepositRecordSerializer {
         return record;
       } else {
         // Yes and we simply restructured the identifiers
-        return { ...record, metadata: {...record.metadata, contributors }};
+        return { ...record, metadata: { ...record.metadata, contributors } };
       }
     } else {
       return record;
     }
-  }
-
-  /**
-   * Serialize record to send to the backend.
-   * @method
-   * @param {object} record - in frontend format
-   * @returns {object} record - in API format
-   *
-   * NOTE: We use a simple "manual" approach for now. If things get more
-   *       complicated, we can create a serialization schema with Yup.
-   */
-  serialize(record) {
-    let strippedRecord = this.removeEmptyValues(record);
-    let serializedRecord = this.serializeCreators(strippedRecord);
-    serializedRecord = this.serializeContributors(serializedRecord);
-
-    // Temporary injection of fields not covered by frontend but needed by
-    // backend. As the fields get covered by frontend, remove them from here.
-    // TODO: Remove when fields are implemented
-    serializedRecord = this.fillAccess(serializedRecord);
-    serializedRecord = this.fillPublicationDate(serializedRecord);
-    serializedRecord = this.fillDescriptions(serializedRecord);
-
-    return serializedRecord;
-  }
-
-  /**
-   * Temporarily fill access field until frontend does it.
-   * @method
-   * @param {object} record - in frontend format
-   * @returns {object} record - in API format
-   */
-  fillAccess(record) {
-    let access = {
-      files: false,
-      metadata: false,
-      owned_by: [1],
-      access_right: _get(record, 'access.access_right', ''),
-    };
-
-    return { ...record, access };
   }
 
   /**
@@ -192,5 +284,28 @@ export class DepositRecordSerializer {
     let metadata = { ...record['metadata'], descriptions };
 
     return { ...record, metadata };
+  }
+
+  /**
+   * Serialize record to send to the backend.
+   * @method
+   * @param {object} record - in frontend format
+   * @returns {object} record - in API format
+   *
+   * NOTE: We use a simple "manual" approach for now. If things get more
+   *       complicated, we can create a serialization schema with Yup.
+   */
+  serialize(record) {
+    let strippedRecord = this.removeEmptyValues(record);
+    let serializedRecord = this.serializeCreators(strippedRecord);
+    serializedRecord = this.serializeContributors(serializedRecord);
+
+    // Temporary injection of fields not covered by frontend but needed by
+    // backend. As the fields get covered by frontend, remove them from here.
+    // TODO: Remove when fields are implemented
+    serializedRecord = this.fillPublicationDate(serializedRecord);
+    serializedRecord = this.fillDescriptions(serializedRecord);
+
+    return serializedRecord;
   }
 }

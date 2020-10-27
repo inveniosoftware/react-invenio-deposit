@@ -13,7 +13,6 @@ import _get from 'lodash/get';
 import { FieldLabel, GroupField, SelectField } from 'react-invenio-forms';
 
 export class ResourceTypeField extends Component {
-
   groupErrors = (errors) => {
     for (const field in errors) {
       if (field.startsWith(this.props.fieldPath)) {
@@ -56,7 +55,7 @@ export class ResourceTypeField extends Component {
           required
         />
         {subtypeOptions.length > 0 && (
-      		<SelectField
+          <SelectField
             fieldPath={subtypeFieldPath}
             label={
               <FieldLabel
@@ -111,4 +110,5 @@ ResourceTypeField.propTypes = {
 ResourceTypeField.defaultProps = {
   label: 'Resource type',
   subtypeLabel: 'Resource Subtype',
+  fieldPath: 'metadata.resource_type',
 };

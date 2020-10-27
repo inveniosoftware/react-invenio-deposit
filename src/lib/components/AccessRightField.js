@@ -61,3 +61,7 @@ AccessRightField.propTypes = {
   labelIcon: PropTypes.string,
   options: PropTypes.array,
 };
+
+AccessRightField.defaultProps = {
+  fieldPath: 'access.access_right',
+};

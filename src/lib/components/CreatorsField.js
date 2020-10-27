@@ -4,66 +4,46 @@
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Grid } from 'semantic-ui-react';
+import { ArrayField, SelectField, TextField } from 'react-invenio-forms';
 
-import { ArrayField } from 'react-invenio-forms';
-import { CreatorOrContributorField } from './CreatorOrContributorField';
+import { emptyCreator } from '../record';
+
+import { IdentifiersField } from './IdentifiersField';
+import { AffiliationsField } from './AffiliationsField';
 
 export class CreatorsField extends Component {
   /** Top-level Creators Component */
 
   render() {
-    const { fieldPath, label, labelIcon, ...itemProps } = this.props;
-
-    const {
-      familyNameSegment,
-      givenNameSegment,
-      nameSegment,
-      affiliationsSegment,
-      affiliationsIdentifierSegment,
-      affiliationsNameSegment,
-      affiliationsSchemeSegment,
-      identifiersSegment,
-      identifiersIdentifierSegment,
-      identifiersSchemeSegment,
-      typeSegment,
-    } = itemProps;
-
-    const defaultNewValue = {
-      [affiliationsSegment]: [
-        {
-          [affiliationsIdentifierSegment]: '',
-          [affiliationsNameSegment]: '',
-          [affiliationsSchemeSegment]: '',
-        },
-      ],
-      [familyNameSegment]: '',
-      [givenNameSegment]: '',
-      [identifiersSegment]: [
-        {
-          [identifiersIdentifierSegment]: '',
-          [identifiersSchemeSegment]: '',
-        },
-      ],
-      [nameSegment]: '',
-      [typeSegment]: 'Personal',
-    };
+    const { fieldPath, options, label, labelIcon } = this.props;
 
     return (
-      // TODO: Replace by arrayProps
       <ArrayField
         addButtonLabel={'Add creator'} // TODO: Pass by prop
-        defaultNewValue={defaultNewValue}
+        defaultNewValue={emptyCreator}
         fieldPath={fieldPath}
         label={label}
         labelIcon={labelIcon}
         required
       >
-        {({ array, arrayHelpers, indexPath, key }) => (
+        {({ array, arrayHelpers, indexPath, key, form }) => (
           <>
-            <CreatorOrContributorField fieldPath={key} {...itemProps} />
+            <TextField fieldPath={`${key}.name`} label={'Name'} required />
+            <SelectField
+              fieldPath={`${key}.type`}
+              label={'Type'}
+              options={options.type}
+              placeholder="Select type of creator"
+            />
+            <TextField fieldPath={`${key}.family_name`} label={'Family Name'} />
+            <TextField fieldPath={`${key}.given_name`} label={'Given Name'} />
+
+            <IdentifiersField fieldPath={`${key}.identifiers`} />
+            <AffiliationsField fieldPath={`${key}.affiliations`} />
             <Grid>
               <Grid.Column></Grid.Column>
               <Grid.Column floated="right">
@@ -86,7 +66,6 @@ export class CreatorsField extends Component {
 }
 
 CreatorsField.propTypes = {
-  fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   labelIcon: PropTypes.string,
   options: PropTypes.shape({
@@ -103,16 +82,8 @@ CreatorsField.propTypes = {
       })
     ),
   }),
+};
 
-  // **EXPERIMENTAL**
-  // NOTE: We decouple the name of the fields with their functionality.
-  // This allows a different data model to re-use this component, as long
-  // as it passes the name of its fields that correspond to this functionality.
-  typeSegment: PropTypes.string.isRequired,
-  familyNameSegment: PropTypes.string.isRequired,
-  givenNameSegment: PropTypes.string.isRequired,
-  nameSegment: PropTypes.string.isRequired,
-  identifiersSegment: PropTypes.string.isRequired,
-  affiliationsSegment: PropTypes.string.isRequired,
-  // TODO: pass labels as props
+CreatorsField.defaultProps = {
+  fieldPath: 'metadata.creators',
 };
