@@ -22,7 +22,7 @@ export class DepositController {
   }
 
   draftAlreadyCreated(record) {
-    return record.id || record.pid ? true : false;
+    return record.id ? true : false;
   }
 
   validate(record) {
@@ -53,7 +53,7 @@ export class DepositController {
       const response = await this.apiClient.save(payload);
       store.dispatch({
         type: SAVE_SUCCESS,
-        payload: response,
+        payload: { data: recordSerializer.deserialize(response.data) },
       });
       formik.setSubmitting(false);
     } catch (error) {
@@ -73,7 +73,7 @@ export class DepositController {
       const response = await this.apiClient.publish(payload);
       store.dispatch({
         type: PUBLISH_SUCCESS,
-        payload: response,
+        payload: { data: recordSerializer.deserialize(response.data) },
       });
       formik.setSubmitting(false);
       const recordURL = response.data.links.self_html;

@@ -46,7 +46,6 @@ describe('Record serializer', () => {
       };
 
       const serialized_record = serializer.serializeCreators(record);
-      console.log(serialized_record);
       expect(serialized_record.metadata.creators[0].identifiers).toEqual({
         Orcid: '0000-0002-1825-0097',
         foo: 'bar',
