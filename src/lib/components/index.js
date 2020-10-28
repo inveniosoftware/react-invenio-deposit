@@ -14,3 +14,4 @@ export { ResourceTypeField } from './ResourceTypeField';
 export { TitlesField } from './TitlesField';
 export { AdditionalTitlesField } from './AdditionalTitlesField';
 export { FileUploader } from './FileUploader';
+export { DescriptionsField } from './DescriptionsField';

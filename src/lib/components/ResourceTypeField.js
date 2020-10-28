@@ -7,7 +7,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getIn, Field } from 'formik';
+import { Field } from 'formik';
 import _get from 'lodash/get';
 
 import { FieldLabel, GroupField, SelectField } from 'react-invenio-forms';
@@ -26,7 +26,7 @@ export class ResourceTypeField extends Component {
     const typeFieldPath = `${this.props.fieldPath}.type`;
     const subtypeFieldPath = `${this.props.fieldPath}.subtype`;
 
-    const resource_type = getIn(formikBag.form.values, typeFieldPath, '');
+    const resource_type = _get(formikBag.form.values, typeFieldPath, '');
 
     const handleChange = (event, selectedOption) => {
       formikBag.form.setFieldValue(typeFieldPath, selectedOption.value);

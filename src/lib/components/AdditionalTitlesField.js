@@ -46,7 +46,7 @@ export class AdditionalTitlesField extends Component {
               clearable
             />
             <>
-              <Button icon>
+              <Button icon type="button">
                 <Icon
                   name="close"
                   onClick={() => arrayHelpers.remove(indexPath)}

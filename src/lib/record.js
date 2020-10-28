@@ -18,6 +18,12 @@ export const emptyAdditionalTitle = {
   type: 'alternativetitle',
 };
 
+export const emptyAdditionalDescription = {
+  lang: '',
+  description: '',
+  type: '',
+};
+
 export const emptyIdentifier = {
   scheme: '',
   identifier: '',
