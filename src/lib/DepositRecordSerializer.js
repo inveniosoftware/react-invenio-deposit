@@ -16,7 +16,7 @@ import _pick from 'lodash/pick';
 import _mapValues from 'lodash/mapValues';
 import { emptyCreator, emptyContributor } from './record';
 import {
-  FieldSerializer,
+  Field,
   ContributorsSerializer,
   CreatorsSerializer,
 } from './serializers';
@@ -28,6 +28,7 @@ export class DepositRecordSerializer {
       creators: [emptyCreator],
       contributors: [emptyContributor],
       resource_type: '',
+      publication_date: '',
     },
     access: {
       metadata: false,
@@ -38,11 +39,12 @@ export class DepositRecordSerializer {
   };
 
   depositRecordSchema = {
-    title: new FieldSerializer('metadata.title'),
+    title: new Field('metadata.title'),
     creators: new CreatorsSerializer('metadata.creators'),
     contributors: new ContributorsSerializer('metadata.contributors'),
-    resource_type: new FieldSerializer('metadata.resource_type'),
-    access: new FieldSerializer('access'),
+    resource_type: new Field('metadata.resource_type'),
+    access: new Field('access'),
+    publication_date: new Field('metadata.publication_date'),
   };
 
   /**
@@ -88,6 +90,7 @@ export class DepositRecordSerializer {
       'links',
     ]);
 
+    // TODO: abstract when we integrate defaults into Fields
     deserializedRecord = this.depositRecordSchema.title.deserialize(
       deserializedRecord,
       this.defaultRecord.metadata.title
@@ -108,21 +111,30 @@ export class DepositRecordSerializer {
       deserializedRecord,
       this.defaultRecord.access
     );
+    deserializedRecord = this.depositRecordSchema.publication_date.deserialize(
+      deserializedRecord,
+      this.defaultRecord.metadata.publication_date
+    );
+
     return deserializedRecord;
   }
 
   /**
-   * Temporarily fill publication date field until frontend does it.
+   * Temporarily fill descriptions field until frontend does it.
    * @method
    * @param {object} record - in frontend format
    * @returns {object} record - in API format
    */
-  fillPublicationDate(record) {
-    var todayStr = new Date().toISOString();
-    let publication_date = // Using backend naming convention
-      record.metadata.publication_date ||
-      todayStr.slice(0, todayStr.indexOf('T'));
-    let metadata = { ...record['metadata'], publication_date };
+  fillDescriptions(record) {
+    let descriptions = [
+      {
+        description: 'Just a filler description.',
+        lang: 'eng',
+        type: 'Abstract',
+      },
+    ];
+    let metadata = { ...record['metadata'], descriptions };
+
     return { ...record, metadata };
   }
 
@@ -132,11 +144,10 @@ export class DepositRecordSerializer {
    * @param {object} record - in frontend format
    * @returns {object} record - in API format
    *
-   * NOTE: We use a simple "manual" approach for now. If things get more
-   *       complicated, we can create a serialization schema with Yup.
    */
   serialize(record) {
     let serializedRecord = this.removeEmptyValues(record);
+    // TODO: abstract as soon as we get another field with custom serialization
     serializedRecord = this.depositRecordSchema.creators.serialize(
       serializedRecord,
       []
@@ -148,7 +159,7 @@ export class DepositRecordSerializer {
     // Temporary injection of fields not covered by frontend but needed by
     // backend. As the fields get covered by frontend, remove them from here.
     // TODO: Remove when fields are implemented
-    serializedRecord = this.fillPublicationDate(serializedRecord);
+    serializedRecord = this.fillDescriptions(serializedRecord);
     return serializedRecord;
   }
 }

@@ -8,9 +8,9 @@
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import _isEqual from 'lodash/isEqual';
-import { FieldSerializer } from './FieldSerializer';
+import { Field } from './Field';
 
-class CreatorsOrContributorsSerializer extends FieldSerializer {
+class CreatorsOrContributorsSerializer extends Field {
   deserializeIdentifiers(obj) {
     const in_identifiers = obj.identifiers || {};
     const identifiers = Object.keys(in_identifiers).map((identifier) => {
@@ -76,7 +76,7 @@ class CreatorsOrContributorsSerializer extends FieldSerializer {
 
 export class CreatorsSerializer extends CreatorsOrContributorsSerializer {
   deserialize(record, defaultValue) {
-    let creators = _get(record, this.field, defaultValue);
+    let creators = _get(record, this.fieldpath, defaultValue);
     creators = this.deserializeCreatorsOrContributors(creators);
     return { ...record, metadata: { ...record.metadata, creators } };
   }
@@ -91,7 +91,7 @@ export class CreatorsSerializer extends CreatorsOrContributorsSerializer {
    * @returns {object} record - with creators in API format
    */
   serialize(record, defaultValue) {
-    let creators = _get(record, this.field, defaultValue);
+    let creators = _get(record, this.fieldpath, defaultValue);
     creators = this.serializeCreatorsOrContributors(creators);
     return _isEmpty(creators)
       ? record
@@ -101,7 +101,7 @@ export class CreatorsSerializer extends CreatorsOrContributorsSerializer {
 
 export class ContributorsSerializer extends CreatorsOrContributorsSerializer {
   deserialize(record, defaultValue) {
-    let contributors = _get(record, this.field, defaultValue);
+    let contributors = _get(record, this.fieldpath, defaultValue);
     contributors = this.deserializeCreatorsOrContributors(contributors);
     return { ...record, metadata: { ...record.metadata, contributors } };
   }
@@ -114,7 +114,7 @@ export class ContributorsSerializer extends CreatorsOrContributorsSerializer {
    * @returns {object} record - with contributors in API format
    */
   serialize(record, defaultValue) {
-    const recordContributors = _get(record, this.field, defaultValue);
+    const recordContributors = _get(record, this.fieldpath, defaultValue);
     // Remove contributors with only a type
     // Note: we have to do this because type is filled by default, but
     // contributors is an optional field

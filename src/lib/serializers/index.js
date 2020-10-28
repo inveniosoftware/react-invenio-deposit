@@ -1,4 +1,4 @@
-export { FieldSerializer } from './FieldSerializer';
+export { Field } from './Field';
 export {
   ContributorsSerializer,
   CreatorsSerializer,
