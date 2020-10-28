@@ -7,14 +7,8 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getIn } from 'formik';
 
-import {
-  SelectField,
-  TextField,
-  GroupField,
-  ArrayField,
-} from 'react-invenio-forms';
+import { TextField, GroupField, ArrayField } from 'react-invenio-forms';
 import { Button, Form, Icon } from 'semantic-ui-react';
 
 import { emptyIdentifier } from '../record';

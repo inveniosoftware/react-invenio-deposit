@@ -7,7 +7,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Grid } from 'semantic-ui-react';
-import { getIn } from 'formik';
 import { ArrayField, SelectField, TextField } from 'react-invenio-forms';
 
 import { IdentifiersField } from './IdentifiersField';
@@ -87,4 +86,5 @@ ContributorsField.propTypes = {
 
 ContributorsField.defaultProps = {
   fieldPath: 'metadata.contributors',
+  label: 'Contributors',
 };

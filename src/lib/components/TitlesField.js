@@ -13,15 +13,13 @@ import { AdditionalTitlesField } from './AdditionalTitlesField';
 
 export class TitlesField extends Component {
   render() {
-    const { fieldPath, options } = this.props;
+    const { fieldPath, options, label } = this.props;
 
     return (
       <>
         <TextField
           fieldPath={fieldPath}
-          label={
-            <FieldLabel htmlFor={fieldPath} icon={'book'} label={'Title'} />
-          }
+          label={<FieldLabel htmlFor={fieldPath} icon={'book'} label={label} />}
           required
         />
         <AdditionalTitlesField options={options} />
@@ -32,6 +30,7 @@ export class TitlesField extends Component {
 
 TitlesField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
+  label: PropTypes.string,
   options: PropTypes.shape({
     type: PropTypes.arrayOf(
       PropTypes.shape({
@@ -51,4 +50,5 @@ TitlesField.propTypes = {
 
 TitlesField.defaultProps = {
   fieldPath: 'metadata.title',
+  label: 'Title',
 };
