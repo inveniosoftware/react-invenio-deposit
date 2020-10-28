@@ -6,12 +6,12 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 export { AccessRightField } from './AccessRightField';
+export { AdditionalTitlesField } from './AdditionalTitlesField';
 export { AffiliationsField } from './AffiliationsField';
 export { ContributorsField } from './ContributorsField';
 export { CreatorsField } from './CreatorsField';
+export { DescriptionsField } from './DescriptionsField';
 export { IdentifiersField } from './IdentifiersField';
+export { PublicationDateField } from './PublicationDateField';
 export { ResourceTypeField } from './ResourceTypeField';
 export { TitlesField } from './TitlesField';
-export { AdditionalTitlesField } from './AdditionalTitlesField';
-export { FileUploader } from './FileUploader';
-export { DescriptionsField } from './DescriptionsField';

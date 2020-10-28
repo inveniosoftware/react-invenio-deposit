@@ -29,16 +29,16 @@ export class DepositController {
     console.log('Validate record', record);
   }
 
-  async createDraft(draft, { store }) {
+  async createDraft(draft_payload, { store }) {
     const recordSerializer = store.config.recordSerializer;
-    const response = await this.apiClient.create(draft);
+    const response = await this.apiClient.create(draft_payload);
     store.dispatch({
       type: CREATE_DEPOSIT_SUCCESS,
       payload: { data: recordSerializer.deserialize(response.data) },
     });
     const draftURL = response.data.links.self_html;
     window.history.replaceState(undefined, '', draftURL);
-    return response.data;
+    return response;
   }
 
   async saveDraft(draft, { formik, store }) {
@@ -46,11 +46,13 @@ export class DepositController {
     const recordSerializer = store.config.recordSerializer;
     let payload = recordSerializer.serialize(draft);
     this.validate(payload);
+    let response = {};
     try {
       if (!this.draftAlreadyCreated(payload)) {
-        payload = await this.createDraft(payload, { store });
+        response = await this.createDraft(payload, { store });
+      } else {
+        response = await this.apiClient.save(payload);
       }
-      const response = await this.apiClient.save(payload);
       store.dispatch({
         type: SAVE_SUCCESS,
         payload: { data: recordSerializer.deserialize(response.data) },
@@ -68,7 +70,8 @@ export class DepositController {
     this.validate(payload);
     try {
       if (!this.draftAlreadyCreated(payload)) {
-        payload = await this.createDraft(payload, { store });
+        response = await this.createDraft(payload, { store });
+        payload = response.data;
       }
       const response = await this.apiClient.publish(payload);
       store.dispatch({
