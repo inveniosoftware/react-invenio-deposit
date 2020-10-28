@@ -120,25 +120,6 @@ export class DepositRecordSerializer {
   }
 
   /**
-   * Temporarily fill descriptions field until frontend does it.
-   * @method
-   * @param {object} record - in frontend format
-   * @returns {object} record - in API format
-   */
-  fillDescriptions(record) {
-    let descriptions = [
-      {
-        description: 'Just a filler description.',
-        lang: 'eng',
-        type: 'Abstract',
-      },
-    ];
-    let metadata = { ...record['metadata'], descriptions };
-
-    return { ...record, metadata };
-  }
-
-  /**
    * Serialize record to send to the backend.
    * @method
    * @param {object} record - in frontend format
@@ -156,10 +137,6 @@ export class DepositRecordSerializer {
       serializedRecord,
       []
     );
-    // Temporary injection of fields not covered by frontend but needed by
-    // backend. As the fields get covered by frontend, remove them from here.
-    // TODO: Remove when fields are implemented
-    serializedRecord = this.fillDescriptions(serializedRecord);
     return serializedRecord;
   }
 }
