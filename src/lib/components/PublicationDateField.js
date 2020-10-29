@@ -37,7 +37,7 @@ PublicationDateField.propTypes = {
 
 PublicationDateField.defaultProps = {
   fieldPath: 'metadata.publication_date',
-  label: 'Publication Date',
+  label: 'Publication date',
   labelIcon: 'calendar',
   placeholder:
     'YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD for intervals. MM and DD are optional.',

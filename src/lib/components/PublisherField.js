@@ -36,6 +36,6 @@ PublisherField.propTypes = {
 PublisherField.defaultProps = {
   fieldPath: 'metadata.publisher',
   label: 'Publisher',
-  labelIcon: '',
+  labelIcon: 'building outline',
   placeholder: 'Enter publisher name',
 };

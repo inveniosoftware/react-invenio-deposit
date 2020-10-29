@@ -23,7 +23,7 @@ export class AdditionalDescriptionsField extends Component {
 
     return (
       <ArrayField
-        addButtonLabel={'Add descriptions'}
+        addButtonLabel={'Add description'}
         defaultNewValue={emptyAdditionalDescription}
         fieldPath={fieldPath}
       >
