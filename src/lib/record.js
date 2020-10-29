@@ -7,7 +7,7 @@ export const emptyCreator = {
   given_name: '',
   family_name: '',
   name: '',
-  type: 'personal',
+  type: '',
 };
 
 export const emptyContributor = { ...emptyCreator, role: '' };

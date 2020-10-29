@@ -10,7 +10,7 @@ import _isEmpty from 'lodash/isEmpty';
 import _isEqual from 'lodash/isEqual';
 import { Field } from './Field';
 
-class CreatorsOrContributorsSerializer extends Field {
+class CreatorsOrContributorsField extends Field {
   deserializeIdentifiers(obj) {
     const in_identifiers = obj.identifiers || {};
     const identifiers = Object.keys(in_identifiers).map((identifier) => {
@@ -74,9 +74,9 @@ class CreatorsOrContributorsSerializer extends Field {
   }
 }
 
-export class CreatorsSerializer extends CreatorsOrContributorsSerializer {
-  deserialize(record, defaultValue) {
-    let creators = _get(record, this.fieldpath, defaultValue);
+export class CreatorsField extends CreatorsOrContributorsField {
+  deserialize(record) {
+    let creators = _get(record, this.fieldpath, this.defaultDeserializedValue);
     creators = this.deserializeCreatorsOrContributors(creators);
     return { ...record, metadata: { ...record.metadata, creators } };
   }
@@ -90,8 +90,8 @@ export class CreatorsSerializer extends CreatorsOrContributorsSerializer {
    * @param {object} record - with creators in frontend format
    * @returns {object} record - with creators in API format
    */
-  serialize(record, defaultValue) {
-    let creators = _get(record, this.fieldpath, defaultValue);
+  serialize(record) {
+    let creators = _get(record, this.fieldpath, this.defaultSerializedValue);
     creators = this.serializeCreatorsOrContributors(creators);
     return _isEmpty(creators)
       ? record
@@ -99,9 +99,13 @@ export class CreatorsSerializer extends CreatorsOrContributorsSerializer {
   }
 }
 
-export class ContributorsSerializer extends CreatorsOrContributorsSerializer {
-  deserialize(record, defaultValue) {
-    let contributors = _get(record, this.fieldpath, defaultValue);
+export class ContributorsField extends CreatorsOrContributorsField {
+  deserialize(record) {
+    let contributors = _get(
+      record,
+      this.fieldpath,
+      this.defaultDeserializedValue
+    );
     contributors = this.deserializeCreatorsOrContributors(contributors);
     return { ...record, metadata: { ...record.metadata, contributors } };
   }
@@ -113,30 +117,15 @@ export class ContributorsSerializer extends CreatorsOrContributorsSerializer {
    * @param {object} record - with contributors in frontend format
    * @returns {object} record - with contributors in API format
    */
-  serialize(record, defaultValue) {
-    const recordContributors = _get(record, this.fieldpath, defaultValue);
-    // Remove contributors with only a type
-    // Note: we have to do this because type is filled by default, but
-    // contributors is an optional field
-    let contributors = recordContributors.filter((contributor) => {
-      return !(
-        Object.keys(contributor).length === 1 &&
-        contributor.hasOwnProperty('type')
-      );
-    });
-    contributors = this.serializeCreatorsOrContributors(contributors);
-    // Did we filter out / change contributors?
-    if (!_isEqual(contributors, recordContributors)) {
-      if (contributors.length === 0) {
-        // Yes and now it is empty so we need to strip it
-        delete record.metadata.contributors;
-        return record;
-      } else {
-        // Yes and we simply restructured the identifiers
-        return { ...record, metadata: { ...record.metadata, contributors } };
-      }
-    } else {
-      return record;
-    }
+  serialize(record) {
+    const recordContributors = _get(
+      record,
+      this.fieldpath,
+      this.defaultSerializedValue
+    );
+    let contributors = this.serializeCreatorsOrContributors(recordContributors);
+    return _isEmpty(contributors)
+      ? record
+      : { ...record, metadata: { ...record.metadata, contributors } };
   }
 }
