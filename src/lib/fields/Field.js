@@ -10,27 +10,29 @@ import _set from 'lodash/set';
 import _cloneDeep from 'lodash/cloneDeep';
 
 export class Field {
-  constructor(
+  constructor({
     fieldpath,
-    defaultDeserializedValue = null,
-    defaultSerializedValue = null
-  ) {
+    deserializedDefault = null,
+    serializedDefault = null,
+  }) {
     this.fieldpath = fieldpath;
-    this.defaultDeserializedValue = defaultDeserializedValue;
-    this.defaultSerializedValue = defaultSerializedValue;
+    this.deserializedDefault = deserializedDefault;
+    this.serializedDefault = serializedDefault;
   }
 
   deserialize(record) {
-    let fieldValue = _get(
-      record,
-      this.fieldpath,
-      this.defaultDeserializedValue
-    );
-    return _set(_cloneDeep(record), this.fieldpath, fieldValue);
+    let fieldValue = _get(record, this.fieldpath, this.deserializedDefault);
+    if (fieldValue !== null) {
+      return _set(_cloneDeep(record), this.fieldpath, fieldValue);
+    }
+    return record;
   }
 
   serialize(record) {
-    let fieldValue = _get(record, this.fieldpath, this.defaultSerializedValue);
-    return _set(_cloneDeep(record), this.fieldpath, fieldValue);
+    let fieldValue = _get(record, this.fieldpath, this.serializedDefault);
+    if (fieldValue !== null) {
+      return _set(_cloneDeep(record), this.fieldpath, fieldValue);
+    }
+    return record;
   }
 }

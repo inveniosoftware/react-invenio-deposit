@@ -19,7 +19,7 @@ export class CreatorsField extends Component {
   /** Top-level Creators Component */
 
   render() {
-    const { fieldPath, options, label, labelIcon } = this.props;
+    const { fieldPath, options, label, labelIcon, required } = this.props;
 
     return (
       <ArrayField
@@ -28,7 +28,7 @@ export class CreatorsField extends Component {
         fieldPath={fieldPath}
         label={label}
         labelIcon={labelIcon}
-        required
+        required={required}
       >
         {({ array, arrayHelpers, indexPath, key, form }) => (
           <>
@@ -38,6 +38,7 @@ export class CreatorsField extends Component {
               label={'Type'}
               options={options.type}
               placeholder="Select type of creator"
+              required
             />
             <TextField fieldPath={`${key}.family_name`} label={'Family Name'} />
             <TextField fieldPath={`${key}.given_name`} label={'Given Name'} />
@@ -66,7 +67,8 @@ export class CreatorsField extends Component {
 }
 
 CreatorsField.propTypes = {
-  label: PropTypes.string.isRequired,
+  fieldPath: PropTypes.string,
+  label: PropTypes.string,
   labelIcon: PropTypes.string,
   options: PropTypes.shape({
     // NOTE: It is fine for the interface to ask for 'type', because it doesn't
@@ -81,9 +83,12 @@ CreatorsField.propTypes = {
         value: PropTypes.string,
       })
     ),
-  }),
+  }).isRequired,
+  required: PropTypes.bool,
 };
 
 CreatorsField.defaultProps = {
   fieldPath: 'metadata.creators',
+  label: 'Creators',
+  labelIcon: 'group',
 };

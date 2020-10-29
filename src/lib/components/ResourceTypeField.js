@@ -52,7 +52,7 @@ export class ResourceTypeField extends Component {
           options={this.props.options.type}
           onChange={handleChange}
           placeholder="Select general resource type"
-          required
+          required={this.props.required}
         />
         {subtypeOptions.length > 0 && (
           <SelectField
@@ -84,7 +84,7 @@ export class ResourceTypeField extends Component {
 }
 
 ResourceTypeField.propTypes = {
-  fieldPath: PropTypes.string.isRequired,
+  fieldPath: PropTypes.string,
   label: PropTypes.string,
   labelIcon: PropTypes.string,
   options: PropTypes.shape({
@@ -105,10 +105,12 @@ ResourceTypeField.propTypes = {
     ),
   }).isRequired,
   subtypeLabel: PropTypes.string,
+  required: PropTypes.bool,
 };
 
 ResourceTypeField.defaultProps = {
-  label: 'Resource type',
-  subtypeLabel: 'Resource Subtype',
   fieldPath: 'metadata.resource_type',
+  label: 'Resource type',
+  labelIcon: 'tag',
+  subtypeLabel: 'Resource Subtype',
 };
