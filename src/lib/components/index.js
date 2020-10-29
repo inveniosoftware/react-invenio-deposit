@@ -10,6 +10,7 @@ export { AdditionalTitlesField } from './AdditionalTitlesField';
 export { AffiliationsField } from './AffiliationsField';
 export { ContributorsField } from './ContributorsField';
 export { CreatorsField } from './CreatorsField';
+export { DatesField } from './DatesField';
 export { DescriptionsField } from './DescriptionsField';
 export { IdentifiersField } from './IdentifiersField';
 export { PublicationDateField } from './PublicationDateField';
