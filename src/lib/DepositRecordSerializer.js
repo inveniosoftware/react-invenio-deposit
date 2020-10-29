@@ -15,11 +15,7 @@ import _pickBy from 'lodash/pickBy';
 import _pick from 'lodash/pick';
 import _mapValues from 'lodash/mapValues';
 import { emptyCreator, emptyContributor } from './record';
-import {
-  Field,
-  ContributorsSerializer,
-  CreatorsSerializer,
-} from './serializers';
+import { Field, ContributorsField, CreatorsField } from './fields';
 
 export class DepositRecordSerializer {
   defaultRecord = {
@@ -39,12 +35,26 @@ export class DepositRecordSerializer {
   };
 
   depositRecordSchema = {
-    title: new Field('metadata.title'),
-    creators: new CreatorsSerializer('metadata.creators'),
-    contributors: new ContributorsSerializer('metadata.contributors'),
-    resource_type: new Field('metadata.resource_type'),
-    access: new Field('access'),
-    publication_date: new Field('metadata.publication_date'),
+    title: new Field('metadata.title', this.defaultRecord.metadata.title),
+    creators: new CreatorsField(
+      'metadata.creators',
+      this.defaultRecord.metadata.creators,
+      []
+    ),
+    contributors: new ContributorsField(
+      'metadata.contributors',
+      this.defaultRecord.metadata.contributors,
+      []
+    ),
+    resource_type: new Field(
+      'metadata.resource_type',
+      this.defaultRecord.metadata.resource_type
+    ),
+    access: new Field('access', this.defaultRecord.access),
+    publication_date: new Field(
+      'metadata.publication_date',
+      this.defaultRecord.metadata.publication_date
+    ),
   };
 
   /**
@@ -90,32 +100,11 @@ export class DepositRecordSerializer {
       'links',
     ]);
 
-    // TODO: abstract when we integrate defaults into Fields
-    deserializedRecord = this.depositRecordSchema.title.deserialize(
-      deserializedRecord,
-      this.defaultRecord.metadata.title
-    );
-    deserializedRecord = this.depositRecordSchema.creators.deserialize(
-      deserializedRecord,
-      this.defaultRecord.metadata.creators
-    );
-    deserializedRecord = this.depositRecordSchema.contributors.deserialize(
-      deserializedRecord,
-      this.defaultRecord.metadata.contributors
-    );
-    deserializedRecord = this.depositRecordSchema.resource_type.deserialize(
-      deserializedRecord,
-      this.defaultRecord.metadata.resource_type
-    );
-    deserializedRecord = this.depositRecordSchema.access.deserialize(
-      deserializedRecord,
-      this.defaultRecord.access
-    );
-    deserializedRecord = this.depositRecordSchema.publication_date.deserialize(
-      deserializedRecord,
-      this.defaultRecord.metadata.publication_date
-    );
-
+    for (let key in this.depositRecordSchema) {
+      deserializedRecord = this.depositRecordSchema[key].deserialize(
+        deserializedRecord
+      );
+    }
     return deserializedRecord;
   }
 
@@ -128,15 +117,12 @@ export class DepositRecordSerializer {
    */
   serialize(record) {
     let serializedRecord = this.removeEmptyValues(record);
-    // TODO: abstract as soon as we get another field with custom serialization
-    serializedRecord = this.depositRecordSchema.creators.serialize(
-      serializedRecord,
-      []
-    );
-    serializedRecord = this.depositRecordSchema.contributors.serialize(
-      serializedRecord,
-      []
-    );
+
+    for (let key in this.depositRecordSchema) {
+      serializedRecord = this.depositRecordSchema[key].serialize(
+        serializedRecord
+      );
+    }
     return serializedRecord;
   }
 }
