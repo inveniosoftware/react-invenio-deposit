@@ -147,18 +147,7 @@ describe('DepositRecordSerializer', () => {
 
       let serialized_record = serializer.serialize(record);
 
-      let expectedRecord = {
-        "metadata": {
-          "descriptions": [
-            {
-              "description": "Just a filler description.",
-              "lang": "eng",
-              "type": "Abstract",
-            }
-          ]
-        }
-      };
-      expect(serialized_record).toEqual(expectedRecord);
+      expect(serialized_record).toEqual({});
 
       // if contributors only have type defined, empty it out
       record = {
@@ -176,16 +165,20 @@ describe('DepositRecordSerializer', () => {
 
       serialized_record = serializer.serialize(record);
 
-      expect(serialized_record).toEqual(expectedRecord);
+      expect(serialized_record).toEqual({ metadata: {} });
 
       // if identifiers is absent, leave absent
       record = {
-        contributors: [{ name: 'Alice' }],
+        metadata: { contributors: [{ name: 'Alice' }] },
       };
 
       serialized_record = serializer.serialize(record);
 
-      expectedRecord.contributors = [{ name: 'Alice' }];
+      let expectedRecord = {
+        metadata: {
+          contributors: [{ name: 'Alice' }],
+        },
+      };
       expect(serialized_record).toEqual(expectedRecord);
     });
   });
@@ -196,8 +189,8 @@ describe('DepositRecordSerializer', () => {
       const record = {
         access: {},
         metadata: {
-          title: null
-        }
+          title: null,
+        },
       };
       const expectedRecord = {
         metadata: {
@@ -223,85 +216,82 @@ describe('DepositRecordSerializer', () => {
     it('deserializes a full record', () => {
       const serializer = new DepositRecordSerializer();
       const record = {
-        "access": {
-          "access_right": "open",
-          "files": false,
-          "metadata": false,
-          "owned_by": [1]
+        access: {
+          access_right: 'open',
+          files: false,
+          metadata: false,
+          owned_by: [1],
         },
-        "conceptid": "nz13t-me993",
-        "created": "2020-10-28 18:35:58.113520",
-        "expires_at": "2020-10-28 18:35:58.113692",
-        "id": "wk205-00878",
-        "links": {
-          "publish": "https://127.0.0.1:5000/api/records/wk205-00878/draft/actions/publish",
-          "self": "https://127.0.0.1:5000/api/records/wk205-00878/draft",
-          "self_html": "https://127.0.0.1:5000/uploads/wk205-00878"
+        conceptid: 'nz13t-me993',
+        created: '2020-10-28 18:35:58.113520',
+        expires_at: '2020-10-28 18:35:58.113692',
+        id: 'wk205-00878',
+        links: {
+          publish:
+            'https://127.0.0.1:5000/api/records/wk205-00878/draft/actions/publish',
+          self: 'https://127.0.0.1:5000/api/records/wk205-00878/draft',
+          self_html: 'https://127.0.0.1:5000/uploads/wk205-00878',
         },
-        "metadata": {
-          "contributors": [
+        metadata: {
+          contributors: [
             {
-              "name": "Jane Smith",
-              "role": "datacurator",
-              "type": "personal",
-              "identifiers": {
-                'orcid': '0000-0002-1825-0097'
+              name: 'Jane Smith',
+              role: 'datacurator',
+              type: 'personal',
+              identifiers: {
+                orcid: '0000-0002-1825-0097',
               },
-            }
+            },
           ],
-          "creators": [
-            {"name": "John Doe", "type": "personal"}
-          ],
-          "publication_date": "2020-09-28",
-          "resource_type": {"type": "lesson"},
-          "title": "Test 2020-1028 13:34"
+          creators: [{ name: 'John Doe', type: 'personal' }],
+          publication_date: '2020-09-28',
+          resource_type: { type: 'lesson' },
+          title: 'Test 2020-1028 13:34',
         },
-        "revision_id": 1,
-        "ui": {
-          "publication_date_l10n": "Sep 28, 2020"
+        revision_id: 1,
+        ui: {
+          publication_date_l10n: 'Sep 28, 2020',
         },
-        "updated": "2020-10-28 18:35:58.125222"
+        updated: '2020-10-28 18:35:58.125222',
       };
 
       const deserializedRecord = serializer.deserialize(record);
 
       const expectedRecord = {
-        "access": {
-          "access_right": "open",
-          "files": false,
-          "metadata": false,
-          "owned_by": [1]
+        access: {
+          access_right: 'open',
+          files: false,
+          metadata: false,
+          owned_by: [1],
         },
-        "id": "wk205-00878",
-        "links": {
-          "publish": "https://127.0.0.1:5000/api/records/wk205-00878/draft/actions/publish",
-          "self": "https://127.0.0.1:5000/api/records/wk205-00878/draft",
-          "self_html": "https://127.0.0.1:5000/uploads/wk205-00878"
+        id: 'wk205-00878',
+        links: {
+          publish:
+            'https://127.0.0.1:5000/api/records/wk205-00878/draft/actions/publish',
+          self: 'https://127.0.0.1:5000/api/records/wk205-00878/draft',
+          self_html: 'https://127.0.0.1:5000/uploads/wk205-00878',
         },
-        "metadata": {
-          "contributors": [
+        metadata: {
+          contributors: [
             {
-              "name": "Jane Smith",
-              "role": "datacurator",
-              "type": "personal",
-              "identifiers": [
+              name: 'Jane Smith',
+              role: 'datacurator',
+              type: 'personal',
+              identifiers: [
                 {
-                  'identifier': '0000-0002-1825-0097',
-                  'scheme': 'orcid',
-                }
-              ]
-            }
+                  identifier: '0000-0002-1825-0097',
+                  scheme: 'orcid',
+                },
+              ],
+            },
           ],
-          "creators": [
-            {"name": "John Doe", "type": "personal"}
-          ],
-          "publication_date": "2020-09-28",
-          "resource_type": {"type": "lesson"},
-          "title": "Test 2020-1028 13:34"
-        }
+          creators: [{ name: 'John Doe', type: 'personal' }],
+          publication_date: '2020-09-28',
+          resource_type: { type: 'lesson' },
+          title: 'Test 2020-1028 13:34',
+        },
       };
       expect(deserializedRecord).toEqual(expectedRecord);
     });
-
   });
 });

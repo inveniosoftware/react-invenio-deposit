@@ -42,6 +42,7 @@ export class ContributorsField extends Component {
               label={'Type'}
               options={options.type}
               placeholder="Select type of contributor"
+              required
             />
             <TextField fieldPath={`${key}.family_name`} label={'Family Name'} />
             <TextField fieldPath={`${key}.given_name`} label={'Given Name'} />
@@ -70,8 +71,8 @@ export class ContributorsField extends Component {
 }
 
 ContributorsField.propTypes = {
-  fieldPath: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  fieldPath: PropTypes.string,
+  label: PropTypes.string,
   labelIcon: PropTypes.string,
   options: PropTypes.shape({
     type: PropTypes.arrayOf(
@@ -81,10 +82,11 @@ ContributorsField.propTypes = {
         value: PropTypes.string,
       })
     ),
-  }),
+  }).isRequired,
 };
 
 ContributorsField.defaultProps = {
   fieldPath: 'metadata.contributors',
   label: 'Contributors',
+  labelIcon: 'group',
 };

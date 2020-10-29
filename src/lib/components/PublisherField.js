@@ -10,9 +10,9 @@ import PropTypes from 'prop-types';
 
 import { FieldLabel, TextField } from 'react-invenio-forms';
 
-export class PublicationDateField extends Component {
+export class PublisherField extends Component {
   render() {
-    const { fieldPath, label, labelIcon, placeholder, required } = this.props;
+    const { fieldPath, label, labelIcon, placeholder } = this.props;
 
     return (
       <TextField
@@ -21,24 +21,21 @@ export class PublicationDateField extends Component {
           <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
         }
         placeholder={placeholder}
-        required={required}
       />
     );
   }
 }
 
-PublicationDateField.propTypes = {
+PublisherField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string,
   labelIcon: PropTypes.string,
   placeholder: PropTypes.string,
-  required: PropTypes.bool,
 };
 
-PublicationDateField.defaultProps = {
-  fieldPath: 'metadata.publication_date',
-  label: 'Publication Date',
-  labelIcon: 'calendar',
-  placeholder:
-    'YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD for intervals. MM and DD are optional.',
+PublisherField.defaultProps = {
+  fieldPath: 'metadata.publisher',
+  label: 'Publisher',
+  labelIcon: '',
+  placeholder: 'Enter publisher name',
 };

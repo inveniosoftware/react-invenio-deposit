@@ -76,7 +76,7 @@ class CreatorsOrContributorsField extends Field {
 
 export class CreatorsField extends CreatorsOrContributorsField {
   deserialize(record) {
-    let creators = _get(record, this.fieldpath, this.defaultDeserializedValue);
+    let creators = _get(record, this.fieldpath, this.deserializedDefault);
     creators = this.deserializeCreatorsOrContributors(creators);
     return { ...record, metadata: { ...record.metadata, creators } };
   }
@@ -91,7 +91,7 @@ export class CreatorsField extends CreatorsOrContributorsField {
    * @returns {object} record - with creators in API format
    */
   serialize(record) {
-    let creators = _get(record, this.fieldpath, this.defaultSerializedValue);
+    let creators = _get(record, this.fieldpath, this.serializedDefault);
     creators = this.serializeCreatorsOrContributors(creators);
     return _isEmpty(creators)
       ? record
@@ -101,11 +101,7 @@ export class CreatorsField extends CreatorsOrContributorsField {
 
 export class ContributorsField extends CreatorsOrContributorsField {
   deserialize(record) {
-    let contributors = _get(
-      record,
-      this.fieldpath,
-      this.defaultDeserializedValue
-    );
+    let contributors = _get(record, this.fieldpath, this.deserializedDefault);
     contributors = this.deserializeCreatorsOrContributors(contributors);
     return { ...record, metadata: { ...record.metadata, contributors } };
   }
@@ -121,11 +117,30 @@ export class ContributorsField extends CreatorsOrContributorsField {
     const recordContributors = _get(
       record,
       this.fieldpath,
-      this.defaultSerializedValue
+      this.serializedDefault
     );
-    let contributors = this.serializeCreatorsOrContributors(recordContributors);
-    return _isEmpty(contributors)
-      ? record
-      : { ...record, metadata: { ...record.metadata, contributors } };
+    // Remove contributors with only a type
+    // Note: we have to do this because type is filled by default, but
+    // contributors is an optional field
+    let contributors = recordContributors.filter((contributor) => {
+      return !(
+        Object.keys(contributor).length === 1 &&
+        contributor.hasOwnProperty('type')
+      );
+    });
+    contributors = this.serializeCreatorsOrContributors(contributors);
+    // Did we filter out / change contributors?
+    if (!_isEqual(contributors, recordContributors)) {
+      if (contributors.length === 0) {
+        // Yes and now it is empty so we need to strip it
+        delete record.metadata.contributors;
+        return record;
+      } else {
+        // Yes and we simply restructured the identifiers
+        return { ...record, metadata: { ...record.metadata, contributors } };
+      }
+    } else {
+      return record;
+    }
   }
 }

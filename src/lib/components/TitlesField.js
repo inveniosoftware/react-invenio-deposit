@@ -13,14 +13,14 @@ import { AdditionalTitlesField } from './AdditionalTitlesField';
 
 export class TitlesField extends Component {
   render() {
-    const { fieldPath, options, label } = this.props;
+    const { fieldPath, options, label, required } = this.props;
 
     return (
       <>
         <TextField
           fieldPath={fieldPath}
           label={<FieldLabel htmlFor={fieldPath} icon={'book'} label={label} />}
-          required
+          required={required}
         />
         <AdditionalTitlesField options={options} />
       </>
@@ -45,7 +45,8 @@ TitlesField.propTypes = {
         value: PropTypes.string,
       })
     ),
-  }),
+  }).isRequired,
+  required: PropTypes.bool,
 };
 
 TitlesField.defaultProps = {

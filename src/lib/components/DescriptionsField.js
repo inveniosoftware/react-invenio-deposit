@@ -32,7 +32,7 @@ export class DescriptionsField extends Component {
 }
 
 DescriptionsField.propTypes = {
-  fieldPath: PropTypes.string.isRequired,
+  fieldPath: PropTypes.string,
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   labelIcon: PropTypes.string,
 };
@@ -40,4 +40,5 @@ DescriptionsField.propTypes = {
 DescriptionsField.defaultProps = {
   fieldPath: 'metadata.description',
   label: 'Description',
+  labelIcon: 'pencil',
 };

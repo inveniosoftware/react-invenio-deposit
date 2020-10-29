@@ -18,43 +18,38 @@ import { emptyCreator, emptyContributor } from './record';
 import { Field, ContributorsField, CreatorsField } from './fields';
 
 export class DepositRecordSerializer {
-  defaultRecord = {
-    metadata: {
-      title: '',
-      creators: [emptyCreator],
-      contributors: [emptyContributor],
-      resource_type: '',
-      publication_date: '',
-    },
-    access: {
-      metadata: false,
-      files: false,
-      owned_by: [1],
-      access_right: 'open',
-    },
-  };
-
   depositRecordSchema = {
-    title: new Field('metadata.title', this.defaultRecord.metadata.title),
-    creators: new CreatorsField(
-      'metadata.creators',
-      this.defaultRecord.metadata.creators,
-      []
-    ),
-    contributors: new ContributorsField(
-      'metadata.contributors',
-      this.defaultRecord.metadata.contributors,
-      []
-    ),
-    resource_type: new Field(
-      'metadata.resource_type',
-      this.defaultRecord.metadata.resource_type
-    ),
-    access: new Field('access', this.defaultRecord.access),
-    publication_date: new Field(
-      'metadata.publication_date',
-      this.defaultRecord.metadata.publication_date
-    ),
+    title: new Field({
+      fieldpath: 'metadata.title',
+      deserializedDefault: '',
+    }),
+    creators: new CreatorsField({
+      fieldpath: 'metadata.creators',
+      deserializedDefault: [emptyCreator],
+      serializedDefault: [],
+    }),
+    contributors: new ContributorsField({
+      fieldpath: 'metadata.contributors',
+      deserializedDefault: [emptyContributor],
+      serializedDefault: [],
+    }),
+    resource_type: new Field({
+      fieldpath: 'metadata.resource_type',
+      deserializedDefault: '',
+    }),
+    access: new Field({
+      fieldpath: 'access',
+      deserializedDefault: {
+        metadata: false,
+        files: false,
+        owned_by: [1],
+        access_right: 'open',
+      },
+    }),
+    publication_date: new Field({
+      fieldpath: 'metadata.publication_date',
+      deserializedDefault: '',
+    }),
   };
 
   /**

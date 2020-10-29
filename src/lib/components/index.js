@@ -13,5 +13,6 @@ export { CreatorsField } from './CreatorsField';
 export { DescriptionsField } from './DescriptionsField';
 export { IdentifiersField } from './IdentifiersField';
 export { PublicationDateField } from './PublicationDateField';
+export { PublisherField } from './PublisherField';
 export { ResourceTypeField } from './ResourceTypeField';
 export { TitlesField } from './TitlesField';
