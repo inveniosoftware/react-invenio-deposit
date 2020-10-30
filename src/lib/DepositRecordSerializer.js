@@ -14,14 +14,18 @@ import _isNull from 'lodash/isNull';
 import _pickBy from 'lodash/pickBy';
 import _pick from 'lodash/pick';
 import _mapValues from 'lodash/mapValues';
-import { emptyCreator, emptyContributor } from './record';
-import { Field, ContributorsField, CreatorsField } from './fields';
+import { emptyCreator, emptyContributor, emptyDate } from './record';
+import { ContributorsField, CreatorsField, DatesField, Field } from './fields';
 
 export class DepositRecordSerializer {
   depositRecordSchema = {
     title: new Field({
       fieldpath: 'metadata.title',
       deserializedDefault: '',
+    }),
+    additional_titles: new Field({
+      fieldpath: 'metadata.additional_titles',
+      deserializedDefault: [],
     }),
     creators: new CreatorsField({
       fieldpath: 'metadata.creators',
@@ -49,6 +53,10 @@ export class DepositRecordSerializer {
     publication_date: new Field({
       fieldpath: 'metadata.publication_date',
       deserializedDefault: '',
+    }),
+    dates: new DatesField({
+      fieldpath: 'metadata.dates',
+      deserializedDefault: [emptyDate],
     }),
   };
 
@@ -83,10 +91,17 @@ export class DepositRecordSerializer {
     return _isNumber(obj) || _isBoolean(obj) || obj ? obj : null;
   }
 
+  /**
+   * Deserialize record received from backend into format compatible with
+   * the form.
+   * @method
+   * @param {object} obj - potentially empty object
+   * @returns {object} record - without empty fields
+   */
   deserialize(record) {
     // Remove empty null values from record. This happens when we create a new
-    // draft and the backend produces an empty record filled in with null values,
-    // array of null values etc.
+    // draft and the backend produces an empty record filled in with null
+    // values, array of null values etc.
     let deserializedRecord = this.removeEmptyValues(record);
     deserializedRecord = _pick(deserializedRecord, [
       'access',

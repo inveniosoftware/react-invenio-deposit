@@ -6,11 +6,12 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import { DepositRecordSerializer } from './DepositRecordSerializer';
-import { emptyCreator, emptyContributor } from './record';
+import { emptyCreator, emptyContributor, emptyDate } from './record';
 
 describe('DepositRecordSerializer', () => {
+  const serializer = new DepositRecordSerializer();
+
   describe('removeEmptyValues', () => {
-    const serializer = new DepositRecordSerializer();
     const record = {
       contributors: [{ identifiers: [] }],
       version: 0,
@@ -24,168 +25,201 @@ describe('DepositRecordSerializer', () => {
     expect(cleanedRecord).toEqual({ cool: false, version: 0 });
   });
 
-  describe('creators', () => {
-    it('transforms identifiers arrays into objects', () => {
-      const serializer = new DepositRecordSerializer();
-      const record = {
-        metadata: {
-          creators: [
-            {
-              identifiers: [
-                { scheme: 'orcid', identifier: '0000-0002-1825-0097' },
-                { scheme: 'foo', identifier: 'bar' },
-              ],
-            },
-            {
-              identifiers: [
-                { scheme: 'ror', identifier: '03yrm5c26' },
-                { scheme: 'baz', identifier: 'zed' },
-              ],
-            },
-          ],
-        },
-      };
+  describe('serialize', () => {
+    describe('creators', () => {
+      it('transforms identifiers arrays into objects', () => {
+        const record = {
+          metadata: {
+            creators: [
+              {
+                identifiers: [
+                  { scheme: 'orcid', identifier: '0000-0002-1825-0097' },
+                  { scheme: 'foo', identifier: 'bar' },
+                ],
+              },
+              {
+                identifiers: [
+                  { scheme: 'ror', identifier: '03yrm5c26' },
+                  { scheme: 'baz', identifier: 'zed' },
+                ],
+              },
+            ],
+          },
+        };
 
-      const serialized_record = serializer.serialize(record);
+        const serializedRecord = serializer.serialize(record);
 
-      expect(serialized_record.metadata.creators[0].identifiers).toEqual({
-        orcid: '0000-0002-1825-0097',
-        foo: 'bar',
+        expect(serializedRecord.metadata.creators[0].identifiers).toEqual({
+          orcid: '0000-0002-1825-0097',
+          foo: 'bar',
+        });
+        expect(serializedRecord.metadata.creators[1].identifiers).toEqual({
+          ror: '03yrm5c26',
+          baz: 'zed',
+        });
       });
-      expect(serialized_record.metadata.creators[1].identifiers).toEqual({
-        ror: '03yrm5c26',
-        baz: 'zed',
-      });
-    });
 
-    it('picks last scheme if duplicates', () => {
-      const serializer = new DepositRecordSerializer();
-      const record = {
-        metadata: {
-          creators: [
-            {
-              identifiers: [
-                { scheme: 'orcid', identifier: '0000-0002-1825-0097' },
-                { scheme: 'orcid', identifier: '0000-0002-1825-0098' },
-              ],
-            },
-          ],
-        },
-      };
+      it('picks last scheme if duplicates', () => {
+        const record = {
+          metadata: {
+            creators: [
+              {
+                identifiers: [
+                  { scheme: 'orcid', identifier: '0000-0002-1825-0097' },
+                  { scheme: 'orcid', identifier: '0000-0002-1825-0098' },
+                ],
+              },
+            ],
+          },
+        };
 
-      const serialized_record = serializer.serialize(record);
+        const serializedRecord = serializer.serialize(record);
 
-      expect(serialized_record.metadata.creators[0].identifiers).toEqual({
-        orcid: '0000-0002-1825-0098',
-      });
-    });
-  });
-
-  describe('contributors', () => {
-    it('transforms identifiers array into object', () => {
-      const serializer = new DepositRecordSerializer();
-      const record = {
-        metadata: {
-          contributors: [
-            {
-              identifiers: [
-                { scheme: 'orcid', identifier: '0000-0002-1825-0097' },
-                { scheme: 'foo', identifier: 'bar' },
-              ],
-            },
-            {
-              identifiers: [
-                { scheme: 'ror', identifier: '03yrm5c26' },
-                { scheme: 'baz', identifier: 'zed' },
-              ],
-            },
-          ],
-        },
-      };
-
-      const serialized_record = serializer.serialize(record);
-
-      expect(serialized_record.metadata.contributors[0].identifiers).toEqual({
-        orcid: '0000-0002-1825-0097',
-        foo: 'bar',
-      });
-      expect(serialized_record.metadata.contributors[1].identifiers).toEqual({
-        ror: '03yrm5c26',
-        baz: 'zed',
+        expect(serializedRecord.metadata.creators[0].identifiers).toEqual({
+          orcid: '0000-0002-1825-0098',
+        });
       });
     });
 
-    it('picks last scheme if duplicates', () => {
-      const serializer = new DepositRecordSerializer();
-      const record = {
-        metadata: {
-          contributors: [
-            {
-              identifiers: [
-                { scheme: 'orcid', identifier: '0000-0002-1825-0097' },
-                { scheme: 'orcid', identifier: '0000-0002-1825-0098' },
-              ],
-            },
-          ],
-        },
-      };
+    describe('contributors', () => {
+      it('transforms identifiers array into object', () => {
+        const record = {
+          metadata: {
+            contributors: [
+              {
+                identifiers: [
+                  { scheme: 'orcid', identifier: '0000-0002-1825-0097' },
+                  { scheme: 'foo', identifier: 'bar' },
+                ],
+              },
+              {
+                identifiers: [
+                  { scheme: 'ror', identifier: '03yrm5c26' },
+                  { scheme: 'baz', identifier: 'zed' },
+                ],
+              },
+            ],
+          },
+        };
 
-      const serialized_record = serializer.serialize(record);
+        const serializedRecord = serializer.serialize(record);
 
-      expect(serialized_record.metadata.contributors[0].identifiers).toEqual({
-        orcid: '0000-0002-1825-0098',
+        expect(serializedRecord.metadata.contributors[0].identifiers).toEqual({
+          orcid: '0000-0002-1825-0097',
+          foo: 'bar',
+        });
+        expect(serializedRecord.metadata.contributors[1].identifiers).toEqual({
+          ror: '03yrm5c26',
+          baz: 'zed',
+        });
+      });
+
+      it('picks last scheme if duplicates', () => {
+        const record = {
+          metadata: {
+            contributors: [
+              {
+                identifiers: [
+                  { scheme: 'orcid', identifier: '0000-0002-1825-0097' },
+                  { scheme: 'orcid', identifier: '0000-0002-1825-0098' },
+                ],
+              },
+            ],
+          },
+        };
+
+        const serializedRecord = serializer.serialize(record);
+
+        expect(serializedRecord.metadata.contributors[0].identifiers).toEqual({
+          orcid: '0000-0002-1825-0098',
+        });
+      });
+
+      it('acts correctly when no input', () => {
+        // Note that since removeEmptyValues cleans up empty inputs, we have
+        // fewer cases to test.
+
+        // if contributors empty, leave empty
+        let record = {};
+
+        let serializedRecord = serializer.serialize(record);
+
+        expect(serializedRecord).toEqual({});
+
+        // if contributors only have type defined, empty it out
+        record = {
+          metadata: {
+            contributors: [
+              {
+                type: 'Personal',
+              },
+              {
+                type: 'Organizational',
+              },
+            ],
+          },
+        };
+
+        serializedRecord = serializer.serialize(record);
+
+        expect(serializedRecord).toEqual({ metadata: {} });
+
+        // if identifiers is absent, leave absent
+        record = {
+          metadata: { contributors: [{ name: 'Alice' }] },
+        };
+
+        serializedRecord = serializer.serialize(record);
+
+        let expectedRecord = {
+          metadata: {
+            contributors: [{ name: 'Alice' }],
+          },
+        };
+        expect(serializedRecord).toEqual(expectedRecord);
       });
     });
 
-    it('acts correctly when no input', () => {
-      // Note that since removeEmptyValues cleans up empty inputs, we have
-      // fewer cases to test.
-      const serializer = new DepositRecordSerializer();
+    describe('dates', () => {
+      it('serializes array as-is if filled', () => {
+        const record = {
+          metadata: {
+            dates: [
+              {
+                date: "2020/08",
+                type: "accepted",
+                description: "bar"
+              },
+            ],
+          },
+        };
 
-      // if contributors empty, leave empty
-      let record = {};
+        const serializedRecord = serializer.serialize(record);
 
-      let serialized_record = serializer.serialize(record);
+        expect(serializedRecord.metadata.dates).toEqual([{
+          date: "2020/08",
+          type: "accepted",
+          description: "bar"
+        }]);
+      });
 
-      expect(serialized_record).toEqual({});
+      it("doesn't serialize if only default is present", () => {
+        const record = {
+          metadata: {
+            dates: [emptyDate],
+          },
+        };
 
-      // if contributors only have type defined, empty it out
-      record = {
-        metadata: {
-          contributors: [
-            {
-              type: 'Personal',
-            },
-            {
-              type: 'Organizational',
-            },
-          ],
-        },
-      };
+        const serializedRecord = serializer.serialize(record);
 
-      serialized_record = serializer.serialize(record);
-
-      expect(serialized_record).toEqual({ metadata: {} });
-
-      // if identifiers is absent, leave absent
-      record = {
-        metadata: { contributors: [{ name: 'Alice' }] },
-      };
-
-      serialized_record = serializer.serialize(record);
-
-      let expectedRecord = {
-        metadata: {
-          contributors: [{ name: 'Alice' }],
-        },
-      };
-      expect(serialized_record).toEqual(expectedRecord);
+        expect(serializedRecord.metadata).toEqual({});
+      });
     });
+
   });
 
   describe('deserialize', () => {
     it('fills empty values with predefined values', () => {
-      const serializer = new DepositRecordSerializer();
       const record = {
         access: {},
         metadata: {
@@ -195,10 +229,12 @@ describe('DepositRecordSerializer', () => {
       const expectedRecord = {
         metadata: {
           title: '',
+          additional_titles: [],
           creators: [emptyCreator],
           contributors: [emptyContributor],
           resource_type: '',
           publication_date: '',
+          dates: [emptyDate],
         },
         access: {
           metadata: false,
@@ -214,7 +250,6 @@ describe('DepositRecordSerializer', () => {
     });
 
     it('deserializes a full record', () => {
-      const serializer = new DepositRecordSerializer();
       const record = {
         access: {
           access_right: 'open',
@@ -247,6 +282,8 @@ describe('DepositRecordSerializer', () => {
           publication_date: '2020-09-28',
           resource_type: { type: 'lesson' },
           title: 'Test 2020-1028 13:34',
+          additional_titles: [{title: 'Another title', type: "abstract", lang: "dan"}],
+          dates: [{ date: "1920/2020", type: "collected", description: "foo"}],
         },
         revision_id: 1,
         ui: {
@@ -289,9 +326,12 @@ describe('DepositRecordSerializer', () => {
           publication_date: '2020-09-28',
           resource_type: { type: 'lesson' },
           title: 'Test 2020-1028 13:34',
+          additional_titles: [{title: 'Another title', type: "abstract", lang: "dan"}],
+          dates: [{ date: "1920/2020", type: "collected", description: "foo"}],
         },
       };
       expect(deserializedRecord).toEqual(expectedRecord);
     });
+
   });
 });
