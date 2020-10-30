@@ -58,6 +58,10 @@ export class DepositRecordSerializer {
       fieldpath: 'metadata.dates',
       deserializedDefault: [emptyDate],
     }),
+    languages: new Field({
+      fieldpath: 'metadata.languages',
+      deserializedDefault: [],
+    }),
   };
 
   /**

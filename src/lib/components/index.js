@@ -17,3 +17,4 @@ export { PublicationDateField } from './PublicationDateField';
 export { PublisherField } from './PublisherField';
 export { ResourceTypeField } from './ResourceTypeField';
 export { TitlesField } from './TitlesField';
+export { LanguagesField } from './LanguagesField';
