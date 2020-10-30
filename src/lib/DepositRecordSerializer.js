@@ -71,6 +71,17 @@ export class DepositRecordSerializer {
         },
       ],
     }),
+    related_identifiers: new Field({
+      fieldpath: 'metadata.related_identifiers',
+      deserializedDefault: [
+        {
+          scheme: '',
+          identifier: '',
+          resource_type: '',
+          relation: '',
+        },
+      ],
+    }),
   };
 
   /**
