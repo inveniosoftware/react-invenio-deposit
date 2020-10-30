@@ -8,7 +8,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { TextField, GroupField, ArrayField } from 'react-invenio-forms';
+import {
+  TextField,
+  GroupField,
+  ArrayField,
+  FieldLabel,
+} from 'react-invenio-forms';
 import { Button, Form, Icon } from 'semantic-ui-react';
 
 import { emptyIdentifier } from '../record';
@@ -16,7 +21,7 @@ import { emptyIdentifier } from '../record';
 /** Identifiers array component */
 export class IdentifiersField extends Component {
   render() {
-    const { fieldPath } = this.props;
+    const { fieldPath, label, labelIcon, required } = this.props;
 
     return (
       <>
@@ -24,7 +29,10 @@ export class IdentifiersField extends Component {
           addButtonLabel={'Add identifier'}
           defaultNewValue={emptyIdentifier}
           fieldPath={fieldPath}
-          label={'Identifier(s)'}
+          label={
+            <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+          }
+          required={required}
         >
           {({ array, arrayHelpers, indexPath, key }) => (
             <GroupField widths="equal">
@@ -53,4 +61,13 @@ export class IdentifiersField extends Component {
 
 IdentifiersField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  labelIcon: PropTypes.string,
+  required: PropTypes.bool,
+};
+
+IdentifiersField.defaultProps = {
+  fieldPath: 'metadata.identifiers',
+  label: 'Identifier(s)',
+  labelIcon: 'barcode',
 };

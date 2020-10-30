@@ -38,7 +38,7 @@ export class AffiliationsField extends Component {
                 }
                 required
               />
-              <IdentifiersField fieldPath={`${key}.identifiers`} />
+              <IdentifiersField fieldPath={`${key}.identifiers`} labelIcon="" />
               {array.length === 1 ? null : (
                 <Form.Field>
                   <Form.Field>

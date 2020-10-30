@@ -33,7 +33,7 @@ export class DescriptionsField extends Component {
 
 DescriptionsField.propTypes = {
   fieldPath: PropTypes.string,
-  label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  label: PropTypes.string,
   labelIcon: PropTypes.string,
 };
 
