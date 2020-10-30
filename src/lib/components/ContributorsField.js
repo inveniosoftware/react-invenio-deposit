@@ -47,7 +47,7 @@ export class ContributorsField extends Component {
             <TextField fieldPath={`${key}.family_name`} label={'Family Name'} />
             <TextField fieldPath={`${key}.given_name`} label={'Given Name'} />
 
-            <IdentifiersField fieldPath={`${key}.identifiers`} />
+            <IdentifiersField fieldPath={`${key}.identifiers`} labelIcon="" />
             <AffiliationsField fieldPath={`${key}.affiliations`} />
             <Grid>
               <Grid.Column></Grid.Column>

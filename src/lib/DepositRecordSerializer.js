@@ -62,6 +62,15 @@ export class DepositRecordSerializer {
       fieldpath: 'metadata.languages',
       deserializedDefault: [],
     }),
+    identifiers: new Field({
+      fieldpath: 'metadata.identifiers',
+      deserializedDefault: [
+        {
+          scheme: '',
+          identifier: '',
+        },
+      ],
+    }),
   };
 
   /**
