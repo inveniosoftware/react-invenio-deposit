@@ -12,12 +12,6 @@ import _cloneDeep from 'lodash/cloneDeep';
 import { Field } from './Field';
 
 export class LanguagesField extends Field {
-  deserialize(record) {
-    let langu = _get(record, this.fieldpath, this.deserializedDefault);
-    identifiers = identifiers.map((identifier) => ({}));
-    return record;
-  }
-
   serialize(record) {
     let fieldValue = _get(record, this.fieldpath, this.serializedDefault);
     if (fieldValue !== null) {
