@@ -38,6 +38,13 @@ export const emptyIdentifier = {
   identifier: '',
 };
 
+export const emptyRelatedIdentifier = {
+  scheme: '',
+  identifier: '',
+  resource_type: '',
+  relation_type: '',
+};
+
 export const emptyDate = {
   date: '',
   description: '',
