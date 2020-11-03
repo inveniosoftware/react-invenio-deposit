@@ -17,7 +17,7 @@ import {
 } from 'react-invenio-forms';
 import { Button, Form, Icon } from 'semantic-ui-react';
 
-import { emptyIdentifier } from '../record';
+import { emptyRelatedIdentifier } from '../record';
 import { ResourceTypeField } from './ResourceTypeField';
 
 /** Identifiers array component */
@@ -29,7 +29,7 @@ export class RelatedIdentifiersField extends Component {
       <>
         <ArrayField
           addButtonLabel={'Add related identifier'}
-          defaultNewValue={emptyIdentifier}
+          defaultNewValue={emptyRelatedIdentifier}
           fieldPath={fieldPath}
           label={
             <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
@@ -38,33 +38,32 @@ export class RelatedIdentifiersField extends Component {
         >
           {({ array, arrayHelpers, indexPath, key }) => (
             <>
-              <Form.Field>
-                <GroupField widths="2">
-                  <SelectField
-                    fieldPath={`${key}.scheme`}
-                    options={options.scheme}
-                    label="Scheme"
-                  />
-                  <TextField
-                    fieldPath={`${key}.identifier`}
-                    label="Identifier"
-                  />
-                </GroupField>
-              </Form.Field>
-              <Form.Field>
-                <GroupField widths="2">
-                  <SelectField
-                    fieldPath={`${key}.relation_type`}
-                    options={options.relations}
-                    placeholder={'Select relation...'}
-                    label="Relation"
-                  />
-                  <ResourceTypeField
-                    fieldPath={`${key}.resource_type`}
-                    options={options.resource_type}
-                  />
-                </GroupField>
-              </Form.Field>
+              <GroupField widths={"equal"} >
+                <SelectField
+                  fieldPath={`${key}.relation_type`}
+                  options={options.relations}
+                  placeholder={'Select relation...'}
+                  label="Relation"
+                  clearable
+                />
+                <SelectField
+                  fieldPath={`${key}.scheme`}
+                  options={options.scheme}
+                  label="Scheme"
+                  clearable
+                />
+                <TextField
+                  fieldPath={`${key}.identifier`}
+                  label="Identifier"
+                />
+              </GroupField>
+
+              {/* TODO: Render as single SelectField and place inline */}
+              <ResourceTypeField
+                fieldPath={`${key}.resource_type`}
+                options={options.resource_type}
+                clearable
+              />
 
               <Form.Field>
                 <label>&nbsp;</label>
