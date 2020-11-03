@@ -1,5 +1,17 @@
 # Changes
 
+Version 0.7.6 (released 2020-11-03)
+
+* Adds
+    - Alternate Identifiers
+    - Related Identifiers
+    - Dates
+    - Publisher
+    - Languages
+    - Publication Date
+    - Title + Additional Titles
+    - Description + Addtional Descriptions
+
 Version 0.7.0 (released 2020-10-07)
 
 * save and publish draft
