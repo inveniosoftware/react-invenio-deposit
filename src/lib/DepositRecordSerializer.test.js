@@ -256,35 +256,37 @@ describe('DepositRecordSerializer', () => {
       it('serializes array as-is if filled', () => {
         const record = {
           metadata: {
-            dates: [
+            related_identifiers: [
               {
-                date: "2020/08",
-                type: "accepted",
-                description: "bar"
-              },
+                scheme: 'doi',
+                identifier: '10.5281/zenodo.9999988',
+                resource_type: { type: "image", subtype: "image-photo" },
+                relation_type: 'requires'
+              }
             ],
           },
         };
 
         const serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord.metadata.dates).toEqual([{
-          date: "2020/08",
-          type: "accepted",
-          description: "bar"
+        expect(serializedRecord.metadata.related_identifiers).toEqual([{
+          scheme: 'doi',
+          identifier: '10.5281/zenodo.9999988',
+          resource_type: { type: "image", subtype: "image-photo" },
+          relation_type: 'requires'
         }]);
       });
 
       it("doesn't serialize if only default is present", () => {
         const record = {
           metadata: {
-            dates: [emptyDate],
+            related_identifiers: [emptyRelatedIdentifier],
           },
         };
 
         const serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord.metadata).toEqual({});
+        expect(serializedRecord).toEqual({});
       });
     });
 
