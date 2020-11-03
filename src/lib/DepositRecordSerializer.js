@@ -14,7 +14,13 @@ import _isNull from 'lodash/isNull';
 import _pickBy from 'lodash/pickBy';
 import _pick from 'lodash/pick';
 import _mapValues from 'lodash/mapValues';
-import { emptyCreator, emptyContributor, emptyDate } from './record';
+import {
+  emptyCreator,
+  emptyContributor,
+  emptyDate,
+  emptyIdentifier,
+  emptyRelatedIdentifier
+} from './record';
 import { ContributorsField, CreatorsField, DatesField, Field } from './fields';
 
 export class DepositRecordSerializer {
@@ -64,23 +70,11 @@ export class DepositRecordSerializer {
     }),
     identifiers: new Field({
       fieldpath: 'metadata.identifiers',
-      deserializedDefault: [
-        {
-          scheme: '',
-          identifier: '',
-        },
-      ],
+      deserializedDefault: [emptyIdentifier],
     }),
     related_identifiers: new Field({
       fieldpath: 'metadata.related_identifiers',
-      deserializedDefault: [
-        {
-          scheme: '',
-          identifier: '',
-          resource_type: '',
-          relation: '',
-        },
-      ],
+      deserializedDefault: [emptyRelatedIdentifier],
     }),
   };
 

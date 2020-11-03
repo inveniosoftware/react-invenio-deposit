@@ -6,7 +6,13 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import { DepositRecordSerializer } from './DepositRecordSerializer';
-import { emptyCreator, emptyContributor, emptyDate } from './record';
+import {
+  emptyCreator,
+  emptyContributor,
+  emptyDate,
+  emptyIdentifier,
+  emptyRelatedIdentifier,
+} from './record';
 
 describe('DepositRecordSerializer', () => {
   const serializer = new DepositRecordSerializer();
@@ -216,6 +222,72 @@ describe('DepositRecordSerializer', () => {
       });
     });
 
+    describe('alternate identifiers', () => {
+      it('serializes array as-is if filled', () => {
+        const record = {
+          metadata: {
+            identifiers: [
+              { scheme: 'doi', identifier: '10.5281/zenodo.9999999' },
+            ],
+          },
+        };
+
+        const serializedRecord = serializer.serialize(record);
+
+        expect(serializedRecord.metadata.identifiers).toEqual([{
+          scheme: 'doi', identifier: '10.5281/zenodo.9999999'
+        }]);
+      });
+
+      it("doesn't serialize if only default is present", () => {
+        const record = {
+          metadata: {
+            identifiers: [emptyIdentifier],
+          },
+        };
+
+        const serializedRecord = serializer.serialize(record);
+
+        expect(serializedRecord).toEqual({});
+      });
+    });
+
+    describe('related identifiers', () => {
+      it('serializes array as-is if filled', () => {
+        const record = {
+          metadata: {
+            dates: [
+              {
+                date: "2020/08",
+                type: "accepted",
+                description: "bar"
+              },
+            ],
+          },
+        };
+
+        const serializedRecord = serializer.serialize(record);
+
+        expect(serializedRecord.metadata.dates).toEqual([{
+          date: "2020/08",
+          type: "accepted",
+          description: "bar"
+        }]);
+      });
+
+      it("doesn't serialize if only default is present", () => {
+        const record = {
+          metadata: {
+            dates: [emptyDate],
+          },
+        };
+
+        const serializedRecord = serializer.serialize(record);
+
+        expect(serializedRecord.metadata).toEqual({});
+      });
+    });
+
   });
 
   describe('deserialize', () => {
@@ -235,6 +307,9 @@ describe('DepositRecordSerializer', () => {
           resource_type: '',
           publication_date: '',
           dates: [emptyDate],
+          languages: [],
+          identifiers: [emptyIdentifier],
+          related_identifiers: [emptyRelatedIdentifier],
         },
         access: {
           metadata: false,
@@ -284,6 +359,14 @@ describe('DepositRecordSerializer', () => {
           title: 'Test 2020-1028 13:34',
           additional_titles: [{title: 'Another title', type: "abstract", lang: "dan"}],
           dates: [{ date: "1920/2020", type: "collected", description: "foo"}],
+          languages: ["en", "fr"],
+          identifiers: [{ scheme: 'doi', identifier: '10.5281/zenodo.9999999' }],
+          related_identifiers: [{
+            scheme: 'doi',
+            identifier: '10.5281/zenodo.9999988',
+            resource_type: { type: "image", subtype: "image-photo" },
+            relation_type: 'requires'
+          }],
         },
         revision_id: 1,
         ui: {
@@ -328,6 +411,14 @@ describe('DepositRecordSerializer', () => {
           title: 'Test 2020-1028 13:34',
           additional_titles: [{title: 'Another title', type: "abstract", lang: "dan"}],
           dates: [{ date: "1920/2020", type: "collected", description: "foo"}],
+          languages: ["en", "fr"],
+          identifiers: [{ scheme: 'doi', identifier: '10.5281/zenodo.9999999' }],
+          related_identifiers: [{
+            scheme: 'doi',
+            identifier: '10.5281/zenodo.9999988',
+            resource_type: { type: "image", subtype: "image-photo" },
+            relation_type: 'requires'
+          }],
         },
       };
       expect(deserializedRecord).toEqual(expectedRecord);
