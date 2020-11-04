@@ -76,6 +76,10 @@ export class DepositRecordSerializer {
       fieldpath: 'metadata.related_identifiers',
       deserializedDefault: [emptyRelatedIdentifier],
     }),
+    subjects: new Field({
+      fieldpath: 'metadata.subjects',
+      deserializedDefault: [],
+    }),
   };
 
   /**

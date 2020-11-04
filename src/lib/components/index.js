@@ -16,6 +16,7 @@ export { IdentifiersField } from './IdentifiersField';
 export { PublicationDateField } from './PublicationDateField';
 export { PublisherField } from './PublisherField';
 export { ResourceTypeField } from './ResourceTypeField';
+export { SubjectsField } from './SubjectsField';
 export { TitlesField } from './TitlesField';
 export { LanguagesField } from './LanguagesField';
 export { RelatedIdentifiersField } from './RelatedIdentifiersField';

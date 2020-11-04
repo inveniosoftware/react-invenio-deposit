@@ -312,6 +312,7 @@ describe('DepositRecordSerializer', () => {
           languages: [],
           identifiers: [emptyIdentifier],
           related_identifiers: [emptyRelatedIdentifier],
+          subjects: [],
         },
         access: {
           metadata: false,
@@ -369,6 +370,16 @@ describe('DepositRecordSerializer', () => {
             resource_type: { type: "image", subtype: "image-photo" },
             relation_type: 'requires'
           }],
+          subjects: [
+            {
+              text: 'MeSH: Cognitive Neuroscience',
+              value: {
+                subject: 'Cognitive Neuroscience',
+                scheme: 'mesh',
+                identifier: 'D000066494'
+              },
+            },
+          ]
         },
         revision_id: 1,
         ui: {
@@ -421,6 +432,16 @@ describe('DepositRecordSerializer', () => {
             resource_type: { type: "image", subtype: "image-photo" },
             relation_type: 'requires'
           }],
+          subjects: [
+            {
+              text: 'MeSH: Cognitive Neuroscience',
+              value: {
+                subject: 'Cognitive Neuroscience',
+                scheme: 'mesh',
+                identifier: 'D000066494'
+              },
+            },
+          ]
         },
       };
       expect(deserializedRecord).toEqual(expectedRecord);
