@@ -21,3 +21,4 @@ export { SubjectsField } from './SubjectsField';
 export { TitlesField } from './TitlesField';
 export { LanguagesField } from './LanguagesField';
 export { RelatedIdentifiersField } from './RelatedIdentifiersField';
+export { VersionField } from './VersionField';
