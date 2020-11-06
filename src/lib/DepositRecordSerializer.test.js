@@ -314,7 +314,8 @@ describe('DepositRecordSerializer', () => {
           identifiers: [emptyIdentifier],
           related_identifiers: [emptyRelatedIdentifier],
           subjects: [],
-          funding: [emptyFunding]
+          funding: [emptyFunding],
+          version: '',
         },
         access: {
           metadata: false,
@@ -397,6 +398,7 @@ describe('DepositRecordSerializer', () => {
               }
             }
           ],
+          version: 'v2.0.0',
         },
         revision_id: 1,
         ui: {
@@ -474,6 +476,7 @@ describe('DepositRecordSerializer', () => {
               }
             }
           ],
+          version: 'v2.0.0',
         },
       };
       expect(deserializedRecord).toEqual(expectedRecord);

@@ -85,6 +85,10 @@ export class DepositRecordSerializer {
       fieldpath: 'metadata.funding',
       deserializedDefault: [emptyFunding],
     }),
+    version: new Field({
+      fieldpath: 'metadata.version',
+      deserializedDefault: '',
+    }),
   };
 
   /**
