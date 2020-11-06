@@ -50,3 +50,17 @@ export const emptyDate = {
   description: '',
   type: 'accepted',
 };
+
+export const emptyFunding = {
+  funder: {
+    name: '',
+    identifier: '',
+    scheme: '',
+  },
+  award: {
+    title: '',
+    number: '',
+    identifier: '',
+    scheme: '',
+  }
+}

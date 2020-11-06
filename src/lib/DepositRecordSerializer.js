@@ -18,6 +18,7 @@ import {
   emptyCreator,
   emptyContributor,
   emptyDate,
+  emptyFunding,
   emptyIdentifier,
   emptyRelatedIdentifier
 } from './record';
@@ -79,6 +80,10 @@ export class DepositRecordSerializer {
     subjects: new Field({
       fieldpath: 'metadata.subjects',
       deserializedDefault: [],
+    }),
+    funding: new Field({
+      fieldpath: 'metadata.funding',
+      deserializedDefault: [emptyFunding],
     }),
   };
 

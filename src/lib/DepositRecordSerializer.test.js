@@ -10,6 +10,7 @@ import {
   emptyCreator,
   emptyContributor,
   emptyDate,
+  emptyFunding,
   emptyIdentifier,
   emptyRelatedIdentifier,
 } from './record';
@@ -313,6 +314,7 @@ describe('DepositRecordSerializer', () => {
           identifiers: [emptyIdentifier],
           related_identifiers: [emptyRelatedIdentifier],
           subjects: [],
+          funding: [emptyFunding]
         },
         access: {
           metadata: false,
@@ -379,7 +381,22 @@ describe('DepositRecordSerializer', () => {
                 identifier: 'D000066494'
               },
             },
-          ]
+          ],
+          funding: [
+            {
+              funder: {
+                name: 'Funder 2',
+                identifier: 'funder2',
+                scheme: 'funderScheme2',
+              },
+              award: {
+                title: 'Award B2',
+                number: 'B21234',
+                identifier: 'awardB2',
+                scheme: 'awardSchemeB',
+              }
+            }
+          ],
         },
         revision_id: 1,
         ui: {
@@ -441,7 +458,22 @@ describe('DepositRecordSerializer', () => {
                 identifier: 'D000066494'
               },
             },
-          ]
+          ],
+          funding: [
+            {
+              funder: {
+                name: 'Funder 2',
+                identifier: 'funder2',
+                scheme: 'funderScheme2',
+              },
+              award: {
+                title: 'Award B2',
+                number: 'B21234',
+                identifier: 'awardB2',
+                scheme: 'awardSchemeB',
+              }
+            }
+          ],
         },
       };
       expect(deserializedRecord).toEqual(expectedRecord);
