@@ -12,6 +12,7 @@ export { ContributorsField } from './ContributorsField';
 export { CreatorsField } from './CreatorsField';
 export { DatesField } from './DatesField';
 export { DescriptionsField } from './DescriptionsField';
+export { FundingField } from './FundingField';
 export { IdentifiersField } from './IdentifiersField';
 export { PublicationDateField } from './PublicationDateField';
 export { PublisherField } from './PublisherField';
