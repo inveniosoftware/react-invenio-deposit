@@ -7,7 +7,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Form, Icon } from 'semantic-ui-react';
 
 import {
   ArrayField,
@@ -31,7 +31,7 @@ export class AdditionalDescriptionsField extends Component {
           <>
             <RichInputField
               fieldPath={`${key}.description`}
-              label={'Additional Desciption'}
+              label={'Additional Description'}
               optimized={true}
               required
             />
@@ -48,14 +48,16 @@ export class AdditionalDescriptionsField extends Component {
                 options={options.lang}
                 clearable
               />
-              <>
-                <Button icon type="button">
-                  <Icon
-                    name="close"
-                    onClick={() => arrayHelpers.remove(indexPath)}
-                  />
+              <Form.Field>
+                <label>&nbsp;</label>
+                <Button
+                  icon
+                  type="button"
+                  onClick={() => arrayHelpers.remove(indexPath)}
+                >
+                  <Icon name="close" />
                 </Button>
-              </>
+              </Form.Field>
             </GroupField>
           </>
         )}
