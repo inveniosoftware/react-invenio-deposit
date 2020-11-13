@@ -14,6 +14,7 @@ export { DatesField } from './DatesField';
 export { DescriptionsField } from './DescriptionsField';
 export { FundingField } from './FundingField';
 export { IdentifiersField } from './IdentifiersField';
+export { LicenseField } from './LicenseField';
 export { PublicationDateField } from './PublicationDateField';
 export { PublisherField } from './PublisherField';
 export { ResourceTypeField } from './ResourceTypeField';
