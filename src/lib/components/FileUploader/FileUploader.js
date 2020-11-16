@@ -119,7 +119,11 @@ FileUploader.propTypes = {
 
 FileUploader.defaultProps = {
   dragText: 'Drag and drop file(s)',
+<<<<<<< HEAD
   uploadButtonText: 'Upload files',
+=======
+  uploadButtonText: 'Choose files',
+>>>>>>> f3a8057... files: style file uploader views
   uploadButtonIcon: 'upload',
   quota: {
     maxFiles: 5,
