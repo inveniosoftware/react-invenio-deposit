@@ -92,14 +92,17 @@ export class DepositController {
     if (!this.draftAlreadyCreated(payload)) {
       this.createDraft(payload, { store });
     }
+    // TODO: move the store action to `this.fileUploader.initializeUpload` method
     store.dispatch({
       type: 'FILE_UPLOAD_INITIATE',
-      payload: files.map((file) => ({ fileName: file.name, size: file.size })),
+      payload: files.map((file) => ({ filename: file.name, size: file.size })),
     });
 
     for (const file of files) {
       this.fileUploader.upload(file, { store });
     }
+
+    // TODO: call a `this.fileUploader.finalizeUpload` method for finalizing the upload
   };
 
   async deleteDraftFile(file, { formik, store }) {
@@ -110,7 +113,7 @@ export class DepositController {
       store.dispatch({
         type: 'FILE_DELETED_SUCCESS',
         payload: {
-          fileName: file.fileName,
+          filename: file.filename,
         },
       });
     } catch (e) {

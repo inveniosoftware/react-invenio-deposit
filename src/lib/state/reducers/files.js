@@ -33,9 +33,9 @@ export default (state = initialState, action) => {
       return {
         ...state,
         ...action.payload.reduce((obj, file) => {
-          obj[file.fileName] = {
+          obj[file.filename] = {
             progress: 0,
-            fileName: file.fileName,
+            filename: file.filename,
             size: file.size,
             state: UploadState.initial,
             checksum: null,
@@ -48,9 +48,9 @@ export default (state = initialState, action) => {
     case FILE_UPLOAD_START:
       return {
         ...state,
-        [action.payload.fileName]: {
+        [action.payload.filename]: {
           progress: 0,
-          fileName: action.payload.fileName,
+          filename: action.payload.filename,
           size: action.payload.size,
           state: UploadState.uploading,
           checksum: null,
@@ -62,8 +62,8 @@ export default (state = initialState, action) => {
     case FILE_UPLOAD_IN_PROGRESS:
       return {
         ...state,
-        [action.payload.fileName]: {
-          ...state[action.payload.fileName],
+        [action.payload.filename]: {
+          ...state[action.payload.filename],
           progress: action.payload.percent,
           state: UploadState.uploading,
         },
@@ -71,8 +71,8 @@ export default (state = initialState, action) => {
     case FILE_UPLOAD_FINISHED:
       newState = {
         ...state,
-        [action.payload.fileName]: {
-          ...state[action.payload.fileName],
+        [action.payload.filename]: {
+          ...state[action.payload.filename],
           state: UploadState.finished,
           checksum: action.payload.checksum,
           links: action.payload.links,
@@ -88,8 +88,8 @@ export default (state = initialState, action) => {
     case FILE_UPLOAD_FAILED:
       newState = {
         ...state,
-        [action.payload.fileName]: {
-          ...state[action.payload.fileName],
+        [action.payload.filename]: {
+          ...state[action.payload.filename],
           state: UploadState.error,
           cancel: null,
         },
@@ -103,14 +103,14 @@ export default (state = initialState, action) => {
     case FILE_UPLOAD_SET_CANCEL_FUNCTION:
       return {
         ...state,
-        [action.payload.fileName]: {
-          ...state[action.payload.fileName],
+        [action.payload.filename]: {
+          ...state[action.payload.filename],
           cancel: action.payload.cancel,
         },
       };
     case FILE_UPLOAD_CANCELLED:
       const {
-        [action.payload.fileName]: cancelledFile,
+        [action.payload.filename]: cancelledFile,
         ...afterCancellationState
       } = state;
       return {
@@ -121,7 +121,7 @@ export default (state = initialState, action) => {
       };
     case FILE_DELETED_SUCCESS:
       const {
-        [action.payload.fileName]: deletedFile,
+        [action.payload.filename]: deletedFile,
         ...afterDeletionState
       } = state;
       return {

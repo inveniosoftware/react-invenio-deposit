@@ -20,12 +20,15 @@ import {
   emptyDate,
   emptyFunding,
   emptyIdentifier,
-  emptyRelatedIdentifier
+  emptyRelatedIdentifier,
 } from './record';
 import { ContributorsField, CreatorsField, DatesField, Field } from './fields';
 
 export class DepositRecordSerializer {
   depositRecordSchema = {
+    files: new Field({
+      fieldpath: 'files',
+    }),
     title: new Field({
       fieldpath: 'metadata.title',
       deserializedDefault: '',
@@ -139,6 +142,7 @@ export class DepositRecordSerializer {
       'metadata',
       'id',
       'links',
+      'files',
     ]);
 
     for (let key in this.depositRecordSchema) {

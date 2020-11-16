@@ -6,54 +6,41 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Dropzone from 'react-dropzone';
-import {
-  Button,
-  Divider,
-  Grid,
-  Header,
-  Segment,
-  Icon,
-  Progress,
-  Table,
-  Popup,
-} from 'semantic-ui-react';
+import { Grid, Segment } from 'semantic-ui-react';
+
+import { FileUploadArea } from './FileUploadArea';
+import { FileUploaderToolbar } from './FileUploaderToolbar';
 import { UploadState } from '../../state/reducers/files';
 
-function humanReadableBytes(bytes) {
-  const kiloBytes = 1000;
-  const megaBytes = 1000 * kiloBytes;
-
-  if (bytes < kiloBytes) {
-    return <>{bytes} bytes</>;
-  } else if (bytes < megaBytes) {
-    return <>{(bytes / kiloBytes).toFixed(2)} Kb</>;
-  } else {
-    return <>{(bytes / megaBytes).toFixed(2)} Mb</>;
-  }
-}
-
 export default class FileUploader extends Component {
+  constructor() {
+    super();
+    this.state = { filesEnabled: true };
+  }
+
+  onMetadataOnlyClick = (event, data) => {
+    if (!data['disabled']) {
+      this.setState((previousState) => {
+        return {
+          ...previousState,
+          ...{ filesEnabled: !previousState.filesEnabled },
+        };
+      });
+    }
+  };
   render() {
-    const {
-      files,
-      record,
-      uploadFilesToDraft,
-      deleteFileFromRecord,
-      uploadButtonIcon,
-      uploadButtonText,
-      dragText,
-    } = this.props;
+    const { files, record, uploadFilesToDraft, quota } = this.props;
     const dropzoneParams = {
       preventDropOnDocument: true,
       onDropAccepted: (files) => uploadFilesToDraft(record, files),
       multiple: true,
       noClick: true,
       noKeyboard: true,
+      maxFiles: quota.maxFiles,
     };
     let filesList = Object.values(files).map((fileState) => {
       return {
-        fileName: fileState.fileName,
+        filename: fileState.filename,
         size: fileState.size,
         checksum: fileState.checksum,
         links: fileState.links,
@@ -68,152 +55,48 @@ export default class FileUploader extends Component {
       };
     });
 
-    return (
-      <Dropzone {...dropzoneParams}>
-        {({ getRootProps, getInputProps, open: openFileDialog }) => (
-          <div {...getRootProps()}>
-            <input {...getInputProps()} />
-            <Segment textAlign="center">
-              <Grid celled="internally">
-                <Grid.Row columns={1}>
-                  {filesList.length !== 0 && (
-                    <Grid.Column verticalAlign="middle">
-                      <Table striped>
-                        <Table.Header>
-                          <Table.Row>
-                            <Table.HeaderCell>Filename</Table.HeaderCell>
-                            <Table.HeaderCell>Size</Table.HeaderCell>
-                            <Table.HeaderCell textAlign="center">
-                              Progress
-                            </Table.HeaderCell>
-                            <Table.HeaderCell textAlign="center">
-                              Action
-                            </Table.HeaderCell>
-                          </Table.Row>
-                        </Table.Header>
+    const filesSize = filesList.reduce(
+      (totalSize, file) => (totalSize += file.size),
+      0
+    );
 
-                        <Table.Body>
-                          {filesList.map((file) => {
-                            return (
-                              <Table.Row
-                                key={file.fileName}
-                                className="file-table-row"
-                              >
-                                <Table.Cell>
-                                  {file.fileName} <br />
-                                  {file.checksum && (
-                                    <div>
-                                      <small className="file-checksum">
-                                        {file.checksum}
-                                      </small>{' '}
-                                      <Popup
-                                        content="This is the file fingerprint (MD5 checksum), which can be used to verify the file integrity."
-                                        trigger={
-                                          <Icon
-                                            fitted
-                                            name="help circle"
-                                            size="small"
-                                          />
-                                        }
-                                        inverted
-                                      />
-                                    </div>
-                                  )}
-                                </Table.Cell>
-                                <Table.Cell>
-                                  {humanReadableBytes(file.size)}
-                                </Table.Cell>
-                                <Table.Cell>
-                                  {file.upload && (
-                                    <Progress
-                                      className="file-upload-progress"
-                                      percent={file.upload.progress}
-                                      error={file.upload.failed}
-                                      size="medium"
-                                      color="blue"
-                                      progress
-                                      autoSuccess
-                                      active={!file.upload.initial}
-                                      disabled={file.upload.initial}
-                                    />
-                                  )}
-                                </Table.Cell>
-                                <Table.Cell textAlign="center">
-                                  {file.upload && file.upload.finished && (
-                                    <Icon
-                                      className="action"
-                                      name="trash alternate outline"
-                                      color="blue"
-                                      onClick={() => deleteFileFromRecord(file)}
-                                    />
-                                  )}
-                                  {file.upload && file.upload.ongoing && (
-                                    <Button
-                                      type="button"
-                                      icon
-                                      labelPosition="left"
-                                      negative
-                                      size="mini"
-                                      onClick={() => file.upload.cancel()}
-                                    >
-                                      <Icon name="cancel" />
-                                      Cancel
-                                    </Button>
-                                  )}
-                                </Table.Cell>
-                              </Table.Row>
-                            );
-                          })}
-                        </Table.Body>
-                        <Table.Footer fullWidth>
-                          <Table.Row>
-                            <Table.HeaderCell colSpan="4">
-                              <Button
-                                type="button"
-                                floated="right"
-                                primary={true}
-                                className="file-selection-btn"
-                                icon={uploadButtonIcon}
-                                content={uploadButtonText}
-                                onClick={() => openFileDialog()}
-                                disabled={openFileDialog === null}
-                              />
-                            </Table.HeaderCell>
-                          </Table.Row>
-                        </Table.Footer>
-                      </Table>
-                    </Grid.Column>
-                  )}
-                  {filesList.length === 0 && (
-                    <Grid.Column verticalAlign="middle" width={16}>
-                      <Header>{dragText}</Header>
-                      <>
-                        <Divider horizontal>Or</Divider>
-                        <Button
-                          type="button"
-                          primary={true}
-                          className="file-selection-btn"
-                          icon={uploadButtonIcon}
-                          content={uploadButtonText}
-                          onClick={() => openFileDialog()}
-                          disabled={openFileDialog === null}
-                        />
-                      </>
-                    </Grid.Column>
-                  )}
-                </Grid.Row>
-              </Grid>
+    return (
+      <Grid style={{ marginBottom: '20px' }}>
+        <Grid.Row>
+          <FileUploaderToolbar
+            {...this.props}
+            onMetadataOnlyClick={this.onMetadataOnlyClick}
+            filesSize={filesSize}
+            filesList={filesList}
+            isDraftRecord={true}
+          />
+        </Grid.Row>
+        <Grid.Row className="file-upload-area-row">
+          <FileUploadArea
+            {...this.props}
+            filesEnabled={this.state.filesEnabled}
+            filesList={filesList}
+            dropzoneParams={dropzoneParams}
+            isDraftRecord={true}
+          />
+        </Grid.Row>
+        <Grid.Row className="file-upload-note-row">
+          <Grid.Column width={16}>
+            <Segment basic className="file-upload-note">
+              Note: File addition, removal or modification are not allowed after
+              you have published your upload. This is because a Digital Object
+              Identifier (DOI) is registered with DataCite for each upload.
             </Segment>
-          </div>
-        )}
-      </Dropzone>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     );
   }
 }
 
 const fileDetailsShape = PropTypes.objectOf(
   PropTypes.shape({
-    fileName: PropTypes.string,
+    filename: PropTypes.string,
     size: PropTypes.number,
     progress: PropTypes.number,
     checksum: PropTypes.string,
@@ -228,10 +111,18 @@ FileUploader.propTypes = {
   dragText: PropTypes.string,
   uploadButtonText: PropTypes.string,
   uploadButtonIcon: PropTypes.string,
+  quota: PropTypes.shape({
+    maxStorage: PropTypes.number,
+    maxFiles: PropTypes.number,
+  }),
 };
 
 FileUploader.defaultProps = {
-  dragText: 'Drag and drop files here',
-  uploadButtonText: 'Choose files',
+  dragText: 'Drag and drop file(s)',
+  uploadButtonText: 'Upload files',
   uploadButtonIcon: 'upload',
+  quota: {
+    maxFiles: 5,
+    maxStorage: 10000000000,
+  },
 };

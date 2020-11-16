@@ -18,15 +18,14 @@ import { DepositFileUploader } from './DepositFileUploader';
 
 export class DepositFormApp extends Component {
   constructor(props) {
-    super(props);
-
+    super();
     const apiClient = props.apiClient
       ? props.apiClient
       : new DepositApiClient(props.config.createUrl);
 
     const fileUploader = props.fileUploader
       ? props.fileUploader
-      : new DepositFileUploader(apiClient, props.config.fileUploadConcurrency);
+      : new DepositFileUploader(apiClient, props.config);
 
     const controller = props.controller
       ? props.controller

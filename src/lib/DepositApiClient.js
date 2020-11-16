@@ -6,6 +6,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import axios from 'axios';
+import { reject } from 'lodash';
 
 const CancelToken = axios.CancelToken;
 
@@ -51,20 +52,41 @@ export class DepositApiClient {
   uploadFile(file, onUploadProgress, cancel) {
     const formData = new FormData();
     formData.append('file', file);
-
     const BUCKET_ID = '8e4c2e2d-769e-4bc4-8c1b-1ae9fdc3f07f';
     const UPLOAD_URL = `/api/files/${BUCKET_ID}`;
 
-    return axios.put(`${UPLOAD_URL}/${file.name}`, file, {
-      headers: {
-        'content-type': 'application/octet-stream',
-      },
-      onUploadProgress,
-      cancelToken: new CancelToken(cancel),
+    // TODO: restore when REST file integration is complete
+    // return axios.put(`${UPLOAD_URL}/${file.name}`, file, {
+    //   headers: {
+    //     'content-type': 'application/octet-stream',
+    //   },
+    //   onUploadProgress,
+    //   cancelToken: new CancelToken(cancel),
+    // });
+
+    // TODO: remove when REST file integration is complete
+    return new Promise((resolve, reject) => {
+      resolve({
+        data: {
+          key: file.name,
+          size: file.size,
+          checksum: 'md5:dsfasdfasfsdfa',
+          links: {
+            self: '#',
+            version: '#',
+          },
+        },
+      });
     });
   }
 
   deleteFile(deleteUrl) {
-    return axios.delete(deleteUrl);
+    // TODO: restore when REST file integration is complete
+    // return axios.delete(deleteUrl);
+
+    // TODO: remove when REST file integration is complete
+    return new Promise((resolve, reject) => {
+      resolve();
+    });
   }
 }
