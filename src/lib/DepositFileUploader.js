@@ -12,11 +12,11 @@ import axios from 'axios';
 import _indexOf from 'lodash/indexOf';
 
 export class DepositFileUploader {
-  constructor(apiClient, { concurrency } = {}) {
+  constructor(apiClient, { fileUploadConcurrency } = {}) {
     this.apiClient = apiClient;
     this.currentUploads = [];
     this.pending = [];
-    this.maxConcurrentUploads = concurrency || 3;
+    this.maxConcurrentUploads = fileUploadConcurrency || 3;
   }
 
   addToCurrentUploads(file) {
@@ -42,7 +42,7 @@ export class DepositFileUploader {
 
   uploadNext = ({ store }) => {
     let nextUpload;
-    if (this.pending.length) {
+    if (this.pending.length > 0) {
       nextUpload = this.removeFromPending();
     }
 
@@ -59,7 +59,7 @@ export class DepositFileUploader {
 
       store.dispatch({
         type: 'FILE_UPLOAD_START',
-        payload: { fileName: file.name, size: file.size },
+        payload: { filename: file.name, size: file.size },
       });
       try {
         const resp = await this.apiClient.uploadFile(
@@ -68,7 +68,7 @@ export class DepositFileUploader {
             store.dispatch({
               type: 'FILE_UPLOAD_IN_PROGRESS',
               payload: {
-                fileName: file.name,
+                filename: file.name,
                 percent: Math.floor((e.loaded / e.total) * 100),
               },
             });
@@ -77,14 +77,14 @@ export class DepositFileUploader {
             // A cancel function for aborting the upload request
             store.dispatch({
               type: 'FILE_UPLOAD_SET_CANCEL_FUNCTION',
-              payload: { fileName: file.name, cancel: c },
+              payload: { filename: file.name, cancel: c },
             });
           }
         );
         store.dispatch({
           type: 'FILE_UPLOAD_FINISHED',
           payload: {
-            fileName: resp.data.key,
+            filename: resp.data.key,
             size: resp.data.size,
             checksum: resp.data.checksum,
             links: {
@@ -98,7 +98,7 @@ export class DepositFileUploader {
           store.dispatch({
             type: 'FILE_UPLOAD_CANCELLED',
             payload: {
-              fileName: file.name,
+              filename: file.name,
             },
           });
         } else {
@@ -106,7 +106,7 @@ export class DepositFileUploader {
           store.dispatch({
             type: 'FILE_UPLOAD_FAILED',
             payload: {
-              fileName: file.name,
+              filename: file.name,
             },
           });
         }
