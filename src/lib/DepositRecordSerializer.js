@@ -29,6 +29,9 @@ export class DepositRecordSerializer {
     files: new Field({
       fieldpath: 'files',
     }),
+    links: new Field({
+      fieldpath: 'links',
+    }),
     title: new Field({
       fieldpath: 'metadata.title',
       deserializedDefault: '',

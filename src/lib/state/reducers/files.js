@@ -32,18 +32,15 @@ export default (state = initialState, action) => {
     case FILE_UPLOAD_INITIATE:
       return {
         ...state,
-        ...action.payload.reduce((obj, file) => {
-          obj[file.filename] = {
-            progress: 0,
-            filename: file.filename,
-            size: file.size,
-            state: UploadState.initial,
-            checksum: null,
-            links: null,
-            cancel: null,
-          };
-          return obj;
-        }, {}),
+        [action.payload.filename]: {
+          progress: 0,
+          filename: action.payload.filename,
+          size: action.payload.size,
+          state: UploadState.initial,
+          checksum: null,
+          links: null,
+          cancel: null,
+        },
       };
     case FILE_UPLOAD_START:
       return {
