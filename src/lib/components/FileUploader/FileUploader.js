@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Segment } from 'semantic-ui-react';
 
-import { FileUploadArea } from './FileUploadArea';
+import { FileUploaderArea } from './FileUploaderArea';
 import { FileUploaderToolbar } from './FileUploaderToolbar';
 import { UploadState } from '../../state/reducers/files';
 
@@ -72,7 +72,7 @@ export default class FileUploader extends Component {
           />
         </Grid.Row>
         <Grid.Row className="file-upload-area-row">
-          <FileUploadArea
+          <FileUploaderArea
             {...this.props}
             filesEnabled={this.state.filesEnabled}
             filesList={filesList}
@@ -119,11 +119,7 @@ FileUploader.propTypes = {
 
 FileUploader.defaultProps = {
   dragText: 'Drag and drop file(s)',
-<<<<<<< HEAD
   uploadButtonText: 'Upload files',
-=======
-  uploadButtonText: 'Choose files',
->>>>>>> f3a8057... files: style file uploader views
   uploadButtonIcon: 'upload',
   quota: {
     maxFiles: 5,

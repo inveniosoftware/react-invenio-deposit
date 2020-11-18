@@ -95,7 +95,7 @@ const FileTableRow = ({
     )}
     {isDraftRecord && (
       <Table.Cell textAlign="right" width={2} className="file-table-cell">
-        {file.upload && !file.upload.finished && (
+        {file.upload && file.upload.finished && (
           <Icon
             className="action"
             name="trash alternate outline"
@@ -103,7 +103,7 @@ const FileTableRow = ({
             onClick={() => deleteFileFromRecord(file)}
           />
         )}
-        {file.upload && !file.upload.ongoing && (
+        {file.upload && file.upload.ongoing && (
           <Button
             compact
             type="button"
@@ -182,7 +182,7 @@ const FilesListTable = ({
   </Table>
 );
 
-export class FileUploadArea extends Component {
+export class FileUploaderArea extends Component {
   constructor() {
     super();
     this.state = {

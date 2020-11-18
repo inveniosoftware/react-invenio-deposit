@@ -49,14 +49,57 @@ export class DepositApiClient {
     );
   }
 
-  uploadFile(file, onUploadProgress, cancel) {
+  initializeFileUpload(initializeUploadUrl, file) {
+    console.log(initializeUploadUrl);
+    const payload = [
+      {
+        key: file.name,
+        size: file.size,
+      },
+    ];
+    // TODO: restore when REST file integration is complete
+    // return axios.post(initializeUploadUrl, payload, {
+    //   headers: {
+    //     'content-type': 'application/json',
+    //   },
+    // });
+
+    // TODO: remobe when REST file integration is complete
+    return new Promise((resolve, reject) => {
+      resolve({
+        data: {
+          entries: [
+            {
+              id: '1234',
+              created: '2020-11-15T19:04:22',
+              updated: '2020-11-15T19:04:22',
+              key: file.name,
+
+              checksum: 'md5:abcdef...',
+              size: file.size,
+              metadata: {
+                description: 'Published article PDF.',
+              },
+              links: {
+                upload: {
+                  href: `${initializeUploadUrl}/${file.name}/upload`,
+                  method: 'PUT',
+                },
+                self: `${initializeUploadUrl}/${file.name}`,
+              },
+            },
+          ],
+        },
+      });
+    });
+  }
+
+  uploadFile(uploadUrl, file, onUploadProgress, cancel) {
     const formData = new FormData();
     formData.append('file', file);
-    const BUCKET_ID = '8e4c2e2d-769e-4bc4-8c1b-1ae9fdc3f07f';
-    const UPLOAD_URL = `/api/files/${BUCKET_ID}`;
 
     // TODO: restore when REST file integration is complete
-    // return axios.put(`${UPLOAD_URL}/${file.name}`, file, {
+    // return axios.put(uploadUrl, file, {
     //   headers: {
     //     'content-type': 'application/octet-stream',
     //   },
@@ -68,12 +111,38 @@ export class DepositApiClient {
     return new Promise((resolve, reject) => {
       resolve({
         data: {
-          key: file.name,
+          mimetype: 'application/zip',
+          checksum: 'md5:2942bfabb3d05332b66eb128e0842cff',
           size: file.size,
-          checksum: 'md5:dsfasdfasfsdfa',
+        },
+      });
+    });
+  }
+
+  finalizeFileUpload(finalizeUploadUrl, file) {
+    // TODO: restore when REST file integration is complete
+    // return axios.post(finalizeUploadUrl, {} , {
+    //   headers: {
+    //     'content-type': 'application/json',
+    //   },
+    // });
+
+    // TODO: remove when REST file integration is complete
+    return new Promise((resolve, reject) => {
+      resolve({
+        data: {
+          id: '...',
+          created: '2020-11-15T19:04:22',
+          updated: '2020-11-15T19:04:22',
+          key: file.name,
+
+          checksum: 'md5:abcdef...',
+          size: file.size,
+          metadata: {
+            description: 'Published article PDF.',
+          },
           links: {
-            self: '#',
-            version: '#',
+            self: '/api/records/12345-aaaaa/draft/files/article.pdf',
           },
         },
       });

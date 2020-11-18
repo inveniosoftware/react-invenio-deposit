@@ -92,24 +92,22 @@ export class DepositController {
     if (!this.draftAlreadyCreated(payload)) {
       this.createDraft(payload, { store });
     }
-    // TODO: move the store action to `this.fileUploader.initializeUpload` method
-    store.dispatch({
-      type: 'FILE_UPLOAD_INITIATE',
-      payload: files.map((file) => ({ filename: file.name, size: file.size })),
-    });
-
     for (const file of files) {
-      this.fileUploader.upload(file, { store });
+      // TODO: remove the default value for `links.draft_files` when REST integration completes
+      this.fileUploader.upload(
+        payload.links.draft_files || `/api/records/${record.id}/draft/files`,
+        file,
+        {
+          store,
+        }
+      );
     }
-
-    // TODO: call a `this.fileUploader.finalizeUpload` method for finalizing the upload
   };
 
-  async deleteDraftFile(file, { formik, store }) {
-    //Create draft
-    const fileVersionUrl = file.links.version;
+  async deleteDraftFile(file, { store }) {
+    const fileDeletionUrl = file.links.self;
     try {
-      const resp = await this.apiClient.deleteFile(fileVersionUrl);
+      const resp = await this.apiClient.deleteFile(fileDeletionUrl);
       store.dispatch({
         type: 'FILE_DELETED_SUCCESS',
         payload: {
