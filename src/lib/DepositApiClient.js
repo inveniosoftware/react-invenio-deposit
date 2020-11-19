@@ -50,7 +50,6 @@ export class DepositApiClient {
   }
 
   initializeFileUpload(initializeUploadUrl, file) {
-    console.log(initializeUploadUrl);
     const payload = [
       {
         key: file.name,

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import FileUploaderComponent from './FileUploader';
 import { uploadDraftFiles, deleteDraftFile } from '../../state/actions/files';
+import { setCurrentPreviewFile } from '../../state/actions/deposit';
 
 const mapStateToProps = (state) => {
   const { isFileUploadInProgress, ...files } = state.files;
@@ -15,6 +16,8 @@ const mapDispatchToProps = (dispatch) => ({
   uploadFilesToDraft: (record, files) =>
     dispatch(uploadDraftFiles(record, files)),
   deleteFileFromRecord: (file) => dispatch(deleteDraftFile(file)),
+  setCurrentPreviewFile: (filename) =>
+    dispatch(setCurrentPreviewFile(filename)),
 });
 
 export const FileUploader = connect(

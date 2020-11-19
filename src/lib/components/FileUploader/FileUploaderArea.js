@@ -56,7 +56,9 @@ const FileTableRow = ({
   <Table.Row key={file.filename} className="file-table-row">
     <Table.Cell className="file-table-cell" width={2}>
       <Checkbox
-        checked={currentPreview === file.filename}
+        checked={
+          currentPreview.checked && currentPreview.filename === file.filename
+        }
         onClick={() => onPreviewClick(file.filename)}
       />
     </Table.Cell>
@@ -186,13 +188,36 @@ export class FileUploaderArea extends Component {
   constructor() {
     super();
     this.state = {
-      currentPreview: '',
+      currentPreview: {
+        filename: '',
+        checked: false,
+      },
     };
   }
 
   onPreviewClick = (filename) => {
-    this.setState({
-      currentPreview: filename,
+    this.setState((prevState) => {
+      if (
+        prevState.currentPreview.filename === filename &&
+        prevState.currentPreview.checked
+      ) {
+        // Set defaultPreview to '' when selected file is unchecked
+        this.props.setCurrentPreviewFile('');
+        return {
+          currentPreview: {
+            filename,
+            checked: false,
+          },
+        };
+      }
+
+      this.props.setCurrentPreviewFile(filename);
+      return {
+        currentPreview: {
+          filename,
+          checked: true,
+        },
+      };
     });
   };
 

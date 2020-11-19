@@ -11,6 +11,7 @@ import {
   CREATE_DEPOSIT_SUCCESS,
   PUBLISH_SUCCESS,
   SAVE_SUCCESS,
+  SET_CURRENT_PREVIEW_FILE,
 } from '../types';
 
 export default (state = {}, action) => {
@@ -41,6 +42,12 @@ export default (state = {}, action) => {
       return {
         ...state,
         record: { ...state.record, ...action.payload.data },
+        formAction: null,
+      };
+    case SET_CURRENT_PREVIEW_FILE:
+      return {
+        ...state,
+        defaultFilePreview: action.payload,
         formAction: null,
       };
     default:

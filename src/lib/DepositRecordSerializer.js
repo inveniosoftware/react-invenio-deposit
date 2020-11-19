@@ -172,7 +172,11 @@ export class DepositRecordSerializer {
     //       affecting the original
     record  = _cloneDeep(record);
     let serializedRecord = this.removeEmptyValues(record);
-    serializedRecord = _pick(serializedRecord, ['access', 'metadata']);
+    serializedRecord = _pick(serializedRecord, [
+      'access',
+      'metadata',
+      'defaultFilePreview',
+    ]);
     for (let key in this.depositRecordSchema) {
       serializedRecord = this.depositRecordSchema[key].serialize(
         serializedRecord
