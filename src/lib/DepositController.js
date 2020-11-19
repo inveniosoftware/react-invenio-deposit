@@ -68,12 +68,13 @@ export class DepositController {
     const recordSerializer = store.config.recordSerializer;
     let payload = recordSerializer.serialize(draft);
     this.validate(payload);
+    let response = {};
     try {
       if (!this.draftAlreadyCreated(payload)) {
         response = await this.createDraft(payload, { store });
-        payload = response.data;
+      } else {
+        response = await this.apiClient.publish(payload);
       }
-      const response = await this.apiClient.publish(payload);
       store.dispatch({
         type: PUBLISH_SUCCESS,
         payload: { data: recordSerializer.deserialize(response.data) },
@@ -88,25 +89,29 @@ export class DepositController {
 
   uploadDraftFiles = async (record, files, { store }) => {
     const recordSerializer = store.config.recordSerializer;
-    const payload = recordSerializer.serialize(record);
+    let payload = recordSerializer.serialize(record);
+    let response = {};
     if (!this.draftAlreadyCreated(payload)) {
-      this.createDraft(payload, { store });
+      // TODO: pass payload instead of `{}`. Currently some fields
+      // are prefilled by default, thus the draft creation fails
+      // because of schema validation. In principle if no metadata
+      // were filled, the payload should be `{}`
+      response = await this.createDraft({}, { store });
+      payload = response.data;
     }
     for (const file of files) {
       // TODO: remove the default value for `links.draft_files` when REST integration completes
-      this.fileUploader.upload(
-        payload.links.draft_files || `/api/records/${record.id}/draft/files`,
-        file,
-        {
-          store,
-        }
-      );
+      const uploadFileUrl =
+        payload.links.draft_files || `/api/records/${payload.id}/draft/files`;
+      this.fileUploader.upload(uploadFileUrl, file, {
+        store,
+      });
     }
   };
 
   async deleteDraftFile(file, { store }) {
-    const fileDeletionUrl = file.links.self;
     try {
+      const fileDeletionUrl = file.links.self;
       const resp = await this.apiClient.deleteFile(fileDeletionUrl);
       store.dispatch({
         type: 'FILE_DELETED_SUCCESS',

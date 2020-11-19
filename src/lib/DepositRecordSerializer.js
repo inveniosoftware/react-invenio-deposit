@@ -165,7 +165,7 @@ export class DepositRecordSerializer {
    */
   serialize(record) {
     let serializedRecord = this.removeEmptyValues(record);
-
+    serializedRecord = _pick(serializedRecord, ['access', 'metadata']);
     for (let key in this.depositRecordSchema) {
       serializedRecord = this.depositRecordSchema[key].serialize(
         serializedRecord
