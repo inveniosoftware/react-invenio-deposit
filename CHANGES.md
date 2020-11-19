@@ -1,5 +1,13 @@
 # Changes
 
+Version 0.8.1 (released 2020-11-20)
+
+* Update Creators and Contributors field
+    - Remove family name / last name
+    - Add role to Creator
+    - Group name, role and type on one line
+* Use 1 field and 1 component for both Creators and Contributors
+
 Version 0.7.6 (released 2020-11-03)
 
 * Adds
