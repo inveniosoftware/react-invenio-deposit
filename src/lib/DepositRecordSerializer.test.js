@@ -7,8 +7,7 @@
 
 import { DepositRecordSerializer } from './DepositRecordSerializer';
 import {
-  emptyCreator,
-  emptyContributor,
+  emptyCreatibutor,
   emptyDate,
   emptyFunding,
   emptyIdentifier,
@@ -169,7 +168,7 @@ describe('DepositRecordSerializer', () => {
 
         serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord).toEqual({ metadata: {} });
+        expect(serializedRecord).toEqual({});
 
         // if identifiers is absent, leave absent
         record = {
@@ -219,7 +218,7 @@ describe('DepositRecordSerializer', () => {
 
         const serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord.metadata).toEqual({});
+        expect(serializedRecord).toEqual({});
       });
     });
 
@@ -305,8 +304,8 @@ describe('DepositRecordSerializer', () => {
         metadata: {
           title: '',
           additional_titles: [],
-          creators: [emptyCreator],
-          contributors: [emptyContributor],
+          creators: [emptyCreatibutor],
+          contributors: [emptyCreatibutor],
           resource_type: '',
           publication_date: '',
           dates: [emptyDate],
@@ -359,7 +358,20 @@ describe('DepositRecordSerializer', () => {
               },
             },
           ],
-          creators: [{ name: 'John Doe', type: 'personal' }],
+          creators: [
+            {
+              name: 'John Doe',
+              type: 'personal',
+              affiliations: [
+                {
+                  name: "CERN",
+                  identifiers: {
+                    ror: '01ggx4157',
+                  },
+                }
+              ]
+            }
+          ],
           publication_date: '2020-09-28',
           resource_type: { type: 'lesson' },
           title: 'Test 2020-1028 13:34',
@@ -426,6 +438,7 @@ describe('DepositRecordSerializer', () => {
         metadata: {
           contributors: [
             {
+              affiliations: [],
               name: 'Jane Smith',
               role: 'datacurator',
               type: 'personal',
@@ -437,7 +450,24 @@ describe('DepositRecordSerializer', () => {
               ],
             },
           ],
-          creators: [{ name: 'John Doe', type: 'personal' }],
+          creators: [
+            {
+              affiliations: [
+                {
+                  name: "CERN",
+                  identifiers: [
+                    {
+                      scheme: "ror",
+                      identifier: "01ggx4157",
+                    },
+                  ]
+                }
+              ],
+              identifiers: [],
+              name: 'John Doe',
+              type: 'personal',
+            }
+          ],
           publication_date: '2020-09-28',
           resource_type: { type: 'lesson' },
           title: 'Test 2020-1028 13:34',

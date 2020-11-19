@@ -8,8 +8,7 @@
 export { AccessRightField } from './AccessRightField';
 export { AdditionalTitlesField } from './AdditionalTitlesField';
 export { AffiliationsField } from './AffiliationsField';
-export { ContributorsField } from './ContributorsField';
-export { CreatorsField } from './CreatorsField';
+export { CreatibutorsField } from './CreatibutorsField';
 export { DatesField } from './DatesField';
 export { DescriptionsField } from './DescriptionsField';
 export { FileUploader } from './FileUploader';
