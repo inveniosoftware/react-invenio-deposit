@@ -41,12 +41,13 @@ export class IdentifiersField extends Component {
               <Form.Field>
                 <Form.Field>
                   <label>&nbsp;</label>
-                  <Button icon>
+                  <Button icon
+                    onClick={() => arrayHelpers.remove(indexPath)}
+                  >
                     <Icon
                       name="close"
                       size="large"
                       type="button"
-                      onClick={() => arrayHelpers.remove(indexPath)}
                     />
                   </Button>
                 </Form.Field>
