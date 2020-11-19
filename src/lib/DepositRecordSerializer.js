@@ -5,6 +5,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import _cloneDeep from 'lodash/cloneDeep';
 import _isNumber from 'lodash/isNumber';
 import _isBoolean from 'lodash/isBoolean';
 import _isEmpty from 'lodash/isEmpty';
@@ -15,14 +16,13 @@ import _pickBy from 'lodash/pickBy';
 import _pick from 'lodash/pick';
 import _mapValues from 'lodash/mapValues';
 import {
-  emptyCreator,
-  emptyContributor,
+  emptyCreatibutor,
   emptyDate,
   emptyFunding,
   emptyIdentifier,
   emptyRelatedIdentifier
 } from './record';
-import { ContributorsField, CreatorsField, DatesField, Field } from './fields';
+import { CreatibutorsField, DatesField, Field } from './fields';
 
 export class DepositRecordSerializer {
   depositRecordSchema = {
@@ -34,14 +34,14 @@ export class DepositRecordSerializer {
       fieldpath: 'metadata.additional_titles',
       deserializedDefault: [],
     }),
-    creators: new CreatorsField({
+    creators: new CreatibutorsField({
       fieldpath: 'metadata.creators',
-      deserializedDefault: [emptyCreator],
+      deserializedDefault: [emptyCreatibutor],
       serializedDefault: [],
     }),
-    contributors: new ContributorsField({
+    contributors: new CreatibutorsField({
       fieldpath: 'metadata.contributors',
-      deserializedDefault: [emptyContributor],
+      deserializedDefault: [emptyCreatibutor],
       serializedDefault: [],
     }),
     resource_type: new Field({
@@ -123,16 +123,20 @@ export class DepositRecordSerializer {
   }
 
   /**
-   * Deserialize record received from backend into format compatible with
-   * the form.
+   * Deserialize backend record into format compatible with frontend.
    * @method
    * @param {object} obj - potentially empty object
    * @returns {object} record - without empty fields
    */
   deserialize(record) {
+    // NOTE: cloning nows allows us to manipulate the copy with impunity without
+    //       affecting the original
+    record  = _cloneDeep(record);
     // Remove empty null values from record. This happens when we create a new
     // draft and the backend produces an empty record filled in with null
     // values, array of null values etc.
+    // TODO: Backend should not attempt to provide empty values. It should just
+    //       return existing record in case of edit or {} in case of new.
     let deserializedRecord = this.removeEmptyValues(record);
     deserializedRecord = _pick(deserializedRecord, [
       'access',
@@ -157,6 +161,9 @@ export class DepositRecordSerializer {
    *
    */
   serialize(record) {
+    // NOTE: cloning nows allows us to manipulate the copy with impunity without
+    //       affecting the original
+    record  = _cloneDeep(record);
     let serializedRecord = this.removeEmptyValues(record);
 
     for (let key in this.depositRecordSchema) {
@@ -164,6 +171,7 @@ export class DepositRecordSerializer {
         serializedRecord
       );
     }
-    return serializedRecord;
+    // Remove empty values again because serialization may add some back
+    return this.removeEmptyValues(serializedRecord);
   }
 }

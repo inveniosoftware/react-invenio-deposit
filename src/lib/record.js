@@ -7,19 +7,24 @@
 
 // TODO: Move to rely on DepositRecordSerializer with the deserializedDefault
 //       values to generate the empty values. Then delete this file.
-export const emptyCreator = {
-  affiliations: [
-    {
-      name: '',
-    },
-  ],
-  given_name: '',
-  family_name: '',
-  name: '',
-  type: 'personal',
+
+export const emptyIdentifier = {
+  scheme: '',
+  identifier: '',
 };
 
-export const emptyContributor = { ...emptyCreator, role: '' };
+export const emptyAffiliation = {
+  name: '',
+  identifiers: [emptyIdentifier],
+}
+
+export const emptyCreatibutor = {
+  affiliations: [emptyAffiliation],
+  identifiers: [emptyIdentifier],
+  name: '',
+  type: 'personal',
+  role: ''
+};
 
 export const emptyAdditionalTitle = {
   lang: '',
@@ -31,11 +36,6 @@ export const emptyAdditionalDescription = {
   lang: '',
   description: '',
   type: '',
-};
-
-export const emptyIdentifier = {
-  scheme: '',
-  identifier: '',
 };
 
 export const emptyRelatedIdentifier = {

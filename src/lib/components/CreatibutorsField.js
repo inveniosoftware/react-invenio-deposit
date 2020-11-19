@@ -7,46 +7,47 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Grid } from 'semantic-ui-react';
-import { ArrayField, SelectField, TextField } from 'react-invenio-forms';
+import { ArrayField, GroupField, SelectField, TextField } from 'react-invenio-forms';
 
 import { IdentifiersField } from './IdentifiersField';
 import { AffiliationsField } from './AffiliationsField';
-import { emptyContributor } from '../record';
+import { emptyCreatibutor } from '../record';
 
-export class ContributorsField extends Component {
-  /** Top-level Contributors Component */
+export class CreatibutorsField extends Component {
+  /** Top-level Creators or Contributors Component */
 
   render() {
-    const { fieldPath, options, label, labelIcon } = this.props;
+    const { addButtonLabel, fieldPath, options, label, labelIcon, required, roleRequired } = this.props;
 
     return (
       <ArrayField
-        addButtonLabel={'Add contributor'} // TODO: Pass by prop
-        defaultNewValue={emptyContributor}
+        addButtonLabel={addButtonLabel}
+        defaultNewValue={emptyCreatibutor}
         fieldPath={fieldPath}
         label={label}
         labelIcon={labelIcon}
+        required={required}
       >
         {({ array, arrayHelpers, indexPath, key, form }) => (
           <>
-            <TextField fieldPath={`${key}.name`} label={'Name'} required />
-            <SelectField
-              fieldPath={`${key}.role`}
-              label={'Role'}
-              options={options.role}
-              placeholder="Select contributor role"
-              required
-            />
-            <SelectField
-              fieldPath={`${key}.type`}
-              label={'Type'}
-              options={options.type}
-              placeholder="Select type of contributor"
-              required
-            />
-            <TextField fieldPath={`${key}.family_name`} label={'Family Name'} />
-            <TextField fieldPath={`${key}.given_name`} label={'Given Name'} />
-
+            <GroupField widths="equal" fieldPath={fieldPath + "Group"}>
+              <TextField fieldPath={`${key}.name`} label={'Name'} required />
+              <SelectField
+                fieldPath={`${key}.role`}
+                label={'Role'}
+                options={options.role}
+                placeholder="Select role"
+                required={roleRequired}
+                clearable
+              />
+              <SelectField
+                fieldPath={`${key}.type`}
+                label={'Type'}
+                options={options.type}
+                placeholder="Select type"
+                required
+              />
+            </GroupField>
             <IdentifiersField fieldPath={`${key}.identifiers`} labelIcon="" />
             <AffiliationsField fieldPath={`${key}.affiliations`} />
             <Grid>
@@ -70,7 +71,8 @@ export class ContributorsField extends Component {
   }
 }
 
-ContributorsField.propTypes = {
+CreatibutorsField.propTypes = {
+  addButtonLabel: PropTypes.string,
   fieldPath: PropTypes.string,
   label: PropTypes.string,
   labelIcon: PropTypes.string,
@@ -83,10 +85,13 @@ ContributorsField.propTypes = {
       })
     ),
   }).isRequired,
+  roleRequired: PropTypes.bool
 };
 
-ContributorsField.defaultProps = {
-  fieldPath: 'metadata.contributors',
-  label: 'Contributors',
+CreatibutorsField.defaultProps = {
+  addButtonLabel: 'Add creator',
+  fieldPath: 'metadata.creators',
+  label: 'Creators',
   labelIcon: 'group',
+  roleRequired: false
 };
