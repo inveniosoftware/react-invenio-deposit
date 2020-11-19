@@ -11,6 +11,8 @@
 import axios from 'axios';
 import _indexOf from 'lodash/indexOf';
 
+const FILE_UPLOAD_CANCELLED = 'File upload request was cancelled';
+
 export class DepositFileUploader {
   constructor(apiClient, { fileUploadConcurrency } = {}) {
     this.apiClient = apiClient;
@@ -99,12 +101,7 @@ export class DepositFileUploader {
       );
     } catch (e) {
       if (axios.isCancel(e)) {
-        store.dispatch({
-          type: 'FILE_UPLOAD_CANCELLED',
-          payload: {
-            filename: file.name,
-          },
-        });
+        throw new Error(FILE_UPLOAD_CANCELLED);
       } else {
         console.log('error');
         store.dispatch({
@@ -140,21 +137,47 @@ export class DepositFileUploader {
     }
   };
 
-  upload = async (uploadUrl, file, { store }) => {
+  upload = async (initializeUploadUrl, file, { store }) => {
     if (this.currentUploads.length < this.maxConcurrentUploads) {
       let initializedFileMetadata = await this.initializeUpload(
-        uploadUrl,
+        initializeUploadUrl,
         file,
         {
           store,
         }
       );
-      this.startUpload(initializedFileMetadata.links.upload.href, file, {
-        store,
-      });
-      this.finalizeUpload(initializedFileMetadata.links.self, file, { store });
+      const startUploadUrl = initializedFileMetadata.links.upload.href;
+      const initializedFileUrl = initializedFileMetadata.links.self;
+      try {
+        this.startUpload(startUploadUrl, file, {
+          store,
+        });
+        this.finalizeUpload(initializedFileUrl, file, { store });
+      } catch (e) {
+        if (e.message === FILE_UPLOAD_CANCELLED) {
+          const resp = await this.deleteUpload(initializedFileUrl, file, {
+            store,
+          });
+          store.dispatch({
+            type: 'FILE_UPLOAD_CANCELLED',
+            payload: {
+              filename: file.name,
+            },
+          });
+        }
+      }
     } else {
       this._addToPending(file);
     }
+  };
+
+  deleteUpload = async (fileDeletionUrl, file, { store }) => {
+    const resp = await this.apiClient.deleteFile(fileDeletionUrl);
+    store.dispatch({
+      type: 'FILE_DELETED_SUCCESS',
+      payload: {
+        filename: file.filename,
+      },
+    });
   };
 }
