@@ -8,6 +8,7 @@
 // Drives the business logic of the InvenioFormApp.
 // Defines what happens when a button is clicked.
 
+import _set from 'lodash/set';
 import { setFormErrors } from './state/actions';
 import {
   CREATE_DEPOSIT_SUCCESS,
@@ -44,7 +45,16 @@ export class DepositController {
   async saveDraft(draft, { formik, store }) {
     // Saves a draft of the record
     const recordSerializer = store.config.recordSerializer;
+
+    // Set defaultPreview for files
+    draft = _set(
+      draft,
+      'defaultFilePreview',
+      store.getState().deposit.defaultFilePreview
+    );
+
     let payload = recordSerializer.serialize(draft);
+
     this.validate(payload);
     let response = {};
     try {
