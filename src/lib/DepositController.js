@@ -103,22 +103,22 @@ export class DepositController {
       // TODO: remove the default value for `links.draft_files` when REST integration completes
       const uploadFileUrl =
         payload.links.draft_files || `/api/records/${payload.id}/draft/files`;
-      this.fileUploader.upload(uploadFileUrl, file, {
-        store,
-      });
+      try {
+        this.fileUploader.upload(uploadFileUrl, file, {
+          store,
+        });
+      } catch (e) {
+        // TODO: should handle a generic error from requests that should'nt have
+        // failed e.g an endpoint is down
+        console.error('Unknown exception');
+      }
     }
   };
 
   async deleteDraftFile(file, { store }) {
     try {
       const fileDeletionUrl = file.links.self;
-      const resp = await this.apiClient.deleteFile(fileDeletionUrl);
-      store.dispatch({
-        type: 'FILE_DELETED_SUCCESS',
-        payload: {
-          filename: file.filename,
-        },
-      });
+      this.fileUploader.deleteUpload(fileDeletionUrl, file, { store });
     } catch (e) {
       console.log('error');
       store.dispatch({ type: 'FILE_DELETE_FAILED' });
