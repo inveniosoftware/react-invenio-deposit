@@ -4,6 +4,7 @@
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
+import _get from 'lodash/get';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Grid } from 'semantic-ui-react';
@@ -28,44 +29,60 @@ export class CreatibutorsField extends Component {
         labelIcon={labelIcon}
         required={required}
       >
-        {({ array, arrayHelpers, indexPath, key, form }) => (
-          <>
-            <GroupField widths="equal" fieldPath={fieldPath + "Group"}>
-              <TextField fieldPath={`${key}.name`} label={'Name'} required />
-              <SelectField
-                fieldPath={`${key}.role`}
-                label={'Role'}
-                options={options.role}
-                placeholder="Select role"
-                required={roleRequired}
-                clearable
-              />
-              <SelectField
-                fieldPath={`${key}.type`}
-                label={'Type'}
-                options={options.type}
-                placeholder="Select type"
-                required
-              />
-            </GroupField>
-            <IdentifiersField fieldPath={`${key}.identifiers`} labelIcon="" />
-            <AffiliationsField fieldPath={`${key}.affiliations`} />
-            <Grid>
-              <Grid.Column></Grid.Column>
-              <Grid.Column floated="right">
-                {array.length === 1 ? null : (
-                  <Button
-                    color="red"
-                    floated="right"
-                    onClick={() => arrayHelpers.remove(indexPath)}
-                  >
-                    Remove
-                  </Button>
-                )}
-              </Grid.Column>
-            </Grid>
-          </>
-        )}
+        {({ array, arrayHelpers, indexPath, key, form }) => {
+          const typeFieldPath = `${key}.type`;
+          const isOrganization = _get(form.values, typeFieldPath) === 'organizational';
+          const isPerson = _get(form.values, typeFieldPath) === 'personal';
+
+          return (
+            <>
+              <GroupField widths="equal" fieldPath={fieldPath + "Group"}>
+                <SelectField
+                  fieldPath={typeFieldPath}
+                  label={'Type'}
+                  options={options.type}
+                  placeholder="Select type"
+                  required
+                />
+                {
+                  isOrganization &&
+                  <TextField fieldPath={`${key}.name`} label={'Name'} required />
+                }
+                {
+                  isPerson &&
+                  <>
+                    <TextField fieldPath={`${key}.family_name`} label={'Family Name'} />
+                    <TextField fieldPath={`${key}.given_name`} label={'Given Name'} />
+                  </>
+                }
+                <SelectField
+                  fieldPath={`${key}.role`}
+                  label={'Role'}
+                  options={options.role}
+                  placeholder="Select role"
+                  required={roleRequired}
+                  clearable
+                />
+              </GroupField>
+              <IdentifiersField fieldPath={`${key}.identifiers`} labelIcon="" />
+              <AffiliationsField fieldPath={`${key}.affiliations`} />
+              <Grid>
+                <Grid.Column></Grid.Column>
+                <Grid.Column floated="right">
+                  {array.length === 1 ? null : (
+                    <Button
+                      color="red"
+                      floated="right"
+                      onClick={() => arrayHelpers.remove(indexPath)}
+                    >
+                      Remove
+                    </Button>
+                  )}
+                </Grid.Column>
+              </Grid>
+            </>
+          );
+        }}
       </ArrayField>
     );
   }
