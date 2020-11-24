@@ -137,7 +137,7 @@ export class DepositRecordSerializer {
   deserialize(record) {
     // NOTE: cloning nows allows us to manipulate the copy with impunity without
     //       affecting the original
-    record  = _cloneDeep(record);
+    record = _cloneDeep(record);
     // Remove empty null values from record. This happens when we create a new
     // draft and the backend produces an empty record filled in with null
     // values, array of null values etc.
@@ -170,11 +170,13 @@ export class DepositRecordSerializer {
   serialize(record) {
     // NOTE: cloning nows allows us to manipulate the copy with impunity without
     //       affecting the original
-    record  = _cloneDeep(record);
+    record = _cloneDeep(record);
     let serializedRecord = this.removeEmptyValues(record);
     serializedRecord = _pick(serializedRecord, [
       'access',
       'metadata',
+      'id',
+      'links',
       'defaultFilePreview',
     ]);
     for (let key in this.depositRecordSchema) {

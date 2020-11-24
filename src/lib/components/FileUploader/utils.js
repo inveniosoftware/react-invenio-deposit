@@ -7,18 +7,23 @@
 
 import React from 'react';
 
-export function humanReadableBytes(bytes) {
-  const kiloBytes = 1000;
-  const megaBytes = 1000 * kiloBytes;
-  const gigaBytes = 1000 * megaBytes;
+import _isNumber from 'lodash/isNumber';
 
-  if (bytes < kiloBytes) {
-    return <>{bytes} bytes</>;
-  } else if (bytes < megaBytes) {
-    return <>{(bytes / kiloBytes).toFixed(2)} Kb</>;
-  } else if (bytes < gigaBytes) {
-    return <>{(bytes / megaBytes).toFixed(2)} Mb</>;
-  } else {
-    return <>{(bytes / gigaBytes).toFixed(2)} Gb</>;
+export function humanReadableBytes(bytes) {
+  if (_isNumber(bytes)) {
+    const kiloBytes = 1000;
+    const megaBytes = 1000 * kiloBytes;
+    const gigaBytes = 1000 * megaBytes;
+
+    if (bytes < kiloBytes) {
+      return <>{bytes} bytes</>;
+    } else if (bytes < megaBytes) {
+      return <>{(bytes / kiloBytes).toFixed(2)} Kb</>;
+    } else if (bytes < gigaBytes) {
+      return <>{(bytes / megaBytes).toFixed(2)} Mb</>;
+    } else {
+      return <>{(bytes / gigaBytes).toFixed(2)} Gb</>;
+    }
   }
+  return '';
 }

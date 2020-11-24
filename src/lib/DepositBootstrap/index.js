@@ -9,11 +9,15 @@ import { connect } from 'react-redux';
 import { submitFormData } from '../state/actions';
 import DepositBootstrapComponent from './DepositBootstrap';
 
-const mapStateToProps = (state) => ({
-  record: state.deposit.record,
-  formAction: state.deposit.formAction,
-  fileUploadOngoing: state.files.isFileUploadInProgress,
-});
+const mapStateToProps = (state) => {
+  const { isFileUploadInProgress, ...files } = state.files;
+  return {
+    record: state.deposit.record,
+    formAction: state.deposit.formAction,
+    fileUploadOngoing: isFileUploadInProgress,
+    files: files,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   submitFormData: (record, formik) => dispatch(submitFormData(record, formik)),

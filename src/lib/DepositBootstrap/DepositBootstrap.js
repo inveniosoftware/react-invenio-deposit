@@ -9,6 +9,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { BaseForm } from 'react-invenio-forms';
 import { Container } from 'semantic-ui-react';
+import { UploadState } from '../state/reducers/files';
 
 export default class DepositBootstrap extends Component {
   componentDidMount() {
@@ -17,6 +18,11 @@ export default class DepositBootstrap extends Component {
         e.returnValue = '';
         return '';
       }
+    });
+    window.addEventListener('unload', async (e) => {
+      // TODO: cancel all uploads
+      // Investigate if it's possible to wait for the deletion request to complete
+      // before unloading the page
     });
   }
 

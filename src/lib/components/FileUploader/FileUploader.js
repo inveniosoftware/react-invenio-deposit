@@ -11,6 +11,7 @@ import { Grid, Segment } from 'semantic-ui-react';
 import { FileUploaderArea } from './FileUploaderArea';
 import { FileUploaderToolbar } from './FileUploaderToolbar';
 import { UploadState } from '../../state/reducers/files';
+import _subtract from 'lodash/subtract';
 
 export default class FileUploader extends Component {
   constructor() {
@@ -30,14 +31,6 @@ export default class FileUploader extends Component {
   };
   render() {
     const { files, record, uploadFilesToDraft, quota } = this.props;
-    const dropzoneParams = {
-      preventDropOnDocument: true,
-      onDropAccepted: (files) => uploadFilesToDraft(record, files),
-      multiple: true,
-      noClick: true,
-      noKeyboard: true,
-      maxFiles: quota.maxFiles,
-    };
     let filesList = Object.values(files).map((fileState) => {
       return {
         filename: fileState.filename,
@@ -45,20 +38,49 @@ export default class FileUploader extends Component {
         checksum: fileState.checksum,
         links: fileState.links,
         upload: {
-          initial: fileState.state === UploadState.initial,
-          failed: fileState.state === UploadState.error,
-          ongoing: fileState.state === UploadState.uploading,
-          finished: fileState.state === UploadState.finished,
+          initial: fileState.status === UploadState.initial,
+          failed: fileState.status === UploadState.error,
+          ongoing: fileState.status === UploadState.uploading,
+          finished: fileState.status === UploadState.finished,
           progress: fileState.progress,
           cancel: fileState.cancel,
         },
       };
     });
-
     const filesSize = filesList.reduce(
       (totalSize, file) => (totalSize += file.size),
       0
     );
+
+    let dropzoneParams = {
+      preventDropOnDocument: true,
+      onDropAccepted: (acceptedFiles) => {
+        const maxFileNumberReached =
+          filesList.length + acceptedFiles.length > quota.maxFiles;
+        const acceptedFilesSize = acceptedFiles.reduce(
+          (totalSize, file) => (totalSize += file.size),
+          0
+        );
+        const maxFileStorageReached =
+          filesSize + acceptedFilesSize > quota.maxStorage;
+        if (maxFileNumberReached || maxFileStorageReached) {
+          // TODO: Give some feedback to user about why the files weren't
+          // accepted for upload
+          console.log('Maximum number of files reached!');
+        } else {
+          uploadFilesToDraft(record, acceptedFiles);
+        }
+      },
+      multiple: true,
+      noClick: true,
+      noKeyboard: true,
+      disabled: false,
+    };
+
+    const filesLeft = filesList.length < quota.maxFiles;
+    if (!filesLeft) {
+      dropzoneParams['disabled'] = true;
+    }
 
     return (
       <Grid style={{ marginBottom: '20px' }}>

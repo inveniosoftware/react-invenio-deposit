@@ -1,8 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import FileUploaderComponent from './FileUploader';
-import { uploadDraftFiles, deleteDraftFile } from '../../state/actions/files';
-import { setCurrentPreviewFile } from '../../state/actions/deposit';
+import {
+  uploadDraftFiles,
+  deleteDraftFile,
+  setCurrentPreviewFile,
+} from '../../state/actions';
 
 const mapStateToProps = (state) => {
   const { isFileUploadInProgress, ...files } = state.files;

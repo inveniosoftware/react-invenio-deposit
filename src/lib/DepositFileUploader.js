@@ -10,8 +10,16 @@
 
 import axios from 'axios';
 import _indexOf from 'lodash/indexOf';
-
-const FILE_UPLOAD_CANCELLED = 'File upload request was cancelled';
+import {
+  FILE_UPLOAD_FAILED,
+  FILE_DELETED_SUCCESS,
+  FILE_UPLOAD_INITIATE,
+  FILE_UPLOAD_START,
+  FILE_UPLOAD_CANCELLED,
+  FILE_UPLOAD_IN_PROGRESS,
+  FILE_UPLOAD_SET_CANCEL_FUNCTION,
+  FILE_UPLOAD_FINISHED,
+} from './state/types';
 
 export class DepositFileUploader {
   constructor(apiClient, { fileUploadConcurrency } = {}) {
@@ -42,14 +50,16 @@ export class DepositFileUploader {
     this.pending = [];
   }
 
-  _uploadNext = ({ store }) => {
+  _uploadNext = () => {
     let nextUpload;
     if (this.pending.length > 0) {
       nextUpload = this._removeFromPending();
     }
 
     if (nextUpload) {
-      this.upload(nextUpload, { store });
+      this.upload(nextUpload.initializeUploadUrl, nextUpload.file, {
+        store: nextUpload.store,
+      });
     } else if (!this.currentUploads.length) {
       this._flushQueues();
     }
@@ -64,8 +74,10 @@ export class DepositFileUploader {
       );
       const initializedFile = resp.data.entries[0];
       store.dispatch({
-        type: 'FILE_UPLOAD_INITIATE',
-        payload: { filename: initializedFile.key, size: initializedFile.size },
+        type: FILE_UPLOAD_INITIATE,
+        payload: {
+          filename: initializedFile.key,
+        },
       });
       return initializedFile;
     } catch (e) {
@@ -75,8 +87,8 @@ export class DepositFileUploader {
 
   startUpload = async (uploadUrl, file, { store }) => {
     store.dispatch({
-      type: 'FILE_UPLOAD_START',
-      payload: { filename: file.name, size: file.size },
+      type: FILE_UPLOAD_START,
+      payload: { filename: file.name },
     });
     try {
       const resp = await this.apiClient.uploadFile(
@@ -84,7 +96,7 @@ export class DepositFileUploader {
         file,
         (e) => {
           store.dispatch({
-            type: 'FILE_UPLOAD_IN_PROGRESS',
+            type: FILE_UPLOAD_IN_PROGRESS,
             payload: {
               filename: file.name,
               percent: Math.floor((e.loaded / e.total) * 100),
@@ -94,7 +106,7 @@ export class DepositFileUploader {
         (c) => {
           // A cancel function for aborting the upload request
           store.dispatch({
-            type: 'FILE_UPLOAD_SET_CANCEL_FUNCTION',
+            type: FILE_UPLOAD_SET_CANCEL_FUNCTION,
             payload: { filename: file.name, cancel: c },
           });
         }
@@ -103,25 +115,23 @@ export class DepositFileUploader {
       if (axios.isCancel(e)) {
         throw new Error(FILE_UPLOAD_CANCELLED);
       } else {
-        console.log('error');
-        store.dispatch({
-          type: 'FILE_UPLOAD_FAILED',
-          payload: {
-            filename: file.name,
-          },
-        });
+        throw new Error(FILE_UPLOAD_FAILED);
       }
     }
   };
 
   finalizeUpload = async (finalizeUploadUrl, file, { store }) => {
     try {
+      // Independently on what is the status of the filalize step we start
+      // the next upload in the queue
+      this._removeFromCurrentUploads(file);
+      this._uploadNext();
       const resp = await this.apiClient.finalizeFileUpload(
         finalizeUploadUrl,
         file
       );
       store.dispatch({
-        type: 'FILE_UPLOAD_FINISHED',
+        type: FILE_UPLOAD_FINISHED,
         payload: {
           filename: resp.data.key,
           size: resp.data.size,
@@ -130,10 +140,7 @@ export class DepositFileUploader {
         },
       });
     } catch (e) {
-      console.error(e);
-    } finally {
-      this._removeFromCurrentUploads(file);
-      this._uploadNext({ store });
+      throw new Error(FILE_UPLOAD_FAILED);
     }
   };
 
@@ -146,20 +153,27 @@ export class DepositFileUploader {
           store,
         }
       );
-      const startUploadUrl = initializedFileMetadata.links.upload.href;
-      const initializedFileUrl = initializedFileMetadata.links.self;
+      const startUploadUrl = initializedFileMetadata.links.content;
+      const finalizeFileUrl = initializedFileMetadata.links.commit;
+      const deleteFileUrl = initializedFileMetadata.links.self;
       try {
-        this.startUpload(startUploadUrl, file, {
+        const resp = await this.startUpload(startUploadUrl, file, {
           store,
         });
-        this.finalizeUpload(initializedFileUrl, file, { store });
+        this.finalizeUpload(finalizeFileUrl, file, { store });
       } catch (e) {
-        if (e.message === FILE_UPLOAD_CANCELLED) {
-          const resp = await this.deleteUpload(initializedFileUrl, file, {
+        // TODO: should handle `FILE_UPLOAD_FAILED` from intermediate requests
+        const isUploadCancelledOrFailed = [
+          FILE_UPLOAD_CANCELLED,
+          FILE_UPLOAD_FAILED,
+        ].some((msg) => e.message === msg);
+        if (isUploadCancelledOrFailed) {
+          // TODO: Should we delete the file automatically?
+          const resp = await this.deleteUpload(deleteFileUrl, file, {
             store,
           });
           store.dispatch({
-            type: 'FILE_UPLOAD_CANCELLED',
+            type: e.message,
             payload: {
               filename: file.name,
             },
@@ -167,14 +181,14 @@ export class DepositFileUploader {
         }
       }
     } else {
-      this._addToPending(file);
+      this._addToPending({ initializeUploadUrl, file, store });
     }
   };
 
   deleteUpload = async (fileDeletionUrl, file, { store }) => {
     const resp = await this.apiClient.deleteFile(fileDeletionUrl);
     store.dispatch({
-      type: 'FILE_DELETED_SUCCESS',
+      type: FILE_DELETED_SUCCESS,
       payload: {
         filename: file.filename,
       },

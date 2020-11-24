@@ -9,11 +9,21 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
 import rootReducer from './state/reducers';
+import { UploadState } from './state/reducers/files';
 import { INITIAL_STORE_STATE } from './storeConfig';
 
 const preloadFiles = (files) =>
   files
-    .map((file) => ({ state: 'finished', ...file }))
+    .map((file) => {
+      let hasSize;
+      if (file.size) {
+        hasSize = true;
+      }
+      // TODO: fix this as the lack of size is not always an error e.g upload ongoing in another tab
+      return hasSize
+        ? { status: UploadState.finished, progress: 100, ...file }
+        : { status: UploadState.error, progress: 100, ...file };
+    })
     .reduce((acc, current) => {
       acc[current.filename] = { ...current };
       return acc;
