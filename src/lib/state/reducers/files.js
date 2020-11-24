@@ -36,7 +36,7 @@ export default (state = initialState, action) => {
           progress: 0,
           filename: action.payload.filename,
           size: action.payload.size,
-          state: UploadState.initial,
+          status: UploadState.initial,
           checksum: null,
           links: null,
           cancel: null,
@@ -49,7 +49,7 @@ export default (state = initialState, action) => {
           progress: 0,
           filename: action.payload.filename,
           size: action.payload.size,
-          state: UploadState.uploading,
+          status: UploadState.uploading,
           checksum: null,
           links: null,
           cancel: null,
@@ -62,7 +62,7 @@ export default (state = initialState, action) => {
         [action.payload.filename]: {
           ...state[action.payload.filename],
           progress: action.payload.percent,
-          state: UploadState.uploading,
+          status: UploadState.uploading,
         },
       };
     case FILE_UPLOAD_FINISHED:
@@ -70,7 +70,9 @@ export default (state = initialState, action) => {
         ...state,
         [action.payload.filename]: {
           ...state[action.payload.filename],
-          state: UploadState.finished,
+          status: UploadState.finished,
+          size: action.payload.size,
+          progress: 100,
           checksum: action.payload.checksum,
           links: action.payload.links,
           cancel: null,
@@ -87,7 +89,7 @@ export default (state = initialState, action) => {
         ...state,
         [action.payload.filename]: {
           ...state[action.payload.filename],
-          state: UploadState.error,
+          status: UploadState.error,
           cancel: null,
         },
       };

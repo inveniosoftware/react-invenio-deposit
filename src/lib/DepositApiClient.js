@@ -53,43 +53,12 @@ export class DepositApiClient {
     const payload = [
       {
         key: file.name,
-        size: file.size,
       },
     ];
-    // TODO: restore when REST file integration is complete
-    // return axios.post(initializeUploadUrl, payload, {
-    //   headers: {
-    //     'content-type': 'application/json',
-    //   },
-    // });
-
-    // TODO: remobe when REST file integration is complete
-    return new Promise((resolve, reject) => {
-      resolve({
-        data: {
-          entries: [
-            {
-              id: '1234',
-              created: '2020-11-15T19:04:22',
-              updated: '2020-11-15T19:04:22',
-              key: file.name,
-
-              checksum: 'md5:abcdef...',
-              size: file.size,
-              metadata: {
-                description: 'Published article PDF.',
-              },
-              links: {
-                upload: {
-                  href: `${initializeUploadUrl}/${file.name}/upload`,
-                  method: 'PUT',
-                },
-                self: `${initializeUploadUrl}/${file.name}`,
-              },
-            },
-          ],
-        },
-      });
+    return axios.post(initializeUploadUrl, payload, {
+      headers: {
+        'content-type': 'application/json',
+      },
     });
   }
 
@@ -97,64 +66,28 @@ export class DepositApiClient {
     const formData = new FormData();
     formData.append('file', file);
 
-    // TODO: restore when REST file integration is complete
-    // return axios.put(uploadUrl, file, {
-    //   headers: {
-    //     'content-type': 'application/octet-stream',
-    //   },
-    //   onUploadProgress,
-    //   cancelToken: new CancelToken(cancel),
-    // });
-
-    // TODO: remove when REST file integration is complete
-    return new Promise((resolve, reject) => {
-      resolve({
-        data: {
-          mimetype: 'application/zip',
-          checksum: 'md5:2942bfabb3d05332b66eb128e0842cff',
-          size: file.size,
-        },
-      });
+    return axios.put(uploadUrl, file, {
+      headers: {
+        'content-type': 'application/octet-stream',
+      },
+      onUploadProgress,
+      cancelToken: new CancelToken(cancel),
     });
   }
 
   finalizeFileUpload(finalizeUploadUrl, file) {
-    // TODO: restore when REST file integration is complete
-    // return axios.post(finalizeUploadUrl, {} , {
-    //   headers: {
-    //     'content-type': 'application/json',
-    //   },
-    // });
-
-    // TODO: remove when REST file integration is complete
-    return new Promise((resolve, reject) => {
-      resolve({
-        data: {
-          id: '...',
-          created: '2020-11-15T19:04:22',
-          updated: '2020-11-15T19:04:22',
-          key: file.name,
-
-          checksum: 'md5:abcdef...',
-          size: file.size,
-          metadata: {
-            description: 'Published article PDF.',
-          },
-          links: {
-            self: '/api/records/12345-aaaaa/draft/files/article.pdf',
-          },
+    return axios.post(
+      finalizeUploadUrl,
+      {},
+      {
+        headers: {
+          'content-type': 'application/json',
         },
-      });
-    });
+      }
+    );
   }
 
   deleteFile(deleteUrl) {
-    // TODO: restore when REST file integration is complete
-    // return axios.delete(deleteUrl);
-
-    // TODO: remove when REST file integration is complete
-    return new Promise((resolve, reject) => {
-      resolve();
-    });
+    return axios.delete(deleteUrl);
   }
 }

@@ -97,7 +97,7 @@ const FileTableRow = ({
     )}
     {isDraftRecord && (
       <Table.Cell textAlign="right" width={2} className="file-table-cell">
-        {file.upload && file.upload.finished && (
+        {file.upload && !(file.upload.ongoing || file.upload.initial) && (
           <Icon
             className="action"
             name="trash alternate outline"
