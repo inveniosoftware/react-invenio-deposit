@@ -1,5 +1,12 @@
 # Changes
 
+Version 0.8.3 (released 2020-11-25)
+
+* Filename is a link to download the draft file
+* Metadata only records are configured through `canHaveMetadataOnlyRecords`
+  config variable. Temporarely the variable is added when loading the config in
+  redux. It will be removed when the config comes from external application.
+
 Version 0.8.2 (released 2020-11-25)
 
 * Integrates new invenio files REST backend in the file uploader
