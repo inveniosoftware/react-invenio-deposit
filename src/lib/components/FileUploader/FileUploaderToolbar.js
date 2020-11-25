@@ -15,29 +15,32 @@ export const FileUploaderToolbar = ({
   filesList,
   filesSize,
   isDraftRecord,
+  config,
   ...props
 }) =>
   isDraftRecord ? (
     <>
       <Grid.Column width={8} verticalAlign="middle" floated="left">
-        <List horizontal>
-          <List.Item>
-            <Checkbox
-              label={'Metadata only record'}
-              onClick={onMetadataOnlyClick}
-              disabled={filesList.length > 0}
-            />{' '}
-          </List.Item>
-          <List.Item style={{ marginLeft: '5px' }}>
-            <Popup
-              trigger={
-                <Icon name="question circle outline" color="grey"></Icon>
-              }
-              content="Disable files for this record"
-              position="top center"
-            />
-          </List.Item>
-        </List>
+        {config.canHaveMetadataOnlyRecords && (
+          <List horizontal>
+            <List.Item>
+              <Checkbox
+                label={'Metadata only record'}
+                onClick={onMetadataOnlyClick}
+                disabled={filesList.length > 0}
+              />
+            </List.Item>
+            <List.Item style={{ marginLeft: '5px' }}>
+              <Popup
+                trigger={
+                  <Icon name="question circle outline" color="grey"></Icon>
+                }
+                content="Disable files for this record"
+                position="top center"
+              />
+            </List.Item>
+          </List>
+        )}
       </Grid.Column>
       <Grid.Column width={8} floated="right">
         <List horizontal floated="right">

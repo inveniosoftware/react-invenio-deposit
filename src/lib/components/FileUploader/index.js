@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
   return {
     files: files,
     record: state.deposit.record,
+    config: state.deposit.config,
   };
 };
 
