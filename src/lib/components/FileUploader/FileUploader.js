@@ -30,7 +30,8 @@ export default class FileUploader extends Component {
     }
   };
   render() {
-    const { files, record, uploadFilesToDraft, quota } = this.props;
+    const { files, record, uploadFilesToDraft, quota, config } = this.props;
+    console.log(config);
     let filesList = Object.values(files).map((fileState) => {
       return {
         filename: fileState.filename,
@@ -91,6 +92,7 @@ export default class FileUploader extends Component {
             filesSize={filesSize}
             filesList={filesList}
             isDraftRecord={true}
+            config={config}
           />
         </Grid.Row>
         <Grid.Row className="file-upload-area-row">
@@ -137,6 +139,7 @@ FileUploader.propTypes = {
     maxStorage: PropTypes.number,
     maxFiles: PropTypes.number,
   }),
+  config: PropTypes.object,
 };
 
 FileUploader.defaultProps = {

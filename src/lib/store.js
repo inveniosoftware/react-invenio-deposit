@@ -31,6 +31,10 @@ const preloadFiles = (files) =>
 
 export function configureStore(appConfig) {
   const { record, config, ...apiConfig } = appConfig;
+  // TODO: remove when app-rdm provides this
+  if (!('canHaveMetadataOnlyRecords' in config)) {
+    config['canHaveMetadataOnlyRecords'] = true;
+  }
   const initialDepositState = { record, config, ...INITIAL_STORE_STATE };
   const preloadedState = {
     deposit: initialDepositState,
