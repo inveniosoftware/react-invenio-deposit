@@ -63,7 +63,10 @@ const FileTableRow = ({
       />
     </Table.Cell>
     <Table.Cell className="file-table-cell" width={10}>
-      {file.filename} <br />
+      <a href={file.links.content} target="_blank" rel="noopener noreferrer">
+        {file.filename}
+      </a>
+      <br />
       {file.checksum && (
         <div>
           <span style={{ fontSize: '10px' }}>{file.checksum}</span>{' '}
