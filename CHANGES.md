@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.8.2 (released 2020-11-25)
+
+* Integrates new invenio files REST backend in the file uploader
+
 Version 0.8.1 (released 2020-11-20)
 
 * Update Creators and Contributors field
