@@ -31,7 +31,6 @@ export default class FileUploader extends Component {
   };
   render() {
     const { files, record, uploadFilesToDraft, quota, config } = this.props;
-    console.log(config);
     let filesList = Object.values(files).map((fileState) => {
       return {
         filename: fileState.filename,

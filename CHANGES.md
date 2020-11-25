@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.8.4 (released 2020-11-25)
+
+* Show 1st/last name if person, name if org in Creators and Contributors field.
+
 Version 0.8.3 (released 2020-11-25)
 
 * Filename is a link to download the draft file
