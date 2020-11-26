@@ -37,7 +37,8 @@ export const setFilesEnabled = (filesEnabled) => {
   return async (dispatch, getState, config) => {
     const controller = config.controller;
     const enableFileUrl = getState().files.links.self;
-    controller.setFilesEnabled(enableFileUrl, filesEnabled, {
+    const draftRecord = getState().deposit.record;
+    controller.setFilesEnabled(draftRecord, enableFileUrl, filesEnabled, {
       store: { dispatch, getState, config },
     });
   };

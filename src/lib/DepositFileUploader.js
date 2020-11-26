@@ -217,7 +217,6 @@ export class DepositFileUploader {
   };
 
   setFilesEnabled = async (enableFileUrl, filesEnabled, { store }) => {
-    debugger;
     try {
       const resp = await this.apiClient.setFileMetadata(enableFileUrl, {
         enabled: filesEnabled,

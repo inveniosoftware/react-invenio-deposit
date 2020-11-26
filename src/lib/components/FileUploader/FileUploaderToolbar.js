@@ -14,6 +14,7 @@ export const FileUploaderToolbar = ({
   quota,
   filesList,
   filesSize,
+  filesEnabled,
   isDraftRecord,
   config,
   ...props
@@ -28,6 +29,7 @@ export const FileUploaderToolbar = ({
                 label={'Metadata only record'}
                 onClick={onMetadataOnlyClick}
                 disabled={filesList.length > 0}
+                checked={!filesEnabled}
               />
             </List.Item>
             <List.Item style={{ marginLeft: '5px' }}>

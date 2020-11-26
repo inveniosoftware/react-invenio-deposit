@@ -29,8 +29,16 @@ export default class FileUploader extends Component {
       });
     }
   };
+
   render() {
-    const { files, record, uploadFilesToDraft, quota, config } = this.props;
+    const {
+      files,
+      record,
+      uploadFilesToDraft,
+      quota,
+      config,
+      filesEnabled,
+    } = this.props;
     let filesList = Object.values(files).map((fileState) => {
       return {
         name: fileState.name,
@@ -93,6 +101,7 @@ export default class FileUploader extends Component {
             filesList={filesList}
             isDraftRecord={true}
             config={config}
+            filesEnabled={filesEnabled}
           />
         </Grid.Row>
         <Grid.Row className="file-upload-area-row">

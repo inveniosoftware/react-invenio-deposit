@@ -213,7 +213,6 @@ export class FileUploaderArea extends Component {
         filename: props.defaultFilePreview,
         checked: true,
       };
-    } else {
     }
   }
 
