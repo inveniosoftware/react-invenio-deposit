@@ -15,6 +15,8 @@ import {
   FILE_UPLOAD_FINISHED,
   FILE_UPLOAD_FAILED,
   FILE_UPLOAD_INITIATE,
+  SET_CURRENT_PREVIEW_FILE,
+  SET_CURRENT_PREVIEW_FILE_FAILED,
 } from '../types';
 
 export const UploadState = {
@@ -127,6 +129,14 @@ export default (state = initialState, action) => {
         ...afterDeletionState,
       };
     case FILE_DELETE_FAILED:
+      // TODO: handle
+      return state;
+    case SET_CURRENT_PREVIEW_FILE:
+      return {
+        ...state,
+        defaultFilePreview: action.payload,
+      };
+    case SET_CURRENT_PREVIEW_FILE_FAILED:
       // TODO: handle
       return state;
     default:

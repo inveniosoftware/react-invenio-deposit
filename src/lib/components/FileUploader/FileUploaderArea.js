@@ -50,14 +50,14 @@ const FileTableRow = ({
   isDraftRecord,
   file,
   deleteFileFromRecord,
-  currentPreview,
+  defaultPreview,
   onPreviewClick,
 }) => (
   <Table.Row key={file.filename} className="file-table-row">
     <Table.Cell className="file-table-cell" width={2}>
       <Checkbox
         checked={
-          currentPreview.checked && currentPreview.filename === file.filename
+          defaultPreview.checked && defaultPreview.filename === file.filename
         }
         onClick={() => onPreviewClick(file.filename)}
       />
@@ -165,7 +165,7 @@ const FilesListTable = ({
   isDraftRecord,
   filesList,
   deleteFileFromRecord,
-  currentPreview,
+  defaultPreview,
   onPreviewClick,
 }) => (
   <Table>
@@ -178,7 +178,7 @@ const FilesListTable = ({
             isDraftRecord={isDraftRecord}
             file={file}
             deleteFileFromRecord={deleteFileFromRecord}
-            currentPreview={currentPreview}
+            defaultPreview={defaultPreview}
             onPreviewClick={onPreviewClick}
           />
         );
@@ -191,7 +191,7 @@ export class FileUploaderArea extends Component {
   constructor() {
     super();
     this.state = {
-      currentPreview: {
+      defaultPreview: {
         filename: '',
         checked: false,
       },
@@ -201,22 +201,22 @@ export class FileUploaderArea extends Component {
   onPreviewClick = (filename) => {
     this.setState((prevState) => {
       if (
-        prevState.currentPreview.filename === filename &&
-        prevState.currentPreview.checked
+        prevState.defaultPreview.filename === filename &&
+        prevState.defaultPreview.checked
       ) {
-        // Set defaultPreview to '' when selected file is unchecked
-        this.props.setCurrentPreviewFile('');
+        // Set defaultPreview to null when selected file is unchecked
+        this.props.setDefaultPreviewFile(null);
         return {
-          currentPreview: {
+          defaultPreview: {
             filename,
             checked: false,
           },
         };
       }
 
-      this.props.setCurrentPreviewFile(filename);
+      this.props.setDefaultPreviewFile(filename);
       return {
-        currentPreview: {
+        defaultPreview: {
           filename,
           checked: true,
         },
@@ -237,7 +237,7 @@ export class FileUploaderArea extends Component {
                   <FilesListTable
                     {...this.props}
                     onPreviewClick={this.onPreviewClick}
-                    currentPreview={this.state.currentPreview}
+                    defaultPreview={this.state.defaultPreview}
                   />
                 </Grid.Column>
               )}

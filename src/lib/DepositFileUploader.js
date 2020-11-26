@@ -19,6 +19,9 @@ import {
   FILE_UPLOAD_IN_PROGRESS,
   FILE_UPLOAD_SET_CANCEL_FUNCTION,
   FILE_UPLOAD_FINISHED,
+  FILE_DELETE_FAILED,
+  SET_CURRENT_PREVIEW_FILE,
+  SET_CURRENT_PREVIEW_FILE_FAILED,
 } from './state/types';
 
 export class DepositFileUploader {
@@ -70,7 +73,7 @@ export class DepositFileUploader {
       this._addToCurrentUploads(file);
       const resp = await this.apiClient.initializeFileUpload(
         initializeUploadUrl,
-        file
+        file.filename
       );
       const initializedFile = resp.data.entries[0];
       store.dispatch({
@@ -126,10 +129,7 @@ export class DepositFileUploader {
       // the next upload in the queue
       this._removeFromCurrentUploads(file);
       this._uploadNext();
-      const resp = await this.apiClient.finalizeFileUpload(
-        finalizeUploadUrl,
-        file
-      );
+      const resp = await this.apiClient.finalizeFileUpload(finalizeUploadUrl);
       store.dispatch({
         type: FILE_UPLOAD_FINISHED,
         payload: {
@@ -154,6 +154,7 @@ export class DepositFileUploader {
         }
       );
       const startUploadUrl = initializedFileMetadata.links.content;
+      // FIXME: rename to links.complete
       const finalizeFileUrl = initializedFileMetadata.links.commit;
       const deleteFileUrl = initializedFileMetadata.links.self;
       try {
@@ -186,12 +187,31 @@ export class DepositFileUploader {
   };
 
   deleteUpload = async (fileDeletionUrl, file, { store }) => {
-    const resp = await this.apiClient.deleteFile(fileDeletionUrl);
-    store.dispatch({
-      type: FILE_DELETED_SUCCESS,
-      payload: {
-        filename: file.filename,
-      },
-    });
+    try {
+      const resp = await this.apiClient.deleteFile(fileDeletionUrl);
+      store.dispatch({
+        type: FILE_DELETED_SUCCESS,
+        payload: {
+          filename: file.filename,
+        },
+      });
+    } catch (e) {
+      store.dispatch({ type: FILE_DELETE_FAILED });
+    }
+  };
+
+  setDefaultPreview = async (defaultPreviewUrl, file, { store }) => {
+    try {
+      const resp = await this.apiClient.updatePreview(
+        defaultPreviewUrl,
+        file.filename
+      );
+      store.dispatch({
+        type: SET_CURRENT_PREVIEW_FILE,
+        payload: file.filename,
+      });
+    } catch (e) {
+      store.dispatch({ type: SET_CURRENT_PREVIEW_FILE_FAILED });
+    }
   };
 }
