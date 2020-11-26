@@ -170,7 +170,7 @@ export default (state = initialState, action) => {
     case SET_FILES_ENABLED:
       return {
         ...state,
-        filesEnabled: action.payload.filesEnabled,
+        enabled: action.payload.filesEnabled,
       };
     case SET_FILES_ENABLED_FAILED:
       // TODO: handle
