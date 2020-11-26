@@ -49,10 +49,10 @@ export class DepositApiClient {
     );
   }
 
-  initializeFileUpload(initializeUploadUrl, file) {
+  initializeFileUpload(initializeUploadUrl, filename) {
     const payload = [
       {
-        key: file.name,
+        key: filename,
       },
     ];
     return axios.post(initializeUploadUrl, payload, {
@@ -75,7 +75,7 @@ export class DepositApiClient {
     });
   }
 
-  finalizeFileUpload(finalizeUploadUrl, file) {
+  finalizeFileUpload(finalizeUploadUrl) {
     return axios.post(
       finalizeUploadUrl,
       {},
@@ -89,5 +89,9 @@ export class DepositApiClient {
 
   deleteFile(deleteUrl) {
     return axios.delete(deleteUrl);
+  }
+
+  setDefaultPreview(defaultPreviewUrl, filename) {
+    return axios.put(defaultPreviewUrl, { default_preview: filename });
   }
 }

@@ -5,11 +5,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import {
-  FORM_ACTION_FAILED,
-  FORM_ACTION_EVENT_EMITTED,
-  SET_CURRENT_PREVIEW_FILE,
-} from '../types';
+import { FORM_ACTION_FAILED, FORM_ACTION_EVENT_EMITTED } from '../types';
 
 /**
  * Closure over Axios error and formik, returning async error setting function.
@@ -26,10 +22,6 @@ export const setFormErrors = (error, formik, record) => {
     formik.setSubmitting(false);
     formik.setErrors(extractedErrors);
   };
-};
-
-export const setCurrentPreviewFile = (filename) => {
-  return { type: SET_CURRENT_PREVIEW_FILE, payload: filename };
 };
 
 export const publish = (record, formik) => {

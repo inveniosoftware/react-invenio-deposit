@@ -11,7 +11,6 @@ import { Grid, Segment } from 'semantic-ui-react';
 import { FileUploaderArea } from './FileUploaderArea';
 import { FileUploaderToolbar } from './FileUploaderToolbar';
 import { UploadState } from '../../state/reducers/files';
-import _subtract from 'lodash/subtract';
 
 export default class FileUploader extends Component {
   constructor() {
