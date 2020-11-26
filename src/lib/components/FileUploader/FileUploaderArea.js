@@ -19,6 +19,7 @@ import {
   Checkbox,
 } from 'semantic-ui-react';
 import { humanReadableBytes } from './utils';
+import _get from 'lodash/get';
 
 const FileTableHeader = ({ isDraftRecord }) => (
   <Table.Header>
@@ -53,19 +54,27 @@ const FileTableRow = ({
   defaultPreview,
   onPreviewClick,
 }) => (
-  <Table.Row key={file.filename} className="file-table-row">
+  <Table.Row key={file.name} className="file-table-row">
     <Table.Cell className="file-table-cell" width={2}>
       <Checkbox
         checked={
-          defaultPreview.checked && defaultPreview.filename === file.filename
+          defaultPreview.checked && defaultPreview.filename === file.name
         }
-        onClick={() => onPreviewClick(file.filename)}
+        onClick={() => onPreviewClick(file)}
       />
     </Table.Cell>
     <Table.Cell className="file-table-cell" width={10}>
-      <a href={file.links.content} target="_blank" rel="noopener noreferrer">
-        {file.filename}
-      </a>
+      {file.upload.pending ? (
+        file.name
+      ) : (
+        <a
+          href={_get(file, 'links.content', '')}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {file.name}
+        </a>
+      )}
       <br />
       {file.checksum && (
         <div>
@@ -79,11 +88,11 @@ const FileTableRow = ({
       )}
     </Table.Cell>
     <Table.Cell className="file-table-cell" width={2}>
-      {humanReadableBytes(file.size)}
+      {file.size ? humanReadableBytes(file.size) : ''}
     </Table.Cell>
     {isDraftRecord && (
       <Table.Cell className="file-table-cell" width={2}>
-        {file.upload && (
+        {file.upload && !file.upload.pending && (
           <Progress
             className="file-upload-progress"
             percent={file.upload.progress}
@@ -95,6 +104,9 @@ const FileTableRow = ({
             active={!file.upload.initial}
             disabled={file.upload.initial}
           />
+        )}
+        {file.upload && file.upload.pending && (
+          <span className="file-upload-pending">Pending</span>
         )}
       </Table.Cell>
     )}
@@ -174,7 +186,7 @@ const FilesListTable = ({
       {filesList.map((file) => {
         return (
           <FileTableRow
-            key={file.filename}
+            key={file.name}
             isDraftRecord={isDraftRecord}
             file={file}
             deleteFileFromRecord={deleteFileFromRecord}
@@ -188,7 +200,7 @@ const FilesListTable = ({
 );
 
 export class FileUploaderArea extends Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
       defaultPreview: {
@@ -196,28 +208,34 @@ export class FileUploaderArea extends Component {
         checked: false,
       },
     };
+    if (props.defaultFilePreview) {
+      this.state.defaultPreview = {
+        filename: props.defaultFilePreview,
+        checked: true,
+      };
+    } else {
+    }
   }
 
-  onPreviewClick = (filename) => {
+  onPreviewClick = (file) => {
     this.setState((prevState) => {
       if (
-        prevState.defaultPreview.filename === filename &&
+        prevState.defaultPreview.filename === file.name &&
         prevState.defaultPreview.checked
       ) {
         // Set defaultPreview to null when selected file is unchecked
         this.props.setDefaultPreviewFile(null);
         return {
           defaultPreview: {
-            filename,
+            filename: file.name,
             checked: false,
           },
         };
       }
-
-      this.props.setDefaultPreviewFile(filename);
+      this.props.setDefaultPreviewFile(file.name);
       return {
         defaultPreview: {
-          filename,
+          filename: file.name,
           checked: true,
         },
       };

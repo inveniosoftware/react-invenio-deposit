@@ -11,34 +11,49 @@ import thunk from 'redux-thunk';
 import rootReducer from './state/reducers';
 import { UploadState } from './state/reducers/files';
 import { INITIAL_STORE_STATE } from './storeConfig';
+import _cloneDeep from 'lodash/cloneDeep';
+import _get from 'lodash/get';
 
-const preloadFiles = (files) =>
-  files
-    .map((file) => {
-      let hasSize;
-      if (file.size) {
-        hasSize = true;
-      }
-      // TODO: fix this as the lack of size is not always an error e.g upload ongoing in another tab
-      return hasSize
-        ? { status: UploadState.finished, progress: 100, ...file }
-        : { status: UploadState.error, progress: 100, ...file };
-    })
-    .reduce((acc, current) => {
-      acc[current.filename] = { ...current };
-      return acc;
-    }, {});
+const preloadFiles = (files) => {
+  const _files = _cloneDeep(files);
+  return {
+    enabled: files.enabled,
+    defaultFilePreview: files.default_preview || null,
+    links: files.links || {},
+    entries: _get(_files, 'entries', [])
+      .map((file) => {
+        let hasSize;
+        if (file.size) {
+          hasSize = true;
+        }
+        const fileState = {
+          name: file.key,
+          size: file.size || 0,
+          checksum: file.checksum || '',
+          links: file.links || {},
+        };
+        // TODO: fix this as the lack of size is not always an error e.g upload ongoing in another tab
+        return hasSize
+          ? {
+              status: UploadState.finished,
+              progress: 100,
+              ...fileState,
+            }
+          : { status: UploadState.pending, ...fileState };
+      })
+      .reduce((acc, current) => {
+        acc[current.name] = { ...current };
+        return acc;
+      }, {}),
+  };
+};
 
 export function configureStore(appConfig) {
-  const { record, config, ...apiConfig } = appConfig;
-  // TODO: remove when app-rdm provides this
-  if (!('canHaveMetadataOnlyRecords' in config)) {
-    config['canHaveMetadataOnlyRecords'] = true;
-  }
+  const { record, files, config, ...apiConfig } = appConfig;
   const initialDepositState = { record, config, ...INITIAL_STORE_STATE };
   const preloadedState = {
     deposit: initialDepositState,
-    files: preloadFiles(record.files || []),
+    files: preloadFiles(files || {}),
   };
 
   const composeEnhancers =

@@ -91,7 +91,11 @@ export class DepositApiClient {
     return axios.delete(deleteUrl);
   }
 
-  setDefaultPreview(defaultPreviewUrl, filename) {
-    return axios.put(defaultPreviewUrl, { default_preview: filename });
+  setFileMetadata(setFileMetadataUrl, data) {
+    return axios.put(setFileMetadataUrl, data, {
+      headers: {
+        'content-type': 'application/json',
+      },
+    });
   }
 }

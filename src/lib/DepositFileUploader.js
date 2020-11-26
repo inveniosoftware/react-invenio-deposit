@@ -20,8 +20,10 @@ import {
   FILE_UPLOAD_SET_CANCEL_FUNCTION,
   FILE_UPLOAD_FINISHED,
   FILE_DELETE_FAILED,
-  SET_CURRENT_PREVIEW_FILE,
-  SET_CURRENT_PREVIEW_FILE_FAILED,
+  SET_DEFAULT_PREVIEW_FILE,
+  SET_DEFAULT_PREVIEW_FILE_FAILED,
+  SET_FILES_ENABLED,
+  SET_FILES_ENABLED_FAILED,
 } from './state/types';
 
 export class DepositFileUploader {
@@ -73,7 +75,7 @@ export class DepositFileUploader {
       this._addToCurrentUploads(file);
       const resp = await this.apiClient.initializeFileUpload(
         initializeUploadUrl,
-        file.filename
+        file.name
       );
       const initializedFile = resp.data.entries[0];
       store.dispatch({
@@ -192,7 +194,7 @@ export class DepositFileUploader {
       store.dispatch({
         type: FILE_DELETED_SUCCESS,
         payload: {
-          filename: file.filename,
+          filename: file.name,
         },
       });
     } catch (e) {
@@ -200,18 +202,32 @@ export class DepositFileUploader {
     }
   };
 
-  setDefaultPreview = async (defaultPreviewUrl, file, { store }) => {
+  setDefaultPreview = async (defaultPreviewUrl, defaultPreview, { store }) => {
     try {
-      const resp = await this.apiClient.updatePreview(
-        defaultPreviewUrl,
-        file.filename
-      );
+      const resp = await this.apiClient.setFileMetadata(defaultPreviewUrl, {
+        default_preview: defaultPreview,
+      });
       store.dispatch({
-        type: SET_CURRENT_PREVIEW_FILE,
-        payload: file.filename,
+        type: SET_DEFAULT_PREVIEW_FILE,
+        payload: { filename: defaultPreview },
       });
     } catch (e) {
-      store.dispatch({ type: SET_CURRENT_PREVIEW_FILE_FAILED });
+      store.dispatch({ type: SET_DEFAULT_PREVIEW_FILE_FAILED });
+    }
+  };
+
+  setFilesEnabled = async (enableFileUrl, filesEnabled, { store }) => {
+    debugger;
+    try {
+      const resp = await this.apiClient.setFileMetadata(enableFileUrl, {
+        enabled: filesEnabled,
+      });
+      store.dispatch({
+        type: SET_FILES_ENABLED,
+        payload: { filesEnabled },
+      });
+    } catch (e) {
+      store.dispatch({ type: SET_FILES_ENABLED_FAILED });
     }
   };
 }
