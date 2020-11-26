@@ -14,9 +14,6 @@ import {
   CREATE_DEPOSIT_SUCCESS,
   PUBLISH_SUCCESS,
   SAVE_SUCCESS,
-  SET_CURRENT_PREVIEW_FILE,
-  SET_CURRENT_PREVIEW_FILE_FAILED,
-  FILE_DELETE_FAILED,
 } from './state/types';
 
 export class DepositController {
@@ -127,8 +124,15 @@ export class DepositController {
     this.fileUploader.deleteUpload(deleteFileUrl, file, { store });
   }
 
-  async setDefaultPreviewFile(file, { store }) {
-    const defaultPreviewUrl = file.links.self;
-    this.fileUploader.setDefaultPreview(defaultPreviewUrl, file, { store });
+  setDefaultPreviewFile(defaultPreviewUrl, filename, { store }) {
+    this.fileUploader.setDefaultPreview(defaultPreviewUrl, filename, {
+      store,
+    });
+  }
+
+  setFilesEnabled(enableFileUrl, filesEnabled, { store }) {
+    this.fileUploader.setFilesEnabled(enableFileUrl, filesEnabled, {
+      store,
+    });
   }
 }

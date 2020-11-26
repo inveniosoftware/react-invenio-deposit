@@ -13,14 +13,15 @@ import { FileUploaderToolbar } from './FileUploaderToolbar';
 import { UploadState } from '../../state/reducers/files';
 
 export default class FileUploader extends Component {
-  constructor() {
+  constructor(props) {
     super();
-    this.state = { filesEnabled: true };
+    this.state = { filesEnabled: props.filesEnabled };
   }
 
   onMetadataOnlyClick = (event, data) => {
     if (!data['disabled']) {
       this.setState((previousState) => {
+        this.props.setFilesEnabled(!previousState.filesEnabled);
         return {
           ...previousState,
           ...{ filesEnabled: !previousState.filesEnabled },
@@ -32,7 +33,7 @@ export default class FileUploader extends Component {
     const { files, record, uploadFilesToDraft, quota, config } = this.props;
     let filesList = Object.values(files).map((fileState) => {
       return {
-        filename: fileState.filename,
+        name: fileState.name,
         size: fileState.size,
         checksum: fileState.checksum,
         links: fileState.links,
@@ -41,6 +42,7 @@ export default class FileUploader extends Component {
           failed: fileState.status === UploadState.error,
           ongoing: fileState.status === UploadState.uploading,
           finished: fileState.status === UploadState.finished,
+          pending: fileState.status === UploadState.pending,
           progress: fileState.progress,
           cancel: fileState.cancel,
         },
@@ -100,6 +102,7 @@ export default class FileUploader extends Component {
             filesList={filesList}
             dropzoneParams={dropzoneParams}
             isDraftRecord={true}
+            defaultFilePreview={this.props.defaultFilePreview}
           />
         </Grid.Row>
         <Grid.Row className="file-upload-note-row">
@@ -118,13 +121,14 @@ export default class FileUploader extends Component {
 
 const fileDetailsShape = PropTypes.objectOf(
   PropTypes.shape({
-    filename: PropTypes.string,
+    name: PropTypes.string,
     size: PropTypes.number,
     progress: PropTypes.number,
     checksum: PropTypes.string,
     links: PropTypes.object,
     cancel: PropTypes.func,
     state: PropTypes.oneOf(Object.values(UploadState)),
+    enabled: PropTypes.bool,
   })
 );
 

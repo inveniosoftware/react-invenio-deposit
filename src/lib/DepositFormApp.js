@@ -42,6 +42,7 @@ export class DepositFormApp extends Component {
     const appConfig = {
       config: props.config,
       record: recordSerializer.deserialize(props.record),
+      files: props.files,
       controller: controller,
       apiClient: apiClient,
       fileUploader: fileUploader,

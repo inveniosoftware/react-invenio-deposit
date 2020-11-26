@@ -5,8 +5,6 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { SET_CURRENT_PREVIEW_FILE } from '../types';
-
 export const uploadDraftFiles = (record, files) => {
   return async (dispatch, getState, config) => {
     const controller = config.controller;
@@ -25,12 +23,22 @@ export const deleteDraftFile = (file) => {
   };
 };
 
-export const setDefaultPreviewFile = (filename) => {
+export const setDefaultPreview = (filename) => {
   return async (dispatch, getState, config) => {
     const controller = config.controller;
-    controller.setFilePreview(file, {
+    const defaultPreviewUrl = getState().files.links.self;
+    controller.setDefaultPreviewFile(defaultPreviewUrl, filename, {
       store: { dispatch, getState, config },
     });
   };
-  return;
+};
+
+export const setFilesEnabled = (filesEnabled) => {
+  return async (dispatch, getState, config) => {
+    const controller = config.controller;
+    const enableFileUrl = getState().files.links.self;
+    controller.setFilesEnabled(enableFileUrl, filesEnabled, {
+      store: { dispatch, getState, config },
+    });
+  };
 };

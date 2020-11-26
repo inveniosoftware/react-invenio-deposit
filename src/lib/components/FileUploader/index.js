@@ -4,13 +4,17 @@ import FileUploaderComponent from './FileUploader';
 import {
   uploadDraftFiles,
   deleteDraftFile,
-  setDefaultPreviewFile,
+  setDefaultPreview,
+  setFilesEnabled,
 } from '../../state/actions';
 
 const mapStateToProps = (state) => {
-  const { isFileUploadInProgress, ...files } = state.files;
+  const { links, defaultFilePreview, entries, enabled } = state.files;
   return {
-    files: files,
+    files: entries,
+    links,
+    defaultFilePreview,
+    filesEnabled: enabled,
     record: state.deposit.record,
     config: state.deposit.config,
   };
@@ -20,8 +24,8 @@ const mapDispatchToProps = (dispatch) => ({
   uploadFilesToDraft: (record, files) =>
     dispatch(uploadDraftFiles(record, files)),
   deleteFileFromRecord: (file) => dispatch(deleteDraftFile(file)),
-  setDefaultPreviewFile: (filename) =>
-    dispatch(setDefaultPreviewFile(filename)),
+  setDefaultPreviewFile: (filename) => dispatch(setDefaultPreview(filename)),
+  setFilesEnabled: (filesEnabled) => dispatch(setFilesEnabled(filesEnabled)),
 });
 
 export const FileUploader = connect(
