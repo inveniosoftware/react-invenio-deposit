@@ -1,5 +1,10 @@
 # Changes
 
+Version 0.8.5 (released 2020-11-26)
+
+* Set default preview to the backend
+* Enable/disable files
+
 Version 0.8.4 (released 2020-11-25)
 
 * Show 1st/last name if person, name if org in Creators and Contributors field.
