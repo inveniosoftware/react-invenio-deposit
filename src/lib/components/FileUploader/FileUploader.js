@@ -38,6 +38,7 @@ export default class FileUploader extends Component {
       quota,
       config,
       filesEnabled,
+      isDraftRecord,
     } = this.props;
     let filesList = Object.values(files).map((fileState) => {
       return {
@@ -99,7 +100,7 @@ export default class FileUploader extends Component {
             onMetadataOnlyClick={this.onMetadataOnlyClick}
             filesSize={filesSize}
             filesList={filesList}
-            isDraftRecord={true}
+            isDraftRecord={isDraftRecord}
             config={config}
             filesEnabled={filesEnabled}
           />
@@ -110,7 +111,7 @@ export default class FileUploader extends Component {
             filesEnabled={this.state.filesEnabled}
             filesList={filesList}
             dropzoneParams={dropzoneParams}
-            isDraftRecord={true}
+            isDraftRecord={isDraftRecord}
             defaultFilePreview={this.props.defaultFilePreview}
           />
         </Grid.Row>
@@ -161,4 +162,5 @@ FileUploader.defaultProps = {
     maxFiles: 5,
     maxStorage: 10000000000,
   },
+  isDraftRecord: true,
 };
