@@ -13,20 +13,9 @@ import { FileUploaderToolbar } from './FileUploaderToolbar';
 import { UploadState } from '../../state/reducers/files';
 
 export default class FileUploader extends Component {
-  constructor(props) {
-    super();
-    this.state = { filesEnabled: props.filesEnabled };
-  }
-
   onMetadataOnlyClick = (event, data) => {
     if (!data['disabled']) {
-      this.setState((previousState) => {
-        this.props.setFilesEnabled(!previousState.filesEnabled);
-        return {
-          ...previousState,
-          ...{ filesEnabled: !previousState.filesEnabled },
-        };
-      });
+      this.props.setFilesEnabled(!this.props.filesEnabled);
     }
   };
 
@@ -108,7 +97,7 @@ export default class FileUploader extends Component {
         <Grid.Row className="file-upload-area-row">
           <FileUploaderArea
             {...this.props}
-            filesEnabled={this.state.filesEnabled}
+            filesEnabled={filesEnabled}
             filesList={filesList}
             dropzoneParams={dropzoneParams}
             isDraftRecord={isDraftRecord}

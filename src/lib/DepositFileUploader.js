@@ -223,7 +223,7 @@ export class DepositFileUploader {
       });
       store.dispatch({
         type: SET_FILES_ENABLED,
-        payload: { filesEnabled },
+        payload: { filesEnabled: resp.data.enabled, links: resp.data.links },
       });
     } catch (e) {
       store.dispatch({ type: SET_FILES_ENABLED_FAILED });
