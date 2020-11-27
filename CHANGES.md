@@ -1,5 +1,10 @@
 # Changes
 
+Version 0.8.6 (released 2020-11-27)
+
+* Expose `isDraftRecord` to the FileUploader component
+
+
 Version 0.8.5 (released 2020-11-26)
 
 * Set default preview to the backend
