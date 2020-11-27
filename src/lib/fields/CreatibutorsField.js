@@ -70,10 +70,9 @@ export class CreatibutorsField extends Field {
    */
   deserialize(record) {
     let backendValue = _get(record, this.fieldpath);
-    let frontendValue = (
-      backendValue ?
-      this.deserializeCreatibutors(backendValue) : this.deserializedDefault
-    );
+    let frontendValue = backendValue
+      ? this.deserializeCreatibutors(backendValue)
+      : this.deserializedDefault;
     return _set(record, this.fieldpath, frontendValue);
   }
 
@@ -101,7 +100,7 @@ export class CreatibutorsField extends Field {
   serializeAffiliations(affiliations) {
     return affiliations.map((affiliation) => {
       affiliation.identifiers = this.serializeIdentifiers(
-        affiliation.identifiers
+        affiliation.identifiers || []
       );
       return affiliation;
     });
@@ -135,11 +134,7 @@ export class CreatibutorsField extends Field {
    * @returns {object} record - in API format
    */
   serialize(record) {
-    const frontendValue = _get(
-      record,
-      this.fieldpath,
-      this.serializedDefault
-    );
+    const frontendValue = _get(record, this.fieldpath, this.serializedDefault);
 
     // Remove creatibutors with only a `type`
     // We have to do this because `type` is filled by default
@@ -153,5 +148,4 @@ export class CreatibutorsField extends Field {
     creatibutors = this.serializeCreatibutors(creatibutors);
     return _set(record, this.fieldpath, creatibutors);
   }
-
 }
