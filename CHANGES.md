@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.8.8 (released 2020-11-27)
+
+* Fix metadata only checkbox when it was clicked without a draft created
+
 Version 0.8.7 (released 2020-11-27)
 
 * Disable publish if files are not uploaded or record marked as metadata only.
