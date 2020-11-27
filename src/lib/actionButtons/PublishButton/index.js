@@ -12,6 +12,8 @@ import PublishButtonComponent from './PublishButton';
 const mapStateToProps = (state) => ({
   formAction: state.deposit.formAction,
   fileUploadOngoing: state.files.isFileUploadInProgress,
+  filesEnabled: state.files.enabled,
+  nubmerOfFiles: Object.values(state.files.entries).length,
 });
 
 const mapDispatchToProps = (dispatch) => ({
