@@ -24,6 +24,7 @@ export default class PublishButton extends Component {
     const record = formik.values;
     return (
       !this.draftAlreadyCreated(record) ||
+      (this.props.filesEnabled && !this.props.nubmerOfFiles) ||
       this.props.fileUploadOngoing ||
       formik.isSubmitting
     );
@@ -38,6 +39,8 @@ export default class PublishButton extends Component {
       formAction,
       publishClick,
       fileUploadOngoing,
+      filesEnabled,
+      nubmerOfFiles,
       ...uiProps
     } = this.props;
     return (
