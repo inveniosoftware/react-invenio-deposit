@@ -1,9 +1,12 @@
 # Changes
 
+Version 0.8.7 (released 2020-11-27)
+
+* Disable publish if files are not uploaded or record marked as metadata only.
+
 Version 0.8.6 (released 2020-11-27)
 
 * Expose `isDraftRecord` to the FileUploader component
-
 
 Version 0.8.5 (released 2020-11-26)
 
