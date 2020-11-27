@@ -171,6 +171,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         enabled: action.payload.filesEnabled,
+        links: { ...state.links, self: action.payload.links.self },
       };
     case SET_FILES_ENABLED_FAILED:
       // TODO: handle
