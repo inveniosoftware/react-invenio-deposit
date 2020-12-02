@@ -7,22 +7,22 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FieldLabel, SelectField } from 'react-invenio-forms';
+import { FieldLabel, RemoteSelectField } from 'react-invenio-forms';
 
 export class LanguagesField extends Component {
   render() {
-    const { fieldPath, label, labelIcon, options, required } = this.props;
+    const { fieldPath, label, labelIcon, required } = this.props;
     return (
-      <SelectField
+      <RemoteSelectField
         fieldPath={fieldPath}
+        suggestionAPIUrl="/api/vocabularies/languages"
+        placeholder={'Select languages...'}
+        required={required}
+        multiple
         label={
           <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
         }
-        options={options}
-        placeholder={'Select languages...'}
-        multiple
-        search
-        required={required}
+        noQueryMessage="Search for languages..."
       />
     );
   }
@@ -32,12 +32,6 @@ LanguagesField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string,
   labelIcon: PropTypes.string,
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      text: PropTypes.string,
-      value: PropTypes.string,
-    })
-  ).isRequired,
   required: PropTypes.bool,
 };
 
