@@ -11,14 +11,23 @@ import { FieldLabel, RemoteSelectField } from 'react-invenio-forms';
 
 export class LanguagesField extends Component {
   render() {
-    const { fieldPath, label, labelIcon, required } = this.props;
+    const {
+      fieldPath,
+      label,
+      labelIcon,
+      required,
+      multiple,
+      placeholder,
+      clearable,
+    } = this.props;
     return (
       <RemoteSelectField
         fieldPath={fieldPath}
         suggestionAPIUrl="/api/vocabularies/languages"
-        placeholder={'Select languages...'}
+        placeholder={placeholder}
         required={required}
-        multiple
+        clearable={clearable}
+        multiple={multiple}
         label={
           <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
         }
@@ -33,10 +42,16 @@ LanguagesField.propTypes = {
   label: PropTypes.string,
   labelIcon: PropTypes.string,
   required: PropTypes.bool,
+  multiple: PropTypes.bool,
+  clearable: PropTypes.bool,
+  placeholder: PropTypes.string,
 };
 
 LanguagesField.defaultProps = {
   fieldPath: 'metadata.languages',
   label: 'Languages',
   labelIcon: 'globe',
+  multiple: true,
+  clearable: true,
+  placeholder: 'Search for a language by name (e.g "eng", "fr" or "Polish")',
 };

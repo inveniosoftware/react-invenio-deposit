@@ -16,6 +16,7 @@ import {
   RichInputField,
 } from 'react-invenio-forms';
 import { emptyAdditionalDescription } from '../record';
+import { LanguagesField } from './LanguagesField';
 
 export class AdditionalDescriptionsField extends Component {
   render() {
@@ -42,10 +43,12 @@ export class AdditionalDescriptionsField extends Component {
                 options={options.type}
                 required
               />
-              <SelectField
+              <LanguagesField
                 fieldPath={`${key}.lang`}
                 label={'Language'}
-                options={options.lang}
+                multiple={false}
+                placeholder={'Select language'}
+                labelIcon={null}
                 clearable
               />
               <Form.Field>

@@ -16,6 +16,7 @@ import {
   TextField,
 } from 'react-invenio-forms';
 import { emptyAdditionalTitle } from '../record';
+import { LanguagesField } from './LanguagesField';
 
 export class AdditionalTitlesField extends Component {
   render() {
@@ -39,10 +40,12 @@ export class AdditionalTitlesField extends Component {
               label={'Type'}
               options={options.type}
             />
-            <SelectField
+            <LanguagesField
               fieldPath={`${key}.lang`}
               label={'Language'}
-              options={options.lang}
+              multiple={false}
+              placeholder={'Select language'}
+              labelIcon={null}
               clearable
             />
             <>
