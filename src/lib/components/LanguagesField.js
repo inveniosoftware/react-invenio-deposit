@@ -9,6 +9,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FieldLabel, RemoteSelectField } from 'react-invenio-forms';
 
+//TODO: remove after backend will be implemented
+const fetchedOptions = [
+  { title: 'Danish', id: 'dan' },
+  { title: 'English', id: 'eng' },
+  { title: 'French', id: 'fra' },
+  { title: 'German', id: 'deu' },
+  { title: 'Greek', id: 'ell' },
+  { title: 'Italian', id: 'ita' },
+  { title: 'Spanish', id: 'spa' },
+];
+
 export class LanguagesField extends Component {
   render() {
     const {
@@ -32,6 +43,7 @@ export class LanguagesField extends Component {
           <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
         }
         noQueryMessage="Search for languages..."
+        fetchedOptions={fetchedOptions}
       />
     );
   }

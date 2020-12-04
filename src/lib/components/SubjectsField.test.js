@@ -12,22 +12,9 @@ it('renders without crashing', () => {
     {text: 'MeSH', value: 'mesh'},
   ]
   const options = [
-    {
-      text: 'Deep Learning',
-      value: {
-        subject: 'Deep Learning',
-        scheme: 'user',
-        identifier: 'U1'
-      },
-    },
-    {
-      text: 'MeSH: Cognitive Neuroscience',
-      value: {
-        subject: 'Cognitive Neuroscience',
-        scheme: 'mesh',
-        identifier: 'D000066494'
-      },
-    },
+    { title: 'Deep Learning', id: 'dl', scheme: 'user' },
+    { title: 'MeSH: Cognitive Neuroscience', id: 'cn',  scheme: 'mesh' },
+    { title: 'FAST: Glucagonoma', id: 'gl', scheme: 'fast' },
   ];
 
   ReactDOM.render(
