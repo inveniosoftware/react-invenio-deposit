@@ -1,6 +1,6 @@
 # Changes
 
-Version 0.9.0 (released 2020-12-07)
+Version 0.9.1 (released 2020-12-07)
 
 Version 0.8.8 (released 2020-11-27)
 
