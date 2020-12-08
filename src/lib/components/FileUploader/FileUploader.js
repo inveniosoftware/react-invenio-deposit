@@ -84,15 +84,17 @@ export default class FileUploader extends Component {
     return (
       <Grid style={{ marginBottom: '20px' }}>
         <Grid.Row>
-          <FileUploaderToolbar
-            {...this.props}
-            onMetadataOnlyClick={this.onMetadataOnlyClick}
-            filesSize={filesSize}
-            filesList={filesList}
-            isDraftRecord={isDraftRecord}
-            config={config}
-            filesEnabled={filesEnabled}
-          />
+          {isDraftRecord && (
+            <FileUploaderToolbar
+              {...this.props}
+              onMetadataOnlyClick={this.onMetadataOnlyClick}
+              filesSize={filesSize}
+              filesList={filesList}
+              isDraftRecord={isDraftRecord}
+              config={config}
+              filesEnabled={filesEnabled}
+            />
+          )}
         </Grid.Row>
         <Grid.Row className="file-upload-area-row">
           <FileUploaderArea

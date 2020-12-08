@@ -15,20 +15,6 @@ import { FieldLabel } from 'react-invenio-forms';
 import { LicenseModal } from './LicenseModal';
 
 export class LicenseField extends Component {
-  state = {
-    editModalOpen: false,
-    standardModalOpen: false,
-    customModalOpen: false,
-  };
-
-  openModal = (modalId) => {
-    this.setState({ [modalId]: true });
-  };
-
-  closeModal = (modalId) => {
-    this.setState({ [modalId]: false });
-  };
-
   renderFormField = (props) => {
     const {
       form: { values, errors },
@@ -51,24 +37,19 @@ export class LicenseField extends Component {
             return (
               <List.Item key={key} className="license-listitem">
                 <List.Content floated="right">
-                  <Button
-                    size="mini"
-                    positive
-                    type="button"
-                    onClick={() => this.openModal('editModalOpen')}
-                  >
-                    Change
-                  </Button>
                   <LicenseModal
                     searchConfig={this.props.searchConfig}
-                    onClose={() => this.closeModal('editModalOpen')}
-                    modalOpen={this.state.editModalOpen}
                     onLicenseChange={(selectedLicense) => {
                       arrayHelpers.replace(indexPath, selectedLicense);
                     }}
                     mode={licenseType}
                     initialLicense={licenseType === 'custom' ? value : null}
                     action="edit"
+                    trigger={
+                      <Button size="mini" positive type="button">
+                        Change
+                      </Button>
+                    }
                   />
                   <Button
                     size="mini"
@@ -103,22 +84,9 @@ export class LicenseField extends Component {
             className="small blue icon add-licenses"
           >
             <Dropdown.Menu>
-              <Dropdown.Item
-                key="standard"
-                onClick={() => this.openModal('standardModalOpen')}
-              >
-                Add standard
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="custom"
-                onClick={() => this.openModal('customModalOpen')}
-              >
-                Create custom
-              </Dropdown.Item>
               <LicenseModal
                 searchConfig={this.props.searchConfig}
-                onClose={() => this.closeModal('standardModalOpen')}
-                modalOpen={this.state.standardModalOpen}
+                trigger={<Dropdown.Item key="standard" text="Add standard" />}
                 onLicenseChange={(selectedLicense) => {
                   arrayHelpers.push(selectedLicense);
                 }}
@@ -127,13 +95,12 @@ export class LicenseField extends Component {
               />
               <LicenseModal
                 searchConfig={this.props.searchConfig}
-                onClose={() => this.closeModal('customModalOpen')}
-                modalOpen={this.state.customModalOpen}
+                trigger={<Dropdown.Item key="custom" text="Create custom" />}
                 onLicenseChange={(selectedLicense) => {
                   arrayHelpers.push(selectedLicense);
                 }}
-                action="add"
                 mode="custom"
+                action="add"
               />
             </Dropdown.Menu>
           </Dropdown>
