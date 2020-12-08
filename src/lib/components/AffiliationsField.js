@@ -8,18 +8,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  TextField,
   ArrayField,
   FieldLabel,
 } from 'react-invenio-forms';
 import { Button, Form, Icon } from 'semantic-ui-react';
 import { IdentifiersField } from './IdentifiersField';
+import { RemoteSelectField } from 'react-invenio-forms';
+
+//TODO: remove after backend will be implemented
+const fetchedOptions = [
+  { title: 'CERN', id: 'cern', scheme: 'cern' },
+  { title: 'Fermilab', id: 'fermilab',  scheme: 'fermilab' },
+  { title: 'Northwestern University', id: 'nu', scheme: 'nu' },
+];
+
+//TODO: remove after backend will be implemented
+const affiliationSchemes = [
+  { text: "ISNI", value: "isni" },
+  { text: "ROR", value: "ror" },
+];
 
 /**Affiliation input component */
 export class AffiliationsField extends Component {
   render() {
-    const { fieldPath } = this.props;
-
+    const { fieldPath } = this.props; //TODO: take affiliationSchemes from props
     return (
       <>
         <ArrayField
@@ -30,14 +42,19 @@ export class AffiliationsField extends Component {
         >
           {({ array, arrayHelpers, indexPath, key }) => (
             <>
-              <TextField
+              <RemoteSelectField
+                required
+                allowAdditions
                 fieldPath={`${key}.name`}
+                suggestionAPIUrl="/api/vocabularies/affiliations"
+                placeholder="Search or create affiliation'"
                 label={
                   <FieldLabel htmlFor={`${fieldPath}.name`} label={'Name'} />
                 }
-                required
+                noQueryMessage="Search for affiliations.."
+                fetchedOptions={fetchedOptions}
               />
-              <IdentifiersField fieldPath={`${key}.identifiers`} labelIcon="" />
+              <IdentifiersField fieldPath={`${key}.identifiers`} labelIcon="" schemeOptions={affiliationSchemes}/>
               {array.length === 1 ? null : (
                 <Form.Field>
                   <Form.Field>
