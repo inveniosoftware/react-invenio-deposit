@@ -5,8 +5,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Grid, Icon, Popup, Checkbox, Label, List } from 'semantic-ui-react';
+import { Checkbox, Grid, Icon, Label, List, Popup } from 'semantic-ui-react';
 import { humanReadableBytes } from './utils';
 
 export const FileUploaderToolbar = ({
@@ -63,7 +62,7 @@ export const FileUploaderToolbar = ({
                 ? { color: 'blue' }
                 : {})}
             >
-              {humanReadableBytes(filesSize)} out of
+              {humanReadableBytes(filesSize)} out of{' '}
               {humanReadableBytes(quota.maxStorage)}
             </Label>
           </List.Item>
