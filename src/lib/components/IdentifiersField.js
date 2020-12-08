@@ -15,14 +15,13 @@ import {
   FieldLabel,
 } from 'react-invenio-forms';
 import { Button, Form, Icon } from 'semantic-ui-react';
-
+import { SelectField } from 'react-invenio-forms';
 import { emptyIdentifier } from '../record';
 
 /** Identifiers array component */
 export class IdentifiersField extends Component {
   render() {
-    const { fieldPath, label, labelIcon, required } = this.props;
-
+    const { fieldPath, label, labelIcon, required, schemeOptions } = this.props;
     return (
       <>
         <ArrayField
@@ -36,8 +35,17 @@ export class IdentifiersField extends Component {
         >
           {({ array, arrayHelpers, indexPath, key }) => (
             <GroupField widths="equal">
-              <TextField fieldPath={`${key}.scheme`} label="Scheme" />
-              <TextField fieldPath={`${key}.identifier`} label="Identifier" />
+              {schemeOptions &&
+                <SelectField
+                  fieldPath={`${key}.scheme`}
+                  label={'Scheme'}
+                  options={schemeOptions}
+                />
+              }
+              {!schemeOptions &&
+                <TextField fieldPath={`${key}.scheme`} label={'Scheme'} />
+              }
+              <TextField fieldPath={`${key}.identifier`} label={'Identifier'} />
               <Form.Field>
                 <Form.Field>
                   <label>&nbsp;</label>
@@ -65,6 +73,12 @@ IdentifiersField.propTypes = {
   label: PropTypes.string,
   labelIcon: PropTypes.string,
   required: PropTypes.bool,
+  schemeOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      text: PropTypes.string,
+      value: PropTypes.string,
+    })
+  )
 };
 
 IdentifiersField.defaultProps = {
