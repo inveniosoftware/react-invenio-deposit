@@ -14,11 +14,10 @@ export const FileUploaderToolbar = ({
   filesList,
   filesSize,
   filesEnabled,
-  isDraftRecord,
   config,
   ...props
 }) => {
-  return isDraftRecord ? (
+  return (
     <>
       <Grid.Column width={8} verticalAlign="middle" floated="left">
         {config.canHaveMetadataOnlyRecords && (
@@ -69,5 +68,5 @@ export const FileUploaderToolbar = ({
         </List>
       </Grid.Column>
     </>
-  ) : null;
+  );
 };

@@ -28,7 +28,7 @@ export class ResourceTypeField extends Component {
 
     const resource_type = _get(formikBag.form.values, typeFieldPath, '');
 
-    const handleChange = (event, selectedOption) => {
+    const handleChange = ({ event, data: selectedOption }) => {
       formikBag.form.setFieldValue(typeFieldPath, selectedOption.value);
       formikBag.form.setFieldValue(subtypeFieldPath, '');
     };
