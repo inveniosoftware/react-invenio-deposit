@@ -18,7 +18,7 @@ export const LicenseFilter = ({
 }) => {
   const _isChecked = (userSelectionFilters) => {
     const isFilterActive =
-      userSelectionFilters.filter((filter) => filter[0] === filterValue[0])
+      userSelectionFilters.filter((filter) => filter[1] === filterValue[1])
         .length > 0;
     return isFilterActive;
   };
@@ -27,8 +27,17 @@ export const LicenseFilter = ({
     updateQueryFilters(userSelectionFilters.concat([filterValue]));
   };
   var isChecked = _isChecked(userSelectionFilters);
-  return (
-    <Menu.Item name={label} active={isChecked} onClick={onToggleClicked}>
+  return isChecked ? (
+    <Menu.Item
+      name={label}
+      active
+      className="license-menu-item-active"
+      onClick={onToggleClicked}
+    >
+      {title}
+    </Menu.Item>
+  ) : (
+    <Menu.Item name={label} onClick={onToggleClicked}>
       {title}
     </Menu.Item>
   );
