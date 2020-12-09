@@ -34,6 +34,8 @@ export class LicenseField extends Component {
             const indexPath = index;
             const key = `${arrayPath}.${indexPath}`;
             const licenseType = value.id ? 'standard' : 'custom';
+            const description = getIn(values, `${key}.description`, '');
+            const title = getIn(values, `${key}.title`, '');
             return (
               <List.Item key={key} className="license-listitem">
                 <List.Content floated="right">
@@ -61,16 +63,10 @@ export class LicenseField extends Component {
                   </Button>
                 </List.Content>
                 <List.Content>
-                  <List.Header>{getIn(values, `${key}.title`, '')}</List.Header>
-                  <List.Description>
-                    {
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: getIn(values, `${key}.description`, ''),
-                        }}
-                      ></div>
-                    }
-                  </List.Description>
+                  <List.Header>{title}</List.Header>
+                  {description && (
+                    <List.Description>{description}</List.Description>
+                  )}
                 </List.Content>
               </List.Item>
             );
