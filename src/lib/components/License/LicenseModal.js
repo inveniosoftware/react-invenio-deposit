@@ -22,6 +22,7 @@ import { LicenseFilter } from './LicenseFilter';
 import { LicenseResults } from './LicenseResults';
 import { Formik } from 'formik';
 import { TextAreaField, TextField, ActionButton } from 'react-invenio-forms';
+import * as Yup from 'yup';
 
 const overriddenComponents = {
   'SearchFilters.ToggleComponent': LicenseFilter,
@@ -36,6 +37,12 @@ const ModalActions = {
   ADD: 'add',
   EDIT: 'edit',
 };
+
+const LicenseSchema = Yup.object().shape({
+  selectedLicense: Yup.object().shape({
+    title: Yup.string().required('Title is a required field.'),
+  }),
+});
 
 export class LicenseModal extends Component {
   state = {
@@ -54,7 +61,6 @@ export class LicenseModal extends Component {
     this.props.onLicenseChange(values.selectedLicense);
     formikBag.setSubmitting(false);
     formikBag.resetForm();
-    // this.props.onClose();
     this.closeModal();
   };
 
@@ -71,6 +77,7 @@ export class LicenseModal extends Component {
           selectedLicense: initialLicense,
         }}
         onSubmit={this.onSubmit}
+        validationSchema={LicenseSchema}
       >
         <Modal
           onOpen={() => this.openModal()}
@@ -170,6 +177,7 @@ export class LicenseModal extends Component {
                   label="Title"
                   placeholder="License title"
                   fieldPath="selectedLicense.title"
+                  required
                 ></TextField>
                 <TextAreaField
                   fieldPath={'selectedLicense.description'}
@@ -188,7 +196,6 @@ export class LicenseModal extends Component {
               name="cancel"
               onClick={(values, formikBag) => {
                 formikBag.resetForm();
-                // this.props.onClose();
                 this.closeModal();
               }}
               negative
