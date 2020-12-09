@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getIn, FieldArray } from 'formik';
 
-import { Button, Form, Dropdown, List } from 'semantic-ui-react';
+import { Button, Form, Dropdown, List, Icon } from 'semantic-ui-react';
 
 import { FieldLabel } from 'react-invenio-forms';
 import { LicenseModal } from './LicenseModal';
@@ -71,14 +71,7 @@ export class LicenseField extends Component {
               </List.Item>
             );
           })}
-          <Dropdown
-            floating
-            text="Add a license"
-            icon="plus"
-            labeled
-            button
-            className="small blue icon add-licenses"
-          >
+          <Dropdown className="add-licenses" text="Add a license" simple>
             <Dropdown.Menu>
               <LicenseModal
                 searchConfig={this.props.searchConfig}
@@ -115,6 +108,7 @@ export class LicenseField extends Component {
     );
   }
 }
+
 LicenseField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string,

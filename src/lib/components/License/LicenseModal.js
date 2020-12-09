@@ -94,8 +94,8 @@ export class LicenseModal extends Component {
               <Grid.Column floated="left" width={4}>
                 <Header as="h2">
                   {this.props.action === ModalActions.ADD
-                    ? 'Add License'
-                    : 'Change License'}
+                    ? 'Add license'
+                    : 'Change license'}
                 </Header>
               </Grid.Column>
               <Grid.Column
@@ -132,30 +132,28 @@ export class LicenseModal extends Component {
                         />
                       </Grid.Column>
                       <Grid.Column width={8} textAlign="right" floated="right">
-                        <Button.Group>
-                          <Menu>
-                            <Toggle
-                              title="Recommended"
-                              label="recommended"
-                              filterValue={['type', 'recommended']}
-                            ></Toggle>
-                            <Toggle
-                              title="All"
-                              label="all"
-                              filterValue={['type', 'all']}
-                            ></Toggle>
-                            <Toggle
-                              title="Data"
-                              label="data"
-                              filterValue={['type', 'data']}
-                            ></Toggle>
-                            <Toggle
-                              title="Software"
-                              label="software"
-                              filterValue={['type', 'software']}
-                            ></Toggle>
-                          </Menu>
-                        </Button.Group>
+                        <Menu compact>
+                          <Toggle
+                            title="Recommended"
+                            label="recommended"
+                            filterValue={['type', 'recommended']}
+                          ></Toggle>
+                          <Toggle
+                            title="All"
+                            label="all"
+                            filterValue={['type', 'all']}
+                          ></Toggle>
+                          <Toggle
+                            title="Data"
+                            label="data"
+                            filterValue={['type', 'data']}
+                          ></Toggle>
+                          <Toggle
+                            title="Software"
+                            label="software"
+                            filterValue={['type', 'software']}
+                          ></Toggle>
+                        </Menu>
                       </Grid.Column>
                     </Grid.Row>
                     <Grid.Row verticalAlign="middle">
@@ -198,20 +196,20 @@ export class LicenseModal extends Component {
                 formikBag.resetForm();
                 this.closeModal();
               }}
-              negative
               icon="remove"
               content="Cancel"
             />
             <ActionButton
               name="submit"
               onClick={(event, formik) => formik.handleSubmit(event)}
-              positive
+              primary
+              icon="checkmark"
               content={
                 this.props.action === ModalActions.ADD
                   ? this.props.mode === ModalTypes.CUSTOM
-                    ? 'Create custom License'
-                    : 'Add License'
-                  : 'Change License'
+                    ? 'Create custom license'
+                    : 'Add license'
+                  : 'Change license'
               }
             />
           </Modal.Actions>
