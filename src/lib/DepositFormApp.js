@@ -12,9 +12,9 @@ import { configureStore } from './store';
 import { DepositBootstrap } from './DepositBootstrap';
 import { DepositController } from './DepositController';
 import { DepositApiClient } from './DepositApiClient';
-import { DepositErrorHandler } from './DepositErrorHandler';
 import { DepositRecordSerializer } from './DepositRecordSerializer';
 import { DepositFileUploader } from './DepositFileUploader';
+
 
 export class DepositFormApp extends Component {
   constructor(props) {
@@ -31,10 +31,6 @@ export class DepositFormApp extends Component {
       ? props.controller
       : new DepositController(apiClient, fileUploader);
 
-    const apiErrorHandler = props.apiErrorHandler
-      ? props.apiErrorHandler
-      : new DepositErrorHandler();
-
     const recordSerializer = props.recordSerializer
       ? props.recordSerializer
       : new DepositRecordSerializer();
@@ -47,7 +43,6 @@ export class DepositFormApp extends Component {
       apiClient: apiClient,
       fileUploader: fileUploader,
       recordSerializer: recordSerializer,
-      apiErrorHandler: apiErrorHandler,
     };
 
     this.store = configureStore(appConfig);

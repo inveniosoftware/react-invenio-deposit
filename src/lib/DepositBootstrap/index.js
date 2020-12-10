@@ -20,7 +20,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  submitFormData: (record, formik) => dispatch(submitFormData(record, formik)),
+  submitFormData: (values, formik) => dispatch(submitFormData(values, formik)),
 });
 
 export const DepositBootstrap = connect(

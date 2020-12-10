@@ -9,6 +9,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Button, Modal } from 'semantic-ui-react';
 import { ActionButton } from 'react-invenio-forms';
+import { FORM_PUBLISHING } from '../../state/types';
 
 export default class PublishButton extends Component {
   state = { confirmOpen: false };
@@ -24,7 +25,7 @@ export default class PublishButton extends Component {
     const record = formik.values;
     return (
       !this.draftAlreadyCreated(record) ||
-      (this.props.filesEnabled && !this.props.nubmerOfFiles) ||
+      (this.props.filesEnabled && !this.props.numberOfFiles) ||
       this.props.fileUploadOngoing ||
       formik.isSubmitting
     );
@@ -40,7 +41,7 @@ export default class PublishButton extends Component {
       publishClick,
       fileUploadOngoing,
       filesEnabled,
-      nubmerOfFiles,
+      numberOfFiles,
       ...uiProps
     } = this.props;
     return (
@@ -52,16 +53,12 @@ export default class PublishButton extends Component {
           primary
           {...uiProps}
         >
-          {(formik) =>
-            formik.isSubmitting && formAction === 'publish' ? (
-              <>
-                <Icon size="large" loading name="spinner" />
-                Publish
-              </>
-            ) : (
-              'Publish'
-            )
-          }
+          {(formik) => (
+            <>
+            {formik.isSubmitting && formAction === FORM_PUBLISHING && <Icon size="large" loading name="spinner" /> }
+            Publish
+            </>
+          )}
         </ActionButton>
         {this.state.confirmOpen && (
           <Modal

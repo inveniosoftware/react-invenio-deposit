@@ -150,7 +150,7 @@ describe('DepositRecordSerializer', () => {
 
         let serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord).toEqual({});
+        expect(serializedRecord).toEqual({metadata: {}});
 
         // if contributors only have type defined, empty it out
         record = {
@@ -168,7 +168,7 @@ describe('DepositRecordSerializer', () => {
 
         serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord).toEqual({});
+        expect(serializedRecord).toEqual({metadata: {}});
 
         // if identifiers is absent, leave absent
         record = {
@@ -220,7 +220,7 @@ describe('DepositRecordSerializer', () => {
 
         const serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord).toEqual({});
+        expect(serializedRecord).toEqual({metadata: {}});
       });
     });
 
@@ -253,7 +253,7 @@ describe('DepositRecordSerializer', () => {
 
         const serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord).toEqual({});
+        expect(serializedRecord).toEqual({metadata: {}});
       });
     });
 
@@ -293,7 +293,7 @@ describe('DepositRecordSerializer', () => {
 
         const serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord).toEqual({});
+        expect(serializedRecord).toEqual({metadata: {}});
       });
     });
   });

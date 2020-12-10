@@ -6,29 +6,90 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import axios from 'axios';
-import { reject } from 'lodash';
+
 
 const CancelToken = axios.CancelToken;
 
+/**
+ * API client response.
+ *
+ * It's a wrapper/sieve around Axios to contain Axios coupling here. It maps
+ * good and bad responses to a unified interface.
+ *
+ */
+export class DepositApiClientResponse {
+  constructor(data, errors, code) {
+    this.data = data;
+    this.errors = errors;
+    this.code = code;
+  }
+}
+
+
+/**
+ * API Client for deposits.
+ *
+ * It mostly uses the API links passed to it from responses.
+ *
+ */
 export class DepositApiClient {
   constructor(createUrl) {
     this.createUrl = createUrl;
   }
 
-  create(record) {
-    // Calls the API to create a new draft
-    return axios.post(this.createUrl, record, {
-      headers: { 'Content-Type': 'application/json' },
-    });
+  /**
+   * Calls the API to create a new draft.
+   *
+   * @param {object} record - Serialized record
+   */
+  async create(record) {
+    try {
+      let response = await axios.post(
+        this.createUrl,
+        record,
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      return new DepositApiClientResponse(
+        response.data,  // exclude errors?
+        response.data.errors,
+        response.status
+      );
+    } catch (error) {
+      return new DepositApiClientResponse(
+        error.response.data,
+        error.response.data.errors,
+        error.response.status
+      );
+    }
   }
 
-  save(record) {
-    // Calls the API to save a pre-existing record.
-    // If the record does not exist, an error is returned.
-    // TODO: Integrate with backend API
-    return axios.put(record.links.self, record, {
-      headers: { 'Content-Type': 'application/json' },
-    });
+  /**
+   * Calls the API to save a pre-existing record.
+   *
+   * @param {object} record - Serialized record
+   */
+  async save(record) {
+    try {
+      let response = await axios.put(
+        record.links.self,
+        record,
+        {headers: { 'Content-Type': 'application/json' } }
+      );
+      return new DepositApiClientResponse(
+        response.data,  // exclude errors?
+        response.data.errors,
+        response.status
+      );
+    } catch (error) {
+      // NOTE: We only get here when status >= 400 is returned and,
+      //       at time of writing, partially successful saves return 200 (i.e.
+      //       they don't end up here).
+      return new DepositApiClientResponse(
+        error.response.data,
+        error.response.data.errors,
+        error.response.status
+      );
+    }
   }
 
   /**
@@ -36,17 +97,28 @@ export class DepositApiClient {
    *
    * @param {object} record - the payload from create()
    */
-  publish(record) {
-    // For now publish returns an error when titles array is empty
-    // This has the shape of what our current API returns when there are errors
-    // in the API call
-    return axios.post(
-      record.links.publish,
-      {},
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+  async publish(record) {
+    try {
+      let response = await axios.post(
+        record.links.publish,
+        {},
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+      return new DepositApiClientResponse(
+        response.data,  // exclude errors?
+        response.data.errors,
+        response.status
+      );
+    } catch (error) {
+      // NOTE: We get here when status >= 400 is returned
+      return new DepositApiClientResponse(
+        error.response.data,
+        error.response.data.errors,
+        error.response.status
+      );
+    }
   }
 
   initializeFileUpload(initializeUploadUrl, filename) {
