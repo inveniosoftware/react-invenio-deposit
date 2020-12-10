@@ -11,12 +11,17 @@ import _cloneDeep from 'lodash/cloneDeep';
 
 import { Field } from './Field';
 
-export class LanguagesField extends Field {
-  serialize(record) {
-    let fieldValue = _get(record, this.fieldpath, this.serializedDefault);
+export class VocabularyField extends Field {
+  deserialize(record) {
+    let fieldValue = _get(record, this.fieldpath, this.deserializedDefault);
     if (fieldValue !== null) {
-      return _set(_cloneDeep(record), this.fieldpath, fieldValue);
+      return _set(
+        _cloneDeep(record),
+        this.fieldpath,
+        fieldValue.map((value) => value.id || value.title)
+      );
     }
+
     return record;
   }
 }

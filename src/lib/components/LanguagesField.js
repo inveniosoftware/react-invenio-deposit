@@ -19,6 +19,7 @@ export class LanguagesField extends Component {
       multiple,
       placeholder,
       clearable,
+      initialOptions,
     } = this.props;
     return (
       <RemoteSelectField
@@ -28,6 +29,7 @@ export class LanguagesField extends Component {
         required={required}
         clearable={clearable}
         multiple={multiple}
+        initialSuggestions={initialOptions}
         label={
           <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
         }
@@ -45,6 +47,13 @@ LanguagesField.propTypes = {
   multiple: PropTypes.bool,
   clearable: PropTypes.bool,
   placeholder: PropTypes.string,
+  initialOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string,
+      value: PropTypes.string,
+      text: PropTypes.string,
+    })
+  ),
 };
 
 LanguagesField.defaultProps = {

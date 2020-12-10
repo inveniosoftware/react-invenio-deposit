@@ -9,11 +9,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FieldLabel, RemoteSelectField } from 'react-invenio-forms';
 import { Form } from 'semantic-ui-react';
+import _get from 'lodash/get';
 
 //TODO: remove after backend will be implemented
 const fetchedOptions = [
   { title: 'Deep Learning', id: 'dl', scheme: 'user' },
-  { title: 'MeSH: Cognitive Neuroscience', id: 'cn',  scheme: 'mesh' },
+  { title: 'MeSH: Cognitive Neuroscience', id: 'cn', scheme: 'mesh' },
   { title: 'FAST: Glucagonoma', id: 'gl', scheme: 'fast' },
 ];
 
@@ -21,6 +22,13 @@ export class SubjectsField extends Component {
   state = {
     limitTo: 'all',
   };
+
+  serializeSubjects = (subjects) =>
+    subjects.map((subject) => ({
+      text: subject.title,
+      value: _get(subject, 'id', subject.title),
+      key: _get(subject, 'id', subject.title),
+    }));
 
   render() {
     const {
@@ -32,15 +40,18 @@ export class SubjectsField extends Component {
       placeholder,
       clearable,
       limitToOptions,
+      initialOptions,
     } = this.props;
     const { limitTo } = this.state;
     return (
       <>
         <RemoteSelectField
           allowAdditions
+          initialSuggestions={initialOptions}
           fieldPath={fieldPath}
           suggestionAPIUrl="/api/vocabularies/subjects"
           suggestionAPIQueryParams={{ limit_to: limitTo }}
+          serializeSuggestions={this.serializeSubjects}
           placeholder={placeholder}
           required={required}
           clearable={clearable}
@@ -72,6 +83,13 @@ SubjectsField.propTypes = {
   multiple: PropTypes.bool,
   clearable: PropTypes.bool,
   placeholder: PropTypes.string,
+  initialOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string,
+      value: PropTypes.string,
+      text: PropTypes.string,
+    })
+  ),
 };
 
 SubjectsField.defaultProps = {
