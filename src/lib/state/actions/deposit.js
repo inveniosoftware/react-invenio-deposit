@@ -5,24 +5,12 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { FORM_ACTION_FAILED, FORM_ACTION_EVENT_EMITTED } from '../types';
+import {
+  FORM_ACTION_EVENT_EMITTED,
+  FORM_PUBLISHING,
+  FORM_SAVING
+} from '../types';
 
-/**
- * Closure over Axios error and formik, returning async error setting function.
- *
- * @param {Error} error - Axios error
- * @param {Formik state} formik
- */
-export const setFormErrors = (error, formik, record) => {
-  return async (dispatch, getState, config) => {
-    const extractedErrors = config.apiErrorHandler.extractErrors(error, record);
-    dispatch({
-      type: FORM_ACTION_FAILED,
-    });
-    formik.setSubmitting(false);
-    formik.setErrors(extractedErrors);
-  };
-};
 
 export const publish = (record, formik) => {
   return async (dispatch, getState, config) => {
@@ -46,12 +34,11 @@ export const save = (record, formik) => {
 
 export const submitAction = (action, event, formik) => {
   return async (dispatch, getState, config) => {
-    console.log(`onSubmit - ${action}`);
     dispatch({
       type: FORM_ACTION_EVENT_EMITTED,
       payload: action,
     });
-    formik.handleSubmit(event);
+    formik.handleSubmit(event); // eventually calls submitFormData below
   };
 };
 
@@ -59,10 +46,10 @@ export const submitFormData = (record, formik) => {
   return async (dispatch, getState, config) => {
     const formAction = getState().deposit.formAction;
     switch (formAction) {
-      case 'save':
+      case FORM_SAVING:
         dispatch(save(record, formik));
         break;
-      case 'publish':
+      case FORM_PUBLISHING:
         dispatch(publish(record, formik));
         break;
       default:

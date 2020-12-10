@@ -6,6 +6,9 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import _cloneDeep from 'lodash/cloneDeep';
+import _defaults from 'lodash/defaults';
+import _set from 'lodash/set';
+import _get from 'lodash/get';
 import _isNumber from 'lodash/isNumber';
 import _isBoolean from 'lodash/isBoolean';
 import _isEmpty from 'lodash/isEmpty';
@@ -28,6 +31,7 @@ import {
   Field,
   VocabularyField,
 } from './fields';
+
 
 export class DepositRecordSerializer {
   depositRecordSchema = {
@@ -136,12 +140,12 @@ export class DepositRecordSerializer {
   /**
    * Deserialize backend record into format compatible with frontend.
    * @method
-   * @param {object} obj - potentially empty object
-   * @returns {object} record - without empty fields
+   * @param {object} record - potentially empty object
+   * @returns {object} frontend compatible record object
    */
   deserialize(record) {
-    // NOTE: cloning nows allows us to manipulate the copy with impunity without
-    //       affecting the original
+    // NOTE: cloning nows allows us to manipulate the copy with impunity
+    //       without affecting the original
     record = _cloneDeep(record);
     // Remove empty null values from record. This happens when we create a new
     // draft and the backend produces an empty record filled in with null
@@ -163,6 +167,27 @@ export class DepositRecordSerializer {
       );
     }
     return deserializedRecord;
+  }
+
+  /**
+   * Deserialize backend record errors into format compatible with frontend.
+   * @method
+   * @param {array} errors - array of error objects
+   * @returns {object} - object representing errors
+   */
+  deserializeErrors(errors) {
+    let deserializedErrors = {};
+
+    // TODO - WARNING: This doesn't convert backend error paths to frontend
+    //                 error paths. Doing so is non-trivial
+    //                 (re-using deserialize has some caveats)
+    //                 Form/Error UX is tackled in next sprint and this is good
+    //                 enough for now.
+    for (let e of errors) {
+      _set(deserializedErrors, e.field, e.messages.join(" "));
+    }
+
+    return deserializedErrors;
   }
 
   /**
@@ -190,6 +215,13 @@ export class DepositRecordSerializer {
       );
     }
     // Remove empty values again because serialization may add some back
-    return this.removeEmptyValues(serializedRecord);
+    serializedRecord = this.removeEmptyValues(serializedRecord);
+
+    // Finally add back 'metadata' if absent
+    // We need to do this for backend validation, unless we mark metadata as
+    // required in the backend or find another alternative.
+    _defaults(serializedRecord, {'metadata': {}});
+
+    return serializedRecord;
   }
 }

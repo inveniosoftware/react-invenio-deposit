@@ -8,17 +8,18 @@
 import { connect } from 'react-redux';
 import { submitAction } from '../../state/actions';
 import PublishButtonComponent from './PublishButton';
+import { FORM_PUBLISHING } from '../../state/types';
 
 const mapStateToProps = (state) => ({
   formAction: state.deposit.formAction,
   fileUploadOngoing: state.files.isFileUploadInProgress,
   filesEnabled: state.files.enabled,
-  nubmerOfFiles: Object.values(state.files.entries).length,
+  numberOfFiles: Object.values(state.files.entries).length,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   publishClick: (event, formik) =>
-    dispatch(submitAction('publish', event, formik)),
+    dispatch(submitAction(FORM_PUBLISHING, event, formik)),
 });
 
 export const PublishButton = connect(

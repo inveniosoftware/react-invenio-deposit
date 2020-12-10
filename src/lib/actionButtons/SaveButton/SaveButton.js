@@ -9,6 +9,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from 'semantic-ui-react';
 import { ActionButton } from 'react-invenio-forms';
+import { FORM_SAVING } from '../../state/types';
+
 
 export default class SaveButton extends Component {
   onSaveClick = (event, formik) => {
@@ -30,16 +32,12 @@ export default class SaveButton extends Component {
         positive
         {...uiProps}
       >
-        {(formik) =>
-          formik.isSubmitting && formAction === 'save' ? (
-            <>
-              <Icon size="large" loading name="spinner" />
-              Save draft
-            </>
-          ) : (
-            'Save draft'
-          )
-        }
+        {(formik) => (
+          <>
+          { formik.isSubmitting && formAction === FORM_SAVING && <Icon size="large" loading name="spinner" /> }
+          Save draft
+          </>
+        )}
       </ActionButton>
     );
   }

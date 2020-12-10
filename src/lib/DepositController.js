@@ -8,13 +8,17 @@
 // Drives the business logic of the InvenioFormApp.
 // Defines what happens when a button is clicked.
 
+import _isEmpty from 'lodash/isEmpty';
 import _set from 'lodash/set';
-import { setFormErrors } from './state/actions';
 import {
-  CREATE_DEPOSIT_SUCCESS,
-  PUBLISH_SUCCESS,
-  SAVE_SUCCESS,
+  ACTION_CREATE_SUCCEEDED,
+  ACTION_PUBLISH_FAILED,
+  ACTION_PUBLISH_SUCCEEDED,
+  ACTION_SAVE_PARTIALLY_SUCCEEDED,
+  ACTION_SAVE_SUCCEEDED,
+  ACTION_SAVE_FAILED,
 } from './state/types';
+
 
 export class DepositController {
   constructor(apiClient, fileUploader) {
@@ -26,17 +30,16 @@ export class DepositController {
     return record.id ? true : false;
   }
 
-  validate(record) {
-    console.log('Validate record', record);
-  }
-
   async createDraft(draft_payload, { store }) {
     const recordSerializer = store.config.recordSerializer;
     const response = await this.apiClient.create(draft_payload);
+
+    // TODO: Deal with case when create fails using formik.setErrors(errors);
     store.dispatch({
-      type: CREATE_DEPOSIT_SUCCESS,
+      type: ACTION_CREATE_SUCCEEDED,
       payload: { data: recordSerializer.deserialize(response.data) },
     });
+
     const draftURL = response.data.links.self_html;
     window.history.replaceState(undefined, '', draftURL);
     return response;
@@ -54,47 +57,76 @@ export class DepositController {
     );
 
     let payload = recordSerializer.serialize(draft);
-
-    this.validate(payload);
     let response = {};
-    try {
-      if (!this.draftAlreadyCreated(payload)) {
-        response = await this.createDraft(payload, { store });
-      } else {
-        response = await this.apiClient.save(payload);
-      }
-      store.dispatch({
-        type: SAVE_SUCCESS,
-        payload: { data: recordSerializer.deserialize(response.data) },
-      });
-      formik.setSubmitting(false);
-    } catch (error) {
-      store.dispatch(setFormErrors(error, formik, draft));
+    if (!this.draftAlreadyCreated(payload)) {
+      response = await this.createDraft(payload, { store });
+    } else {
+      response = await this.apiClient.save(payload);
     }
+
+    let data = recordSerializer.deserialize(response.data || {});
+    let errors = recordSerializer.deserializeErrors(response.errors || []);
+
+    // response 100% successful
+    if ( 200 <= response.code && response.code < 300 && _isEmpty(errors) ) {
+      store.dispatch({
+        type: ACTION_SAVE_SUCCEEDED,
+        payload: { data },
+      });
+    }
+    // response partially successful
+    else if (200 <= response.code && response.code < 300 ) {
+      store.dispatch({
+        type: ACTION_SAVE_PARTIALLY_SUCCEEDED,
+        payload: { data, errors },
+      });
+      formik.setErrors(errors);
+    }
+    // response exceptionally bad
+    else {
+      store.dispatch({
+        type: ACTION_SAVE_FAILED,
+        payload: { errors },
+      });
+      formik.setErrors(errors);
+    }
+
+    formik.setSubmitting(false);
   }
 
   async publishDraft(draft, { formik, store }) {
     // Publishes a draft to make it a full fledged record
     const recordSerializer = store.config.recordSerializer;
     let payload = recordSerializer.serialize(draft);
-    this.validate(payload);
     let response = {};
-    try {
-      if (!this.draftAlreadyCreated(payload)) {
-        response = await this.createDraft(payload, { store });
-      } else {
-        response = await this.apiClient.publish(payload);
-      }
+
+    if (!this.draftAlreadyCreated(payload)) {
+      response = await this.createDraft(payload, { store });
+    }
+
+    response = await this.apiClient.publish(payload);
+    let data = recordSerializer.deserialize(response.data || {});
+    let errors = recordSerializer.deserializeErrors(response.errors || []);
+
+    // response 100% successful
+    if ( 200 <= response.code && response.code < 300 && _isEmpty(errors) ) {
       store.dispatch({
-        type: PUBLISH_SUCCESS,
-        payload: { data: recordSerializer.deserialize(response.data) },
+        type: ACTION_PUBLISH_SUCCEEDED,
+        payload: { data },
       });
-      formik.setSubmitting(false);
       const recordURL = response.data.links.self_html;
       window.location.replace(recordURL);
-    } catch (error) {
-      store.dispatch(setFormErrors(error, formik, draft));
     }
+    // "succeed or not, there is no partial"
+    else {
+      store.dispatch({
+        type: ACTION_PUBLISH_FAILED,
+        payload: { data, errors },
+      });
+      formik.setErrors(errors);
+    }
+
+    formik.setSubmitting(false);
   }
 
   uploadDraftFiles = async (record, files, { store }) => {
@@ -106,6 +138,7 @@ export class DepositController {
       // are prefilled by default, thus the draft creation fails
       // because of schema validation. In principle if no metadata
       // were filled, the payload should be `{}`
+      // TODO: Deal with case when create fails
       response = await this.createDraft({}, { store });
       payload = response.data;
     }
@@ -113,9 +146,7 @@ export class DepositController {
     for (const file of files) {
       // TODO: remove the default value for `links.draft_files` when REST integration completes
       const uploadFileUrl = payload.links.files;
-      this.fileUploader.upload(uploadFileUrl, file, {
-        store,
-      });
+      this.fileUploader.upload(uploadFileUrl, file, {store});
     }
   };
 
@@ -133,6 +164,7 @@ export class DepositController {
   async setFilesEnabled(draftRecord, filesEnabled, { store }) {
     let enableFileUrl;
     if (!this.draftAlreadyCreated(draftRecord)) {
+    // TODO: Deal with case when create fails
       const resp = await this.createDraft({}, { store });
       enableFileUrl = resp.data.links.files;
     } else {

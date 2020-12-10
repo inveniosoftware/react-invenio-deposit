@@ -8,14 +8,22 @@
 import { connect } from 'react-redux';
 import { submitAction } from '../../state/actions';
 import SaveButtonComponent from './SaveButton';
+import { FORM_SAVING } from '../../state/types';
 
-const mapDispatchToProps = (dispatch) => ({
-  saveClick: (event, formik) => dispatch(submitAction('save', event, formik)),
+
+const mapStateToProps = (state) => ({
+  formAction: state.deposit.formAction,
 });
 
+
+const mapDispatchToProps = (dispatch) => ({
+  saveClick: (event, formik) => dispatch(
+    submitAction(FORM_SAVING, event, formik)
+  ),
+});
+
+
 export const SaveButton = connect(
-  (state) => ({
-    formAction: state.deposit.formAction,
-  }),
+  mapStateToProps,
   mapDispatchToProps
 )(SaveButtonComponent);
