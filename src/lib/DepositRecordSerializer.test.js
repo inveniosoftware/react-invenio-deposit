@@ -192,9 +192,9 @@ describe('DepositRecordSerializer', () => {
           metadata: {
             dates: [
               {
-                date: "2020/08",
-                type: "accepted",
-                description: "bar"
+                date: '2020/08',
+                type: 'accepted',
+                description: 'bar',
               },
             ],
           },
@@ -202,11 +202,13 @@ describe('DepositRecordSerializer', () => {
 
         const serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord.metadata.dates).toEqual([{
-          date: "2020/08",
-          type: "accepted",
-          description: "bar"
-        }]);
+        expect(serializedRecord.metadata.dates).toEqual([
+          {
+            date: '2020/08',
+            type: 'accepted',
+            description: 'bar',
+          },
+        ]);
       });
 
       it("doesn't serialize if only default is present", () => {
@@ -234,9 +236,12 @@ describe('DepositRecordSerializer', () => {
 
         const serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord.metadata.identifiers).toEqual([{
-          scheme: 'doi', identifier: '10.5281/zenodo.9999999'
-        }]);
+        expect(serializedRecord.metadata.identifiers).toEqual([
+          {
+            scheme: 'doi',
+            identifier: '10.5281/zenodo.9999999',
+          },
+        ]);
       });
 
       it("doesn't serialize if only default is present", () => {
@@ -260,21 +265,23 @@ describe('DepositRecordSerializer', () => {
               {
                 scheme: 'doi',
                 identifier: '10.5281/zenodo.9999988',
-                resource_type: { type: "image", subtype: "image-photo" },
-                relation_type: 'requires'
-              }
+                resource_type: { type: 'image', subtype: 'image-photo' },
+                relation_type: 'requires',
+              },
             ],
           },
         };
 
         const serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord.metadata.related_identifiers).toEqual([{
-          scheme: 'doi',
-          identifier: '10.5281/zenodo.9999988',
-          resource_type: { type: "image", subtype: "image-photo" },
-          relation_type: 'requires'
-        }]);
+        expect(serializedRecord.metadata.related_identifiers).toEqual([
+          {
+            scheme: 'doi',
+            identifier: '10.5281/zenodo.9999988',
+            resource_type: { type: 'image', subtype: 'image-photo' },
+            relation_type: 'requires',
+          },
+        ]);
       });
 
       it("doesn't serialize if only default is present", () => {
@@ -289,7 +296,6 @@ describe('DepositRecordSerializer', () => {
         expect(serializedRecord).toEqual({});
       });
     });
-
   });
 
   describe('deserialize', () => {
@@ -364,35 +370,40 @@ describe('DepositRecordSerializer', () => {
               type: 'personal',
               affiliations: [
                 {
-                  name: "CERN",
+                  name: 'CERN',
                   identifiers: {
                     ror: '01ggx4157',
                   },
-                }
-              ]
-            }
+                },
+              ],
+            },
           ],
           publication_date: '2020-09-28',
           resource_type: { type: 'lesson' },
           title: 'Test 2020-1028 13:34',
-          additional_titles: [{title: 'Another title', type: "abstract", lang: "dan"}],
-          dates: [{ date: "1920/2020", type: "collected", description: "foo"}],
-          languages: ["en", "fr"],
-          identifiers: [{ scheme: 'doi', identifier: '10.5281/zenodo.9999999' }],
-          related_identifiers: [{
-            scheme: 'doi',
-            identifier: '10.5281/zenodo.9999988',
-            resource_type: { type: "image", subtype: "image-photo" },
-            relation_type: 'requires'
-          }],
+          additional_titles: [
+            { title: 'Another title', type: 'abstract', lang: 'dan' },
+          ],
+          dates: [{ date: '1920/2020', type: 'collected', description: 'foo' }],
+          languages: [
+            { title: 'en', id: 'en_id' },
+            { title: 'fr', id: 'fr_id' },
+          ],
+          identifiers: [
+            { scheme: 'doi', identifier: '10.5281/zenodo.9999999' },
+          ],
+          related_identifiers: [
+            {
+              scheme: 'doi',
+              identifier: '10.5281/zenodo.9999988',
+              resource_type: { type: 'image', subtype: 'image-photo' },
+              relation_type: 'requires',
+            },
+          ],
           subjects: [
             {
-              text: 'MeSH: Cognitive Neuroscience',
-              value: {
-                subject: 'Cognitive Neuroscience',
-                scheme: 'mesh',
-                identifier: 'D000066494'
-              },
+              title: 'MeSH: Cognitive Neuroscience',
+              id: 'mesh_1',
             },
           ],
           funding: [
@@ -407,8 +418,8 @@ describe('DepositRecordSerializer', () => {
                 number: 'B21234',
                 identifier: 'awardB2',
                 scheme: 'awardSchemeB',
-              }
-            }
+              },
+            },
           ],
           version: 'v2.0.0',
         },
@@ -454,43 +465,40 @@ describe('DepositRecordSerializer', () => {
             {
               affiliations: [
                 {
-                  name: "CERN",
+                  name: 'CERN',
                   identifiers: [
                     {
-                      scheme: "ror",
-                      identifier: "01ggx4157",
+                      scheme: 'ror',
+                      identifier: '01ggx4157',
                     },
-                  ]
-                }
+                  ],
+                },
               ],
               identifiers: [],
               name: 'John Doe',
               type: 'personal',
-            }
+            },
           ],
           publication_date: '2020-09-28',
           resource_type: { type: 'lesson' },
           title: 'Test 2020-1028 13:34',
-          additional_titles: [{title: 'Another title', type: "abstract", lang: "dan"}],
-          dates: [{ date: "1920/2020", type: "collected", description: "foo"}],
-          languages: ["en", "fr"],
-          identifiers: [{ scheme: 'doi', identifier: '10.5281/zenodo.9999999' }],
-          related_identifiers: [{
-            scheme: 'doi',
-            identifier: '10.5281/zenodo.9999988',
-            resource_type: { type: "image", subtype: "image-photo" },
-            relation_type: 'requires'
-          }],
-          subjects: [
+          additional_titles: [
+            { title: 'Another title', type: 'abstract', lang: 'dan' },
+          ],
+          dates: [{ date: '1920/2020', type: 'collected', description: 'foo' }],
+          languages: ['en_id', 'fr_id'],
+          identifiers: [
+            { scheme: 'doi', identifier: '10.5281/zenodo.9999999' },
+          ],
+          related_identifiers: [
             {
-              text: 'MeSH: Cognitive Neuroscience',
-              value: {
-                subject: 'Cognitive Neuroscience',
-                scheme: 'mesh',
-                identifier: 'D000066494'
-              },
+              scheme: 'doi',
+              identifier: '10.5281/zenodo.9999988',
+              resource_type: { type: 'image', subtype: 'image-photo' },
+              relation_type: 'requires',
             },
           ],
+          subjects: ['mesh_1'],
           funding: [
             {
               funder: {
@@ -503,14 +511,13 @@ describe('DepositRecordSerializer', () => {
                 number: 'B21234',
                 identifier: 'awardB2',
                 scheme: 'awardSchemeB',
-              }
-            }
+              },
+            },
           ],
           version: 'v2.0.0',
         },
       };
       expect(deserializedRecord).toEqual(expectedRecord);
     });
-
   });
 });

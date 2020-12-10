@@ -22,7 +22,12 @@ import {
   emptyIdentifier,
   emptyRelatedIdentifier,
 } from './record';
-import { CreatibutorsField, DatesField, Field } from './fields';
+import {
+  CreatibutorsField,
+  DatesField,
+  Field,
+  VocabularyField,
+} from './fields';
 
 export class DepositRecordSerializer {
   depositRecordSchema = {
@@ -71,7 +76,7 @@ export class DepositRecordSerializer {
       fieldpath: 'metadata.dates',
       deserializedDefault: [emptyDate],
     }),
-    languages: new Field({
+    languages: new VocabularyField({
       fieldpath: 'metadata.languages',
       deserializedDefault: [],
     }),
@@ -83,7 +88,7 @@ export class DepositRecordSerializer {
       fieldpath: 'metadata.related_identifiers',
       deserializedDefault: [emptyRelatedIdentifier],
     }),
-    subjects: new Field({
+    subjects: new VocabularyField({
       fieldpath: 'metadata.subjects',
       deserializedDefault: [],
     }),
