@@ -7,7 +7,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button, Grid, Header, Menu, Form } from 'semantic-ui-react';
+import { Modal, Grid, Header, Menu, Form } from 'semantic-ui-react';
 import {
   ReactSearchKit,
   SearchBar,
@@ -121,7 +121,11 @@ export class LicenseModal extends Component {
                 >
                   <Grid>
                     <Grid.Row>
-                      <Grid.Column width={8} floated="left">
+                      <Grid.Column
+                        width={8}
+                        floated="left"
+                        verticalAlign="middle"
+                      >
                         <SearchBar
                           autofocus
                           actionProps={{
