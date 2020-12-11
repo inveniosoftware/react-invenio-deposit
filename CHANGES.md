@@ -1,5 +1,7 @@
 # Changes
 
+Version 0.9.6 (released 2020-12-11)
+
 Version 0.9.5 (released 2020-12-11)
 
 Version 0.9.4 (released 2020-12-11)
