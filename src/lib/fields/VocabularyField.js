@@ -24,4 +24,17 @@ export class VocabularyField extends Field {
 
     return record;
   }
+
+  serialize(record) {
+    let fieldValue = _get(record, this.fieldpath, this.serializedDefault);
+    if (fieldValue !== null) {
+      return _set(
+        _cloneDeep(record),
+        this.fieldpath,
+        fieldValue.map((value) => ({ id: value }))
+      );
+    }
+
+    return record;
+  }
 }
