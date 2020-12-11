@@ -36,9 +36,8 @@ export const setDefaultPreview = (filename) => {
 export const setFilesEnabled = (filesEnabled) => {
   return async (dispatch, getState, config) => {
     const controller = config.controller;
-    const enableFileUrl = getState().files.links.self;
     const draftRecord = getState().deposit.record;
-    controller.setFilesEnabled(draftRecord, enableFileUrl, filesEnabled, {
+    controller.setFilesEnabled(draftRecord, filesEnabled, {
       store: { dispatch, getState, config },
     });
   };
