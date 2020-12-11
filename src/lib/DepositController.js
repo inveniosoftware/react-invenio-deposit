@@ -130,10 +130,13 @@ export class DepositController {
     });
   }
 
-  async setFilesEnabled(draftRecord, enableFileUrl, filesEnabled, { store }) {
+  async setFilesEnabled(draftRecord, filesEnabled, { store }) {
+    let enableFileUrl;
     if (!this.draftAlreadyCreated(draftRecord)) {
       const resp = await this.createDraft({}, { store });
       enableFileUrl = resp.data.links.files;
+    } else {
+      enableFileUrl = draftRecord.links.files;
     }
     this.fileUploader.setFilesEnabled(enableFileUrl, filesEnabled, {
       store,
