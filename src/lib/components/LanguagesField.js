@@ -21,6 +21,7 @@ export class LanguagesField extends Component {
       clearable,
       initialOptions,
     } = this.props;
+    const serializeSuggestions = this.props.serializeSuggestions || null;
     return (
       <RemoteSelectField
         fieldPath={fieldPath}
@@ -34,6 +35,7 @@ export class LanguagesField extends Component {
           <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
         }
         noQueryMessage="Search for languages..."
+        {...(serializeSuggestions && { serializeSuggestions })}
       />
     );
   }
@@ -54,6 +56,7 @@ LanguagesField.propTypes = {
       text: PropTypes.string,
     })
   ),
+  serializeSuggestions: PropTypes.func,
 };
 
 LanguagesField.defaultProps = {
