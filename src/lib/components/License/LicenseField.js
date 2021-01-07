@@ -48,14 +48,13 @@ export class LicenseField extends Component {
                     initialLicense={licenseType === 'custom' ? value : null}
                     action="edit"
                     trigger={
-                      <Button size="mini" positive type="button">
+                      <Button size="mini" primary type="button">
                         Change
                       </Button>
                     }
                   />
                   <Button
                     size="mini"
-                    negative
                     type="button"
                     onClick={() => arrayHelpers.remove(indexPath)}
                   >

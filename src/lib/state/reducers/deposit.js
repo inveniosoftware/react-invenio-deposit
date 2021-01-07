@@ -26,44 +26,44 @@ export default (state = {}, action) => {
       return {
         ...state,
         record: { ...state.record, ...action.payload.data },
-        formAction: null,
+        formState: null,
       };
     case FORM_ACTION_EVENT_EMITTED:
       return {
         ...state,
-        formAction: action.payload,
+        formState: action.payload,
       };
     case ACTION_SAVE_SUCCEEDED:
       return {
         ...state,
         record: { ...state.record, ...action.payload.data },
         errors: {},
-        formAction: FORM_SAVE_SUCCEEDED,
+        formState: FORM_SAVE_SUCCEEDED,
       };
     case ACTION_SAVE_PARTIALLY_SUCCEEDED:
       return {
         ...state,
         record: { ...state.record, ...action.payload.data },
         errors: { ...action.payload.errors },
-        formAction: FORM_SAVE_PARTIALLY_SUCCEEDED,
+        formState: FORM_SAVE_PARTIALLY_SUCCEEDED,
       };
     case ACTION_SAVE_FAILED:
       return {
         ...state,
         errors: { ...action.payload.errors },
-        formAction: FORM_SAVE_FAILED,
+        formState: FORM_SAVE_FAILED,
       };
     case ACTION_PUBLISH_SUCCEEDED:
       return {
         ...state,
         record: { ...state.record, ...action.payload.data },
-        formAction: FORM_PUBLISH_SUCCEEDED,
+        formState: FORM_PUBLISH_SUCCEEDED,
       };
     case ACTION_PUBLISH_FAILED:
       return {
         ...state,
         errors: { ...action.payload.errors },
-        formAction: FORM_PUBLISH_FAILED,
+        formState: FORM_PUBLISH_FAILED,
       };
 
     default:

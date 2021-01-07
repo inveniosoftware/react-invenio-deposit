@@ -11,7 +11,6 @@ import { Icon } from 'semantic-ui-react';
 import { ActionButton } from 'react-invenio-forms';
 import { FORM_SAVING } from '../../state/types';
 
-
 export default class SaveButton extends Component {
   onSaveClick = (event, formik) => {
     this.props.saveClick(event, formik);
@@ -22,7 +21,7 @@ export default class SaveButton extends Component {
   };
 
   render() {
-    const { formAction, saveClick, ...uiProps } = this.props;
+    const { formState, saveClick, ...uiProps } = this.props;
     return (
       <ActionButton
         // TODO: use `isDisabled`
@@ -34,8 +33,10 @@ export default class SaveButton extends Component {
       >
         {(formik) => (
           <>
-          { formik.isSubmitting && formAction === FORM_SAVING && <Icon size="large" loading name="spinner" /> }
-          Save draft
+            {formik.isSubmitting && formState === FORM_SAVING && (
+              <Icon size="large" loading name="spinner" />
+            )}
+            Save draft
           </>
         )}
       </ActionButton>

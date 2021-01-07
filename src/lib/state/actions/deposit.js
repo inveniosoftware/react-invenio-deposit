@@ -8,9 +8,8 @@
 import {
   FORM_ACTION_EVENT_EMITTED,
   FORM_PUBLISHING,
-  FORM_SAVING
+  FORM_SAVING,
 } from '../types';
-
 
 export const publish = (record, formik) => {
   return async (dispatch, getState, config) => {
@@ -44,8 +43,8 @@ export const submitAction = (action, event, formik) => {
 
 export const submitFormData = (record, formik) => {
   return async (dispatch, getState, config) => {
-    const formAction = getState().deposit.formAction;
-    switch (formAction) {
+    const formState = getState().deposit.formState;
+    switch (formState) {
       case FORM_SAVING:
         dispatch(save(record, formik));
         break;

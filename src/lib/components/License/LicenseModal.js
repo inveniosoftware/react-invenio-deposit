@@ -87,7 +87,9 @@ export class LicenseModal extends Component {
             // NOTE: temporary fix for https://github.com/Semantic-Org/Semantic-UI-React/issues/3174
             e.stopPropagation();
           }}
-          closeOnDimmerClick={false}
+          // TODO: temporary fix as the modal results require to scroll down
+          // to find the cancel button
+          closeOnDimmerClick={true}
         >
           <Modal.Header as="h6" className="license-modal-header">
             <Grid>

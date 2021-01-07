@@ -8,7 +8,6 @@
 import { Field } from 'formik';
 import _flatMapDeep from 'lodash/flatMapDeep';
 import _get from 'lodash/get';
-import _isEmpty from 'lodash/isEmpty';
 import _isString from 'lodash/isString';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -20,17 +19,16 @@ import {
   FORM_SAVE_SUCCEEDED,
 } from '../state/types';
 
-
 class DisconnectedFormFeedback extends Component {
   renderFormField = (formikBag) => {
-    const formAction = this.props.formAction;
+    const formState = this.props.formState;
     const visibleStates = [
       FORM_SAVE_SUCCEEDED,
       FORM_SAVE_PARTIALLY_SUCCEEDED,
       FORM_SAVE_FAILED,
       FORM_PUBLISH_FAILED,
     ];
-    const visible = visibleStates.includes(formAction);
+    const visible = visibleStates.includes(formState);
 
     if (!visible) {
       return null;
@@ -40,24 +38,26 @@ class DisconnectedFormFeedback extends Component {
     let feedback;
     let message = null;
 
-    switch (formAction) {
+    switch (formState) {
       case FORM_SAVE_SUCCEEDED:
         feedback = 'positive';
-        message = 'Record successfully saved.'
+        message = 'Record successfully saved.';
         break;
       case FORM_SAVE_PARTIALLY_SUCCEEDED:
         feedback = 'warning';
-        message = 'Record partially saved.'
+        message = 'Record partially saved.';
         break;
       case FORM_SAVE_FAILED:
       case FORM_PUBLISH_FAILED:
         feedback = 'negative';
         // TODO: use the backend error message
         message = 'There was an error.';
+        break;
+      default:
     }
 
     // NOTE: only dealing with top-level key simplifies our lives greatly
-    const listErrors = Object.keys(_get(errors, "metadata", {})).map(k => {
+    const listErrors = Object.keys(_get(errors, 'metadata', {})).map((k) => {
       // TODO: Use some vocabulary(?) to get human readable label
       const fieldLabel = k;
       const value = errors.metadata[k];
@@ -79,17 +79,21 @@ class DisconnectedFormFeedback extends Component {
         //      i.e. all error messages for a top-level field in a single
         //      string (for now).
         // TODO: Revisit when dealing with UX error more thoroughly
-        fieldErrorMessage = _flatMapDeep(value).join(" ");
+        fieldErrorMessage = _flatMapDeep(value).join(' ');
       }
-      return <Message.Item key={k}><b>{fieldLabel}</b>: {fieldErrorMessage}</Message.Item>;
+      return (
+        <Message.Item key={k}>
+          <b>{fieldLabel}</b>: {fieldErrorMessage}
+        </Message.Item>
+      );
     });
 
     return (
       <Message
         visible={true}
-        positive={feedback === "positive"}
-        warning={feedback === "warning"}
-        negative={feedback === "negative"}
+        positive={feedback === 'positive'}
+        warning={feedback === 'warning'}
+        negative={feedback === 'negative'}
       >
         <Message.Header>{message}</Message.Header>
         <Message.List>{listErrors}</Message.List>
@@ -99,16 +103,14 @@ class DisconnectedFormFeedback extends Component {
 
   render() {
     const { fieldPath } = this.props;
-    return <Field name={fieldPath} component={this.renderFormField} ></Field>;
+    return <Field name={fieldPath} component={this.renderFormField}></Field>;
   }
 }
 
-
 const mapStateToProps = (state) => ({
-  formAction: state.deposit.formAction,
+  formState: state.deposit.formState,
   errors: state.deposit.errors,
 });
-
 
 export const FormFeedback = connect(
   mapStateToProps,

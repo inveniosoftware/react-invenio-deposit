@@ -10,18 +10,14 @@ import { submitAction } from '../../state/actions';
 import SaveButtonComponent from './SaveButton';
 import { FORM_SAVING } from '../../state/types';
 
-
 const mapStateToProps = (state) => ({
-  formAction: state.deposit.formAction,
+  formState: state.deposit.formState,
 });
-
 
 const mapDispatchToProps = (dispatch) => ({
-  saveClick: (event, formik) => dispatch(
-    submitAction(FORM_SAVING, event, formik)
-  ),
+  saveClick: (event, formik) =>
+    dispatch(submitAction(FORM_SAVING, event, formik)),
 });
-
 
 export const SaveButton = connect(
   mapStateToProps,
