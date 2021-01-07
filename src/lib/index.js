@@ -12,5 +12,4 @@ export { DepositErrorHandler } from './DepositErrorHandler';
 export { DepositRecordSerializer } from './DepositRecordSerializer';
 export { connect } from './connect';
 export * from './dom';
-export * from './actionButtons';
 export * from './components';

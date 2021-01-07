@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Button, Modal } from 'semantic-ui-react';
 import { ActionButton } from 'react-invenio-forms';
-import { FORM_PUBLISHING } from '../../state/types';
+import { FORM_PUBLISHING, FORM_SAVE_SUCCEEDED } from '../../state/types';
 
 export default class PublishButton extends Component {
   state = { confirmOpen: false };
@@ -20,16 +20,6 @@ export default class PublishButton extends Component {
   };
 
   draftAlreadyCreated = (record) => (record.id || record.pid ? true : false);
-
-  isDisabled = (formik) => {
-    const record = formik.values;
-    return (
-      !this.draftAlreadyCreated(record) ||
-      (this.props.filesEnabled && !this.props.numberOfFiles) ||
-      this.props.fileUploadOngoing ||
-      formik.isSubmitting
-    );
-  };
 
   confirmPublish = () => this.setState({ confirmOpen: true });
 
@@ -44,10 +34,13 @@ export default class PublishButton extends Component {
       numberOfFiles,
       ...uiProps
     } = this.props;
+
+    const isDisabled = () => formAction !== FORM_SAVE_SUCCEEDED;
+
     return (
       <>
         <ActionButton
-          isDisabled={this.isDisabled}
+          isDisabled={isDisabled}
           name="publish"
           onClick={this.confirmPublish}
           primary
