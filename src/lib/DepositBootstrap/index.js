@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
   const { isFileUploadInProgress, ...files } = state.files;
   return {
     record: state.deposit.record,
-    formAction: state.deposit.formAction,
+    formState: state.deposit.formState,
     fileUploadOngoing: isFileUploadInProgress,
     files: files,
   };

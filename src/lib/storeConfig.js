@@ -6,7 +6,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 export const INITIAL_STORE_STATE = {
-  formAction: null,
+  formState: null,
 };
 
 export const STORE_KEYS = Object.keys(INITIAL_STORE_STATE);

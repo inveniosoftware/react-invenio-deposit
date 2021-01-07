@@ -19,23 +19,29 @@ export default class PublishButton extends Component {
     this.setState({ confirmOpen: false });
   };
 
-  draftAlreadyCreated = (record) => (record.id || record.pid ? true : false);
-
   confirmPublish = () => this.setState({ confirmOpen: true });
 
   handleClose = () => this.setState({ confirmOpen: false });
 
   render() {
     const {
-      formAction,
+      formState,
       publishClick,
-      fileUploadOngoing,
       filesEnabled,
       numberOfFiles,
       ...uiProps
     } = this.props;
 
-    const isDisabled = () => formAction !== FORM_SAVE_SUCCEEDED;
+    const isDisabled = () => {
+      const noFilesUploaded = !numberOfFiles;
+      // Files are broken if you publish without either uploading a file
+      // or explicitely mark the draft as "Metadata only"
+      // Temporarely disable publish also in that case until the backend
+      // can validate it correctly and report back errors on partial save
+      return (
+        formState !== FORM_SAVE_SUCCEEDED || (filesEnabled && noFilesUploaded)
+      );
+    };
 
     return (
       <>
@@ -48,8 +54,10 @@ export default class PublishButton extends Component {
         >
           {(formik) => (
             <>
-            {formik.isSubmitting && formAction === FORM_PUBLISHING && <Icon size="large" loading name="spinner" /> }
-            Publish
+              {formik.isSubmitting && formState === FORM_PUBLISHING && (
+                <Icon size="large" loading name="spinner" />
+              )}
+              Publish
             </>
           )}
         </ActionButton>

@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.9.9 (released 2021-01-08)
+
+* Disable Publish button unless deposit was successfully saved
+
 Version 0.9.8 (released 2021-01-07)
 
 * Add support for partial save
