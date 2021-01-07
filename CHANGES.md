@@ -1,6 +1,11 @@
 # Changes
 
-Version 0.9.7 (released 2020-01-07)
+Version 0.9.8 (released 2021-01-07)
+
+* Add support for partial save
+* Add form feedback message
+
+Version 0.9.7 (released 2021-01-07)
 
 Version 0.9.6 (released 2020-12-11)
 
