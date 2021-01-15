@@ -61,24 +61,13 @@ export class DepositApiClient {
    * @param {object} draft - Serialized draft
    */
   async create(draft) {
-    try {
-      let response = await axios.post(
+    return this.createResponse(() =>
+      axios.post(
         this.createUrl,
         draft,
         { headers: { 'Content-Type': 'application/json' } }
-      );
-      return new DepositApiClientResponse(
-        response.data,  // exclude errors?
-        response.data.errors,
-        response.status
-      );
-    } catch (error) {
-      return new DepositApiClientResponse(
-        error.response.data,
-        error.response.data.errors,
-        error.response.status
-      );
-    }
+      )
+    );
   }
 
   /**
@@ -87,27 +76,13 @@ export class DepositApiClient {
    * @param {object} draft - Serialized draft
    */
   async save(draft) {
-    try {
-      let response = await axios.put(
+    return this.createResponse(() =>
+      axios.put(
         draft.links.self,
         draft,
         {headers: { 'Content-Type': 'application/json' } }
-      );
-      return new DepositApiClientResponse(
-        response.data,  // exclude errors?
-        response.data.errors,
-        response.status
-      );
-    } catch (error) {
-      // NOTE: We only get here when status >= 400 is returned and,
-      //       at time of writing, partially successful saves return 200 (i.e.
-      //       they don't end up here).
-      return new DepositApiClientResponse(
-        error.response.data,
-        error.response.data.errors,
-        error.response.status
-      );
-    }
+      )
+    );
   }
 
   /**
@@ -116,27 +91,15 @@ export class DepositApiClient {
    * @param {object} draft - the payload from create()
    */
   async publish(draft) {
-    try {
-      let response = await axios.post(
+    return this.createResponse(() =>
+      axios.post(
         draft.links.publish,
         {},
         {
           headers: { 'Content-Type': 'application/json' },
         }
-      );
-      return new DepositApiClientResponse(
-        response.data,  // exclude errors?
-        response.data.errors,
-        response.status
-      );
-    } catch (error) {
-      // NOTE: We get here when status >= 400 is returned
-      return new DepositApiClientResponse(
-        error.response.data,
-        error.response.data.errors,
-        error.response.status
-      );
-    }
+      )
+    );
   }
 
   /**
