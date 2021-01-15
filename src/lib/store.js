@@ -49,7 +49,7 @@ const preloadFiles = (files) => {
 };
 
 export function configureStore(appConfig) {
-  const { record, files, config, ...apiConfig } = appConfig;
+  const { record, files, config, ...extra } = appConfig;
   const initialDepositState = { record, config, ...INITIAL_STORE_STATE };
   const preloadedState = {
     deposit: initialDepositState,
@@ -61,6 +61,6 @@ export function configureStore(appConfig) {
   return createStore(
     rootReducer,
     preloadedState,
-    composeEnhancers(applyMiddleware(thunk.withExtraArgument(apiConfig)))
+    composeEnhancers(applyMiddleware(thunk.withExtraArgument(extra)))
   );
 }

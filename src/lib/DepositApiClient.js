@@ -46,7 +46,6 @@ export class DepositApiClient {
         response.status
       );
     } catch (error) {
-      console.dir("error", error);
       return new DepositApiClientResponse(
         error.response.data,
         error.response.data.errors,
