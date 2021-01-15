@@ -37,16 +37,34 @@ export class DepositApiClient {
     this.createUrl = createUrl;
   }
 
+  async createResponse(axios_call) {
+    try {
+      let response = await axios_call();
+      return new DepositApiClientResponse(
+        response.data,  // exclude errors?
+        response.data.errors,
+        response.status
+      );
+    } catch (error) {
+      console.dir("error", error);
+      return new DepositApiClientResponse(
+        error.response.data,
+        error.response.data.errors,
+        error.response.status
+      );
+    }
+  }
+
   /**
    * Calls the API to create a new draft.
    *
-   * @param {object} record - Serialized record
+   * @param {object} draft - Serialized draft
    */
-  async create(record) {
+  async create(draft) {
     try {
       let response = await axios.post(
         this.createUrl,
-        record,
+        draft,
         { headers: { 'Content-Type': 'application/json' } }
       );
       return new DepositApiClientResponse(
@@ -64,15 +82,15 @@ export class DepositApiClient {
   }
 
   /**
-   * Calls the API to save a pre-existing record.
+   * Calls the API to save a pre-existing draft.
    *
-   * @param {object} record - Serialized record
+   * @param {object} draft - Serialized draft
    */
-  async save(record) {
+  async save(draft) {
     try {
       let response = await axios.put(
-        record.links.self,
-        record,
+        draft.links.self,
+        draft,
         {headers: { 'Content-Type': 'application/json' } }
       );
       return new DepositApiClientResponse(
@@ -93,14 +111,14 @@ export class DepositApiClient {
   }
 
   /**
-   * Publishes the record by calling its publish link.
+   * Publishes the draft by calling its publish link.
    *
-   * @param {object} record - the payload from create()
+   * @param {object} draft - the payload from create()
    */
-  async publish(record) {
+  async publish(draft) {
     try {
       let response = await axios.post(
-        record.links.publish,
+        draft.links.publish,
         {},
         {
           headers: { 'Content-Type': 'application/json' },
@@ -119,6 +137,23 @@ export class DepositApiClient {
         error.response.status
       );
     }
+  }
+
+  /**
+   * Deletes the draft by calling DELETE on its self link.
+   *
+   * @param {object} draft - the payload from create()/save()
+   */
+  async delete(draft) {
+    return this.createResponse(() =>
+      axios.delete(
+        draft.links.self,
+        {},
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    );
   }
 
   initializeFileUpload(initializeUploadUrl, filename) {

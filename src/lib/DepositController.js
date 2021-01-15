@@ -129,6 +129,26 @@ export class DepositController {
     formik.setSubmitting(false);
   }
 
+  /**
+   * Deletes the current draft and redirects to uploads page.
+   *
+   * The current draft may not have been saved yet. We only delete the draft
+   * if it has been saved.
+   *
+   * @param {object} draft - current draft
+   */
+  async deleteDraft(draft, { formik, store }) {
+    const uploadsURL = '/uploads';
+
+    if (draft.id) {
+      const response = await this.apiClient.delete(draft);
+      // TODO: If error, set banner - goes with larger task about
+      //       banner feedback
+      // For expediency assume all good
+    }
+    window.location.replace(uploadsURL);
+  }
+
   uploadDraftFiles = async (record, files, { store }) => {
     const recordSerializer = store.config.recordSerializer;
     let payload = recordSerializer.serialize(record);

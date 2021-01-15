@@ -56,3 +56,23 @@ export const submitFormData = (record, formik) => {
     }
   };
 };
+
+/**
+ * Returns the async function that controls draft deletion.
+ *
+ * This function is different from the save/publish above because this thunk
+ * is independent of form submission.
+ *
+ * @param {object} event - click event
+ * @param {object} formik - formik object
+ */
+export const discard = (event, formik) => {
+  return async (dispatch, getState, extra) => {
+    const controller = extra.controller;
+    let record = getState().deposit.record;
+    controller.deleteDraft(record, {
+      formik,
+      store: { dispatch, getState, extra },
+    });
+  }
+};
