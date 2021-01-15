@@ -10,6 +10,7 @@ export { AdditionalTitlesField } from './AdditionalTitlesField';
 export { AffiliationsField } from './AffiliationsField';
 export { CreatibutorsField } from './CreatibutorsField';
 export { DatesField } from './DatesField';
+export { DeleteButton } from './DeleteButton';
 export { DescriptionsField } from './DescriptionsField';
 export { FileUploader } from './FileUploader';
 export { FormFeedback } from './FormFeedback';
