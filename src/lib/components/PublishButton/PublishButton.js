@@ -49,7 +49,7 @@ export default class PublishButton extends Component {
           isDisabled={isDisabled}
           name="publish"
           onClick={this.confirmPublish}
-          primary
+          positive
           {...uiProps}
         >
           {(formik) => (
