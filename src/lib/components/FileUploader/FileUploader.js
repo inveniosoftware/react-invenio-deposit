@@ -96,16 +96,18 @@ export default class FileUploader extends Component {
             />
           )}
         </Grid.Row>
-        <Grid.Row className="file-upload-area-row">
-          <FileUploaderArea
-            {...this.props}
-            filesEnabled={filesEnabled}
-            filesList={filesList}
-            dropzoneParams={dropzoneParams}
-            isDraftRecord={isDraftRecord}
-            defaultFilePreview={this.props.defaultFilePreview}
-          />
-        </Grid.Row>
+        {filesEnabled && (<>
+          <Grid.Row className="file-upload-area-row">
+            <FileUploaderArea
+              {...this.props}
+              filesEnabled={filesEnabled}
+              filesList={filesList}
+              dropzoneParams={dropzoneParams}
+              isDraftRecord={isDraftRecord}
+              defaultFilePreview={this.props.defaultFilePreview}
+            />
+          </Grid.Row>
+        </>)}
         <Grid.Row className="file-upload-note-row">
           <Grid.Column width={16}>
             <Segment basic className="file-upload-note">

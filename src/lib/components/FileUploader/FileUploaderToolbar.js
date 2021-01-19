@@ -42,31 +42,33 @@ export const FileUploaderToolbar = ({
           </List>
         )}
       </Grid.Column>
-      <Grid.Column width={8} floated="right">
-        <List horizontal floated="right">
-          <List.Item>Storage available</List.Item>
-          <List.Item>
-            <Label
-              {...(filesList.length === quota.maxFiles
-                ? { color: 'blue' }
-                : {})}
-            >
-              {filesList.length} out of {quota.maxFiles} files
-            </Label>
-          </List.Item>
-          <List.Item>
-            <Label
-              {...(humanReadableBytes(filesSize) ===
-              humanReadableBytes(quota.maxStorage)
-                ? { color: 'blue' }
-                : {})}
-            >
-              {humanReadableBytes(filesSize)} out of{' '}
-              {humanReadableBytes(quota.maxStorage)}
-            </Label>
-          </List.Item>
-        </List>
-      </Grid.Column>
+      {filesEnabled &&
+        <Grid.Column width={8} floated="right">
+          <List horizontal floated="right">
+            <List.Item>Storage available</List.Item>
+            <List.Item>
+              <Label
+                {...(filesList.length === quota.maxFiles
+                  ? { color: 'blue' }
+                  : {})}
+              >
+                {filesList.length} out of {quota.maxFiles} files
+              </Label>
+            </List.Item>
+            <List.Item>
+              <Label
+                {...(humanReadableBytes(filesSize) ===
+                humanReadableBytes(quota.maxStorage)
+                  ? { color: 'blue' }
+                  : {})}
+              >
+                {humanReadableBytes(filesSize)} out of{' '}
+                {humanReadableBytes(quota.maxStorage)}
+              </Label>
+            </List.Item>
+          </List>
+        </Grid.Column>
+      }
     </>
   );
 };
