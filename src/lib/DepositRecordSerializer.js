@@ -19,19 +19,12 @@ import _pickBy from 'lodash/pickBy';
 import _pick from 'lodash/pick';
 import _mapValues from 'lodash/mapValues';
 import {
-  emptyCreatibutor,
   emptyDate,
   emptyFunding,
   emptyIdentifier,
   emptyRelatedWork,
 } from './record';
-import {
-  CreatibutorsField,
-  DatesField,
-  Field,
-  VocabularyField,
-} from './fields';
-
+import { DatesField, Field, VocabularyField } from './fields';
 
 export class DepositRecordSerializer {
   depositRecordSchema = {
@@ -49,14 +42,14 @@ export class DepositRecordSerializer {
       fieldpath: 'metadata.additional_titles',
       deserializedDefault: [],
     }),
-    creators: new CreatibutorsField({
+    creators: new Field({
       fieldpath: 'metadata.creators',
-      deserializedDefault: [emptyCreatibutor],
+      deserializedDefault: [],
       serializedDefault: [],
     }),
-    contributors: new CreatibutorsField({
+    contributors: new Field({
       fieldpath: 'metadata.contributors',
-      deserializedDefault: [emptyCreatibutor],
+      deserializedDefault: [],
       serializedDefault: [],
     }),
     resource_type: new Field({
@@ -68,7 +61,7 @@ export class DepositRecordSerializer {
       deserializedDefault: {
         metadata: false,
         files: false,
-        owned_by: [1],
+        owned_by: [{ user: 1 }],
         access_right: 'open',
       },
     }),
@@ -184,7 +177,7 @@ export class DepositRecordSerializer {
     //                 Form/Error UX is tackled in next sprint and this is good
     //                 enough for now.
     for (let e of errors) {
-      _set(deserializedErrors, e.field, e.messages.join(" "));
+      _set(deserializedErrors, e.field, e.messages.join(' '));
     }
 
     return deserializedErrors;
@@ -220,7 +213,7 @@ export class DepositRecordSerializer {
     // Finally add back 'metadata' if absent
     // We need to do this for backend validation, unless we mark metadata as
     // required in the backend or find another alternative.
-    _defaults(serializedRecord, {'metadata': {}});
+    _defaults(serializedRecord, { metadata: {} });
 
     return serializedRecord;
   }

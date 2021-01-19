@@ -7,7 +7,12 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ArrayField, GroupField, SelectField, TextField } from 'react-invenio-forms';
+import {
+  ArrayField,
+  GroupField,
+  SelectField,
+  TextField,
+} from 'react-invenio-forms';
 import { Button, Form, Icon } from 'semantic-ui-react';
 
 import { emptyDate } from '../record';
@@ -16,14 +21,23 @@ export class DatesField extends Component {
   /** Top-level Dates Component */
 
   render() {
-    const { fieldPath, options, label, labelIcon, placeholderDate, required } = this.props;
+    const {
+      fieldPath,
+      options,
+      label,
+      labelIcon,
+      placeholderDate,
+      required,
+    } = this.props;
 
     return (
       <ArrayField
         addButtonLabel={'Add date'} // TODO: Pass by prop
         defaultNewValue={emptyDate}
         fieldPath={fieldPath}
-        helpText={"Format: DATE or DATE/DATE where DATE is YYYY or YYYY-MM or YYYY-MM-DD."}
+        helpText={
+          'Format: DATE or DATE/DATE where DATE is YYYY or YYYY-MM or YYYY-MM-DD.'
+        }
         label={label}
         labelIcon={labelIcon}
         required={required}
@@ -85,5 +99,5 @@ DatesField.defaultProps = {
   fieldPath: 'metadata.dates',
   label: 'Dates',
   labelIcon: 'calendar',
-  placeholderDate: 'YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD'
+  placeholderDate: 'YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD',
 };

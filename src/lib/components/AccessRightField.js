@@ -40,7 +40,6 @@ export class AccessRightField extends Component {
                         key={option.value}
                         value={option.value}
                         checked={_get(field.value, fieldPath) === option.value}
-                        onChange={() => {}}
                       />
                     );
                   }}
