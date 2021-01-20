@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2021 CERN.
+// Copyright (C) 2020-2021 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -13,11 +13,6 @@ import { FileUploaderToolbar } from './FileUploaderToolbar';
 import { UploadState } from '../../state/reducers/files';
 
 export default class FileUploader extends Component {
-  onMetadataOnlyClick = (event, data) => {
-    if (!data['disabled']) {
-      this.props.setFilesEnabled(!this.props.filesEnabled);
-    }
-  };
 
   render() {
     const {
@@ -28,6 +23,7 @@ export default class FileUploader extends Component {
       config,
       filesEnabled,
       isDraftRecord,
+      setFilesEnabled,
     } = this.props;
     let filesList = Object.values(files).map((fileState) => {
       return {
@@ -87,12 +83,12 @@ export default class FileUploader extends Component {
           {isDraftRecord && (
             <FileUploaderToolbar
               {...this.props}
-              onMetadataOnlyClick={this.onMetadataOnlyClick}
               filesSize={filesSize}
               filesList={filesList}
               isDraftRecord={isDraftRecord}
               config={config}
               filesEnabled={filesEnabled}
+              setFilesEnabled={setFilesEnabled}
             />
           )}
         </Grid.Row>

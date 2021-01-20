@@ -118,6 +118,8 @@ export class DepositApiClient {
     );
   }
 
+  // TODO: Might consider extracting these out to a FilesApiClient.js
+
   initializeFileUpload(initializeUploadUrl, filename) {
     const payload = [
       {
@@ -160,11 +162,21 @@ export class DepositApiClient {
     return axios.delete(deleteUrl);
   }
 
-  setFileMetadata(setFileMetadataUrl, data) {
-    return axios.put(setFileMetadataUrl, data, {
-      headers: {
-        'content-type': 'application/json',
-      },
-    });
+  /**
+   * Sets the files metadata (enabled, default preview).
+   *
+   * @param {string} setFileMetadataUrl - the Files API URL
+   * @param {object} data - the files metadata
+   */
+  async setFilesMetadata(setFileMetadataUrl, data) {
+    return this.createResponse(() =>
+      axios.put(
+        setFileMetadataUrl,
+        data,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    );
   }
 }

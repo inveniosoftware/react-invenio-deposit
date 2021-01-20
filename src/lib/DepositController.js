@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2021 CERN.
+// Copyright (C) 2020-2021 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -30,9 +30,16 @@ export class DepositController {
     return record.id ? true : false;
   }
 
-  async createDraft(draft_payload, { store }) {
+  /**
+   * Creates the current draft (backend) and changes URL to match its edit URL.
+   *
+   * @param {object} draft - current draft
+   * @param {object} store - redux store
+   */
+  async createDraft(draft, { store }) {
     const recordSerializer = store.config.recordSerializer;
-    const response = await this.apiClient.create(draft_payload);
+    const payload = recordSerializer.serialize(draft);
+    const response = await this.apiClient.create(payload);
 
     // TODO: Deal with case when create fails using formik.setErrors(errors);
     store.dispatch({
@@ -45,8 +52,14 @@ export class DepositController {
     return response;
   }
 
+  /**
+   * Saves the current draft (backend) and changes URL to match its edit URL.
+   *
+   * @param {object} draft - current draft
+   * @param {object} formik - the Formik object
+   * @param {object} store - redux store
+   */
   async saveDraft(draft, { formik, store }) {
-    // Saves a draft of the record
     const recordSerializer = store.config.recordSerializer;
 
     // Set defaultPreview for files
@@ -56,11 +69,11 @@ export class DepositController {
       store.getState().deposit.defaultFilePreview
     );
 
-    let payload = recordSerializer.serialize(draft);
     let response = {};
-    if (!this.draftAlreadyCreated(payload)) {
-      response = await this.createDraft(payload, { store });
+    if (!this.draftAlreadyCreated(draft)) {
+      response = await this.createDraft(draft, { store });
     } else {
+      let payload = recordSerializer.serialize(draft);
       response = await this.apiClient.save(payload);
     }
 
@@ -94,16 +107,22 @@ export class DepositController {
     formik.setSubmitting(false);
   }
 
+  /**
+   * Publishes the current draft (backend) and redirects to its view URL.
+   *
+   * @param {object} draft - current draft
+   * @param {object} formik - the Formik object
+   * @param {object} store - redux store
+   */
   async publishDraft(draft, { formik, store }) {
-    // Publishes a draft to make it a full fledged record
     const recordSerializer = store.config.recordSerializer;
-    let payload = recordSerializer.serialize(draft);
     let response = {};
 
-    if (!this.draftAlreadyCreated(payload)) {
-      response = await this.createDraft(payload, { store });
+    if (!this.draftAlreadyCreated(draft)) {
+      response = await this.createDraft(draft, { store });
     }
 
+    let payload = recordSerializer.serialize(draft);
     response = await this.apiClient.publish(payload);
     let data = recordSerializer.deserialize(response.data || {});
     let errors = recordSerializer.deserializeErrors(response.errors || []);
@@ -181,15 +200,25 @@ export class DepositController {
     });
   }
 
-  async setFilesEnabled(draftRecord, filesEnabled, { store }) {
-    let enableFileUrl;
-    if (!this.draftAlreadyCreated(draftRecord)) {
-    // TODO: Deal with case when create fails
-      const resp = await this.createDraft({}, { store });
-      enableFileUrl = resp.data.links.files;
-    } else {
-      enableFileUrl = draftRecord.links.files;
+  /**
+   * Sets whether the record is metadata-only (files disabled) or not
+   * (files enabled).
+   *
+   * The current draft may not have been saved yet. We create it if not.
+   * TODO: Might be worth considering delaying creation/setting until Save
+   *       Draft to create a more responsive user experience.
+   *
+   * @param {object} draft - current draft
+   * @param {Boolean} filesEnabled - are files enabled?
+   * @param {object} store - redux store
+   */
+  async setFilesEnabled(draft, filesEnabled, { store }) {
+    if (!this.draftAlreadyCreated(draft)) {
+      // TODO: Deal with case when create fails
+      const response = await this.createDraft(draft, { store });
+      draft = response.data;
     }
+    const enableFileUrl = draft.links.files;
     this.fileUploader.setFilesEnabled(enableFileUrl, filesEnabled, {
       store,
     });

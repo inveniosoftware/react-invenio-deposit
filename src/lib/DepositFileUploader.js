@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2021 CERN.
+// Copyright (C) 2020-2021 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -203,29 +203,32 @@ export class DepositFileUploader {
   };
 
   setDefaultPreview = async (defaultPreviewUrl, defaultPreview, { store }) => {
-    try {
-      const resp = await this.apiClient.setFileMetadata(defaultPreviewUrl, {
-        default_preview: defaultPreview,
-      });
+    const response = await this.apiClient.setFilesMetadata(defaultPreviewUrl, {
+      default_preview: defaultPreview,
+    });
+    if ( 200 <= response.code && response.code < 300 ) {
       store.dispatch({
         type: SET_DEFAULT_PREVIEW_FILE,
         payload: { filename: defaultPreview },
       });
-    } catch (e) {
+    } else {
       store.dispatch({ type: SET_DEFAULT_PREVIEW_FILE_FAILED });
     }
   };
 
   setFilesEnabled = async (enableFileUrl, filesEnabled, { store }) => {
-    try {
-      const resp = await this.apiClient.setFileMetadata(enableFileUrl, {
-        enabled: filesEnabled,
-      });
+    const response = await this.apiClient.setFilesMetadata(enableFileUrl, {
+      enabled: filesEnabled,
+    });
+    if ( 200 <= response.code && response.code < 300 ) {
       store.dispatch({
         type: SET_FILES_ENABLED,
-        payload: { filesEnabled: resp.data.enabled, links: resp.data.links },
+        payload: {
+          filesEnabled: response.data.enabled,
+          links: response.data.links
+        },
       });
-    } catch (e) {
+    } else {
       store.dispatch({ type: SET_FILES_ENABLED_FAILED });
     }
   };

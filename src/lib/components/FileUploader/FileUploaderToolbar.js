@@ -1,22 +1,27 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2021 CERN.
+// Copyright (C) 2020-2021 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 import React from 'react';
+import { useFormikContext } from 'formik';
 import { Checkbox, Grid, Icon, Label, List, Popup } from 'semantic-ui-react';
 import { humanReadableBytes } from './utils';
 
+// NOTE: This component has to be a function component to allow
+//       the `useFormikContext` hook.
 export const FileUploaderToolbar = ({
-  onMetadataOnlyClick,
-  quota,
+  config,
   filesList,
   filesSize,
   filesEnabled,
-  config,
-  ...props
+  quota,
+  setFilesEnabled,
 }) => {
+  // We extract the working copy of the draft stored as `values` in formik
+  const { values } = useFormikContext();
+
   return (
     <>
       <Grid.Column width={8} verticalAlign="middle" floated="left">
@@ -24,8 +29,14 @@ export const FileUploaderToolbar = ({
           <List horizontal>
             <List.Item>
               <Checkbox
-                label={'Metadata only record'}
-                onClick={onMetadataOnlyClick}
+                label={'Metadata-only record'}
+                onClick={
+                  (event, data) => {
+                    if (!data['disabled']) {  // if checkbox is not disabled
+                      setFilesEnabled(values, !filesEnabled);
+                    }
+                  }
+                }
                 disabled={filesList.length > 0}
                 checked={!filesEnabled}
               />
@@ -50,7 +61,8 @@ export const FileUploaderToolbar = ({
               <Label
                 {...(filesList.length === quota.maxFiles
                   ? { color: 'blue' }
-                  : {})}
+                  : {})
+                }
               >
                 {filesList.length} out of {quota.maxFiles} files
               </Label>
@@ -58,9 +70,10 @@ export const FileUploaderToolbar = ({
             <List.Item>
               <Label
                 {...(humanReadableBytes(filesSize) ===
-                humanReadableBytes(quota.maxStorage)
+                  humanReadableBytes(quota.maxStorage)
                   ? { color: 'blue' }
-                  : {})}
+                  : {})
+                }
               >
                 {humanReadableBytes(filesSize)} out of{' '}
                 {humanReadableBytes(quota.maxStorage)}
