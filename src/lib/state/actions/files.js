@@ -1,14 +1,14 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2021 CERN.
+// Copyright (C) 2020-2021 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-export const uploadDraftFiles = (record, files) => {
+export const uploadDraftFiles = (draft, files) => {
   return async (dispatch, getState, config) => {
     const controller = config.controller;
-    controller.uploadDraftFiles(record, files, {
+    controller.uploadDraftFiles(draft, files, {
       store: { dispatch, getState, config },
     });
   };
@@ -33,11 +33,10 @@ export const setDefaultPreview = (filename) => {
   };
 };
 
-export const setFilesEnabled = (filesEnabled) => {
+export const setFilesEnabled = (draft, filesEnabled) => {
   return async (dispatch, getState, config) => {
     const controller = config.controller;
-    const draftRecord = getState().deposit.record;
-    controller.setFilesEnabled(draftRecord, filesEnabled, {
+    controller.setFilesEnabled(draft, filesEnabled, {
       store: { dispatch, getState, config },
     });
   };

@@ -1,3 +1,10 @@
+// This file is part of React-Invenio-Deposit
+// Copyright (C) 2020-2021 CERN.
+// Copyright (C) 2020-2021 Northwestern University.
+//
+// React-Invenio-Deposit is free software; you can redistribute it and/or modify it
+// under the terms of the MIT License; see LICENSE file for more details.
+
 import React from 'react';
 import { connect } from 'react-redux';
 import FileUploaderComponent from './FileUploader';
@@ -21,11 +28,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  uploadFilesToDraft: (record, files) =>
-    dispatch(uploadDraftFiles(record, files)),
+  uploadFilesToDraft: (draft, files) => dispatch(uploadDraftFiles(draft, files)),
   deleteFileFromRecord: (file) => dispatch(deleteDraftFile(file)),
   setDefaultPreviewFile: (filename) => dispatch(setDefaultPreview(filename)),
-  setFilesEnabled: (filesEnabled) => dispatch(setFilesEnabled(filesEnabled)),
+  setFilesEnabled: (draft, filesEnabled) => dispatch(setFilesEnabled(draft, filesEnabled)),
 });
 
 export const FileUploader = connect(
