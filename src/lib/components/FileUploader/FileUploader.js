@@ -6,7 +6,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Segment } from 'semantic-ui-react';
+import { Grid, Icon, Message } from 'semantic-ui-react';
 
 import { FileUploaderArea } from './FileUploaderArea';
 import { FileUploaderToolbar } from './FileUploaderToolbar';
@@ -106,11 +106,14 @@ export default class FileUploader extends Component {
         </>)}
         <Grid.Row className="file-upload-note-row">
           <Grid.Column width={16}>
-            <Segment basic className="file-upload-note">
-              Note: File addition, removal or modification are not allowed after
-              you have published your upload. This is because a Digital Object
-              Identifier (DOI) is registered with DataCite for each upload.
-            </Segment>
+            <Message visible warning >
+              <Message.Header><Icon name="warning sign" /> Note</Message.Header>
+              <p>
+                File addition, removal or modification are not allowed after
+                you have published your upload. This is because a Digital Object
+                Identifier (DOI) is registered with DataCite for each upload.
+              </p>
+            </Message>
           </Grid.Column>
         </Grid.Row>
       </Grid>
