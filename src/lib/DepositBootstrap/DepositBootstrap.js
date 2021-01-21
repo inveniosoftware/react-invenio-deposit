@@ -27,7 +27,7 @@ export default class DepositBootstrap extends Component {
 
   render() {
     return (
-      <Container style={{ marginTop: '35px' }}>
+      <Container style={{ marginTop: '10px' }}>
         <BaseForm
           onSubmit={this.props.submitFormData}
           formik={{
