@@ -75,7 +75,7 @@ export class LicenseField extends Component {
             trigger={
               <Button type="button" key="standard" className="add-licenses">
                 <Icon name="add" />
-                Add standard
+                Select standard
               </Button>
             }
             onLicenseChange={(selectedLicense) => {
@@ -88,8 +88,8 @@ export class LicenseField extends Component {
             searchConfig={this.props.searchConfig}
             trigger={
               <Button type="button" key="custom" className="add-licenses">
-                <Icon name="pencil" />
-                Create custom
+                <Icon name="add" />
+                Add custom
               </Button>
             }
             onLicenseChange={(selectedLicense) => {
