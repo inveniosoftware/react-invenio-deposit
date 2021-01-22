@@ -91,8 +91,8 @@ const FileTableRow = ({
       {file.size ? humanReadableBytes(file.size) : ''}
     </Table.Cell>
     {isDraftRecord && (
-      <Table.Cell className="file-table-cell" width={2}>
-        {file.upload && !file.upload.pending && (
+      <Table.Cell className="file-table-cell file-upload-pending" width={2}>
+        {!file.upload?.pending && (
           <Progress
             className="file-upload-progress"
             percent={file.upload.progress}
@@ -105,9 +105,7 @@ const FileTableRow = ({
             disabled={file.upload.initial}
           />
         )}
-        {file.upload && file.upload.pending && (
-          <span className="file-upload-pending">Pending</span>
-        )}
+        {file.upload?.pending && <span>Pending</span>}
       </Table.Cell>
     )}
     {isDraftRecord && (
