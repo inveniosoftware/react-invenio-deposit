@@ -106,7 +106,7 @@ export class LicenseModal extends Component {
               </Grid.Column>
             </Grid>
           </Modal.Header>
-          <Modal.Content>
+          <Modal.Content scrolling>
             {this.props.mode === ModalTypes.STANDARD && (
               <OverridableContext.Provider value={overriddenComponents}>
                 <ReactSearchKit
