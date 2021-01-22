@@ -1,13 +1,13 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2021 CERN.
+// Copyright (C) 2020-2021 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Form, Icon } from 'semantic-ui-react';
 
 import {
   ArrayField,
@@ -48,14 +48,17 @@ export class AdditionalTitlesField extends Component {
               labelIcon={null}
               clearable
             />
-            <>
-              <Button icon type="button">
-                <Icon
-                  name="close"
+            <Form.Field>
+              <Form.Field>
+                <label>&nbsp;</label>
+                <Button
+                  icon
                   onClick={() => arrayHelpers.remove(indexPath)}
-                />
-              </Button>
-            </>
+                >
+                  <Icon name="close" size="large"/>
+                </Button>
+              </Form.Field>
+            </Form.Field>
           </GroupField>
         )}
       </ArrayField>

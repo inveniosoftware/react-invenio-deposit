@@ -112,6 +112,7 @@ const FileTableRow = ({
       <Table.Cell textAlign="right" width={2} className="file-table-cell">
         {file.upload && !(file.upload.ongoing || file.upload.initial) && (
           <Icon
+            link
             className="action"
             name="trash alternate outline"
             color="blue"

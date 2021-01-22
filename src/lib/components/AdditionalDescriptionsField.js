@@ -55,10 +55,9 @@ export class AdditionalDescriptionsField extends Component {
                 <label>&nbsp;</label>
                 <Button
                   icon
-                  type="button"
                   onClick={() => arrayHelpers.remove(indexPath)}
                 >
-                  <Icon name="close" />
+                  <Icon name="close" size="large" />
                 </Button>
               </Form.Field>
             </GroupField>
