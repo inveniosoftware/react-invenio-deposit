@@ -81,7 +81,7 @@ export class AffiliationsField extends Component {
                         icon
                         onClick={() => arrayHelpers.remove(indexPath)}
                       >
-                        <Icon name="close" size="large" type="button" />
+                        <Icon name="close" size="large" />
                       </Button>
                     </Form.Field>
                   </Form.Field>

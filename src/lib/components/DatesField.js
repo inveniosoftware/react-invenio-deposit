@@ -45,13 +45,11 @@ export class DatesField extends Component {
             <Form.Field>
               <Form.Field>
                 <label>&nbsp;</label>
-                <Button icon>
-                  <Icon
-                    name="close"
-                    size="large"
-                    type="button"
-                    onClick={() => arrayHelpers.remove(indexPath)}
-                  />
+                <Button
+                  icon
+                  onClick={() => arrayHelpers.remove(indexPath)}
+                >
+                  <Icon name="close" size="large" />
                 </Button>
               </Form.Field>
             </Form.Field>
