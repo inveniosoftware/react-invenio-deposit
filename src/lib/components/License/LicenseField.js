@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getIn, FieldArray } from 'formik';
 
-import { Button, Form, Dropdown, List, Icon } from 'semantic-ui-react';
+import { Button, Form, List, Icon } from 'semantic-ui-react';
 
 import { FieldLabel } from 'react-invenio-forms';
 import { LicenseModal } from './LicenseModal';
@@ -70,28 +70,34 @@ export class LicenseField extends Component {
               </List.Item>
             );
           })}
-          <Dropdown className="add-licenses" text="Add a license" simple>
-            <Dropdown.Menu>
-              <LicenseModal
-                searchConfig={this.props.searchConfig}
-                trigger={<Dropdown.Item key="standard" text="Add standard" />}
-                onLicenseChange={(selectedLicense) => {
-                  arrayHelpers.push(selectedLicense);
-                }}
-                mode="standard"
-                action="add"
-              />
-              <LicenseModal
-                searchConfig={this.props.searchConfig}
-                trigger={<Dropdown.Item key="custom" text="Create custom" />}
-                onLicenseChange={(selectedLicense) => {
-                  arrayHelpers.push(selectedLicense);
-                }}
-                mode="custom"
-                action="add"
-              />
-            </Dropdown.Menu>
-          </Dropdown>
+          <LicenseModal
+            searchConfig={this.props.searchConfig}
+            trigger={
+              <Button type="button" key="standard" className="add-licenses">
+                <Icon name="add" />
+                Add standard
+              </Button>
+            }
+            onLicenseChange={(selectedLicense) => {
+              arrayHelpers.push(selectedLicense);
+            }}
+            mode="standard"
+            action="add"
+          />
+          <LicenseModal
+            searchConfig={this.props.searchConfig}
+            trigger={
+              <Button type="button" key="custom" className="add-licenses">
+                <Icon name="pencil" />
+                Create custom
+              </Button>
+            }
+            onLicenseChange={(selectedLicense) => {
+              arrayHelpers.push(selectedLicense);
+            }}
+            mode="custom"
+            action="add"
+          />
         </List>
       </Form.Field>
     );
