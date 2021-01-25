@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2021 CERN.
+// Copyright (C) 2020-2021 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -17,19 +17,18 @@ import {
 } from 'react-invenio-forms';
 import { Button, Form, Icon } from 'semantic-ui-react';
 
-import { emptyRelatedIdentifier } from '../record';
+import { emptyRelatedWork } from '../record';
 import { ResourceTypeField } from './ResourceTypeField';
 
-/** Identifiers array component */
-export class RelatedIdentifiersField extends Component {
+export class RelatedWorksField extends Component {
   render() {
     const { fieldPath, label, labelIcon, required, options } = this.props;
 
     return (
       <>
         <ArrayField
-          addButtonLabel={'Add related identifier'}
-          defaultNewValue={emptyRelatedIdentifier}
+          addButtonLabel={'Add related work'}
+          defaultNewValue={emptyRelatedWork}
           fieldPath={fieldPath}
           label={
             <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
@@ -82,14 +81,14 @@ export class RelatedIdentifiersField extends Component {
   }
 }
 
-RelatedIdentifiersField.propTypes = {
+RelatedWorksField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string,
   labelIcon: PropTypes.string,
   required: PropTypes.bool,
 };
 
-RelatedIdentifiersField.defaultProps = {
+RelatedWorksField.defaultProps = {
   fieldPath: 'metadata.related_identifiers',
   label: 'Related work',
   labelIcon: 'barcode',

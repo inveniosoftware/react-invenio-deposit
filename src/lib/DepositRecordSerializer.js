@@ -23,7 +23,7 @@ import {
   emptyDate,
   emptyFunding,
   emptyIdentifier,
-  emptyRelatedIdentifier,
+  emptyRelatedWork,
 } from './record';
 import {
   CreatibutorsField,
@@ -90,7 +90,7 @@ export class DepositRecordSerializer {
     }),
     related_identifiers: new Field({
       fieldpath: 'metadata.related_identifiers',
-      deserializedDefault: [emptyRelatedIdentifier],
+      deserializedDefault: [emptyRelatedWork],
     }),
     subjects: new VocabularyField({
       fieldpath: 'metadata.subjects',

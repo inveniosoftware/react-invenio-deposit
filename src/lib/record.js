@@ -38,7 +38,7 @@ export const emptyAdditionalDescription = {
   type: '',
 };
 
-export const emptyRelatedIdentifier = {
+export const emptyRelatedWork = {
   scheme: '',
   identifier: '',
   resource_type: '',

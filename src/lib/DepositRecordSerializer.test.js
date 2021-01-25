@@ -11,7 +11,7 @@ import {
   emptyDate,
   emptyFunding,
   emptyIdentifier,
-  emptyRelatedIdentifier,
+  emptyRelatedWork,
 } from './record';
 
 describe('DepositRecordSerializer', () => {
@@ -287,7 +287,7 @@ describe('DepositRecordSerializer', () => {
       it("doesn't serialize if only default is present", () => {
         const record = {
           metadata: {
-            related_identifiers: [emptyRelatedIdentifier],
+            related_identifiers: [emptyRelatedWork],
           },
         };
 
@@ -317,7 +317,7 @@ describe('DepositRecordSerializer', () => {
           dates: [emptyDate],
           languages: [],
           identifiers: [emptyIdentifier],
-          related_identifiers: [emptyRelatedIdentifier],
+          related_identifiers: [emptyRelatedWork],
           subjects: [],
           funding: [emptyFunding],
           version: '',
