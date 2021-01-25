@@ -1,14 +1,19 @@
 # Changes
 
+Version 0.10.2 (released 2021-01-25)
+
+* Bump react invenio forms version
+* Use onClick handler on array delete buttons
+
 Version 0.10.1 (released 2021-01-22)
 
-- Add DepositFormTitle
-- LicenseField
+* Add DepositFormTitle
+* LicenseField
   - Split add dropdown to separate buttons
   - Fix issue with space keystroke
   - Modal's content is scrollable now
-- Resource type/subtype component is merged in one
-- FileUploader
+* Resource type/subtype component is merged in one
+* FileUploader
   - Fix metadata only checkbox bug
   - Centers "Pending" label
   - Upload section is hidden when "Metadata only" record
