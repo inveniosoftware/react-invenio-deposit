@@ -13,7 +13,6 @@ import { FileUploaderToolbar } from './FileUploaderToolbar';
 import { UploadState } from '../../state/reducers/files';
 
 export default class FileUploader extends Component {
-
   render() {
     const {
       files,
@@ -92,30 +91,35 @@ export default class FileUploader extends Component {
             />
           )}
         </Grid.Row>
-        {filesEnabled && (<>
-          <Grid.Row className="file-upload-area-row">
-            <FileUploaderArea
-              {...this.props}
-              filesEnabled={filesEnabled}
-              filesList={filesList}
-              dropzoneParams={dropzoneParams}
-              isDraftRecord={isDraftRecord}
-              defaultFilePreview={this.props.defaultFilePreview}
-            />
-          </Grid.Row>
-        </>)}
-        <Grid.Row className="file-upload-note-row">
-          <Grid.Column width={16}>
-            <Message visible warning >
-              <Message.Header><Icon name="warning sign" /> Note</Message.Header>
-              <p>
-                File addition, removal or modification are not allowed after
-                you have published your upload. This is because a Digital Object
-                Identifier (DOI) is registered with DataCite for each upload.
-              </p>
-            </Message>
-          </Grid.Column>
-        </Grid.Row>
+        {filesEnabled && (
+          <>
+            <Grid.Row className="file-upload-area-row">
+              <FileUploaderArea
+                {...this.props}
+                filesEnabled={filesEnabled}
+                filesList={filesList}
+                dropzoneParams={dropzoneParams}
+                isDraftRecord={isDraftRecord}
+                defaultFilePreview={this.props.defaultFilePreview}
+              />
+            </Grid.Row>
+            <Grid.Row className="file-upload-note-row">
+              <Grid.Column width={16}>
+                <Message visible warning>
+                  <Message.Header>
+                    <Icon name="warning sign" /> Note
+                  </Message.Header>
+                  <p>
+                    File addition, removal or modification are not allowed after
+                    you have published your upload. This is because a Digital
+                    Object Identifier (DOI) is registered with DataCite for each
+                    upload.
+                  </p>
+                </Message>
+              </Grid.Column>
+            </Grid.Row>
+          </>
+        )}
       </Grid>
     );
   }
