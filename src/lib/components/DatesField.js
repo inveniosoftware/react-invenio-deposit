@@ -28,30 +28,35 @@ export class DatesField extends Component {
         required={required}
       >
         {({ array, arrayHelpers, indexPath, key, form }) => (
-          <GroupField widths="equal" fieldPath={fieldPath}>
+          <GroupField fieldPath={fieldPath}>
             <TextField
               fieldPath={`${key}.date`}
               label={'Date'}
-              required
               placeholder={placeholderDate}
+              required
+              width={5}
             />
             <SelectField
               fieldPath={`${key}.type`}
               label={'Type'}
               options={options.type}
               required
+              width={5}
             />
-            <TextField fieldPath={`${key}.description`} label={'Description'} />
-            <Form.Field>
-              <Form.Field>
-                <label>&nbsp;</label>
-                <Button
-                  icon
-                  onClick={() => arrayHelpers.remove(indexPath)}
-                >
-                  <Icon name="close" size="large" />
-                </Button>
-              </Form.Field>
+            <TextField
+              fieldPath={`${key}.description`}
+              label={'Description'}
+              width={5}
+            />
+            <Form.Field width={1}>
+              <label>&nbsp;</label>
+              <Button
+                icon
+                onClick={() => arrayHelpers.remove(indexPath)}
+                type="button"
+              >
+                <Icon name="close" />
+              </Button>
             </Form.Field>
           </GroupField>
         )}
