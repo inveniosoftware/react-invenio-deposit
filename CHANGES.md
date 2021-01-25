@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.10.3 (released 2021-01-25)
+
+* Hide file uploader warning when clicking on "Metadata only" checkbox
+
 Version 0.10.2 (released 2021-01-25)
 
 * Bump react invenio forms version
