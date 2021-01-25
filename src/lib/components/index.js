@@ -21,7 +21,7 @@ export { LanguagesField } from './LanguagesField';
 export { PublicationDateField } from './PublicationDateField';
 export { PublishButton } from './PublishButton';
 export { PublisherField } from './PublisherField';
-export { RelatedIdentifiersField } from './RelatedIdentifiersField';
+export { RelatedWorksField } from './RelatedWorksField';
 export { ResourceTypeField } from './ResourceTypeField';
 export { SaveButton } from './SaveButton';
 export { SubjectsField } from './SubjectsField';
