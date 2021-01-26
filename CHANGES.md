@@ -1,5 +1,10 @@
 # Changes
 
+Version 0.10.4 (released 2021-01-26)
+
+* Fills out full row in DataField
+* Renames RelatedIdentifiers to RelatedWorks
+
 Version 0.10.3 (released 2021-01-25)
 
 * Hide file uploader warning when clicking on "Metadata only" checkbox
