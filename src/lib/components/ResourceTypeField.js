@@ -13,6 +13,7 @@ import { Form } from 'semantic-ui-react';
 
 import { FieldLabel } from 'react-invenio-forms';
 
+
 export class ResourceTypeField extends Component {
   groupErrors = (errors, fieldPath) => {
     const fieldErrors = _get(errors, fieldPath);
@@ -65,19 +66,31 @@ export class ResourceTypeField extends Component {
   }
 
   renderResourceTypeField = ({ field, form }) => {
-    // 1- create the master list of options
-    const options = this.createOptions(this.props.options);
+    const {
+      fieldPath,
+      label,
+      labelIcon,
+      options,
+      required,
+      ...uiProps
+    } = this.props;
+
+    // 1- create the master list of options from
+    const optionsList = this.createOptions(options);
 
     // 2- handlechange grabs the values of the selected option and sticks those
     //    in form.values
     const handleChange = ( event, data ) => {
+      // NOTE: Clicking on "x" to clear sends data.value = "", so we need
+      //       to account for this selection
       const option = data.options.find((e) => e.value === data.value);
-      form.setFieldValue(this.props.fieldPath, option.values);
+      const fieldValue = option ? option.values : "";
+      form.setFieldValue(fieldPath, fieldValue);
     }
 
     // 3- loads/displays the correct value from the dropdown
     //    If no initial value, value must be set to "" for placeholder to display.
-    let value = this.loadValue(form.values, this.props.fieldPath);
+    let value = this.loadValue(form.values, fieldPath);
 
     return (
       // NOTE: we are using a semantic-ui Form.Dropdown directly because
@@ -87,21 +100,22 @@ export class ResourceTypeField extends Component {
       <Form.Dropdown
         fluid
         selection
-        error={this.groupErrors(form.errors, this.props.fieldPath)}
-        id={this.props.fieldPath}
+        error={this.groupErrors(form.errors, fieldPath)}
+        id={fieldPath}
         label={
           <FieldLabel
-            htmlFor={this.props.fieldPath}
-            icon={this.props.labelIcon}
-            label={this.props.label}
+            htmlFor={fieldPath}
+            icon={labelIcon}
+            label={label}
           />
         }
-        name={this.props.fieldPath}
+        name={fieldPath}
         onChange={handleChange}
-        options={options}
+        options={optionsList}
         placeholder={"Select resource type"}
-        required={this.props.required}
+        required={required}
         value={value}
+        {...uiProps}
       />
     );
   };
