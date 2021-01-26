@@ -36,44 +36,46 @@ export class RelatedWorksField extends Component {
           required={required}
         >
           {({ array, arrayHelpers, indexPath, key }) => (
-            <>
-              <GroupField widths={"equal"} >
-                <SelectField
-                  fieldPath={`${key}.relation_type`}
-                  options={options.relations}
-                  placeholder={'Select relation...'}
-                  label="Relation"
-                  clearable
-                />
-                <SelectField
-                  fieldPath={`${key}.scheme`}
-                  options={options.scheme}
-                  label="Scheme"
-                  clearable
-                />
-                <TextField
-                  fieldPath={`${key}.identifier`}
-                  label="Identifier"
-                />
-              </GroupField>
-
-              {/* TODO: Render as single SelectField and place inline */}
-              <ResourceTypeField
-                fieldPath={`${key}.resource_type`}
-                options={options.resource_type}
+            <GroupField>
+              <SelectField
                 clearable
+                fieldPath={`${key}.relation_type`}
+                label="Relation"
+                options={options.relations}
+                placeholder={'Select relation...'}
+                width={3}
+              />
+              <SelectField
+                clearable
+                fieldPath={`${key}.scheme`}
+                label="Scheme"
+                options={options.scheme}
+                width={2}
+              />
+              <TextField
+                fieldPath={`${key}.identifier`}
+                label="Identifier"
+                width={4}
               />
 
-              <Form.Field>
-                <label>&nbsp;</label>
-                <Button
-                  icon
-                  onClick={() => arrayHelpers.remove(indexPath)}
+            <ResourceTypeField
+              clearable
+              fieldPath={`${key}.resource_type`}
+              labelIcon={''}  // Otherwise breaks alignment
+              options={options.resource_type}
+              width={6}
+            />
+
+            <Form.Field width={1}>
+              <label>&nbsp;</label>
+              <Button
+                icon
+                onClick={() => arrayHelpers.remove(indexPath)}
                 >
-                  <Icon name="close" size="large" />
-                </Button>
-              </Form.Field>
-            </>
+                <Icon name="close" />
+              </Button>
+            </Form.Field>
+          </GroupField>
           )}
         </ArrayField>
       </>
