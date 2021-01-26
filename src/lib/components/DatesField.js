@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2021 CERN.
+// Copyright (C) 2020-2021 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -23,6 +23,7 @@ export class DatesField extends Component {
         addButtonLabel={'Add date'} // TODO: Pass by prop
         defaultNewValue={emptyDate}
         fieldPath={fieldPath}
+        helpText={"Format: DATE or DATE/DATE where DATE is YYYY or YYYY-MM or YYYY-MM-DD."}
         label={label}
         labelIcon={labelIcon}
         required={required}
