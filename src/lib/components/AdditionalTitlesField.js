@@ -29,16 +29,19 @@ export class AdditionalTitlesField extends Component {
         fieldPath={fieldPath}
       >
         {({ array, arrayHelpers, indexPath, key }) => (
-          <GroupField widths="equal" fieldPath={fieldPath}>
+          <GroupField fieldPath={fieldPath}>
             <TextField
               fieldPath={`${key}.title`}
               label={'Additional Title'}
+              optimized
               required
+              width={5}
             />
             <SelectField
               fieldPath={`${key}.type`}
               label={'Type'}
               options={options.type}
+              width={5}
             />
             <LanguagesField
               fieldPath={`${key}.lang`}
@@ -47,17 +50,16 @@ export class AdditionalTitlesField extends Component {
               placeholder={'Select language'}
               labelIcon={null}
               clearable
+              width={5}
             />
-            <Form.Field>
-              <Form.Field>
-                <label>&nbsp;</label>
-                <Button
-                  icon
-                  onClick={() => arrayHelpers.remove(indexPath)}
-                >
-                  <Icon name="close" size="large"/>
-                </Button>
-              </Form.Field>
+            <Form.Field width={1}>
+              <label>&nbsp;</label>
+              <Button
+                icon
+                onClick={() => arrayHelpers.remove(indexPath)}
+              >
+                <Icon name="close" />
+              </Button>
             </Form.Field>
           </GroupField>
         )}
