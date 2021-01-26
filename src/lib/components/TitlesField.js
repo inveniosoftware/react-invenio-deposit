@@ -20,6 +20,7 @@ export class TitlesField extends Component {
         <TextField
           fieldPath={fieldPath}
           label={<FieldLabel htmlFor={fieldPath} icon={'book'} label={label} />}
+          optimized
           required={required}
         />
         <AdditionalTitlesField options={options} />

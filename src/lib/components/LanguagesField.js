@@ -20,6 +20,7 @@ export class LanguagesField extends Component {
       placeholder,
       clearable,
       initialOptions,
+      ...uiProps
     } = this.props;
     const serializeSuggestions = this.props.serializeSuggestions || null;
     return (
@@ -36,6 +37,7 @@ export class LanguagesField extends Component {
         }
         noQueryMessage="Search for languages..."
         {...(serializeSuggestions && { serializeSuggestions })}
+        {...uiProps}
       />
     );
   }
