@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import FileUploaderComponent from './FileUploader';
+import { FileUploaderComponent } from './FileUploader';
 import {
   uploadDraftFiles,
   deleteDraftFile,

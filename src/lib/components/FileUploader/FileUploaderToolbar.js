@@ -20,7 +20,7 @@ export const FileUploaderToolbar = ({
   setFilesEnabled,
 }) => {
   // We extract the working copy of the draft stored as `values` in formik
-  const { values } = useFormikContext();
+  const { values: formikDraft } = useFormikContext();
 
   return (
     <>
@@ -33,7 +33,7 @@ export const FileUploaderToolbar = ({
                 onClick={
                   (event, data) => {
                     if (!data['disabled']) {  // if checkbox is not disabled
-                      setFilesEnabled(values, !filesEnabled);
+                      setFilesEnabled(formikDraft, !filesEnabled);
                     }
                   }
                 }
