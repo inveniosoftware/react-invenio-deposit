@@ -168,24 +168,25 @@ export class DepositController {
     window.location.replace(uploadsURL);
   }
 
-  uploadDraftFiles = async (record, files, { store }) => {
-    const recordSerializer = store.config.recordSerializer;
-    let payload = recordSerializer.serialize(record);
-    let response = {};
-    if (!this.draftAlreadyCreated(payload)) {
-      // TODO: pass payload instead of `{}`. Currently some fields
-      // are prefilled by default, thus the draft creation fails
-      // because of schema validation. In principle if no metadata
-      // were filled, the payload should be `{}`
+  /**
+   * Uploads the draft's files.
+   *
+   * The current draft may not have been saved yet. We create it if not.
+   *
+   * @param {object} draft - current draft
+   * @param {object} files - files to upload
+   * @param {object} store - redux store
+   */
+  async uploadDraftFiles(draft, files, { store }) {
+    if (!this.draftAlreadyCreated(draft)) {
       // TODO: Deal with case when create fails
-      response = await this.createDraft({}, { store });
-      payload = response.data;
+      let response = await this.createDraft(draft, { store });
+      draft = response.data;
     }
 
     for (const file of files) {
-      // TODO: remove the default value for `links.draft_files` when REST integration completes
-      const uploadFileUrl = payload.links.files;
-      this.fileUploader.upload(uploadFileUrl, file, {store});
+      const uploadFileUrl = draft.links.files;
+      this.fileUploader.upload(uploadFileUrl, file, { store });
     }
   };
 

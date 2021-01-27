@@ -4,7 +4,8 @@
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
-import React, { Component } from 'react';
+import { useFormikContext } from 'formik';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Icon, Message } from 'semantic-ui-react';
 
@@ -12,117 +13,123 @@ import { FileUploaderArea } from './FileUploaderArea';
 import { FileUploaderToolbar } from './FileUploaderToolbar';
 import { UploadState } from '../../state/reducers/files';
 
-export default class FileUploader extends Component {
-  render() {
-    const {
-      files,
-      record,
-      uploadFilesToDraft,
-      quota,
-      config,
-      filesEnabled,
-      isDraftRecord,
-      setFilesEnabled,
-    } = this.props;
-    let filesList = Object.values(files).map((fileState) => {
-      return {
-        name: fileState.name,
-        size: fileState.size,
-        checksum: fileState.checksum,
-        links: fileState.links,
-        upload: {
-          initial: fileState.status === UploadState.initial,
-          failed: fileState.status === UploadState.error,
-          ongoing: fileState.status === UploadState.uploading,
-          finished: fileState.status === UploadState.finished,
-          pending: fileState.status === UploadState.pending,
-          progress: fileState.progress,
-          cancel: fileState.cancel,
-        },
-      };
-    });
-    const filesSize = filesList.reduce(
-      (totalSize, file) => (totalSize += file.size),
-      0
-    );
 
-    let dropzoneParams = {
-      preventDropOnDocument: true,
-      onDropAccepted: (acceptedFiles) => {
-        const maxFileNumberReached =
-          filesList.length + acceptedFiles.length > quota.maxFiles;
-        const acceptedFilesSize = acceptedFiles.reduce(
-          (totalSize, file) => (totalSize += file.size),
-          0
-        );
-        const maxFileStorageReached =
-          filesSize + acceptedFilesSize > quota.maxStorage;
-        if (maxFileNumberReached || maxFileStorageReached) {
-          // TODO: Give some feedback to user about why the files weren't
-          // accepted for upload
-          console.log('Maximum number of files reached!');
-        } else {
-          uploadFilesToDraft(record, acceptedFiles);
-        }
+// NOTE: This component has to be a function component to allow
+//       the `useFormikContext` hook.
+export const FileUploaderComponent = ({
+  config,
+  defaultFilePreview,
+  files,
+  filesEnabled,
+  isDraftRecord,
+  quota,
+  record,
+  setFilesEnabled,
+  uploadFilesToDraft,
+  ...uiProps
+}) => {
+  // We extract the working copy of the draft stored as `values` in formik
+  const { values: formikDraft } = useFormikContext();
+
+  let filesList = Object.values(files).map((fileState) => {
+    return {
+      name: fileState.name,
+      size: fileState.size,
+      checksum: fileState.checksum,
+      links: fileState.links,
+      upload: {
+        initial: fileState.status === UploadState.initial,
+        failed: fileState.status === UploadState.error,
+        ongoing: fileState.status === UploadState.uploading,
+        finished: fileState.status === UploadState.finished,
+        pending: fileState.status === UploadState.pending,
+        progress: fileState.progress,
+        cancel: fileState.cancel,
       },
-      multiple: true,
-      noClick: true,
-      noKeyboard: true,
-      disabled: false,
     };
+  });
+  const filesSize = filesList.reduce(
+    (totalSize, file) => (totalSize += file.size),
+    0
+  );
 
-    const filesLeft = filesList.length < quota.maxFiles;
-    if (!filesLeft) {
-      dropzoneParams['disabled'] = true;
-    }
+  let dropzoneParams = {
+    preventDropOnDocument: true,
+    onDropAccepted: (acceptedFiles) => {
+      const maxFileNumberReached =
+        filesList.length + acceptedFiles.length > quota.maxFiles;
+      const acceptedFilesSize = acceptedFiles.reduce(
+        (totalSize, file) => (totalSize += file.size),
+        0
+      );
+      const maxFileStorageReached =
+        filesSize + acceptedFilesSize > quota.maxStorage;
+      if (maxFileNumberReached || maxFileStorageReached) {
+        // TODO: Give some feedback to user about why the files weren't
+        // accepted for upload
+        console.log('Maximum number of files reached!');
+      } else {
+        uploadFilesToDraft(formikDraft, acceptedFiles);
+      }
+    },
+    multiple: true,
+    noClick: true,
+    noKeyboard: true,
+    disabled: false,
+  };
 
-    return (
-      <Grid style={{ marginBottom: '20px' }}>
-        <Grid.Row>
-          {isDraftRecord && (
-            <FileUploaderToolbar
-              {...this.props}
-              filesSize={filesSize}
-              filesList={filesList}
-              isDraftRecord={isDraftRecord}
-              config={config}
-              filesEnabled={filesEnabled}
-              setFilesEnabled={setFilesEnabled}
-            />
-          )}
-        </Grid.Row>
-        {filesEnabled && (
-          <>
-            <Grid.Row className="file-upload-area-row">
-              <FileUploaderArea
-                {...this.props}
-                filesEnabled={filesEnabled}
-                filesList={filesList}
-                dropzoneParams={dropzoneParams}
-                isDraftRecord={isDraftRecord}
-                defaultFilePreview={this.props.defaultFilePreview}
-              />
-            </Grid.Row>
-            <Grid.Row className="file-upload-note-row">
-              <Grid.Column width={16}>
-                <Message visible warning>
-                  <Message.Header>
-                    <Icon name="warning sign" /> Note
-                  </Message.Header>
-                  <p>
-                    File addition, removal or modification are not allowed after
-                    you have published your upload. This is because a Digital
-                    Object Identifier (DOI) is registered with DataCite for each
-                    upload.
-                  </p>
-                </Message>
-              </Grid.Column>
-            </Grid.Row>
-          </>
-        )}
-      </Grid>
-    );
+  const filesLeft = filesList.length < quota.maxFiles;
+  if (!filesLeft) {
+    dropzoneParams['disabled'] = true;
   }
+
+  return (
+    <Grid style={{ marginBottom: '20px' }}>
+      <Grid.Row>
+        {isDraftRecord && (
+          <FileUploaderToolbar
+            {...uiProps}
+            config={config}
+            filesEnabled={filesEnabled}
+            filesList={filesList}
+            filesSize={filesSize}
+            isDraftRecord={isDraftRecord}
+            quota={quota}
+            setFilesEnabled={setFilesEnabled}
+          />
+        )}
+      </Grid.Row>
+      {filesEnabled && (
+        <>
+          <Grid.Row className="file-upload-area-row">
+            <FileUploaderArea
+              {...uiProps}
+              filesEnabled={filesEnabled}
+              filesList={filesList}
+              dropzoneParams={dropzoneParams}
+              isDraftRecord={isDraftRecord}
+              defaultFilePreview={defaultFilePreview}
+            />
+          </Grid.Row>
+          <Grid.Row className="file-upload-note-row">
+            <Grid.Column width={16}>
+              <Message visible warning>
+                <Message.Header>
+                  <Icon name="warning sign" /> Note
+                </Message.Header>
+                <p>
+                  File addition, removal or modification are not allowed after
+                  you have published your upload. This is because a Digital
+                  Object Identifier (DOI) is registered with DataCite for each
+                  upload.
+                </p>
+              </Message>
+            </Grid.Column>
+          </Grid.Row>
+        </>
+      )}
+    </Grid>
+  );
 }
 
 const fileDetailsShape = PropTypes.objectOf(
@@ -138,25 +145,31 @@ const fileDetailsShape = PropTypes.objectOf(
   })
 );
 
-FileUploader.propTypes = {
-  files: fileDetailsShape,
+FileUploaderComponent.propTypes = {
+  config: PropTypes.object,
+  defaultFilePreview: PropTypes.string,
   dragText: PropTypes.string,
-  uploadButtonText: PropTypes.string,
-  uploadButtonIcon: PropTypes.string,
+  files: fileDetailsShape,
+  filesEnabled: PropTypes.bool,
+  isDraftRecord: PropTypes.bool,
   quota: PropTypes.shape({
     maxStorage: PropTypes.number,
     maxFiles: PropTypes.number,
   }),
-  config: PropTypes.object,
+  record: PropTypes.object,
+  setFilesEnabled: PropTypes.func,
+  uploadButtonIcon: PropTypes.string,
+  uploadButtonText: PropTypes.string,
+  uploadFilesToDraft: PropTypes.func,
 };
 
-FileUploader.defaultProps = {
+FileUploaderComponent.defaultProps = {
   dragText: 'Drag and drop file(s)',
-  uploadButtonText: 'Upload files',
-  uploadButtonIcon: 'upload',
+  isDraftRecord: true,
   quota: {
     maxFiles: 5,
-    maxStorage: 10000000000,
+    maxStorage: 10 ** 10,
   },
-  isDraftRecord: true,
+  uploadButtonIcon: 'upload',
+  uploadButtonText: 'Upload files',
 };
