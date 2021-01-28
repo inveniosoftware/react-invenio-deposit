@@ -43,21 +43,23 @@ export class AdditionalDescriptionsField extends Component {
                 options={options.type}
                 required
               />
-              <LanguagesField
+              {/* temporary: January release removal
+                  TODO: Re-enable in next releases*/}
+              {/* <LanguagesField
                 fieldPath={`${key}.lang`}
                 label={'Language'}
                 multiple={false}
                 placeholder={'Select language'}
                 labelIcon={null}
                 clearable
-              />
+              /> */}
               <Form.Field>
                 <label>&nbsp;</label>
                 <Button
                   icon
                   onClick={() => arrayHelpers.remove(indexPath)}
                 >
-                  <Icon name="close" size="large" />
+                  <Icon name="close" />
                 </Button>
               </Form.Field>
             </GroupField>
