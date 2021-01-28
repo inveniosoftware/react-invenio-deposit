@@ -47,7 +47,7 @@ export const LicenseResults = withState(({ currentResultsState: results }) => {
                     }
                   />
                 </Image>
-                <Item.Content className="licesnse-item-content">
+                <Item.Content className="license-item-content">
                   <Header size="small">{title}</Header>
                   <Item.Description className="license-item-description">
                     {description}
