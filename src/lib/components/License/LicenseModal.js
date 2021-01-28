@@ -85,7 +85,7 @@ export class LicenseModal extends Component {
           trigger={this.props.trigger}
           onClose={this.closeModal}
         >
-          <Modal.Header as="h6" className="license-modal-header">
+          <Modal.Header as="h6" className="deposit-modal-header">
             <Grid>
               <Grid.Column floated="left" width={4}>
                 <Header as="h2">

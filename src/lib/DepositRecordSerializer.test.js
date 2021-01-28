@@ -7,7 +7,6 @@
 
 import { DepositRecordSerializer } from './DepositRecordSerializer';
 import {
-  emptyCreatibutor,
   emptyDate,
   emptyFunding,
   emptyIdentifier,
@@ -32,160 +31,6 @@ describe('DepositRecordSerializer', () => {
   });
 
   describe('serialize', () => {
-    describe('creators', () => {
-      it('transforms identifiers arrays into objects', () => {
-        const record = {
-          metadata: {
-            creators: [
-              {
-                identifiers: [
-                  { scheme: 'orcid', identifier: '0000-0002-1825-0097' },
-                  { scheme: 'foo', identifier: 'bar' },
-                ],
-              },
-              {
-                identifiers: [
-                  { scheme: 'ror', identifier: '03yrm5c26' },
-                  { scheme: 'baz', identifier: 'zed' },
-                ],
-              },
-            ],
-          },
-        };
-
-        const serializedRecord = serializer.serialize(record);
-
-        expect(serializedRecord.metadata.creators[0].identifiers).toEqual({
-          orcid: '0000-0002-1825-0097',
-          foo: 'bar',
-        });
-        expect(serializedRecord.metadata.creators[1].identifiers).toEqual({
-          ror: '03yrm5c26',
-          baz: 'zed',
-        });
-      });
-
-      it('picks last scheme if duplicates', () => {
-        const record = {
-          metadata: {
-            creators: [
-              {
-                identifiers: [
-                  { scheme: 'orcid', identifier: '0000-0002-1825-0097' },
-                  { scheme: 'orcid', identifier: '0000-0002-1825-0098' },
-                ],
-              },
-            ],
-          },
-        };
-
-        const serializedRecord = serializer.serialize(record);
-
-        expect(serializedRecord.metadata.creators[0].identifiers).toEqual({
-          orcid: '0000-0002-1825-0098',
-        });
-      });
-    });
-
-    describe('contributors', () => {
-      it('transforms identifiers array into object', () => {
-        const record = {
-          metadata: {
-            contributors: [
-              {
-                identifiers: [
-                  { scheme: 'orcid', identifier: '0000-0002-1825-0097' },
-                  { scheme: 'foo', identifier: 'bar' },
-                ],
-              },
-              {
-                identifiers: [
-                  { scheme: 'ror', identifier: '03yrm5c26' },
-                  { scheme: 'baz', identifier: 'zed' },
-                ],
-              },
-            ],
-          },
-        };
-
-        const serializedRecord = serializer.serialize(record);
-
-        expect(serializedRecord.metadata.contributors[0].identifiers).toEqual({
-          orcid: '0000-0002-1825-0097',
-          foo: 'bar',
-        });
-        expect(serializedRecord.metadata.contributors[1].identifiers).toEqual({
-          ror: '03yrm5c26',
-          baz: 'zed',
-        });
-      });
-
-      it('picks last scheme if duplicates', () => {
-        const record = {
-          metadata: {
-            contributors: [
-              {
-                identifiers: [
-                  { scheme: 'orcid', identifier: '0000-0002-1825-0097' },
-                  { scheme: 'orcid', identifier: '0000-0002-1825-0098' },
-                ],
-              },
-            ],
-          },
-        };
-
-        const serializedRecord = serializer.serialize(record);
-
-        expect(serializedRecord.metadata.contributors[0].identifiers).toEqual({
-          orcid: '0000-0002-1825-0098',
-        });
-      });
-
-      it('acts correctly when no input', () => {
-        // Note that since removeEmptyValues cleans up empty inputs, we have
-        // fewer cases to test.
-
-        // if contributors empty, leave empty
-        let record = {};
-
-        let serializedRecord = serializer.serialize(record);
-
-        expect(serializedRecord).toEqual({metadata: {}});
-
-        // if contributors only have type defined, empty it out
-        record = {
-          metadata: {
-            contributors: [
-              {
-                type: 'Personal',
-              },
-              {
-                type: 'Organizational',
-              },
-            ],
-          },
-        };
-
-        serializedRecord = serializer.serialize(record);
-
-        expect(serializedRecord).toEqual({metadata: {}});
-
-        // if identifiers is absent, leave absent
-        record = {
-          metadata: { contributors: [{ name: 'Alice' }] },
-        };
-
-        serializedRecord = serializer.serialize(record);
-
-        let expectedRecord = {
-          metadata: {
-            contributors: [{ name: 'Alice' }],
-          },
-        };
-        expect(serializedRecord).toEqual(expectedRecord);
-      });
-    });
-
     describe('dates', () => {
       it('serializes array as-is if filled', () => {
         const record = {
@@ -220,7 +65,7 @@ describe('DepositRecordSerializer', () => {
 
         const serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord).toEqual({metadata: {}});
+        expect(serializedRecord).toEqual({ metadata: {} });
       });
     });
 
@@ -253,7 +98,7 @@ describe('DepositRecordSerializer', () => {
 
         const serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord).toEqual({metadata: {}});
+        expect(serializedRecord).toEqual({ metadata: {} });
       });
     });
 
@@ -293,7 +138,7 @@ describe('DepositRecordSerializer', () => {
 
         const serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord).toEqual({metadata: {}});
+        expect(serializedRecord).toEqual({ metadata: {} });
       });
     });
   });
@@ -310,8 +155,8 @@ describe('DepositRecordSerializer', () => {
         metadata: {
           title: '',
           additional_titles: [],
-          creators: [emptyCreatibutor],
-          contributors: [emptyCreatibutor],
+          creators: [],
+          contributors: [],
           resource_type: '',
           publication_date: '',
           dates: [emptyDate],
@@ -325,7 +170,7 @@ describe('DepositRecordSerializer', () => {
         access: {
           metadata: false,
           files: false,
-          owned_by: [1],
+          owned_by: [{ user: 1 }],
           access_right: 'open',
         },
       };
@@ -356,24 +201,31 @@ describe('DepositRecordSerializer', () => {
         metadata: {
           contributors: [
             {
-              name: 'Jane Smith',
-              role: 'datacurator',
-              type: 'personal',
-              identifiers: {
-                orcid: '0000-0002-1825-0097',
+              person_or_org: {
+                name: 'Jane Smith',
+                type: 'personal',
+                identifiers: [
+                  {
+                    identifier: '0000-0002-1825-0097',
+                    scheme: 'orcid',
+                  },
+                ],
               },
+              role: 'datacurator',
             },
           ],
           creators: [
             {
-              name: 'John Doe',
-              type: 'personal',
+              person_or_org: { name: 'John Doe', type: 'personal' },
               affiliations: [
                 {
                   name: 'CERN',
-                  identifiers: {
-                    ror: '01ggx4157',
-                  },
+                  identifiers: [
+                    {
+                      identifier: '01ggx4157',
+                      scheme: 'ror',
+                    },
+                  ],
                 },
               ],
             },
@@ -449,16 +301,17 @@ describe('DepositRecordSerializer', () => {
         metadata: {
           contributors: [
             {
-              affiliations: [],
-              name: 'Jane Smith',
+              person_or_org: {
+                name: 'Jane Smith',
+                type: 'personal',
+                identifiers: [
+                  {
+                    identifier: '0000-0002-1825-0097',
+                    scheme: 'orcid',
+                  },
+                ],
+              },
               role: 'datacurator',
-              type: 'personal',
-              identifiers: [
-                {
-                  identifier: '0000-0002-1825-0097',
-                  scheme: 'orcid',
-                },
-              ],
             },
           ],
           creators: [
@@ -474,9 +327,10 @@ describe('DepositRecordSerializer', () => {
                   ],
                 },
               ],
-              identifiers: [],
-              name: 'John Doe',
-              type: 'personal',
+              person_or_org: {
+                name: 'John Doe',
+                type: 'personal',
+              },
             },
           ],
           publication_date: '2020-09-28',

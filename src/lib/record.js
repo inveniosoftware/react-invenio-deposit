@@ -16,14 +16,6 @@ export const emptyIdentifier = {
 export const emptyAffiliation = {
   name: '',
   identifiers: [emptyIdentifier],
-}
-
-export const emptyCreatibutor = {
-  affiliations: [emptyAffiliation],
-  identifiers: [emptyIdentifier],
-  name: '',
-  type: 'personal',
-  role: ''
 };
 
 export const emptyAdditionalTitle = {
@@ -62,5 +54,5 @@ export const emptyFunding = {
     number: '',
     identifier: '',
     scheme: '',
-  }
-}
+  },
+};

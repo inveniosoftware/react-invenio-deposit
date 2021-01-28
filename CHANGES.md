@@ -1,5 +1,11 @@
 # Changes
 
+Version 0.10.5 (released 2021-01-28)
+
+* Adds ComingSoon component
+* Refactors Creatibutor component
+
+
 Version 0.10.4 (released 2021-01-26)
 
 * Fills out full row in DataField
