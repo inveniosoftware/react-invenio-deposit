@@ -97,7 +97,7 @@ class CreatibutorsFieldForm extends Component {
               roleOptions={roleOptions}
               schema={schema}
               trigger={
-                <Button type="button" basic secondary>
+                <Button type="button">
                   <Icon name="add" />
                   {this.props.addButtonLabel}
                 </Button>
