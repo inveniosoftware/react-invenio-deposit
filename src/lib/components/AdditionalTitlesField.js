@@ -43,7 +43,9 @@ export class AdditionalTitlesField extends Component {
               options={options.type}
               width={5}
             />
-            <LanguagesField
+            {/* temporary: January release removal
+                TODO: Re-enable in next releases*/}
+            {/* <LanguagesField
               fieldPath={`${key}.lang`}
               label={'Language'}
               multiple={false}
@@ -51,7 +53,7 @@ export class AdditionalTitlesField extends Component {
               labelIcon={null}
               clearable
               width={5}
-            />
+            /> */}
             <Form.Field width={1}>
               <label>&nbsp;</label>
               <Button
