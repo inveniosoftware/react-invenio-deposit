@@ -34,7 +34,6 @@ export class AdditionalTitlesField extends Component {
               fieldPath={`${key}.title`}
               label={'Additional Title'}
               optimized
-              required
               width={5}
             />
             <SelectField
@@ -56,10 +55,7 @@ export class AdditionalTitlesField extends Component {
             /> */}
             <Form.Field width={1}>
               <label>&nbsp;</label>
-              <Button
-                icon
-                onClick={() => arrayHelpers.remove(indexPath)}
-              >
+              <Button icon onClick={() => arrayHelpers.remove(indexPath)}>
                 <Icon name="close" />
               </Button>
             </Form.Field>

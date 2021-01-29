@@ -18,8 +18,15 @@ import { CreatibutorsModal } from './CreatibutorsModal';
 import { CreatibutorsFieldItem } from './CreatibutorsFieldItem';
 import { CREATIBUTOR_TYPE } from './type';
 
-const displayPersonName = (familyName, givenName, affiliationName) => {
-  return `${familyName}, ${givenName} (${affiliationName})`;
+const displayCreatibutorName = ({ familyName, givenName, affiliationName }) => {
+  let displayName = familyName;
+  if (givenName) {
+    displayName += `, ${givenName}`;
+  }
+  if (affiliationName) {
+    displayName += ` (${affiliationName})`;
+  }
+  return displayName;
 };
 
 class CreatibutorsFieldForm extends Component {
@@ -57,17 +64,31 @@ class CreatibutorsFieldForm extends Component {
               const isPerson =
                 _get(value, typeFieldPath, CREATIBUTOR_TYPE.PERSON) ===
                 CREATIBUTOR_TYPE.PERSON;
-              const displayName = isPerson
-                ? displayPersonName(
-                    _get(value, familyNameFieldPath, 'No family name'),
-                    _get(value, givenNameFieldPath, 'No given name'),
-                    _get(
+              let displayName = isPerson
+                ? displayCreatibutorName({
+                    familyName: _get(
                       value,
-                      `${affiliationsFieldPath}[0].name`,
-                      'No affiliation name'
-                    )
-                  )
-                : _get(value, nameFieldPath, 'No organization name');
+                      familyNameFieldPath,
+                      'No family name'
+                    ),
+                    givenName: _get(value, givenNameFieldPath, 'No given name'),
+                    affiliationName: _get(
+                      value,
+                      `${affiliationsFieldPath}[0].name`
+                    ),
+                  })
+                : displayCreatibutorName({
+                    familyName: _get(
+                      value,
+                      nameFieldPath,
+                      'No organization name'
+                    ),
+                    affiliationName: _get(
+                      value,
+                      `${affiliationsFieldPath}[0].name`
+                    ),
+                  });
+
               return (
                 <CreatibutorsFieldItem
                   key={key}

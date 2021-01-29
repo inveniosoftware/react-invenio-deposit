@@ -165,6 +165,7 @@ export class CreatibutorsModal extends Component {
                 this.closeModal();
                 resetForm();
               }}
+              closeIcon
             >
               <Modal.Header as="h6" className="deposit-modal-header">
                 <Grid>
@@ -259,6 +260,9 @@ export class CreatibutorsModal extends Component {
                   <RemoteSelectField
                     fieldPath={affiliationsFieldPath}
                     suggestionAPIUrl="/api/vocabularies/affiliations"
+                    suggestionAPIHeaders={{
+                      Accept: 'application/vnd.inveniordm.v1+json',
+                    }}
                     placeholder={'Search for an affiliation by name'}
                     clearable
                     multiple

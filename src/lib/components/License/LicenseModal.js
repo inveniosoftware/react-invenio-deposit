@@ -87,15 +87,15 @@ export class LicenseModal extends Component {
         >
           <Modal.Header as="h6" className="deposit-modal-header">
             <Grid>
-              <Grid.Column floated="left" width={4}>
+              <Grid.Column floated="left" width={8}>
                 <Header as="h2">
                   {this.props.action === ModalActions.ADD
-                    ? 'Add license'
-                    : 'Change license'}
+                    ? `Add ${this.props.mode} license`
+                    : `Change ${this.props.mode} license`}
                 </Header>
               </Grid.Column>
               <Grid.Column
-                width={6}
+                width={8}
                 floated="right"
                 textAlign="right"
                 verticalAlign="bottom"
@@ -161,7 +161,11 @@ export class LicenseModal extends Component {
                         <ResultsLoader>
                           <EmptyResults />
                           <Error />
-                          <LicenseResults />
+                          <LicenseResults
+                            {...(this.props.serializeLicenses && {
+                              serializeLicenses: this.props.serializeLicenses,
+                            })}
+                          />
                         </ResultsLoader>
                       </Grid.Column>
                     </Grid.Row>
@@ -198,6 +202,7 @@ export class LicenseModal extends Component {
               }}
               icon="remove"
               content="Cancel"
+              floated="left"
             />
             <ActionButton
               name="submit"
@@ -206,9 +211,7 @@ export class LicenseModal extends Component {
               icon="checkmark"
               content={
                 this.props.action === ModalActions.ADD
-                  ? this.props.mode === ModalTypes.CUSTOM
-                    ? 'Create custom license'
-                    : 'Add license'
+                  ? 'Add license'
                   : 'Change license'
               }
             />
@@ -239,4 +242,5 @@ LicenseModal.propTypes = {
       filters: PropTypes.arrayOf(PropTypes.array),
     }).isRequired,
   }).isRequired,
+  serializeLicenses: PropTypes.func,
 };

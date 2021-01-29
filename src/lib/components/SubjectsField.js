@@ -51,6 +51,9 @@ export class SubjectsField extends Component {
           fieldPath={fieldPath}
           suggestionAPIUrl="/api/vocabularies/subjects"
           suggestionAPIQueryParams={{ limit_to: limitTo }}
+          suggestionAPIHeaders={{
+            Accept: 'application/vnd.inveniordm.v1+json',
+          }}
           serializeSuggestions={this.serializeSubjects}
           placeholder={placeholder}
           required={required}

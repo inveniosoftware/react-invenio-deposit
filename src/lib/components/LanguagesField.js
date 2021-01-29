@@ -27,6 +27,9 @@ export class LanguagesField extends Component {
       <RemoteSelectField
         fieldPath={fieldPath}
         suggestionAPIUrl="/api/vocabularies/languages"
+        suggestionAPIHeaders={{
+          Accept: 'application/vnd.inveniordm.v1+json',
+        }}
         placeholder={placeholder}
         required={required}
         clearable={clearable}

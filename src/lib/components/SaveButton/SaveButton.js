@@ -28,7 +28,6 @@ export default class SaveButton extends Component {
         isDisabled={this.isDisabled}
         name="save"
         onClick={this.onSaveClick}
-        primary
         {...uiProps}
       >
         {(formik) => (
