@@ -136,22 +136,22 @@ export class LicenseModal extends Component {
                           <Toggle
                             title="Recommended"
                             label="recommended"
-                            filterValue={['type', 'recommended']}
+                            filterValue={['tags', 'recommended']}
                           ></Toggle>
                           <Toggle
                             title="All"
                             label="all"
-                            filterValue={['type', 'all']}
+                            filterValue={['tags', 'all']}
                           ></Toggle>
                           <Toggle
                             title="Data"
                             label="data"
-                            filterValue={['type', 'data']}
+                            filterValue={['tags', 'data']}
                           ></Toggle>
                           <Toggle
                             title="Software"
                             label="software"
-                            filterValue={['type', 'software']}
+                            filterValue={['tags', 'software']}
                           ></Toggle>
                         </Menu>
                       </Grid.Column>
