@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.10.7 (released 2021-01-29)
+
+* Restyles Delete button confirm dialog's buttons
+
 Version 0.10.6 (released 2021-01-29)
 
 * Various UX fixes
