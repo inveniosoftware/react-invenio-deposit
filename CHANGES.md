@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.10.8 (released 2021-01-29)
+
+* Change license modal filter values
+
 Version 0.10.7 (released 2021-01-29)
 
 * Restyles Delete button confirm dialog's buttons
