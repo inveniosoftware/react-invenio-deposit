@@ -12,7 +12,6 @@ import { ActionButton } from 'react-invenio-forms';
 
 import { discard } from '../state/actions';
 
-
 export default class DeleteButtonComponent extends Component {
   state = { modalOpen: false };
 
@@ -34,7 +33,7 @@ export default class DeleteButtonComponent extends Component {
       isSaved,
       isPublished,
       handleClick,
-      ...uiProps  // only has ActionButton props
+      ...uiProps // only has ActionButton props
     } = this.props;
 
     const action = isPublished ? 'discard' : 'delete';
@@ -48,27 +47,23 @@ export default class DeleteButtonComponent extends Component {
           onClick={this.open}
           negative
           icon
-          labelPosition='left'
+          labelPosition="left"
           {...uiProps}
         >
           {(formik) => (
             <>
-              <Icon name='trash alternate outline' />
+              <Icon name="trash alternate outline" />
               {titleizedAction}
             </>
           )}
         </ActionButton>
 
-        <Modal
-          open={this.state.modalOpen}
-          onClose={this.close}
-          size="tiny"
-        >
+        <Modal open={this.state.modalOpen} onClose={this.close} size="tiny">
           <Modal.Content>
             <h3>Are you sure you want to {action} this draft?</h3>
           </Modal.Content>
           <Modal.Actions>
-            <Button secondary onClick={this.close}>
+            <Button onClick={this.close} floated="left">
               Cancel
             </Button>
             <Button negative onClick={this.handleClick}>
@@ -81,15 +76,14 @@ export default class DeleteButtonComponent extends Component {
   }
 }
 
-
 const mapStateToProps = (state) => ({
-    isSaved: Boolean(state.deposit.record.id),
-  });
+  isSaved: Boolean(state.deposit.record.id),
+});
 
 const mapDispatchToProps = (dispatch) => ({
   handleClick: (event, formik) => {
     dispatch(discard(event, formik));
-  }
+  },
 });
 
 export const DeleteButton = connect(
