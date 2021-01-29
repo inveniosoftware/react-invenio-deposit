@@ -57,6 +57,9 @@ export class AffiliationsField extends Component {
                   allowAdditions
                   fieldPath={`${key}.name`}
                   suggestionAPIUrl="/api/vocabularies/affiliations"
+                  suggestionAPIHeaders={{
+                    Accept: 'application/vnd.inveniordm.v1+json',
+                  }}
                   initialSuggestions={[initialAffiliations]}
                   serializeSuggestions={this.serializeAffiliations}
                   placeholder="Search or create affiliation'"

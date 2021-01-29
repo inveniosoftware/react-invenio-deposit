@@ -71,13 +71,13 @@ export default class PublishButton extends Component {
               <h3>Are you sure you want to publish this record?</h3>
             </Modal.Content>
             <Modal.Actions>
-              <Button secondary onClick={this.handleClose}>
+              <Button onClick={this.handleClose} floated="left">
                 Cancel
               </Button>
               <ActionButton
                 name="publish"
                 onClick={this.onPublishClick}
-                primary
+                positive
                 content="Publish"
               />
             </Modal.Actions>

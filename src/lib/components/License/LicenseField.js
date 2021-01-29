@@ -52,6 +52,7 @@ export class LicenseField extends Component {
                         Change
                       </Button>
                     }
+                    serializeLicenses={this.props.serializeLicenses}
                   />
                   <Button
                     size="mini"
@@ -75,7 +76,7 @@ export class LicenseField extends Component {
             trigger={
               <Button type="button" key="standard" className="add-licenses">
                 <Icon name="add" />
-                Select standard
+                Add standard
               </Button>
             }
             onLicenseChange={(selectedLicense) => {
@@ -83,6 +84,7 @@ export class LicenseField extends Component {
             }}
             mode="standard"
             action="add"
+            serializeLicenses={this.props.serializeLicenses}
           />
           <LicenseModal
             searchConfig={this.props.searchConfig}
@@ -120,6 +122,7 @@ LicenseField.propTypes = {
   labelIcon: PropTypes.string,
   searchConfig: PropTypes.object.isRequired,
   required: PropTypes.bool,
+  serializeLicenses: PropTypes.func.isRequired,
 };
 
 LicenseField.defaultProps = {
