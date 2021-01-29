@@ -1,5 +1,10 @@
 # Changes
 
+Version 0.10.6 (released 2021-01-29)
+
+* Various UX fixes
+* Exposes serializeLicenses prop for LicenseFIeld to serialize vocab response
+
 Version 0.10.5 (released 2021-01-28)
 
 * Adds ComingSoon component

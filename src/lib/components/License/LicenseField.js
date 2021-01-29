@@ -122,7 +122,7 @@ LicenseField.propTypes = {
   labelIcon: PropTypes.string,
   searchConfig: PropTypes.object.isRequired,
   required: PropTypes.bool,
-  serializeLicenses: PropTypes.func.isRequired,
+  serializeLicenses: PropTypes.func,
 };
 
 LicenseField.defaultProps = {
