@@ -15,7 +15,6 @@ import { DepositApiClient } from './DepositApiClient';
 import { DepositRecordSerializer } from './DepositRecordSerializer';
 import { DepositFileUploader } from './DepositFileUploader';
 
-
 export class DepositFormApp extends Component {
   constructor(props) {
     super();
