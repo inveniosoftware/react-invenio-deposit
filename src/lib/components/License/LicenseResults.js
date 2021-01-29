@@ -25,8 +25,8 @@ export const LicenseResults = withState(
         {({ form: { values, setFieldValue } }) => (
           <Item.Group>
             {results.data.hits.map((result) => {
-              const title = result.metadata['title']['en'];
-              const description = result.metadata['description'];
+              const title = result['title_l10n'];
+              const description = result['description_l10n'];
               return (
                 <Item
                   key={title}
