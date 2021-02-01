@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020 CERN.
 // Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -17,6 +18,9 @@ export class PublicationDateField extends Component {
     return (
       <TextField
         fieldPath={fieldPath}
+        helpText={
+          'Format: YYYY-MM-DD. In case your upload was already published elsewhere, please use the date of first publication.'
+        }
         label={
           <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
         }
