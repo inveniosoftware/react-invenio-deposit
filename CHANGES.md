@@ -1,6 +1,10 @@
 # Changes
 
-Version 0.10.8 (released 2021-01-29)
+Version 0.11.0 (released 2021-02-03)
+
+* Add helptext for PublicationDate
+
+Version 0.10.9 (released 2021-01-29)
 
 * Fix bug in license results.
 
