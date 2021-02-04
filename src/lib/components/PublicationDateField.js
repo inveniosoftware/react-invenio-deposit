@@ -19,7 +19,8 @@ export class PublicationDateField extends Component {
       <TextField
         fieldPath={fieldPath}
         helpText={
-          'Format: YYYY-MM-DD. In case your upload was already published elsewhere, please use the date of first publication.'
+          'In case your upload was already published elsewhere, \
+          please use the date of the first publication. Format: YYYY-MM-DD, YYYY-MM, or YYYY. For intervals use DATE/DATE, e.g. 1939/1945.'
         }
         label={
           <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />

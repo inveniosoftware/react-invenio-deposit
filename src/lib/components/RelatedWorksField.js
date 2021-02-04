@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -26,6 +27,10 @@ export class RelatedWorksField extends Component {
 
     return (
       <>
+        <label className="helptext" style={{marginBottom: "10px"}}>
+          Specify identifiers of related works. Supported identifiers include DOI, Handle, ARK, \
+          PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, URNs, and URLs.'
+        </label>
         <ArrayField
           addButtonLabel={'Add related work'}
           defaultNewValue={emptyRelatedWork}
