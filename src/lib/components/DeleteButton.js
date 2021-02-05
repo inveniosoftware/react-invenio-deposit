@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2021 CERN.
+// Copyright (C) 2020-2021 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -12,17 +12,12 @@ import { ActionButton } from 'react-invenio-forms';
 
 import { discard } from '../state/actions';
 
-export default class DeleteButtonComponent extends Component {
+export class DeleteButtonComponent extends Component {
   state = { modalOpen: false };
 
-  open = () => this.setState({ modalOpen: true });
+  handleOpen = () => this.setState({ modalOpen: true });
 
-  close = () => this.setState({ modalOpen: false });
-
-  handleClick = (event, formik) => {
-    this.props.handleClick(event, formik);
-    this.close();
-  };
+  handleClose = () => this.setState({ modalOpen: false });
 
   isDisabled = (formik) => {
     return !this.props.isSaved || formik.isSubmitting;
@@ -32,9 +27,14 @@ export default class DeleteButtonComponent extends Component {
     const {
       isSaved,
       isPublished,
-      handleClick,
+      deleteClick,
       ...uiProps // only has ActionButton props
     } = this.props;
+
+    const handleDelete = (event, formik) => {
+      deleteClick(event, formik);
+      this.hanldeClose();
+    };
 
     const action = isPublished ? 'discard' : 'delete';
     const titleizedAction = action[0].toUpperCase() + action.slice(1);
@@ -44,7 +44,7 @@ export default class DeleteButtonComponent extends Component {
         <ActionButton
           isDisabled={this.isDisabled}
           name="delete"
-          onClick={this.open}
+          onClick={this.handleOpen}
           negative
           icon
           labelPosition="left"
@@ -58,15 +58,15 @@ export default class DeleteButtonComponent extends Component {
           )}
         </ActionButton>
 
-        <Modal open={this.state.modalOpen} onClose={this.close} size="tiny">
+        <Modal open={this.state.modalOpen} onClose={this.handleClose} size="tiny">
           <Modal.Content>
             <h3>Are you sure you want to {action} this draft?</h3>
           </Modal.Content>
           <Modal.Actions>
-            <Button onClick={this.close} floated="left">
+            <Button onClick={this.handleClose} floated="left">
               Cancel
             </Button>
-            <Button negative onClick={this.handleClick}>
+            <Button negative onClick={handleDelete}>
               {titleizedAction}
             </Button>
           </Modal.Actions>
@@ -81,7 +81,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  handleClick: (event, formik) => {
+  deleteClick: (event, formik) => {
     dispatch(discard(event, formik));
   },
 });
