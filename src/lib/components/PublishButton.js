@@ -1,25 +1,22 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2021 CERN.
+// Copyright (C) 2020-2021 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Icon, Button, Modal } from 'semantic-ui-react';
 import { ActionButton } from 'react-invenio-forms';
-import { FORM_PUBLISHING, FORM_SAVE_SUCCEEDED } from '../../state/types';
 
-export default class PublishButton extends Component {
+import { submitAction } from '../state/actions';
+import { FORM_PUBLISHING, FORM_SAVE_SUCCEEDED } from '../state/types';
+
+export class PublishButtonComponent extends Component {
   state = { confirmOpen: false };
 
-  onPublishClick = (event, formik) => {
-    this.props.publishClick(event, formik);
-    this.setState({ confirmOpen: false });
-  };
-
-  confirmPublish = () => this.setState({ confirmOpen: true });
+  handleOpen = () => this.setState({ confirmOpen: true });
 
   handleClose = () => this.setState({ confirmOpen: false });
 
@@ -31,6 +28,12 @@ export default class PublishButton extends Component {
       numberOfFiles,
       ...uiProps
     } = this.props;
+
+    const handlePublish = (event, formik) => {
+      publishClick(event, formik);
+      this.handleClose();
+    };
+
 
     const isDisabled = () => {
       const noFilesUploaded = !numberOfFiles;
@@ -48,14 +51,18 @@ export default class PublishButton extends Component {
         <ActionButton
           isDisabled={isDisabled}
           name="publish"
-          onClick={this.confirmPublish}
+          onClick={this.handleOpen}
           positive
+          icon
+          labelPosition="left"
           {...uiProps}
         >
           {(formik) => (
             <>
-              {formik.isSubmitting && formState === FORM_PUBLISHING && (
+              { ( formik.isSubmitting && formState === FORM_PUBLISHING ) ? (
                 <Icon size="large" loading name="spinner" />
+              ) : (
+                <Icon name="upload" />
               )}
               Publish
             </>
@@ -76,7 +83,7 @@ export default class PublishButton extends Component {
               </Button>
               <ActionButton
                 name="publish"
-                onClick={this.onPublishClick}
+                onClick={handlePublish}
                 positive
                 content="Publish"
               />
@@ -88,4 +95,18 @@ export default class PublishButton extends Component {
   }
 }
 
-PublishButton.propTypes = {};
+const mapStateToProps = (state) => ({
+  formState: state.deposit.formState,
+  filesEnabled: state.files.enabled,
+  numberOfFiles: Object.values(state.files.entries).length,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  publishClick: (event, formik) =>
+    dispatch(submitAction(FORM_PUBLISHING, event, formik)),
+});
+
+export const PublishButton = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PublishButtonComponent);
