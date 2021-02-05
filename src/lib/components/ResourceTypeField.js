@@ -72,6 +72,7 @@ export class ResourceTypeField extends Component {
       labelIcon,
       options,
       required,
+      labelClassName,
       ...uiProps
     } = this.props;
 
@@ -107,6 +108,7 @@ export class ResourceTypeField extends Component {
             htmlFor={fieldPath}
             icon={labelIcon}
             label={label}
+            className={labelClassName}
           />
         }
         name={fieldPath}
@@ -134,6 +136,7 @@ ResourceTypeField.propTypes = {
   fieldPath: PropTypes.string,
   label: PropTypes.string,
   labelIcon: PropTypes.string,
+  labelClassName: PropTypes.string,
   options: PropTypes.shape({
     type: PropTypes.arrayOf(
       PropTypes.shape({
@@ -158,4 +161,5 @@ ResourceTypeField.defaultProps = {
   fieldPath: 'metadata.resource_type',
   label: 'Resource type',
   labelIcon: 'tag',
+  labelClassName: 'field-label-class',
 };

@@ -69,6 +69,7 @@ export class RelatedWorksField extends Component {
               labelIcon={''}  // Otherwise breaks alignment
               options={options.resource_type}
               width={6}
+              labelClassName="small field-label-class"
             />
 
             <Form.Field width={1}>
