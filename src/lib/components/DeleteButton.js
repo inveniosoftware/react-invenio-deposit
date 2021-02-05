@@ -13,7 +13,6 @@ import { ActionButton } from 'react-invenio-forms';
 import { discard } from '../state/actions';
 import { toCapitalCase } from '../utils';
 
-
 export class DeleteButtonComponent extends Component {
   state = { modalOpen: false };
 
@@ -38,7 +37,8 @@ export class DeleteButtonComponent extends Component {
       this.hanldeClose();
     };
 
-    const action = isPublished ? 'discard' : 'delete';
+    const action = isPublished ? 'discard changes' : 'delete';
+    const color = {color: isPublished ? 'yellow' : 'red'};
     const capitalizedAction = toCapitalCase(action);
 
     return (
@@ -47,7 +47,7 @@ export class DeleteButtonComponent extends Component {
           isDisabled={this.isDisabled}
           name="delete"
           onClick={this.handleOpen}
-          negative
+          {...color}
           icon
           labelPosition="left"
           {...uiProps}
@@ -68,7 +68,7 @@ export class DeleteButtonComponent extends Component {
             <Button onClick={this.handleClose} floated="left">
               Cancel
             </Button>
-            <Button negative onClick={handleDelete}>
+            <Button {...color} onClick={handleDelete}>
               {capitalizedAction}
             </Button>
           </Modal.Actions>
