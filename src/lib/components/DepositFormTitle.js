@@ -5,24 +5,14 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Header } from 'semantic-ui-react'
 
-export class DepositFormTitleComponent extends Component {
+export class DepositFormTitle extends Component {
 
   render() {
-    const content = this.props.isSaved ? "Edit Upload" : "New Upload";
+    const content = this.props.isPublished ? "Edit Upload" : "New Upload";
     return (
       <Header as='h1' icon='upload' content={content} />
     );
   }
 }
-
-const mapStateToProps = (state) => ({
-    isSaved: Boolean(state.deposit.record.id),
-  });
-
-export const DepositFormTitle = connect(
-  mapStateToProps,
-  null
-)(DepositFormTitleComponent);
