@@ -24,19 +24,18 @@ export const FileUploaderToolbar = ({
 
   return (
     <>
-      <Grid.Column width={8} verticalAlign="middle" floated="left">
+      <Grid.Column verticalAlign="middle" floated="left" width={6}>
         {config.canHaveMetadataOnlyRecords && (
           <List horizontal>
             <List.Item>
               <Checkbox
                 label={'Metadata-only record'}
-                onClick={
-                  (event, data) => {
-                    if (!data['disabled']) {  // if checkbox is not disabled
-                      setFilesEnabled(formikDraft, !filesEnabled);
-                    }
+                onClick={(event, data) => {
+                  if (!data['disabled']) {
+                    // if checkbox is not disabled
+                    setFilesEnabled(formikDraft, !filesEnabled);
                   }
-                }
+                }}
                 disabled={filesList.length > 0}
                 checked={!filesEnabled}
               />
@@ -53,16 +52,15 @@ export const FileUploaderToolbar = ({
           </List>
         )}
       </Grid.Column>
-      {filesEnabled &&
-        <Grid.Column width={8} floated="right">
+      {filesEnabled && (
+        <Grid.Column width={10}>
           <List horizontal floated="right">
             <List.Item>Storage available</List.Item>
             <List.Item>
               <Label
                 {...(filesList.length === quota.maxFiles
                   ? { color: 'blue' }
-                  : {})
-                }
+                  : {})}
               >
                 {filesList.length} out of {quota.maxFiles} files
               </Label>
@@ -70,10 +68,9 @@ export const FileUploaderToolbar = ({
             <List.Item>
               <Label
                 {...(humanReadableBytes(filesSize) ===
-                  humanReadableBytes(quota.maxStorage)
+                humanReadableBytes(quota.maxStorage)
                   ? { color: 'blue' }
-                  : {})
-                }
+                  : {})}
               >
                 {humanReadableBytes(filesSize)} out of{' '}
                 {humanReadableBytes(quota.maxStorage)}
@@ -81,7 +78,7 @@ export const FileUploaderToolbar = ({
             </List.Item>
           </List>
         </Grid.Column>
-      }
+      )}
     </>
   );
 };

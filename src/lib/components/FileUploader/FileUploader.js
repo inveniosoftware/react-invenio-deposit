@@ -13,7 +13,6 @@ import { FileUploaderArea } from './FileUploaderArea';
 import { FileUploaderToolbar } from './FileUploaderToolbar';
 import { UploadState } from '../../state/reducers/files';
 
-
 // NOTE: This component has to be a function component to allow
 //       the `useFormikContext` hook.
 export const FileUploaderComponent = ({
@@ -130,7 +129,7 @@ export const FileUploaderComponent = ({
       )}
     </Grid>
   );
-}
+};
 
 const fileDetailsShape = PropTypes.objectOf(
   PropTypes.shape({
