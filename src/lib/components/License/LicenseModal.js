@@ -18,6 +18,7 @@ import {
   Error,
 } from 'react-searchkit';
 import { OverridableContext } from 'react-overridable';
+import { LicenseEmptyResults } from './LicenseEmptyResults';
 import { LicenseFilter } from './LicenseFilter';
 import { LicenseResults } from './LicenseResults';
 import { Formik } from 'formik';
@@ -26,6 +27,7 @@ import * as Yup from 'yup';
 
 const overriddenComponents = {
   'SearchFilters.ToggleComponent': LicenseFilter,
+  'EmptyResults.element': LicenseEmptyResults,
 };
 
 const ModalTypes = {
