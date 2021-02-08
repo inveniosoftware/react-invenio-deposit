@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2021 CERN.
 // Copyright (C) 2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -31,12 +32,14 @@ const ModalActions = {
 export class CreatibutorsModal extends Component {
   state = {
     open: false,
+    addedContent: "Save and add another",
   };
 
   constructor(props) {
     super(props);
     this.state = {
       open: false,
+      addedContent: "Save and add another",
     };
   }
 
@@ -46,6 +49,12 @@ export class CreatibutorsModal extends Component {
 
   closeModal = () => {
     this.setState({ open: false });
+  };
+
+  changeContent = () => {
+    this.setState({ addedContent: "Added" });
+    // change in 2 sec
+    setTimeout(() => {  this.setState({ addedContent: "Save and add another" }); },2000)
   };
 
   displayActionLabel = () => {
@@ -306,10 +315,13 @@ export class CreatibutorsModal extends Component {
                 {this.props.action === ModalActions.ADD && (
                   <ActionButton
                     name="submit"
-                    onClick={(event, formik) => formik.handleSubmit(event)}
+                    onClick={(event, formik) => {
+                      formik.handleSubmit(event);
+                      this.changeContent();
+                    }}
                     primary
                     icon="checkmark"
-                    content="Save and add another"
+                    content={this.state.addedContent}
                   />
                 )}
                 <ActionButton
