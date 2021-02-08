@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2021 CERN.
 // Copyright (C) 2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -8,7 +9,7 @@
 import React, { Component } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { Button, List, Ref } from 'semantic-ui-react';
-
+import _truncate from 'lodash/truncate';
 import { LicenseModal } from './LicenseModal';
 
 export const LicenseFieldItem = ({
@@ -23,6 +24,7 @@ export const LicenseFieldItem = ({
   removeLicense,
   searchConfig,
   serializeLicenses,
+  link,
 }) => {
   const dropRef = React.useRef(null);
   const [_, drag, preview] = useDrag({
@@ -93,7 +95,16 @@ export const LicenseFieldItem = ({
           <List.Content>
             <List.Header>{licenseTitle}</List.Header>
             {licenseDescription && (
-              <List.Description>{licenseDescription}</List.Description>
+              <List.Description>
+                {_truncate(licenseDescription, { length: 300 })}
+                {link && (
+                  <span>
+                    <a href={link} target="_blank" rel="noopener noreferrer">
+                      Read more
+                    </a>
+                  </span>
+                )}
+              </List.Description>
             )}
           </List.Content>
         </Ref>

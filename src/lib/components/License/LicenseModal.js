@@ -69,6 +69,7 @@ export class LicenseModal extends Component {
       title: '',
       description: '',
       id: null,
+      link: '',
     };
     const searchApi = new InvenioSearchApi(this.props.searchConfig.searchApi);
     return (
