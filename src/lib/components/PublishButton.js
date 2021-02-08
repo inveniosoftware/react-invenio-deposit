@@ -12,6 +12,7 @@ import { ActionButton } from 'react-invenio-forms';
 
 import { submitAction } from '../state/actions';
 import { FORM_PUBLISHING, FORM_SAVE_SUCCEEDED } from '../state/types';
+import { toCapitalCase } from '../utils';
 
 export class PublishButtonComponent extends Component {
   state = { confirmOpen: false };
@@ -46,6 +47,9 @@ export class PublishButtonComponent extends Component {
       );
     };
 
+    const action = "publish";
+    const capitalizedAction = toCapitalCase(action);
+
     return (
       <>
         <ActionButton
@@ -64,7 +68,7 @@ export class PublishButtonComponent extends Component {
               ) : (
                 <Icon name="upload" />
               )}
-              Publish
+              {capitalizedAction}
             </>
           )}
         </ActionButton>
@@ -75,7 +79,7 @@ export class PublishButtonComponent extends Component {
             size="small"
           >
             <Modal.Content>
-              <h3>Are you sure you want to publish this record?</h3>
+              <h3>Are you sure you want to {action} this record?</h3>
             </Modal.Content>
             <Modal.Actions>
               <Button onClick={this.handleClose} floated="left">
@@ -85,7 +89,7 @@ export class PublishButtonComponent extends Component {
                 name="publish"
                 onClick={handlePublish}
                 positive
-                content="Publish"
+                content={capitalizedAction}
               />
             </Modal.Actions>
           </Modal>

@@ -11,6 +11,8 @@ import { Icon, Button, Modal } from 'semantic-ui-react';
 import { ActionButton } from 'react-invenio-forms';
 
 import { discard } from '../state/actions';
+import { toCapitalCase } from '../utils';
+
 
 export class DeleteButtonComponent extends Component {
   state = { modalOpen: false };
@@ -37,7 +39,7 @@ export class DeleteButtonComponent extends Component {
     };
 
     const action = isPublished ? 'discard' : 'delete';
-    const titleizedAction = action[0].toUpperCase() + action.slice(1);
+    const capitalizedAction = toCapitalCase(action);
 
     return (
       <>
@@ -53,7 +55,7 @@ export class DeleteButtonComponent extends Component {
           {(formik) => (
             <>
               <Icon name="trash alternate outline" />
-              {titleizedAction}
+              {capitalizedAction}
             </>
           )}
         </ActionButton>
@@ -67,7 +69,7 @@ export class DeleteButtonComponent extends Component {
               Cancel
             </Button>
             <Button negative onClick={handleDelete}>
-              {titleizedAction}
+              {capitalizedAction}
             </Button>
           </Modal.Actions>
         </Modal>
