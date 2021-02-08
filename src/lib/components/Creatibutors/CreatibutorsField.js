@@ -136,7 +136,6 @@ export class CreatibutorsField extends Component {
     return (
       <FieldArray
         name={this.props.fieldPath}
-        test={'test'}
         component={(formikProps) => (
           <CreatibutorsFieldForm {...formikProps} {...this.props} />
         )}

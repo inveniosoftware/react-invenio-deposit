@@ -5,31 +5,31 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React from 'react';
+import React, { Component } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { Button, List, Ref } from 'semantic-ui-react';
 
-import { CreatibutorsModal } from './CreatibutorsModal';
+import { LicenseModal } from './LicenseModal';
 
-export const CreatibutorsFieldItem = ({
+export const LicenseFieldItem = ({
   compKey,
   index,
-  replaceCreatibutor,
-  removeCreatibutor,
-  moveCreatibutor,
-  addLabel,
-  editLabel,
-  initialCreatibutor,
-  displayName,
-  roleOptions,
-  schema,
+  initialLicense,
+  licenseDescription,
+  licenseTitle,
+  licenseType,
+  moveLicense,
+  replaceLicense,
+  removeLicense,
+  searchConfig,
+  serializeLicenses,
 }) => {
   const dropRef = React.useRef(null);
   const [_, drag, preview] = useDrag({
-    item: { index, type: 'creatibutor' },
+    item: { index, type: 'license' },
   });
   const [{ hidden }, drop] = useDrop({
-    accept: 'creatibutor',
+    accept: 'license',
     hover(item, monitor) {
       if (!dropRef.current) {
         return;
@@ -43,7 +43,7 @@ export const CreatibutorsFieldItem = ({
       }
 
       if (monitor.isOver({ shallow: true })) {
-        moveCreatibutor(dragIndex, hoverIndex);
+        moveLicense(dragIndex, hoverIndex);
         item.index = hoverIndex;
       }
     },
@@ -63,26 +63,25 @@ export const CreatibutorsFieldItem = ({
         }
       >
         <List.Content floated="right">
-          <CreatibutorsModal
-            addLabel={addLabel}
-            editLabel={editLabel}
-            onCreatibutorChange={(selectedCreatibutor) => {
-              replaceCreatibutor(index, selectedCreatibutor);
+          <LicenseModal
+            searchConfig={searchConfig}
+            onLicenseChange={(selectedLicense) => {
+              replaceLicense(index, selectedLicense);
             }}
-            initialCreatibutor={initialCreatibutor}
-            roleOptions={roleOptions}
-            schema={schema}
+            mode={licenseType}
+            initialLicense={initialLicense}
             action="edit"
             trigger={
               <Button size="mini" primary type="button">
-                Edit
+                Change
               </Button>
             }
+            serializeLicenses={serializeLicenses}
           />
           <Button
             size="mini"
             type="button"
-            onClick={() => removeCreatibutor(index)}
+            onClick={() => removeLicense(index)}
           >
             Remove
           </Button>
@@ -92,7 +91,10 @@ export const CreatibutorsFieldItem = ({
         </Ref>
         <Ref innerRef={preview}>
           <List.Content>
-            <List.Description>{displayName}</List.Description>
+            <List.Header>{licenseTitle}</List.Header>
+            {licenseDescription && (
+              <List.Description>{licenseDescription}</List.Description>
+            )}
           </List.Content>
         </Ref>
       </List.Item>
