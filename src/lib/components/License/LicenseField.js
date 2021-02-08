@@ -44,6 +44,7 @@ class LicenseFieldForm extends Component {
               const key = `${arrayPath}.${indexPath}`;
               const licenseType = value.id ? 'standard' : 'custom';
               const description = getIn(values, `${key}.description`, '');
+              const link = getIn(values, `${key}.link`, '');
               const title = getIn(values, `${key}.title`, '');
               return (
                 <LicenseFieldItem
@@ -60,6 +61,7 @@ class LicenseFieldForm extends Component {
                     removeLicense: formikArrayRemove,
                     searchConfig: this.props.searchConfig,
                     serializeLicenses: this.props.serializeLicenses,
+                    link: link,
                   }}
                 />
               );
