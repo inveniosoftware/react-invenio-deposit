@@ -15,7 +15,7 @@ import {
   RemoteSelectField,
   TextField,
   ActionButton,
-  ToggleField,
+  RadioField,
 } from 'react-invenio-forms';
 import * as Yup from 'yup';
 import _get from 'lodash/get';
@@ -187,48 +187,25 @@ export class CreatibutorsModal extends Component {
               </Modal.Header>
               <Modal.Content>
                 <Form>
-                  <Form.Field>
-                    <ToggleField
+                  <Form.Group>
+                    <RadioField
                       fieldPath={typeFieldPath}
-                      onValue={CREATIBUTOR_TYPE.PERSON}
-                      offValue={CREATIBUTOR_TYPE.ORGANIZATION}
-                      onLabel="Person"
-                      offLabel="Organization"
-                      onChange={({ checked }) => {
-                        // If the toggle was checked
-                        if (checked) {
-                          const organizationName = _get(
-                            values,
-                            nameFieldPath,
-                            ''
-                          );
-                          // If organization.name was filled set it to `family_name`
-                          if (organizationName) {
-                            setFieldValue(
-                              familyNameFieldPath,
-                              organizationName
-                            );
-                            // // Clear organization name
-                            setFieldValue(nameFieldPath, '');
-                          }
-                        } else {
-                          const familyName = _get(
-                            values,
-                            familyNameFieldPath,
-                            ''
-                          );
-                          // If person.family_name was filled set it to `name`
-                          if (familyName) {
-                            setFieldValue(nameFieldPath, familyName);
-                            // // Clear family name
-                            setFieldValue(familyNameFieldPath, '');
-                          }
-                        }
-                        // Clear given_name always
-                        setFieldValue(givenNameFieldPath, '');
-                      }}
+                      label="Person"
+                      checked={
+                        _get(values, typeFieldPath) === CREATIBUTOR_TYPE.PERSON
+                      }
+                      value={CREATIBUTOR_TYPE.PERSON}
                     />
-                  </Form.Field>
+                    <RadioField
+                      fieldPath={typeFieldPath}
+                      label="Organization"
+                      checked={
+                        _get(values, typeFieldPath) ===
+                        CREATIBUTOR_TYPE.ORGANIZATION
+                      }
+                      value={CREATIBUTOR_TYPE.ORGANIZATION}
+                    />
+                  </Form.Group>
                   <Form.Group widths="equal">
                     {_get(values, typeFieldPath, '') ===
                     CREATIBUTOR_TYPE.PERSON ? (
