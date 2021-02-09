@@ -27,7 +27,7 @@ export class CreatibutorsIdentifiers extends Component {
   static defaultProps = {
     fieldPath: 'person_or_org.identifiers',
     label: 'Name identifiers',
-    placeholder: 'e.g ORCID, Researcher ID, Scopus Author ID, etc.',
+    placeholder: 'e.g. ORCID, ISNI or GND.',
   };
 
   constructor(props) {
