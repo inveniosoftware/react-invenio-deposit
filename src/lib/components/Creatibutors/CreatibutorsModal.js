@@ -30,31 +30,55 @@ const ModalActions = {
 };
 
 export class CreatibutorsModal extends Component {
-  state = {
-    open: false,
-    addedContent: "Save and add another",
-  };
-
   constructor(props) {
     super(props);
     this.state = {
       open: false,
-      addedContent: "Save and add another",
+      saveAndContinueLabel: 'Save and add another',
+      action: null,
     };
   }
 
+  CreatorSchema = Yup.object({
+    person_or_org: Yup.object({
+      type: Yup.string(),
+      family_name: Yup.string().when('type', (type, schema) => {
+        if (type === CREATIBUTOR_TYPE.PERSON && this.isCreator()) {
+          return schema.required('Family name is a required field.');
+        }
+      }),
+      given_name: Yup.string().when('type', (type, schema) => {
+        if (type === CREATIBUTOR_TYPE.PERSON && this.isCreator()) {
+          return schema.required('Given name is a required field.');
+        }
+      }),
+      name: Yup.string().when('type', (type, schema) => {
+        if (type === CREATIBUTOR_TYPE.ORGANIZATION && this.isCreator()) {
+          return schema.required('Name is a required field.');
+        }
+      }),
+    }),
+    role: Yup.string().when('_', (_, schema) => {
+      if (!this.isCreator()) {
+        return schema.required('Role is a required field.');
+      }
+    }),
+  });
+
   openModal = () => {
-    this.setState({ open: true });
+    this.setState({ open: true, action: null });
   };
 
   closeModal = () => {
-    this.setState({ open: false });
+    this.setState({ open: false, action: null });
   };
 
   changeContent = () => {
-    this.setState({ addedContent: "Added" });
+    this.setState({ saveAndContinueLabel: 'Added' });
     // change in 2 sec
-    setTimeout(() => {  this.setState({ addedContent: "Save and add another" }); },2000)
+    setTimeout(() => {
+      this.setState({ saveAndContinueLabel: 'Save and add another' });
+    }, 2000);
   };
 
   displayActionLabel = () => {
@@ -145,6 +169,16 @@ export class CreatibutorsModal extends Component {
     this.props.onCreatibutorChange(this.serializeCreatibutor(values));
     formikBag.setSubmitting(false);
     formikBag.resetForm();
+    switch (this.state.action) {
+      case 'saveAndContinue':
+        this.changeContent();
+        break;
+      case 'saveAndClose':
+        this.closeModal();
+        break;
+      default:
+        break;
+    }
   };
 
   render() {
@@ -155,6 +189,9 @@ export class CreatibutorsModal extends Component {
         initialValues={this.deserializeCreatibutor(initialCreatibutor)}
         onSubmit={this.onSubmit}
         enableReinitialize
+        validationSchema={this.CreatorSchema}
+        validateOnChange={false}
+        validateOnBlur={false}
       >
         {({ values, setFieldValue, resetForm }) => {
           const personOrOrgPath = `person_or_org`;
@@ -293,19 +330,21 @@ export class CreatibutorsModal extends Component {
                   <ActionButton
                     name="submit"
                     onClick={(event, formik) => {
-                      formik.handleSubmit(event);
-                      this.changeContent();
+                      this.setState({ action: 'saveAndContinue' }, () =>
+                        formik.handleSubmit()
+                      );
                     }}
                     primary
                     icon="checkmark"
-                    content={this.state.addedContent}
+                    content={this.state.saveAndContinueLabel}
                   />
                 )}
                 <ActionButton
                   name="submit"
                   onClick={(event, formik) => {
-                    formik.handleSubmit(event);
-                    this.closeModal();
+                    this.setState({ action: 'saveAndClose' }, () =>
+                      formik.handleSubmit()
+                    );
                   }}
                   primary
                   icon="checkmark"
