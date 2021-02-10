@@ -85,24 +85,15 @@ export class LicenseModal extends Component {
           open={this.state.open}
           trigger={this.props.trigger}
           onClose={this.closeModal}
+          closeIcon
         >
           <Modal.Header as="h6" className="deposit-modal-header">
             <Grid>
-              <Grid.Column floated="left" width={8}>
+              <Grid.Column floated="left">
                 <Header as="h2">
                   {this.props.action === ModalActions.ADD
                     ? `Add ${this.props.mode} license`
                     : `Change ${this.props.mode} license`}
-                </Header>
-              </Grid.Column>
-              <Grid.Column
-                width={8}
-                floated="right"
-                textAlign="right"
-                verticalAlign="bottom"
-              >
-                <Header as="h6">
-                  <a href="/">How to choose a license?</a>
                 </Header>
               </Grid.Column>
             </Grid>
