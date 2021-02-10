@@ -1,5 +1,13 @@
 # Changes
 
+Version 0.11.1 (released 2021-02-10)
+
+* UX fixes into CreatibutorsField
+* LicenseField
+  - UX fixes
+  - Add ordering of licenses
+* Global UX fixes towards a consistent deposit UI
+
 Version 0.11.0 (released 2021-02-03)
 
 * Add helptext for PublicationDate
