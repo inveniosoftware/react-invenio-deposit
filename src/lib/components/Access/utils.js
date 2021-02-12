@@ -13,36 +13,87 @@ import {
   TextField,
 } from 'react-invenio-forms';
 
-import { Embargo } from './Embargo';
+import { Embargo, EmbargoState } from './Embargo';
+import { FastField, Field } from 'formik';
+
 
 /**
  * Returns the props for a protection button.
  * @param active is button active
  * @param activeColor button color when active
  */
-export function getProtectionButtonProps(active, activeColor) {
-  let props = {active};
-  if (active) {
-    props["color"] = activeColor;
+
+
+class ProtectionButtonsComponent extends Component {
+  getButtonProps(active, activeColor) {
+    let props = {active};
+    if (active) {
+      props["color"] = activeColor;
+    }
+    return props;
   }
-  return props;
+
+  render() {
+    const {
+      formik,
+      active,
+    } = this.props;
+
+    return (
+      <Button.Group widths={'2'}>
+        <Button
+          {...this.getButtonProps(active, "green")}
+          onClick={(event, data) => {
+            formik.form.setFieldValue(formik.field.name, "public");
+            // NOTE: We reset values, so if embargo filled and click Public,
+            //       user needs to fill embargo again. Otherwise lots of
+            //       bookkeeping.
+            formik.form.setFieldValue("access.embargo", {
+              active: false
+            });
+          }}
+          compact
+          attached
+        >
+          Public
+        </Button>
+        <Button
+          {...this.getButtonProps(!active, "red")}
+          onClick={(event, data) => formik.form.setFieldValue(formik.field.name, "restricted")}
+          compact
+          attached
+        >
+          Restricted
+        </Button>
+
+      </Button.Group>
+    );
+  }
 }
 
 
-function ProtectionButtons({active}) {
-  return (
-    <Button.Group widths={'2'}>
-      <Button {...getProtectionButtonProps(active, "green")} compact attached>Public</Button>
-      <Button {...getProtectionButtonProps(!active, "red")} compact attached>Restricted</Button>
-    </Button.Group>
-  );
+export class ProtectionButtons extends Component {
+  render() {
+    const {
+      fieldPath,
+      ...props
+    } = this.props;
+
+    return <FastField
+      name={fieldPath}
+      component={(formikProps) => (
+        <ProtectionButtonsComponent formik={formikProps} {...props} />
+      )}
+    />;
+  }
 }
+
 
 export function MetadataSection({isPublic}) {
   return (
     <>
       <p>Full record</p>
-      <ProtectionButtons active={isPublic} />
+      <ProtectionButtons active={isPublic} fieldPath="access.record" />
     </>
   );
 }
@@ -50,7 +101,7 @@ export function MetadataSection({isPublic}) {
 
 export function filesButtons(filesPublic) {
   return (
-    <ProtectionButtons active={filesPublic} />
+    <ProtectionButtons active={filesPublic} fieldPath="access.files" />
   );
 }
 
@@ -78,6 +129,58 @@ export function MessageSection({intent, icon, title, text}) {
 }
 
 
+class EmbargoCheckboxComponent extends Component {
+
+  render() {
+    const {
+      formik,
+      embargo
+    } = this.props;
+
+    console.log("EmbargoCheckboxComponent embargo.is(EmbargoState.DISABLED)", embargo.is(EmbargoState.DISABLED))
+    return <Checkbox
+      disabled={embargo.is(EmbargoState.DISABLED)}
+      checked={embargo.is(EmbargoState.APPLIED)}
+      onChange={
+        (event, data) => {
+          if (formik.field.value) {
+            // NOTE: We reset values, so if embargo filled and user unchecks,
+            //       user needs to fill embargo again. Otherwise lots of
+            //       bookkeeping.
+            formik.form.setFieldValue("access.embargo", {
+              active: false
+            });
+          } else {
+            formik.form.setFieldValue("access.embargo.active", true);
+          }
+        }
+      }
+    />;
+  }
+}
+
+class EmbargoCheckbox extends Component {
+  render() {
+    const {
+      fieldPath,
+      embargo
+    } = this.props;
+
+    // NOTE: Can't be a FastField bc relies on `embargo` changing which is
+    //       different than `access.embargo.active`
+    // TODO: find way to make it a FastField
+    return <Field
+      name={fieldPath}
+      component={
+        (formikProps) => (
+          <EmbargoCheckboxComponent formik={formikProps} embargo={embargo} />
+        )
+      }
+    />;
+  }
+}
+
+
 export function EmbargoDateField({ fieldPath, label, labelIcon, placeholder, required }) {
   return (
     <TextField
@@ -92,7 +195,7 @@ export function EmbargoDateField({ fieldPath, label, labelIcon, placeholder, req
 }
 
 EmbargoDateField.defaultProps = {
-  fieldPath: 'access.embargo_date',
+  fieldPath: 'access.embargo.until',
   label: 'Embargo until',
   labelIcon: 'calendar',
   placeholder: 'YYYY-MM-DD',
@@ -104,8 +207,7 @@ export function embargoSection(embargo) {
     opacity: "0.5",
     cursor: "default !important"
   }
-  const disabled = embargo.is(Embargo.DISABLED) || embargo.is(Embargo.LIFTED);
-  const embargoStyle = disabled ? greyedStyle : {};
+  const embargoStyle = embargo.is(EmbargoState.DISABLED) ? greyedStyle : {};
   const fmtDate = (
     embargo.date
     ? DateTime.fromISO(embargo.date)
@@ -117,21 +219,22 @@ export function embargoSection(embargo) {
     <List>
       <List.Item>
         <List.Icon>
-          <Checkbox
-            disabled={disabled}
-            checked={embargo.is(Embargo.APPLIED)} />
+          <EmbargoCheckbox
+            fieldPath="access.embargo.active"
+            embargo={embargo}
+          />
         </List.Icon>
         <List.Content>
           <List.Header style={embargoStyle}>Apply an embargo</List.Header>
           <List.Description style={greyedStyle}>Record or files protection must be <b>restricted</b> to apply an embargo.</List.Description>
-          {embargo.is(Embargo.APPLIED) && (
+          {embargo.is(EmbargoState.APPLIED) && (
             <>
               <Divider hidden />
               <EmbargoDateField required />
-              <TextAreaField label="Embargo reason" fieldPath={"access" + ".reason"} placeholder="Describe the reason for the embargo." />
+              <TextAreaField label="Embargo reason" fieldPath={"access.embargo.reason"} placeholder="Describe the reason for the embargo." />
             </>
           )}
-          {embargo.is(Embargo.LIFTED) && (
+          {embargo.is(EmbargoState.LIFTED) && (
             <>
               <Divider hidden />
               <p>Embargo was lifted on {fmtDate}.</p>

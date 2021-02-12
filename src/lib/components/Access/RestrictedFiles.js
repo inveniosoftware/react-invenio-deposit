@@ -16,7 +16,7 @@ export class RestrictedFiles {
 
   renderMetadataSection() {
     // Same as Public
-    return <MetadataSection isPublic={false} />;
+    return <MetadataSection isPublic={true} />;
   }
 
   renderFilesSection() {

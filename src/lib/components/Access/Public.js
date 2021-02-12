@@ -40,7 +40,7 @@ export class Public {
     const text = (
       this.hasFiles
       ? <>The record and files are publicly accessible.</>
-      : <>The record is publicly accessible</>
+      : <>The record is publicly accessible.</>
     );
 
     return <MessageSection

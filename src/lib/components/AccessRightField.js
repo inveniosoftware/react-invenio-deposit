@@ -6,8 +6,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import _get from 'lodash/get';
-
+import { FastField, Field } from 'formik';
 import { FieldLabel } from 'react-invenio-forms';
 import { Card, Divider, Form } from 'semantic-ui-react';
 
@@ -15,16 +14,16 @@ import { Embargo, EmbargoState, Embargoed, EmbargoedFiles, Public, Restricted, R
 
 
 class Protection {
-  static create(
-    metadataPublic,
-    filesPublic,
-    hasFiles,
-    embargo
-  ) {
+  static create(access, hasFiles) {
+    const embargo = new Embargo({
+      state: EmbargoState.from(access),
+      date: access.embargo.until,
+      reason: access.embargo.reason
+    });
 
-    if (metadataPublic) {
+    if (access.record === "public") {
       if (hasFiles) {
-        if (filesPublic) {
+        if (access.files === "public") {
           return new Public(hasFiles, embargo);
         } else if (embargo.is(EmbargoState.APPLIED)) {
           return new EmbargoedFiles(embargo);
@@ -36,9 +35,7 @@ class Protection {
       if (!hasFiles) {
         return new Public(hasFiles, embargo);
       }
-    }
-
-    if (!metadataPublic) {
+    } else if (access.record === "restricted") {
       if (embargo.is(EmbargoState.APPLIED)) {
         return new Embargoed(hasFiles, embargo);
       } else {
@@ -49,37 +46,53 @@ class Protection {
 }
 
 
-export class AccessRightField extends Component {
+function convertToNewFormat(access) {
+  let record;
+  if (access.record && ["public", "restricted"].includes(access.record)) {
+    record = access.record;
+  } else {
+    record = access.metadata ? "restricted" : "public";
+  }
+  let files;
+  if (access.files && ["public", "restricted"].includes(access.files)) {
+    files = access.files;
+  } else {
+    files = access.files ? "restricted" : "public";
+  }
+
+  return {
+    record,
+    files,
+    owned_by: access.owned_by,
+    embargo: access.embargo ? access.embargo : {
+      "active": false,
+      "until": "",
+      "reason": ""
+    },
+    grants: access.grants ? access.grants : []
+  }
+}
+
+export class AccessRightFieldComponent extends Component {
   /** Top-level Access Right Component */
 
   render() {
-    const { fieldPath, label, labelIcon, options } = this.props;
+    const {
+      formik,  // this is our access to the shared current draft
+      fieldPath,
+      label,
+      labelIcon,
+    } = this.props;
+
+    // value of access field
+    // temporarily convert to upcoming backend format
+    const access = convertToNewFormat(formik.field.value)
 
     // External
-    // TODO: replace by Formik access field slice
-    const tmpMetadataPublic = false;
+    // TODO: replace by redux access to hasFiles
     const tmpHasFiles = true;
-    const tmpFilesPublic = false;
-    const tmpisEmbargoApplied = true;
-    const tmpEmbargoDate = "2021-06-21";
-    const tmpEmbargoLifted = false;
-    const tmpEmbargoReason = "";
 
-
-    const embargoState = EmbargoState.from(
-      tmpMetadataPublic,
-      tmpFilesPublic,
-      tmpisEmbargoApplied,
-      tmpEmbargoLifted
-    );
-
-    const protection = Protection.create(
-      // TODO: replace by Formik access field slice
-      tmpMetadataPublic,
-      tmpFilesPublic,
-      tmpHasFiles,
-      new Embargo({state: embargoState, date: tmpEmbargoDate, reason: tmpEmbargoReason})
-    );
+    const protection = Protection.create(access, tmpHasFiles);
 
     return (
       <Card className="access-right">
@@ -111,13 +124,25 @@ export class AccessRightField extends Component {
   }
 }
 
+export class AccessRightField extends Component {
+  render() {
+    return (
+      <FastField
+        name={this.props.fieldPath}
+        component={(formikProps) => (
+          <AccessRightFieldComponent formik={formikProps} {...this.props} />
+        )}
+      />
+    );
+  }
+}
+
 AccessRightField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   labelIcon: PropTypes.string,
-  options: PropTypes.array,
 };
 
 AccessRightField.defaultProps = {
-  fieldPath: 'access.access_right',
+  fieldPath: 'access',
 };
