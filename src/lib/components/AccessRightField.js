@@ -11,7 +11,7 @@ import _get from 'lodash/get';
 import { FieldLabel } from 'react-invenio-forms';
 import { Card, Divider, Form } from 'semantic-ui-react';
 
-import { Embargo, Embargoed, EmbargoedFiles, Public, Restricted, RestrictedFiles } from "./Access";
+import { Embargo, EmbargoState, Embargoed, EmbargoedFiles, Public, Restricted, RestrictedFiles } from "./Access";
 
 
 class Protection {
@@ -26,7 +26,7 @@ class Protection {
       if (hasFiles) {
         if (filesPublic) {
           return new Public(hasFiles, embargo);
-        } else if (embargo.is(Embargo.APPLIED)) {
+        } else if (embargo.is(EmbargoState.APPLIED)) {
           return new EmbargoedFiles(embargo);
         } else {
           return new RestrictedFiles(embargo);
@@ -39,7 +39,7 @@ class Protection {
     }
 
     if (!metadataPublic) {
-      if (embargo.is(Embargo.APPLIED)) {
+      if (embargo.is(EmbargoState.APPLIED)) {
         return new Embargoed(hasFiles, embargo);
       } else {
         return new Restricted(hasFiles, embargo);
@@ -60,13 +60,13 @@ export class AccessRightField extends Component {
     const tmpMetadataPublic = false;
     const tmpHasFiles = true;
     const tmpFilesPublic = false;
-    const tmpisEmbargoApplied = false;
+    const tmpisEmbargoApplied = true;
     const tmpEmbargoDate = "2021-06-21";
     const tmpEmbargoLifted = false;
     const tmpEmbargoReason = "";
 
 
-    const embargoState = Embargo.stateFrom(
+    const embargoState = EmbargoState.from(
       tmpMetadataPublic,
       tmpFilesPublic,
       tmpisEmbargoApplied,

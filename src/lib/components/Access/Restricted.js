@@ -6,7 +6,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 import React from 'react';
 
-import { embargoSection, filesSection, messageSection, metadataSection } from './utils';
+import { embargoSection, filesSection, MessageSection, MetadataSection } from './utils';
 
 // Fully restricted
 export class Restricted {
@@ -17,7 +17,7 @@ export class Restricted {
 
   renderMetadataSection() {
     // Same as embargoed
-    return metadataSection(false);
+    return <MetadataSection isPublic={false} />;
   }
 
   renderFilesSection() {
@@ -44,7 +44,13 @@ export class Restricted {
       : <>The record can <b>only</b> be accessed by <b>users specified</b> in the permissions.</>
     );
 
-    return messageSection({negative: true}, "lock", "Restricted", text);
+    return <MessageSection
+      intent={{negative: true}}
+      icon="lock"
+      title="Restricted"
+      text={text}
+    />;
+
   }
 
   renderEmbargoSection() {

@@ -6,29 +6,31 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 
-export class Embargo {
-  // NOTE: Babel should be able to make this run on all browsers. To see.
+export class EmbargoState {
   static DISABLED = "disabled";
   static ENABLED = "enabled";
   static APPLIED = "applied";
   static LIFTED = "lifted";
 
+  static from(metadataPublic, filesPublic, applied, lifted) {
+    if (applied) {
+      return EmbargoState.APPLIED;
+    } else if (lifted) {
+      return EmbargoState.LIFTED;
+    } else if (!metadataPublic || !filesPublic) {
+      return EmbargoState.ENABLED;
+    } else {
+      return EmbargoState.DISABLED;
+    }
+  }
+}
+
+
+export class Embargo {
   constructor({state, date, reason}) {
-    this.state = state || Embargo.DISABLED;
+    this.state = state || EmbargoState.DISABLED;
     this.date = date || "";
     this.reason = reason || "";
-  }
-
-  static stateFrom(metadataPublic, filesPublic, applied, lifted) {
-    if (applied) {
-      return Embargo.APPLIED;
-    } else if (lifted) {
-      return Embargo.LIFTED;
-    } else if (!metadataPublic || !filesPublic) {
-      return Embargo.ENABLED;
-    } else {
-      return Embargo.DISABLED;
-    }
   }
 
   is(state) {

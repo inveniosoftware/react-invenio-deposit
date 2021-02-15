@@ -6,7 +6,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 import React from 'react';
 
-import { embargoSection, filesButtons, filesSection, messageSection, metadataSection } from './utils';
+import { embargoSection, filesButtons, filesSection, MessageSection, MetadataSection } from './utils';
 
 // Fully public (metadata + files)
 export class Public {
@@ -16,7 +16,7 @@ export class Public {
   }
 
   renderMetadataSection() {
-    return metadataSection(true);
+    return <MetadataSection isPublic={true} />;
   }
 
   renderFilesSection() {
@@ -43,7 +43,12 @@ export class Public {
       : <>The record is publicly accessible</>
     );
 
-    return messageSection({positive: true}, "lock open", "Public", text);
+    return <MessageSection
+      intent={{warning: true}}
+      icon="lock open"
+      title="Public"
+      text={text}
+    />;
   }
 
   renderEmbargoSection() {
