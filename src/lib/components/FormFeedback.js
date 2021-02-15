@@ -11,7 +11,7 @@ import _get from 'lodash/get';
 import _isString from 'lodash/isString';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Message } from 'semantic-ui-react';
+import { Grid, Message } from 'semantic-ui-react';
 import {
   FORM_PUBLISH_FAILED,
   FORM_SAVE_FAILED,
@@ -21,18 +21,13 @@ import {
 
 class DisconnectedFormFeedback extends Component {
   renderFormField = (formikBag) => {
-    const formState = this.props.formState;
     const visibleStates = [
       FORM_SAVE_SUCCEEDED,
       FORM_SAVE_PARTIALLY_SUCCEEDED,
       FORM_SAVE_FAILED,
       FORM_PUBLISH_FAILED,
     ];
-    const visible = visibleStates.includes(formState);
-
-    if (!visible) {
-      return null;
-    }
+    const formState = this.props.formState;
 
     const errors = this.props.errors || {};
     let feedback;
@@ -88,17 +83,22 @@ class DisconnectedFormFeedback extends Component {
       );
     });
 
-    return (
+    return visibleStates.includes(formState) ? (
       <Message
-        visible={true}
+        visible
         positive={feedback === 'positive'}
         warning={feedback === 'warning'}
         negative={feedback === 'negative'}
+        className="flashed top-attached"
       >
-        <Message.Header>{message}</Message.Header>
-        <Message.List>{listErrors}</Message.List>
+        <Grid container>
+          <Grid.Column width={15} textAlign="left">
+            <Message.Header>{message}</Message.Header>
+            <Message.List>{listErrors}</Message.List>
+          </Grid.Column>
+        </Grid>
       </Message>
-    );
+    ) : null;
   };
 
   render() {
