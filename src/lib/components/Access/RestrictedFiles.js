@@ -6,7 +6,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 import React from 'react';
 
-import { embargoSection, filesButtons, filesSection, messageSection, metadataSection } from './utils';
+import { embargoSection, filesButtons, filesSection, MessageSection, MetadataSection } from './utils';
 
 // Public record restricted files
 export class RestrictedFiles {
@@ -16,7 +16,7 @@ export class RestrictedFiles {
 
   renderMetadataSection() {
     // Same as Public
-    return metadataSection(true);
+    return <MetadataSection isPublic={false} />;
   }
 
   renderFilesSection() {
@@ -30,7 +30,13 @@ export class RestrictedFiles {
   renderMessageSection() {
     const text = <>The record is publicly accessible. The files can <b>only</b> be accessed by <b>users specified</b> in the permissions.</>;
 
-    return messageSection({warning: true}, "lock", "Public with restricted files", text);
+    return <MessageSection
+      intent={{warning: true}}
+      icon="lock"
+      title="Public with restricted files"
+      text={text}
+    />;
+
   }
 
   renderEmbargoSection() {

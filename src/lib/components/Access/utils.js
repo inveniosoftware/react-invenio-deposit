@@ -38,11 +38,11 @@ function ProtectionButtons({active}) {
   );
 }
 
-export function metadataSection(metadataPublic) {
+export function MetadataSection({isPublic}) {
   return (
     <>
       <p>Full record</p>
-      <ProtectionButtons active={metadataPublic} />
+      <ProtectionButtons active={isPublic} />
     </>
   );
 }
@@ -65,7 +65,7 @@ export function filesSection(filesStyle, filesContent) {
 }
 
 
-export function messageSection(intent, icon, title, text) {
+export function MessageSection({intent, icon, title, text}) {
   return (
     <Message visible {...intent}>
       <Message.Header>
@@ -78,21 +78,17 @@ export function messageSection(intent, icon, title, text) {
 }
 
 
-class EmbargoDateField extends Component {
-  render() {
-    const { fieldPath, label, labelIcon, placeholder, required } = this.props;
-
-    return (
-      <TextField
-        fieldPath={fieldPath}
-        label={
-          <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
-        }
-        placeholder={placeholder}
-        required={required}
-      />
-    );
-  }
+export function EmbargoDateField({ fieldPath, label, labelIcon, placeholder, required }) {
+  return (
+    <TextField
+      fieldPath={fieldPath}
+      label={
+        <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+      }
+      placeholder={placeholder}
+      required={required}
+    />
+  );
 }
 
 EmbargoDateField.defaultProps = {

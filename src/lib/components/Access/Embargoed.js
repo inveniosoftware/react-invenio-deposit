@@ -7,7 +7,7 @@
 import React from 'react';
 import { DateTime } from 'luxon';
 
-import { embargoSection, filesSection, messageSection, metadataSection } from './utils';
+import { embargoSection, filesSection, MessageSection, MetadataSection } from './utils';
 
 // Fully embargoed
 export class Embargoed {
@@ -17,7 +17,7 @@ export class Embargoed {
   }
 
   renderMetadataSection() {
-    return metadataSection(false);
+    return <MetadataSection isPublic={false} />;
   }
 
   renderFilesSection() {
@@ -51,7 +51,12 @@ export class Embargoed {
       : <>On <b>{fmtDate}</b> the record will automatically be made publicly accessible. Until then, the record can <b>only</b> be accessed by <b>users specified</b> in the permissions.</>
     );
 
-    return messageSection({warning: true}, "lock", "Embargoed (full record)", text);
+    return <MessageSection
+      intent={{warning: true}}
+      icon="lock"
+      title="Embargoed (full record)"
+      text={text}
+    />;
   }
 
   renderEmbargoSection() {
