@@ -17,14 +17,12 @@ import { Embargo, EmbargoState } from './Embargo';
 import { FastField, Field } from 'formik';
 
 
-/**
- * Returns the props for a protection button.
- * @param active is button active
- * @param activeColor button color when active
- */
-
-
 class ProtectionButtonsComponent extends Component {
+  /**
+   * Returns the props for a protection button.
+   * @param active is button active
+   * @param activeColor button color when active
+   */
   getButtonProps(active, activeColor) {
     let props = {active};
     if (active) {
@@ -137,7 +135,6 @@ class EmbargoCheckboxComponent extends Component {
       embargo
     } = this.props;
 
-    console.log("EmbargoCheckboxComponent embargo.is(EmbargoState.DISABLED)", embargo.is(EmbargoState.DISABLED))
     return <Checkbox
       disabled={embargo.is(EmbargoState.DISABLED)}
       checked={embargo.is(EmbargoState.APPLIED)}

@@ -5,8 +5,9 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { FastField, Field } from 'formik';
+import { FastField } from 'formik';
 import { FieldLabel } from 'react-invenio-forms';
 import { Card, Divider, Form } from 'semantic-ui-react';
 
@@ -78,21 +79,17 @@ export class AccessRightFieldComponent extends Component {
 
   render() {
     const {
-      formik,  // this is our access to the shared current draft
       fieldPath,
+      formik,  // this is our access to the shared current draft
+      hasFiles,
       label,
       labelIcon,
     } = this.props;
 
     // value of access field
     // temporarily convert to upcoming backend format
-    const access = convertToNewFormat(formik.field.value)
-
-    // External
-    // TODO: replace by redux access to hasFiles
-    const tmpHasFiles = true;
-
-    const protection = Protection.create(access, tmpHasFiles);
+    const access = convertToNewFormat(formik.field.value);
+    const protection = Protection.create(access, hasFiles);
 
     return (
       <Card className="access-right">
@@ -124,25 +121,47 @@ export class AccessRightFieldComponent extends Component {
   }
 }
 
-export class AccessRightField extends Component {
+class FormikAccessRightField extends Component {
   render() {
+    // NOTE: This is a "cute" optimization.
+    //       In general, FastField only re-renders if
+    //       * formik slice associated with this.props.fieldPath changes
+    //         (i.e. `access` changes)
+    //       * props are ADDED or REMOVED to FastField
+    // So we add/remove a prop to FastField based on the presence of files.
+    // This way, FastField only renders when the things (access and hasFiles)
+    // it cares about change as it should be.
+    const change = this.props.hasFiles ? {change: true} : {}
     return (
       <FastField
         name={this.props.fieldPath}
         component={(formikProps) => (
           <AccessRightFieldComponent formik={formikProps} {...this.props} />
         )}
+        {...change}
       />
     );
   }
 }
 
-AccessRightField.propTypes = {
+FormikAccessRightField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   labelIcon: PropTypes.string,
+  hasFiles: PropTypes.bool,
 };
 
-AccessRightField.defaultProps = {
+FormikAccessRightField.defaultProps = {
   fieldPath: 'access',
 };
+
+
+const mapStateToProps = (state) => ({
+  hasFiles: Object.values(state.files.entries).length > 0,
+});
+
+
+export const AccessRightField = connect(
+  mapStateToProps,
+  null
+)(FormikAccessRightField);
