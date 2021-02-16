@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2021 CERN.
+// Copyright (C) 2020-2021 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -168,10 +168,9 @@ describe('DepositRecordSerializer', () => {
           version: '',
         },
         access: {
-          metadata: false,
-          files: false,
+          record: "public",
+          files: "public",
           owned_by: [{ user: 1 }],
-          access_right: 'open',
         },
       };
 
