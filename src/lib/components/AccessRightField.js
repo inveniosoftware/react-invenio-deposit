@@ -18,8 +18,8 @@ class Protection {
   static create(access, hasFiles) {
     const embargo = new Embargo({
       state: EmbargoState.from(access),
-      date: access.embargo.until,
-      reason: access.embargo.reason
+      date: access.embargo ? access.embargo.until : "",
+      reason: access.embargo ? access.embargo.reason : ""
     });
 
     if (access.record === "public") {
@@ -47,34 +47,7 @@ class Protection {
 }
 
 
-function convertToNewFormat(access) {
-  let record;
-  if (access.record && ["public", "restricted"].includes(access.record)) {
-    record = access.record;
-  } else {
-    record = access.metadata ? "restricted" : "public";
-  }
-  let files;
-  if (access.files && ["public", "restricted"].includes(access.files)) {
-    files = access.files;
-  } else {
-    files = access.files ? "restricted" : "public";
-  }
-
-  return {
-    record,
-    files,
-    owned_by: access.owned_by,
-    embargo: access.embargo ? access.embargo : {
-      "active": false,
-      "until": "",
-      "reason": ""
-    },
-    grants: access.grants ? access.grants : []
-  }
-}
-
-export class AccessRightFieldComponent extends Component {
+class AccessRightFieldComponent extends Component {
   /** Top-level Access Right Component */
 
   render() {
@@ -87,9 +60,7 @@ export class AccessRightFieldComponent extends Component {
     } = this.props;
 
     // value of access field
-    // temporarily convert to upcoming backend format
-    const access = convertToNewFormat(formik.field.value);
-    const protection = Protection.create(access, hasFiles);
+    const protection = Protection.create(formik.field.value, hasFiles);
 
     return (
       <Card className="access-right">
