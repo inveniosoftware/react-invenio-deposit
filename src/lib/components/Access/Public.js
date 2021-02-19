@@ -44,7 +44,7 @@ export class Public {
     );
 
     return <MessageSection
-      intent={{warning: true}}
+      intent={{positive: true}}
       icon="lock open"
       title="Public"
       text={text}
