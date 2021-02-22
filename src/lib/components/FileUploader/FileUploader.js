@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -113,14 +114,10 @@ export const FileUploaderComponent = ({
           <Grid.Row className="file-upload-note-row">
             <Grid.Column width={16}>
               <Message visible warning>
-                <Message.Header>
-                  <Icon name="warning sign" /> Note
-                </Message.Header>
                 <p>
+                  <Icon name="warning sign" />
                   File addition, removal or modification are not allowed after
-                  you have published your upload. This is because a Digital
-                  Object Identifier (DOI) is registered with DataCite for each
-                  upload.
+                  you have published your upload.
                 </p>
               </Message>
             </Grid.Column>
