@@ -1,11 +1,10 @@
 // This file is part of InvenioRDM
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2021 CERN.
+// Copyright (C) 2020-2021 Northwestern University.
 //
 // Invenio App RDM is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { Field } from 'formik';
 import _flatMapDeep from 'lodash/flatMapDeep';
 import _get from 'lodash/get';
 import _isString from 'lodash/isString';
@@ -20,7 +19,7 @@ import {
 } from '../state/types';
 
 class DisconnectedFormFeedback extends Component {
-  renderFormField = (formikBag) => {
+  render() {
     const visibleStates = [
       FORM_SAVE_SUCCEEDED,
       FORM_SAVE_PARTIALLY_SUCCEEDED,
@@ -94,17 +93,12 @@ class DisconnectedFormFeedback extends Component {
         <Grid container>
           <Grid.Column width={15} textAlign="left">
             <Message.Header>{message}</Message.Header>
-            <Message.List>{listErrors}</Message.List>
+            { listErrors.length > 0 && <Message.List>{listErrors}</Message.List> }
           </Grid.Column>
         </Grid>
       </Message>
     ) : null;
   };
-
-  render() {
-    const { fieldPath } = this.props;
-    return <Field name={fieldPath} component={this.renderFormField}></Field>;
-  }
 }
 
 const mapStateToProps = (state) => ({
