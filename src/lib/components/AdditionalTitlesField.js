@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -42,9 +43,7 @@ export class AdditionalTitlesField extends Component {
               options={options.type}
               width={5}
             />
-            {/* temporary: January release removal
-                TODO: Re-enable in next releases*/}
-            {/* <LanguagesField
+            <LanguagesField
               fieldPath={`${key}.lang`}
               label={'Language'}
               multiple={false}
@@ -52,7 +51,7 @@ export class AdditionalTitlesField extends Component {
               labelIcon={null}
               clearable
               width={5}
-            /> */}
+            />
             <Form.Field width={1}>
               <label>&nbsp;</label>
               <Button icon onClick={() => arrayHelpers.remove(indexPath)}>
