@@ -44,6 +44,13 @@ export class AdditionalTitlesField extends Component {
               width={5}
             />
             <LanguagesField
+              serializeSuggestions={(suggestions) =>
+                suggestions.map((item) => ({
+                  text: item.title_l10n,
+                  value: item.id,
+                  key: item.id,
+                }))
+              }
               fieldPath={`${key}.lang`}
               label={'Language'}
               multiple={false}
