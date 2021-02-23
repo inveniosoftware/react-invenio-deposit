@@ -41,6 +41,7 @@ const ModalActions = {
 const LicenseSchema = Yup.object().shape({
   selectedLicense: Yup.object().shape({
     title: Yup.string().required('Title is a required field.'),
+    link: Yup.string().url('Link must be a valid URL'),
   }),
 });
 
