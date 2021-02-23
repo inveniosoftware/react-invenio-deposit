@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.11.4 (released 2021-02-23)
+
+* Remove hardcoded owned_by user value from the serializer class
+
 Version 0.11.1 (released 2021-02-10)
 
 * UX fixes into CreatibutorsField
