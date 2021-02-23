@@ -168,9 +168,8 @@ describe('DepositRecordSerializer', () => {
           version: '',
         },
         access: {
-          record: "public",
-          files: "public",
-          owned_by: [{ user: 1 }],
+          record: 'public',
+          files: 'public',
         },
       };
 
@@ -185,7 +184,6 @@ describe('DepositRecordSerializer', () => {
           access_right: 'open',
           files: false,
           metadata: false,
-          owned_by: [1],
         },
         conceptid: 'nz13t-me993',
         created: '2020-10-28 18:35:58.113520',
@@ -288,7 +286,6 @@ describe('DepositRecordSerializer', () => {
           access_right: 'open',
           files: false,
           metadata: false,
-          owned_by: [1],
         },
         id: 'wk205-00878',
         links: {
