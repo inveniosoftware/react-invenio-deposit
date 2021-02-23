@@ -59,9 +59,8 @@ export class DepositRecordSerializer {
     access: new Field({
       fieldpath: 'access',
       deserializedDefault: {
-        record: "public",
-        files: "public",
-        owned_by: [{ user: 1 }],  // TODO: Change eventually
+        record: 'public',
+        files: 'public',
       },
     }),
     publication_date: new Field({
