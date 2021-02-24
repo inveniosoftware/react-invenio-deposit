@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -80,7 +81,7 @@ export function embargoSection(embargo) {
               className={embargo.is(EmbargoState.DISABLED) ? "disabled" : ""}
               htmlFor={"access.embargo.active"}
             >
-              Apply an embargo
+              Apply an embargo <Icon name="clock outline"/>
             </label>
           </List.Header>
           <List.Description className={"disabled"}>Record or files protection must be <b>restricted</b> to apply an embargo.</List.Description>
@@ -88,7 +89,7 @@ export function embargoSection(embargo) {
             <>
               <Divider hidden />
               <EmbargoDateField fieldPath="access.embargo.until" required />
-              <TextAreaField label="Embargo reason" fieldPath={"access.embargo.reason"} placeholder="Describe the reason for the embargo." />
+              <TextAreaField label="Embargo reason" fieldPath={"access.embargo.reason"} placeholder="Optionally, describe the reason for the embargo." />
             </>
           )}
           {embargo.is(EmbargoState.LIFTED) && (
