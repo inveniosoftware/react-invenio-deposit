@@ -1,5 +1,10 @@
 # Changes
 
+Version 0.11.5 (released 2021-02-24)
+
+* License: adds url validation for custom license link
+* License: show readmore when no description
+
 Version 0.11.4 (released 2021-02-23)
 
 * Remove hardcoded owned_by user value from the serializer class
