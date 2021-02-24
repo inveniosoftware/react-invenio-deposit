@@ -97,14 +97,15 @@ export const LicenseFieldItem = ({
             {licenseDescription && (
               <List.Description>
                 {_truncate(licenseDescription, { length: 300 })}
-                {link && (
-                  <span>
-                    <a href={link} target="_blank" rel="noopener noreferrer">
-                      Read more
-                    </a>
-                  </span>
-                )}
               </List.Description>
+            )}
+            {link && (
+              <span>
+                <a href={link} target="_blank" rel="noopener noreferrer">
+                {licenseDescription && (<span>&nbsp;</span>)}
+                Read more
+                </a>
+              </span>
             )}
           </List.Content>
         </Ref>
