@@ -14,14 +14,19 @@ import { FieldLabel, TextField } from 'react-invenio-forms';
 export class VersionField extends Component {
   render() {
     const { fieldPath, label, labelIcon, placeholder } = this.props;
+    const helpText = (
+      <span>
+        Mostly relevant for software and dataset uploads.
+        A semantic version string is preferred see
+        <a href='https://semver.org/' target="_blank"> semver.org</a>
+        , but any version string is accepted.
+      </span>
+    );
 
     return (
       <TextField
         fieldPath={fieldPath}
-        helpText={
-          'Mostly relevant for software and dataset uploads. \
-          A semantic version string is preferred (see semver.org), but any version string is accepted.'
-        }
+        helpText={helpText}
         label={
           <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
         }
