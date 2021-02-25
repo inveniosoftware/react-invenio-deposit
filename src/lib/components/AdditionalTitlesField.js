@@ -43,7 +43,9 @@ export class AdditionalTitlesField extends Component {
               options={options.type}
               width={5}
             />
-            <LanguagesField
+            {/* temporary: February release removal
+                  TODO: Re-enable in next releases*/}
+            {/* <LanguagesField
               serializeSuggestions={(suggestions) =>
                 suggestions.map((item) => ({
                   text: item.title_l10n,
@@ -58,7 +60,7 @@ export class AdditionalTitlesField extends Component {
               labelIcon={null}
               clearable
               width={5}
-            />
+            /> */}
             <Form.Field width={1}>
               <label>&nbsp;</label>
               <Button icon onClick={() => arrayHelpers.remove(indexPath)}>
