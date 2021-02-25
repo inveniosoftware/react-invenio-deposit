@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.11.6 (released 2021-02-25)
+
+* access: adds icon and update placeholder
+
 Version 0.11.5 (released 2021-02-24)
 
 * License: adds url validation for custom license link
