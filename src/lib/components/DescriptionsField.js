@@ -13,12 +13,13 @@ import { AdditionalDescriptionsField } from './AdditionalDescriptionsField';
 
 export class DescriptionsField extends Component {
   render() {
-    const { fieldPath, label, labelIcon, options } = this.props;
+    const { fieldPath, label, labelIcon, options, editorConfig } = this.props;
 
     return (
       <>
         <RichInputField
           fieldPath={fieldPath}
+          editorConfig={editorConfig}
           label={
             <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
           }
@@ -35,10 +36,12 @@ DescriptionsField.propTypes = {
   fieldPath: PropTypes.string,
   label: PropTypes.string,
   labelIcon: PropTypes.string,
+  editorConfig: PropTypes.object,
 };
 
 DescriptionsField.defaultProps = {
   fieldPath: 'metadata.description',
   label: 'Description',
   labelIcon: 'pencil',
+  editorConfig: {},
 };
