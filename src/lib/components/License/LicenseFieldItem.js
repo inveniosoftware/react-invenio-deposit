@@ -75,7 +75,7 @@ export const LicenseFieldItem = ({
             action="edit"
             trigger={
               <Button size="mini" primary type="button">
-                Change
+                Edit
               </Button>
             }
             serializeLicenses={serializeLicenses}
