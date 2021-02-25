@@ -48,9 +48,9 @@ export function filesSection(filesStyle, filesContent) {
 export function MessageSection({intent, icon, title, text}) {
   return (
     <Message visible {...intent}>
-      <Message.Header>
+      <strong>
         <Icon name={icon} /> {title}
-      </Message.Header>
+      </strong>
       {/* Needed to override semantic-ui's Card styling */}
       <p style={{marginTop: "0.25em"}}>{text}</p>
     </Message>

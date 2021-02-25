@@ -39,13 +39,13 @@ class DisconnectedFormFeedback extends Component {
         break;
       case FORM_SAVE_PARTIALLY_SUCCEEDED:
         feedback = 'warning';
-        message = 'Record partially saved.';
+        message = 'Record saved with validation errors:';
         break;
       case FORM_SAVE_FAILED:
       case FORM_PUBLISH_FAILED:
         feedback = 'negative';
         // TODO: use the backend error message
-        message = 'There was an error.';
+        message = 'There was an internal error (and the record was not saved).';
         break;
       default:
     }
@@ -92,7 +92,7 @@ class DisconnectedFormFeedback extends Component {
       >
         <Grid container>
           <Grid.Column width={15} textAlign="left">
-            <Message.Header>{message}</Message.Header>
+            <strong>{message}</strong>
             { listErrors.length > 0 && <Message.List>{listErrors}</Message.List> }
           </Grid.Column>
         </Grid>
