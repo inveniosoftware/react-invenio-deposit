@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.11.10 (released 2021-02-26)
+
+* clearable role on creators only
+
 Version 0.11.6 (released 2021-02-25)
 
 * access: adds icon and update placeholder
