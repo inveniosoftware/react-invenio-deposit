@@ -28,8 +28,7 @@ export class RelatedWorksField extends Component {
     return (
       <>
         <label className="helptext" style={{marginBottom: "10px"}}>
-          Specify identifiers of related works. Supported identifiers include DOI, Handle, ARK, \
-          PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, URNs, and URLs.'
+          Specify identifiers of related works. Supported identifiers include DOI, Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, URNs, and URLs.
         </label>
         <ArrayField
           addButtonLabel={'Add related work'}
