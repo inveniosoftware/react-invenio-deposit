@@ -310,7 +310,7 @@ export class CreatibutorsModal extends Component {
                     label={'Role'}
                     options={this.props.roleOptions}
                     placeholder="Select role"
-                    clearable
+                    {...(this.isCreator() && { clearable: true })}
                     required={!this.isCreator()}
                   />
                 </Form>
