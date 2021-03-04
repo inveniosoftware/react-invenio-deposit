@@ -6,9 +6,9 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Grid, Header, Form } from 'semantic-ui-react';
+import { Modal, Grid, Header, Form, Ref } from 'semantic-ui-react';
 import { Formik } from 'formik';
 import {
   SelectField,
@@ -37,6 +37,7 @@ export class CreatibutorsModal extends Component {
       saveAndContinueLabel: 'Save and add another',
       action: null,
     };
+    this.inputRef = createRef();
   }
 
   CreatorSchema = Yup.object({
@@ -65,8 +66,12 @@ export class CreatibutorsModal extends Component {
     }),
   });
 
+  focusInput = () => this.inputRef.current.focus();
+
   openModal = () => {
-    this.setState({ open: true, action: null });
+    this.setState({ open: true, action: null }, () => {
+      this.focusInput();
+    });
   };
 
   closeModal = () => {
@@ -232,6 +237,13 @@ export class CreatibutorsModal extends Component {
                         _get(values, typeFieldPath) === CREATIBUTOR_TYPE.PERSON
                       }
                       value={CREATIBUTOR_TYPE.PERSON}
+                      onChange={({ event, data, formikProps }) => {
+                        formikProps.form.setFieldValue(
+                          typeFieldPath,
+                          CREATIBUTOR_TYPE.PERSON
+                        );
+                        this.focusInput();
+                      }}
                     />
                     <RadioField
                       fieldPath={typeFieldPath}
@@ -241,6 +253,13 @@ export class CreatibutorsModal extends Component {
                         CREATIBUTOR_TYPE.ORGANIZATION
                       }
                       value={CREATIBUTOR_TYPE.ORGANIZATION}
+                      onChange={({ event, data, formikProps }) => {
+                        formikProps.form.setFieldValue(
+                          typeFieldPath,
+                          CREATIBUTOR_TYPE.ORGANIZATION
+                        );
+                        this.focusInput();
+                      }}
                     />
                   </Form.Group>
                   <Form.Group widths="equal">
@@ -252,6 +271,9 @@ export class CreatibutorsModal extends Component {
                           placeholder="Family name"
                           fieldPath={familyNameFieldPath}
                           required={this.isCreator()}
+                          // forward ref to Input component because Form.Input
+                          // doesn't handle it
+                          input={{ ref: this.inputRef }}
                         />
                         <TextField
                           label="Given name(s)"
@@ -266,6 +288,9 @@ export class CreatibutorsModal extends Component {
                         placeholder="Organization name"
                         fieldPath={nameFieldPath}
                         required={this.isCreator()}
+                        // forward ref to Input component because Form.Input
+                        // doesn't handle it
+                        input={{ ref: this.inputRef }}
                       />
                     )}
                   </Form.Group>
@@ -330,9 +355,10 @@ export class CreatibutorsModal extends Component {
                   <ActionButton
                     name="submit"
                     onClick={(event, formik) => {
-                      this.setState({ action: 'saveAndContinue' }, () =>
-                        formik.handleSubmit()
-                      );
+                      this.setState({ action: 'saveAndContinue' }, () => {
+                        formik.handleSubmit();
+                        this.focusInput();
+                      });
                     }}
                     primary
                     icon="checkmark"
