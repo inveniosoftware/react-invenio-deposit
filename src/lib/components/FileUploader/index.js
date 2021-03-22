@@ -24,14 +24,17 @@ const mapStateToProps = (state) => {
     filesEnabled: enabled,
     record: state.deposit.record,
     config: state.deposit.config,
+    permissions: state.deposit.permissions,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  uploadFilesToDraft: (draft, files) => dispatch(uploadDraftFiles(draft, files)),
+  uploadFilesToDraft: (draft, files) =>
+    dispatch(uploadDraftFiles(draft, files)),
   deleteFileFromRecord: (file) => dispatch(deleteDraftFile(file)),
   setDefaultPreviewFile: (filename) => dispatch(setDefaultPreview(filename)),
-  setFilesEnabled: (draft, filesEnabled) => dispatch(setFilesEnabled(draft, filesEnabled)),
+  setFilesEnabled: (draft, filesEnabled) =>
+    dispatch(setFilesEnabled(draft, filesEnabled)),
 });
 
 export const FileUploader = connect(

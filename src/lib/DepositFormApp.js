@@ -41,6 +41,7 @@ export class DepositFormApp extends Component {
       controller: controller,
       apiClient: apiClient,
       fileUploader: fileUploader,
+      permissions: props.permissions,
       recordSerializer: recordSerializer,
     };
 

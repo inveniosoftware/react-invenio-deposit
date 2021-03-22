@@ -12,6 +12,7 @@ import { Grid, Icon, Message } from 'semantic-ui-react';
 
 import { FileUploaderArea } from './FileUploaderArea';
 import { FileUploaderToolbar } from './FileUploaderToolbar';
+import { NewVersionButton } from '../NewVersionButton';
 import { UploadState } from '../../state/reducers/files';
 
 // NOTE: This component has to be a function component to allow
@@ -23,6 +24,7 @@ export const FileUploaderComponent = ({
   filesEnabled,
   isDraftRecord,
   quota,
+  permissions,
   record,
   setFilesEnabled,
   uploadFilesToDraft,
@@ -100,29 +102,35 @@ export const FileUploaderComponent = ({
         )}
       </Grid.Row>
       {filesEnabled && (
-        <>
-          <Grid.Row className="file-upload-area-row">
-            <FileUploaderArea
-              {...uiProps}
-              filesEnabled={filesEnabled}
-              filesList={filesList}
-              dropzoneParams={dropzoneParams}
-              isDraftRecord={isDraftRecord}
-              defaultFilePreview={defaultFilePreview}
-            />
-          </Grid.Row>
-          <Grid.Row className="file-upload-note-row">
-            <Grid.Column width={16}>
-              <Message visible warning>
-                <p>
-                  <Icon name="warning sign" />
-                  File addition, removal or modification are not allowed after
-                  you have published your upload.
-                </p>
-              </Message>
-            </Grid.Column>
-          </Grid.Row>
-        </>
+        <Grid.Row className="file-upload-area-row">
+          <FileUploaderArea
+            {...uiProps}
+            filesEnabled={filesEnabled}
+            filesList={filesList}
+            dropzoneParams={dropzoneParams}
+            isDraftRecord={isDraftRecord}
+            defaultFilePreview={defaultFilePreview}
+          />
+        </Grid.Row>
+      )}
+      {!isDraftRecord && (
+        <Grid.Row className="file-upload-note-row">
+          <Grid.Column width={16}>
+            <Message info>
+              <NewVersionButton
+                recid={record.id}
+                onError={() => {}}
+                className=""
+                disabled={!permissions.can_new_version}
+                style={{ float: 'right' }}
+              />
+              <p style={{ marginTop: '5px', display: 'inline-block' }}>
+                <Icon name="info circle" size="large" />
+                You must create a new version to add, modify or delete files.
+              </p>
+            </Message>
+          </Grid.Column>
+        </Grid.Row>
       )}
     </Grid>
   );
