@@ -77,7 +77,7 @@ const FileTableRow = ({
       )}
       <br />
       {file.checksum && (
-        <div>
+        <div className="ui text-muted">
           <span style={{ fontSize: '10px' }}>{file.checksum}</span>{' '}
           <Popup
             content="This is the file fingerprint (MD5 checksum), which can be used to verify the file integrity."
