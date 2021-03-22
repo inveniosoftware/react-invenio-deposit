@@ -13,6 +13,24 @@ import { ActionButton } from 'react-invenio-forms';
 import { discard } from '../state/actions';
 import { toCapitalCase } from '../utils';
 
+const DialogText = ({ action }) => {
+  let text = '';
+  switch (action) {
+    case 'discard changes':
+      text = 'Are you sure you want to discard the changes to this draft?';
+      break;
+    case 'discard version':
+      text = 'Are you sure you want to delete this new version?';
+      break;
+    case 'delete':
+      text = 'Are you sure you want to delete this draft?';
+      break;
+    default:
+      break;
+  }
+  return text;
+};
+
 export class DeleteButtonComponent extends Component {
   state = { modalOpen: false };
 
@@ -29,6 +47,7 @@ export class DeleteButtonComponent extends Component {
       isSaved,
       isPublished,
       deleteClick,
+      isVersion,
       ...uiProps // only has ActionButton props
     } = this.props;
 
@@ -37,8 +56,13 @@ export class DeleteButtonComponent extends Component {
       this.hanldeClose();
     };
 
-    const action = isPublished ? 'discard changes' : 'delete';
-    const color = {color: isPublished ? 'yellow' : 'red'};
+    let action = '';
+    if (!this.props.isPublished) {
+      action = this.props.isVersion ? 'discard version' : 'delete';
+    } else {
+      action = 'discard changes';
+    }
+    const color = { color: isPublished ? 'yellow' : 'red' };
     const capitalizedAction = toCapitalCase(action);
 
     return (
@@ -60,9 +84,15 @@ export class DeleteButtonComponent extends Component {
           )}
         </ActionButton>
 
-        <Modal open={this.state.modalOpen} onClose={this.handleClose} size="tiny">
+        <Modal
+          open={this.state.modalOpen}
+          onClose={this.handleClose}
+          size="tiny"
+        >
           <Modal.Content>
-            <h3>Are you sure you want to {action} this draft?</h3>
+            <h3>
+              <DialogText action={action} />
+            </h3>
           </Modal.Content>
           <Modal.Actions>
             <Button onClick={this.handleClose} floated="left">
@@ -80,6 +110,8 @@ export class DeleteButtonComponent extends Component {
 
 const mapStateToProps = (state) => ({
   isSaved: Boolean(state.deposit.record.id),
+  isPublished: state.deposit.record.is_published,
+  isVersion: state.deposit.record.versions?.index > 1,
 });
 
 const mapDispatchToProps = (dispatch) => ({
