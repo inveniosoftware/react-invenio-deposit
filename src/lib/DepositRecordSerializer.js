@@ -150,6 +150,8 @@ export class DepositRecordSerializer {
       'id',
       'links',
       'files',
+      'is_published',
+      'versions',
     ]);
 
     for (let key in this.depositRecordSchema) {
