@@ -19,6 +19,7 @@ export { FormFeedback } from './FormFeedback';
 export { FundingField } from './FundingField';
 export { IdentifiersField } from './IdentifiersField';
 export { LanguagesField } from './LanguagesField';
+export { NewVersionButton } from './NewVersionButton';
 export { PublicationDateField } from './PublicationDateField';
 export { PublishButton } from './PublishButton';
 export { PublisherField } from './PublisherField';
