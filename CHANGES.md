@@ -1,5 +1,11 @@
 # Changes
 
+Version 0.12.1 (released 2021-03-23)
+
+* New version button
+* Creatibutors: focus on family name/name when modal opens
+* Change styling of md5 checksum text
+
 Version 0.11.10 (released 2021-02-26)
 
 * clearable role on creators only
