@@ -10,15 +10,13 @@ import { Icon, Button, Popup } from 'semantic-ui-react';
 
 export const NewVersionButton = (props) => {
   const [loading, setLoading] = useState(false);
-  const recid = props.recid;
   const handleError = props.onError;
   const handleClick = () => {
     setLoading(true);
     axios
-      .post(`/api/records/${recid}/versions`)
+      .post(props.record.links.versions)
       .then((response) => {
-        const new_version_recid = response.data.id;
-        window.location = `/uploads/${new_version_recid}`;
+        window.location = response.data.links.self_html;
       })
       .catch((error) => {
         setLoading(false);
