@@ -118,7 +118,7 @@ export const FileUploaderComponent = ({
           <Grid.Column width={16}>
             <Message info>
               <NewVersionButton
-                recid={record.id}
+                record={record}
                 onError={() => {}}
                 className=""
                 disabled={!permissions.can_new_version}
