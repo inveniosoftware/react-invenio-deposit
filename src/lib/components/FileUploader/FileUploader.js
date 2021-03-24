@@ -113,7 +113,19 @@ export const FileUploaderComponent = ({
           />
         </Grid.Row>
       )}
-      {!isDraftRecord && (
+      {isDraftRecord ? (
+        <Grid.Row className="file-upload-note-row">
+          <Grid.Column width={16}>
+            <Message visible warning>
+              <p>
+                <Icon name="warning sign" />
+                File addition, removal or modification are not allowed after you
+                have published your upload.
+              </p>
+            </Message>
+          </Grid.Column>
+        </Grid.Row>
+      ) : (
         <Grid.Row className="file-upload-note-row">
           <Grid.Column width={16}>
             <Message info>
