@@ -1,5 +1,7 @@
 # Changes
 
+Version 0.12.2 (released 2021-03-26)
+
 Version 0.12.1 (released 2021-03-23)
 
 * New version button
