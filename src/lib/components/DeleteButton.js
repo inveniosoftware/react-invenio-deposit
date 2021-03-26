@@ -53,7 +53,7 @@ export class DeleteButtonComponent extends Component {
 
     const handleDelete = (event, formik) => {
       deleteClick(event, formik);
-      this.hanldeClose();
+      this.handleClose();
     };
 
     let action = '';
