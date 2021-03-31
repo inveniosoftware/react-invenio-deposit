@@ -20,6 +20,7 @@ export { FundingField } from './FundingField';
 export { IdentifiersField } from './IdentifiersField';
 export { LanguagesField } from './LanguagesField';
 export { NewVersionButton } from './NewVersionButton';
+export { PreviewButton } from './PreviewButton';
 export { PublicationDateField } from './PublicationDateField';
 export { PublishButton } from './PublishButton';
 export { PublisherField } from './PublisherField';
