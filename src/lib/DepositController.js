@@ -79,16 +79,17 @@ export class DepositController {
 
     let data = recordSerializer.deserialize(response.data || {});
     let errors = recordSerializer.deserializeErrors(response.errors || []);
+    errors = this._validateDraftFiles(store.getState().files, errors);
 
     // response 100% successful
-    if ( 200 <= response.code && response.code < 300 && _isEmpty(errors) ) {
+    if (200 <= response.code && response.code < 300 && _isEmpty(errors)) {
       store.dispatch({
         type: ACTION_SAVE_SUCCEEDED,
         payload: { data },
       });
     }
     // response partially successful
-    else if (200 <= response.code && response.code < 300 ) {
+    else if (200 <= response.code && response.code < 300) {
       store.dispatch({
         type: ACTION_SAVE_PARTIALLY_SUCCEEDED,
         payload: { data, errors },
@@ -105,6 +106,22 @@ export class DepositController {
     }
 
     formik.setSubmitting(false);
+  }
+
+  _validateDraftFiles(files, errors) {
+    const filesEnabled = files.enabled;
+    const numberOfFiles = Object.values(files.entries).length;
+
+    if (filesEnabled && !numberOfFiles) {
+      return {
+        ...errors,
+        metadata: {
+          files: "Missing uploaded files. To disable files for this record please mark 'Metadata-only record' checkbox.",
+          ...errors.metadata
+        }
+      }
+    }
+    return errors;
   }
 
   /**
