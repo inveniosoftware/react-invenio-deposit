@@ -9,6 +9,7 @@ import {
   FORM_ACTION_EVENT_EMITTED,
   FORM_PUBLISHING,
   FORM_SAVING,
+  FORM_VALIDATING,
 } from '../types';
 
 export const publish = (record, formik) => {
@@ -45,6 +46,7 @@ export const submitFormData = (record, formik) => {
   return async (dispatch, getState, config) => {
     const formState = getState().deposit.formState;
     switch (formState) {
+      case FORM_VALIDATING:
       case FORM_SAVING:
         dispatch(save(record, formik));
         break;

@@ -11,8 +11,14 @@ import { Icon, Button, Modal } from 'semantic-ui-react';
 import { ActionButton } from 'react-invenio-forms';
 
 import { submitAction } from '../state/actions';
-import { FORM_PUBLISHING, FORM_SAVE_SUCCEEDED } from '../state/types';
+import {
+  FORM_PUBLISHING,
+  FORM_SAVE_SUCCEEDED,
+  FORM_VALIDATION_SUCCEEDED,
+} from '../state/types';
 import { toCapitalCase } from '../utils';
+
+const VALID_FORM_STATES = [FORM_VALIDATION_SUCCEEDED, FORM_SAVE_SUCCEEDED];
 
 export class PublishButtonComponent extends Component {
   state = { confirmOpen: false };
@@ -35,7 +41,6 @@ export class PublishButtonComponent extends Component {
       this.handleClose();
     };
 
-
     const isDisabled = () => {
       const noFilesUploaded = !numberOfFiles;
       // Files are broken if you publish without either uploading a file
@@ -43,7 +48,8 @@ export class PublishButtonComponent extends Component {
       // Temporarely disable publish also in that case until the backend
       // can validate it correctly and report back errors on partial save
       return (
-        formState !== FORM_SAVE_SUCCEEDED || (filesEnabled && noFilesUploaded)
+        !VALID_FORM_STATES.includes(formState) ||
+        (filesEnabled && noFilesUploaded)
       );
     };
 

@@ -18,6 +18,8 @@ import {
   FORM_SAVE_SUCCEEDED,
   FORM_SAVE_PARTIALLY_SUCCEEDED,
   FORM_SAVE_FAILED,
+  FORM_VALIDATION_SUCCEEDED,
+  FORM_VALIDATING,
 } from '../types';
 
 export default (state = {}, action) => {
@@ -38,7 +40,10 @@ export default (state = {}, action) => {
         ...state,
         record: { ...state.record, ...action.payload.data },
         errors: {},
-        formState: FORM_SAVE_SUCCEEDED,
+        formState:
+          state.formState === FORM_VALIDATING
+            ? FORM_VALIDATION_SUCCEEDED
+            : FORM_SAVE_SUCCEEDED,
       };
     case ACTION_SAVE_PARTIALLY_SUCCEEDED:
       return {

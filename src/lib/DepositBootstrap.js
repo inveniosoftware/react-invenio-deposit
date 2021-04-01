@@ -8,10 +8,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { BaseForm } from 'react-invenio-forms';
-import { submitFormData } from './state/actions';
+import { submitAction, submitFormData } from './state/actions';
+import { FORM_VALIDATING } from './state/types';
 
 class DepositBootstrapComponent extends Component {
+
   componentDidMount() {
+    // Validate the form by resubmitting it if draft was already saved
+    // This will show errors if any and allow to publish on page reload or edit
+    const { record } = this.props;
+    if ('id' in record && !record.is_published) {
+      this.props.submitForm(this.formik);
+    }
+
     window.addEventListener('beforeunload', (e) => {
       if (this.props.fileUploadOngoing) {
         e.returnValue = '';
@@ -32,6 +41,7 @@ class DepositBootstrapComponent extends Component {
         formik={{
           enableReinitialize: true,
           initialValues: this.props.record,
+          innerRef: node => (this.formik = node)
         }}
       >
         {this.props.children}
@@ -52,6 +62,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   submitFormData: (values, formik) => dispatch(submitFormData(values, formik)),
+  submitForm: (formik) => dispatch(submitAction(FORM_VALIDATING, {}, formik))
 });
 
 export const DepositBootstrap = connect(
