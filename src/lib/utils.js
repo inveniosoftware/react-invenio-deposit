@@ -9,3 +9,21 @@
 export function toCapitalCase(str) {
   return str[0].toUpperCase() + str.slice(1);
 }
+
+/**
+ * Traverse the leaves (non-Object, non-Array values) of obj and execute func
+ * on each.
+ *
+ * @param {object} obj - generic Object
+ * @param {function} func - (leaf) => ... (identity by default)
+ *
+ */
+export function leafTraverse(obj, func = (l) => l) {
+  if (typeof obj === "object") {  // Objects and Arrays
+    for (const key in obj) {
+      leafTraverse(obj[key], func);
+    }
+  } else {
+    func(obj);
+  }
+}

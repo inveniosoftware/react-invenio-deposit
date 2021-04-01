@@ -5,9 +5,7 @@
 // Invenio App RDM is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import _flatMapDeep from 'lodash/flatMapDeep';
 import _get from 'lodash/get';
-import _isString from 'lodash/isString';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Message } from 'semantic-ui-react';
@@ -17,8 +15,109 @@ import {
   FORM_SAVE_PARTIALLY_SUCCEEDED,
   FORM_SAVE_SUCCEEDED,
 } from '../state/types';
+import { leafTraverse } from '../utils';
+
+
+const defaultLabels = {
+  'metadata.resource_type': 'Resource type',
+  'metadata.title': 'Title',
+  'metadata.additional_titles': 'Title',  // to display under Title label
+  'metadata.publication_date': 'Publication date',
+  'metadata.creators': 'Creators',
+  'metadata.contributors': 'Contributors',
+  'metadata.description': 'Description',
+  // to display under Description
+  'metadata.additional_descriptions': 'Description',
+  'metadata.rights': 'Licenses',
+  'metadata.languages': 'Languages',
+  'metadata.dates': 'Dates',
+  'metadata.version': 'Version',
+  'metadata.publisher': 'Publisher',
+  'metadata.related_identifiers': 'Related works',
+}
 
 class DisconnectedFormFeedback extends Component {
+  constructor(props) {
+    super(props);
+    this.labels = {
+      ...defaultLabels,
+      ...props.labels
+    };
+  }
+
+  /**
+   * Render error messages inline (if 1) or as list (if multiple).
+   *
+   * @param {Array<String>} messages
+   * @returns String or React node
+   */
+  renderErrorMessages(messages) {
+    if (messages.length === 1) {
+      return messages[0];
+    } else {
+      return (
+        <ul>
+          {messages.map((m, i) => <li key={i}>{m}</li>)}
+        </ul>
+      );
+    }
+  }
+
+  /**
+   * Return array of error messages from errorValue object.
+   *
+   * The error message(s) might be deeply nested in the errorValue e.g.
+   *
+   * errorValue = [
+   *   {
+   *     title: "Missing value"
+   *   }
+   * ];
+   *
+   * @param {object} errorValue
+   * @returns array of Strings (error messages)
+   */
+  toErrorMessages(errorValue) {
+    let messages = []
+    let store = (l) => { messages.push(l) };
+    leafTraverse(errorValue, store);
+    return messages;
+  }
+
+  /**
+   * Return object with human readbable labels as keys and error messages as
+   * values given an errors object.
+   *
+   * @param {object} errors
+   * @returns object
+   */
+  toLabelledErrorMessages(errors) {
+    // Step 0 - get the relevant sub-object
+    const step0 = _get(errors, "metadata", {});
+
+    // Step 1 - Transform each error value into array of error messages
+    const step1 = Object.fromEntries(
+      Object.entries(step0).map(([key, value]) => {
+        return [key, this.toErrorMessages(value)];
+      })
+    );
+
+    // Step 2 - Group error messages by label
+    // (different error keys can map to same label e.g. title and
+    // additional_titles)
+    const labelledErrorMessages = {};
+    for (const key in step1) {
+      const fullKey = "metadata." + key;
+      const label = this.labels[fullKey] || "Unknown field";
+
+      let messages = labelledErrorMessages[label] || []
+      step1[key].forEach((message) => messages.push(message));
+      labelledErrorMessages[label] = messages;
+    }
+
+    return labelledErrorMessages;
+  }
+
   render() {
     const visibleStates = [
       FORM_SAVE_SUCCEEDED,
@@ -50,37 +149,14 @@ class DisconnectedFormFeedback extends Component {
       default:
     }
 
-    // NOTE: only dealing with top-level key simplifies our lives greatly
-    const listErrors = Object.keys(_get(errors, 'metadata', {})).map((k) => {
-      // TODO: Use some vocabulary(?) to get human readable label
-      const fieldLabel = k;
-      const value = errors.metadata[k];
-      let fieldErrorMessage;
-      if (_isString(value)) {
-        fieldErrorMessage = value;
-      } else {
-        // WHY: value may be an object with sub-objects (e.g.
-        // errors = {
-        //    metadata: {
-        //      creators: [
-        //        {title: "Missing value" },
-        //        {name: "Missing value" }
-        //      ]
-        //    }
-        // }
-        //)
-        // but we want the leaves
-        //      i.e. all error messages for a top-level field in a single
-        //      string (for now).
-        // TODO: Revisit when dealing with UX error more thoroughly
-        fieldErrorMessage = _flatMapDeep(value).join(' ');
-      }
-      return (
-        <Message.Item key={k}>
-          <b>{fieldLabel}</b>: {fieldErrorMessage}
+    const labelledMessages = this.toLabelledErrorMessages(errors);
+    const listErrors = Object.entries(labelledMessages).map(
+      ([label, messages]) => (
+        <Message.Item key={label}>
+          <b>{label}</b>: {this.renderErrorMessages(messages)}
         </Message.Item>
-      );
-    });
+      )
+    );
 
     return visibleStates.includes(formState) ? (
       <Message
@@ -98,7 +174,7 @@ class DisconnectedFormFeedback extends Component {
         </Grid>
       </Message>
     ) : null;
-  };
+  }
 }
 
 const mapStateToProps = (state) => ({
