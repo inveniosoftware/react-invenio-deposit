@@ -97,6 +97,6 @@ RelatedWorksField.propTypes = {
 
 RelatedWorksField.defaultProps = {
   fieldPath: 'metadata.related_identifiers',
-  label: 'Related work',
+  label: 'Related works',
   labelIcon: 'barcode',
 };

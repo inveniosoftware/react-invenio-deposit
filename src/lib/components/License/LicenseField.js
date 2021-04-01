@@ -126,7 +126,7 @@ LicenseField.propTypes = {
 };
 
 LicenseField.defaultProps = {
-  fieldPath: 'metadata.licenses',
+  fieldPath: 'metadata.rights',
   label: 'Licenses',
   labelIcon: 'drivers license',
   required: false,
