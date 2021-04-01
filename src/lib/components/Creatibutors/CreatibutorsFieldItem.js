@@ -7,7 +7,8 @@
 
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { Button, List, Ref } from 'semantic-ui-react';
+import { Button, Label, List, Ref } from 'semantic-ui-react';
+import _get from 'lodash/get';
 
 import { CreatibutorsModal } from './CreatibutorsModal';
 
@@ -52,6 +53,15 @@ export const CreatibutorsFieldItem = ({
     }),
   });
 
+  const renderRole = (role, roleOptions) => {
+    if (role) {
+      const friendlyRole =
+        roleOptions.find(({ value }) => value === role)?.text ?? role;
+
+      return <Label size="tiny">{friendlyRole}</Label>;
+    }
+  };
+
   // Initialize the ref explicitely
   drop(dropRef);
   return (
@@ -92,7 +102,14 @@ export const CreatibutorsFieldItem = ({
         </Ref>
         <Ref innerRef={preview}>
           <List.Content>
-            <List.Description>{displayName}</List.Description>
+            <List.Description>
+              {_get(initialCreatibutor, 'person_or_org.identifiers', []).some(
+                (identifier) => identifier.scheme === 'orcid'
+              ) && (
+                <img className="inline-orcid" src="/static/images/orcid.svg" />
+              )}
+              {displayName} {renderRole(initialCreatibutor?.role, roleOptions)}
+            </List.Description>
           </List.Content>
         </Ref>
       </List.Item>
