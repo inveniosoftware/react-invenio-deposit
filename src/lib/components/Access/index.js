@@ -8,6 +8,9 @@
 export { Embargo, EmbargoState } from './Embargo';
 export { Embargoed } from './Embargoed';
 export { EmbargoedFiles } from './EmbargoedFiles';
-export { Public } from './Public';
+export { EmbargoedMetadataOnly } from './EmbargoedMetadataOnly';
+export { PublicFiles } from './PublicFiles';
+export { PublicMetadataOnly } from './PublicMetadataOnly';
 export { Restricted } from './Restricted';
 export { RestrictedFiles } from './RestrictedFiles';
+export { RestrictedMetadataOnly } from './RestrictedMetadataOnly';
