@@ -30,11 +30,8 @@ export const FileUploaderToolbar = ({
             <List.Item>
               <Checkbox
                 label={'Metadata-only record'}
-                onClick={(event, data) => {
-                  if (!data['disabled']) {
-                    // if checkbox is not disabled
-                    setFilesEnabled(formikDraft, !filesEnabled);
-                  }
+                onChange={(event, data) => {  // onChange accounts for disabled
+                  setFilesEnabled(formikDraft, !filesEnabled);
                 }}
                 disabled={filesList.length > 0}
                 checked={!filesEnabled}

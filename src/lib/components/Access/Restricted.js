@@ -8,10 +8,9 @@ import React from 'react';
 
 import { embargoSection, filesSection, MessageSection, MetadataSection } from './utils';
 
-// Fully restricted
+// Record and files restricted
 export class Restricted {
-  constructor(hasFiles, embargo) {
-    this.hasFiles = hasFiles;
+  constructor(embargo) {
     this.embargo = embargo;
   }
 
@@ -26,23 +25,12 @@ export class Restricted {
       opacity: "0.5",
       cursor: "default !important"
     };
-    let filesContent;
-    if (this.hasFiles) {
-      filesContent = <p style={{...filesStyle, textAlign: "center"}}><em>The full record is set to restricted.</em></p>;
-    } else {
-      filesContent = <p style={{...filesStyle, textAlign: "center"}}><em>The record has no files.</em></p>;
-    }
-
+    let filesContent = <p style={{...filesStyle, textAlign: "center"}}><em>The full record is restricted.</em></p>;
     return filesSection(filesStyle, filesContent);
   }
 
   renderMessageSection() {
-    const text = (
-      this.hasFiles
-      // TODO: record / record and the files can be DRYed
-      ? <>The record and files can <b>only</b> be accessed by <b>users specified</b> in the permissions.</>
-      : <>The record can <b>only</b> be accessed by <b>users specified</b> in the permissions.</>
-    );
+    const text = <>The record and files can <b>only</b> be accessed by <b>users specified</b> in the permissions.</>;
 
     return <MessageSection
       intent={{negative: true}}

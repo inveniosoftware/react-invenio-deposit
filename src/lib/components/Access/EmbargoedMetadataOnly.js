@@ -9,8 +9,8 @@ import { DateTime } from 'luxon';
 
 import { embargoSection, filesSection, MessageSection, MetadataSection } from './utils';
 
-// Record and files embargoed
-export class Embargoed {
+// Embargoed no files
+export class EmbargoedMetadataOnly {
   constructor(embargo) {
     this.embargo = embargo;
   }
@@ -20,12 +20,12 @@ export class Embargoed {
   }
 
   renderFilesSection() {
-    // Same as Restricted
     const filesStyle = {
       opacity: "0.5",
       cursor: "default !important"
     };
-    let filesContent = <p style={{...filesStyle, textAlign: "center"}}><em>The full record is restricted.</em></p>;
+    let filesContent = <p style={{...filesStyle, textAlign: "center"}}><em>The record has no files.</em></p>;
+
     return filesSection(filesStyle, filesContent);
   }
 
@@ -37,7 +37,7 @@ export class Embargoed {
       : "???"
     );
 
-    const text = <>On <b>{fmtDate}</b> the record and the files will automatically be made publicly accessible. Until then, the record and the files can <b>only</b> be accessed by <b>users specified</b> in the permissions.</>;
+    const text = <>On <b>{fmtDate}</b> the record will automatically be made publicly accessible. Until then, the record can <b>only</b> be accessed by <b>users specified</b> in the permissions.</>
 
     return <MessageSection
       intent={{warning: true}}

@@ -11,11 +11,21 @@ import { FastField } from 'formik';
 import { FieldLabel } from 'react-invenio-forms';
 import { Card, Divider, Form } from 'semantic-ui-react';
 
-import { Embargo, EmbargoState, Embargoed, EmbargoedFiles, Public, Restricted, RestrictedFiles } from "./Access";
+import {
+  Embargo,
+  EmbargoState,
+  Embargoed,
+  EmbargoedFiles,
+  EmbargoedMetadataOnly,
+  PublicFiles,
+  PublicMetadataOnly,
+  Restricted,
+  RestrictedFiles,
+  RestrictedMetadataOnly } from "./Access";
 
 
 class Protection {
-  static create(access, hasFiles) {
+  static create(access, isMetadataOnly) {
     const embargo = new Embargo({
       state: EmbargoState.from(access),
       date: access.embargo ? access.embargo.until : "",
@@ -23,24 +33,26 @@ class Protection {
     });
 
     if (access.record === "public") {
-      if (hasFiles) {
-        if (access.files === "public") {
-          return new Public(hasFiles, embargo);
-        } else if (embargo.is(EmbargoState.APPLIED)) {
-          return new EmbargoedFiles(embargo);
-        } else {
-          return new RestrictedFiles(embargo);
-        }
-      }
-
-      if (!hasFiles) {
-        return new Public(hasFiles, embargo);
-      }
-    } else if (access.record === "restricted") {
-      if (embargo.is(EmbargoState.APPLIED)) {
-        return new Embargoed(hasFiles, embargo);
+      if (isMetadataOnly) {
+        return new PublicMetadataOnly(embargo);
+      } else if (access.files === "public") {
+        return new PublicFiles(embargo);
+      } else if (embargo.is(EmbargoState.APPLIED)) {
+        return new EmbargoedFiles(embargo);
       } else {
-        return new Restricted(hasFiles, embargo);
+        return new RestrictedFiles(embargo);  // technically no embargo
+      }
+    } else {
+      if (isMetadataOnly) {
+        if (embargo.is(EmbargoState.APPLIED)) {
+          return new EmbargoedMetadataOnly(embargo);
+        } else {
+          return new RestrictedMetadataOnly(embargo); // technically no embargo
+        }
+      } else if (embargo.is(EmbargoState.APPLIED)) {
+          return new Embargoed(embargo);
+      } else {
+        return new Restricted(embargo);  // technically no embargo
       }
     }
   }
@@ -54,13 +66,12 @@ class AccessRightFieldComponent extends Component {
     const {
       fieldPath,
       formik,  // this is our access to the shared current draft
-      hasFiles,
+      isMetadataOnly,
       label,
       labelIcon,
     } = this.props;
 
-    // value of access field
-    const protection = Protection.create(formik.field.value, hasFiles);
+    const protection = Protection.create(formik.field.value, isMetadataOnly);
 
     return (
       <Card className="access-right">
@@ -100,9 +111,9 @@ class FormikAccessRightField extends Component {
     //         (i.e. `access` changes)
     //       * props are ADDED or REMOVED to FastField
     // So we add/remove a prop to FastField based on the presence of files.
-    // This way, FastField only renders when the things (access and hasFiles)
-    // it cares about change as it should be.
-    const change = this.props.hasFiles ? {change: true} : {}
+    // This way, FastField only renders when the things (access and isMetadataOnly)
+    // it cares about change, as it should be.
+    const change = this.props.isMetadataOnly ? {change: true} : {}
     return (
       <FastField
         name={this.props.fieldPath}
@@ -119,7 +130,7 @@ FormikAccessRightField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   labelIcon: PropTypes.string,
-  hasFiles: PropTypes.bool,
+  isMetadataOnly: PropTypes.bool,
 };
 
 FormikAccessRightField.defaultProps = {
@@ -128,7 +139,7 @@ FormikAccessRightField.defaultProps = {
 
 
 const mapStateToProps = (state) => ({
-  hasFiles: Object.values(state.files.entries).length > 0,
+  isMetadataOnly: !state.files.enabled,
 });
 
 

@@ -6,12 +6,11 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 import React from 'react';
 
-import { embargoSection, filesButtons, filesSection, MessageSection, MetadataSection } from './utils';
+import { embargoSection, filesSection, MessageSection, MetadataSection } from './utils';
 
-// Fully public (metadata + files)
-export class Public {
-  constructor(hasFiles, embargo) {
-    this.hasFiles = hasFiles;
+// Public record no files
+export class PublicMetadataOnly {
+  constructor(embargo) {
     this.embargo = embargo;
   }
 
@@ -20,28 +19,17 @@ export class Public {
   }
 
   renderFilesSection() {
-    let filesContent;
-    let filesStyle = {};
-
-    if (this.hasFiles) {
-      filesContent = filesButtons(true);
-    } else {
-      filesStyle = {
-        opacity: "0.5",
-        cursor: "default !important"
-      };
-      filesContent = <p style={{...filesStyle, textAlign: "center"}}><em>The record has no files.</em></p>;
-    }
+    let filesStyle = {
+      opacity: "0.5",
+      cursor: "default !important"
+    };
+    let filesContent = <p style={{...filesStyle, textAlign: "center"}}><em>The record has no files.</em></p>;
 
     return filesSection(filesStyle, filesContent);
   }
 
   renderMessageSection() {
-    const text = (
-      this.hasFiles
-      ? <>The record and files are publicly accessible.</>
-      : <>The record is publicly accessible.</>
-    );
+    const text = "The record is publicly accessible.";
 
     return <MessageSection
       intent={{positive: true}}
