@@ -6,14 +6,15 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 import { useFormikContext } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Icon, Message } from 'semantic-ui-react';
+import { Grid, Icon, Message, Modal } from 'semantic-ui-react';
 
 import { FileUploaderArea } from './FileUploaderArea';
 import { FileUploaderToolbar } from './FileUploaderToolbar';
 import { NewVersionButton } from '../NewVersionButton';
 import { UploadState } from '../../state/reducers/files';
+import { humanReadableBytes } from './utils';
 
 // NOTE: This component has to be a function component to allow
 //       the `useFormikContext` hook.
@@ -32,6 +33,7 @@ export const FileUploaderComponent = ({
 }) => {
   // We extract the working copy of the draft stored as `values` in formik
   const { values: formikDraft } = useFormikContext();
+  const [warningMsg, setWarningMsg] = useState();
 
   let filesList = Object.values(files).map((fileState) => {
     return {
@@ -66,10 +68,37 @@ export const FileUploaderComponent = ({
       );
       const maxFileStorageReached =
         filesSize + acceptedFilesSize > quota.maxStorage;
-      if (maxFileNumberReached || maxFileStorageReached) {
-        // TODO: Give some feedback to user about why the files weren't
-        // accepted for upload
-        console.log('Maximum number of files reached!');
+
+      if (maxFileNumberReached) {
+        setWarningMsg(
+          <div className="content">
+            <Message
+              warning
+              icon="warning circle"
+              header="Could not upload files."
+              content={`Uploading the selected files would result in ${
+                filesList.length + acceptedFiles.length
+              } files (max.${quota.maxFiles})`}
+            />
+          </div>
+        );
+      } else if (maxFileStorageReached) {
+        setWarningMsg(
+          <div className="content">
+            <Message
+              warning
+              icon="warning circle"
+              header="Could not upload file(s)."
+              content={
+                <>
+                  Uploading the selected files would result in{' '}
+                  {humanReadableBytes(filesSize + acceptedFilesSize)} but the
+                  limit is {humanReadableBytes(quota.maxStorage)}.
+                </>
+              }
+            />
+          </div>
+        );
       } else {
         uploadFilesToDraft(formikDraft, acceptedFiles);
       }
@@ -86,65 +115,74 @@ export const FileUploaderComponent = ({
   }
 
   return (
-    <Grid style={{ marginBottom: '20px' }}>
-      <Grid.Row>
-        {isDraftRecord && (
-          <FileUploaderToolbar
-            {...uiProps}
-            config={config}
-            filesEnabled={filesEnabled}
-            filesList={filesList}
-            filesSize={filesSize}
-            isDraftRecord={isDraftRecord}
-            quota={quota}
-            setFilesEnabled={setFilesEnabled}
-          />
+    <>
+      <Grid style={{ marginBottom: '20px' }}>
+        <Grid.Row>
+          {isDraftRecord && (
+            <FileUploaderToolbar
+              {...uiProps}
+              config={config}
+              filesEnabled={filesEnabled}
+              filesList={filesList}
+              filesSize={filesSize}
+              isDraftRecord={isDraftRecord}
+              quota={quota}
+              setFilesEnabled={setFilesEnabled}
+            />
+          )}
+        </Grid.Row>
+        {filesEnabled && (
+          <Grid.Row className="file-upload-area-row">
+            <FileUploaderArea
+              {...uiProps}
+              filesEnabled={filesEnabled}
+              filesList={filesList}
+              dropzoneParams={dropzoneParams}
+              isDraftRecord={isDraftRecord}
+              defaultFilePreview={defaultFilePreview}
+            />
+          </Grid.Row>
         )}
-      </Grid.Row>
-      {filesEnabled && (
-        <Grid.Row className="file-upload-area-row">
-          <FileUploaderArea
-            {...uiProps}
-            filesEnabled={filesEnabled}
-            filesList={filesList}
-            dropzoneParams={dropzoneParams}
-            isDraftRecord={isDraftRecord}
-            defaultFilePreview={defaultFilePreview}
-          />
-        </Grid.Row>
-      )}
-      {isDraftRecord ? (
-        <Grid.Row className="file-upload-note-row">
-          <Grid.Column width={16}>
-            <Message visible warning>
-              <p>
-                <Icon name="warning sign" />
-                File addition, removal or modification are not allowed after you
-                have published your upload.
-              </p>
-            </Message>
-          </Grid.Column>
-        </Grid.Row>
-      ) : (
-        <Grid.Row className="file-upload-note-row">
-          <Grid.Column width={16}>
-            <Message info>
-              <NewVersionButton
-                record={record}
-                onError={() => {}}
-                className=""
-                disabled={!permissions.can_new_version}
-                style={{ float: 'right' }}
-              />
-              <p style={{ marginTop: '5px', display: 'inline-block' }}>
-                <Icon name="info circle" size="large" />
-                You must create a new version to add, modify or delete files.
-              </p>
-            </Message>
-          </Grid.Column>
-        </Grid.Row>
-      )}
-    </Grid>
+        {isDraftRecord ? (
+          <Grid.Row className="file-upload-note-row">
+            <Grid.Column width={16}>
+              <Message visible warning>
+                <p>
+                  <Icon name="warning sign" />
+                  File addition, removal or modification are not allowed after
+                  you have published your upload.
+                </p>
+              </Message>
+            </Grid.Column>
+          </Grid.Row>
+        ) : (
+          <Grid.Row className="file-upload-note-row">
+            <Grid.Column width={16}>
+              <Message info>
+                <NewVersionButton
+                  record={record}
+                  onError={() => {}}
+                  className=""
+                  disabled={!permissions.can_new_version}
+                  style={{ float: 'right' }}
+                />
+                <p style={{ marginTop: '5px', display: 'inline-block' }}>
+                  <Icon name="info circle" size="large" />
+                  You must create a new version to add, modify or delete files.
+                </p>
+              </Message>
+            </Grid.Column>
+          </Grid.Row>
+        )}
+      </Grid>
+      <Modal
+        open={!!warningMsg}
+        header="Warning!"
+        content={warningMsg}
+        onClose={() => setWarningMsg()}
+        closeIcon
+      />
+    </>
   );
 };
 
