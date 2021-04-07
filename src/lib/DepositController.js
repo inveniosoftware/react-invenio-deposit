@@ -14,11 +14,10 @@ import {
   ACTION_CREATE_SUCCEEDED,
   ACTION_PUBLISH_FAILED,
   ACTION_PUBLISH_SUCCEEDED,
+  ACTION_SAVE_FAILED,
   ACTION_SAVE_PARTIALLY_SUCCEEDED,
   ACTION_SAVE_SUCCEEDED,
-  ACTION_SAVE_FAILED,
 } from './state/types';
-
 
 export class DepositController {
   constructor(apiClient, fileUploader) {
@@ -145,7 +144,7 @@ export class DepositController {
     let errors = recordSerializer.deserializeErrors(response.errors || []);
 
     // response 100% successful
-    if ( 200 <= response.code && response.code < 300 && _isEmpty(errors) ) {
+    if (200 <= response.code && response.code < 300 && _isEmpty(errors)) {
       store.dispatch({
         type: ACTION_PUBLISH_SUCCEEDED,
         payload: { data },
@@ -177,7 +176,7 @@ export class DepositController {
     const uploadsURL = '/uploads';
 
     if (draft.id) {
-      const response = await this.apiClient.delete(draft);
+      await this.apiClient.delete(draft);
       // TODO: If error, set banner - goes with larger task about
       //       banner feedback
       // For expediency assume all good
@@ -205,7 +204,7 @@ export class DepositController {
       const uploadFileUrl = draft.links.files;
       this.fileUploader.upload(uploadFileUrl, file, { store });
     }
-  };
+  }
 
   deleteDraftFile(file, { store }) {
     const deleteFileUrl = file.links.self;
@@ -214,30 +213,6 @@ export class DepositController {
 
   setDefaultPreviewFile(defaultPreviewUrl, filename, { store }) {
     this.fileUploader.setDefaultPreview(defaultPreviewUrl, filename, {
-      store,
-    });
-  }
-
-  /**
-   * Sets whether the record is metadata-only (files disabled) or not
-   * (files enabled).
-   *
-   * The current draft may not have been saved yet. We create it if not.
-   * TODO: Might be worth considering delaying creation/setting until Save
-   *       Draft to create a more responsive user experience.
-   *
-   * @param {object} draft - current draft
-   * @param {Boolean} filesEnabled - are files enabled?
-   * @param {object} store - redux store
-   */
-  async setFilesEnabled(draft, filesEnabled, { store }) {
-    if (!this.draftAlreadyCreated(draft)) {
-      // TODO: Deal with case when create fails
-      const response = await this.createDraft(draft, { store });
-      draft = response.data;
-    }
-    const enableFileUrl = draft.links.files;
-    this.fileUploader.setFilesEnabled(enableFileUrl, filesEnabled, {
       store,
     });
   }

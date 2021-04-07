@@ -6,10 +6,9 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Icon, Button, Modal } from 'semantic-ui-react';
 import { ActionButton } from 'react-invenio-forms';
-
+import { connect } from 'react-redux';
+import { Button, Icon, Modal } from 'semantic-ui-react';
 import { discard } from '../state/actions';
 import { toCapitalCase } from '../utils';
 
@@ -115,9 +114,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteClick: (event, formik) => {
-    dispatch(discard(event, formik));
-  },
+  deleteClick: (event, formik) => dispatch(discard(event, formik)),
 });
 
 export const DeleteButton = connect(

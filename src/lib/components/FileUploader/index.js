@@ -5,15 +5,14 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React from 'react';
 import { connect } from 'react-redux';
-import { FileUploaderComponent } from './FileUploader';
 import {
-  uploadDraftFiles,
   deleteDraftFile,
   setDefaultPreview,
-  setFilesEnabled,
+  toggleFilesEnabled,
+  uploadDraftFiles,
 } from '../../state/actions';
+import { FileUploaderComponent } from './FileUploader';
 
 const mapStateToProps = (state) => {
   const { links, defaultFilePreview, entries, enabled } = state.files;
@@ -33,8 +32,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(uploadDraftFiles(draft, files)),
   deleteFileFromRecord: (file) => dispatch(deleteDraftFile(file)),
   setDefaultPreviewFile: (filename) => dispatch(setDefaultPreview(filename)),
-  setFilesEnabled: (draft, filesEnabled) =>
-    dispatch(setFilesEnabled(draft, filesEnabled)),
+  toggleFilesEnabled: (filesEnabled) =>
+    dispatch(toggleFilesEnabled(filesEnabled)),
 });
 
 export const FileUploader = connect(
