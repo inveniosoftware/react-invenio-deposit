@@ -6,14 +6,13 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 import { useFormikContext } from 'formik';
-import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { Grid, Icon, Message, Modal } from 'semantic-ui-react';
-
+import { UploadState } from '../../state/reducers/files';
+import { NewVersionButton } from '../NewVersionButton';
 import { FileUploaderArea } from './FileUploaderArea';
 import { FileUploaderToolbar } from './FileUploaderToolbar';
-import { NewVersionButton } from '../NewVersionButton';
-import { UploadState } from '../../state/reducers/files';
 import { humanReadableBytes } from './utils';
 
 // NOTE: This component has to be a function component to allow
@@ -27,7 +26,7 @@ export const FileUploaderComponent = ({
   quota,
   permissions,
   record,
-  setFilesEnabled,
+  toggleFilesEnabled,
   uploadFilesToDraft,
   ...uiProps
 }) => {
@@ -127,7 +126,7 @@ export const FileUploaderComponent = ({
               filesSize={filesSize}
               isDraftRecord={isDraftRecord}
               quota={quota}
-              setFilesEnabled={setFilesEnabled}
+              toggleFilesEnabled={toggleFilesEnabled}
             />
           )}
         </Grid.Row>
@@ -211,7 +210,7 @@ FileUploaderComponent.propTypes = {
     maxFiles: PropTypes.number,
   }),
   record: PropTypes.object,
-  setFilesEnabled: PropTypes.func,
+  toggleFilesEnabled: PropTypes.func,
   uploadButtonIcon: PropTypes.string,
   uploadButtonText: PropTypes.string,
   uploadFilesToDraft: PropTypes.func,

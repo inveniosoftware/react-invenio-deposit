@@ -6,19 +6,18 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import {
-  FILE_UPLOAD_CANCELLED,
-  FILE_UPLOAD_SET_CANCEL_FUNCTION,
-  FILE_DELETE_FAILED,
   FILE_DELETED_SUCCESS,
-  FILE_UPLOAD_IN_PROGRESS,
-  FILE_UPLOAD_START,
-  FILE_UPLOAD_FINISHED,
+  FILE_DELETE_FAILED,
+  FILE_UPLOAD_CANCELLED,
   FILE_UPLOAD_FAILED,
+  FILE_UPLOAD_FINISHED,
   FILE_UPLOAD_INITIATE,
+  FILE_UPLOAD_IN_PROGRESS,
+  FILE_UPLOAD_SET_CANCEL_FUNCTION,
+  FILE_UPLOAD_START,
   SET_DEFAULT_PREVIEW_FILE,
   SET_DEFAULT_PREVIEW_FILE_FAILED,
-  SET_FILES_ENABLED,
-  SET_FILES_ENABLED_FAILED,
+  TOGGLE_FILES_ENABLED,
 } from '../types';
 
 export const UploadState = {
@@ -167,15 +166,11 @@ export default (state = initialState, action) => {
     case SET_DEFAULT_PREVIEW_FILE_FAILED:
       // TODO: handle
       return state;
-    case SET_FILES_ENABLED:
+    case TOGGLE_FILES_ENABLED:
       return {
         ...state,
         enabled: action.payload.filesEnabled,
-        links: { ...state.links, self: action.payload.links.self },
       };
-    case SET_FILES_ENABLED_FAILED:
-      // TODO: handle
-      return state;
     default:
       return state;
   }

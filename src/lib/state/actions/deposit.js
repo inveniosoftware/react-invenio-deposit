@@ -12,9 +12,9 @@ import {
 } from '../types';
 
 export const publish = (record, formik) => {
-  return async (dispatch, getState, config) => {
+  return (dispatch, getState, config) => {
     const controller = config.controller;
-    controller.publishDraft(record, {
+    return controller.publishDraft(record, {
       formik,
       store: { dispatch, getState, config },
     });
@@ -22,9 +22,9 @@ export const publish = (record, formik) => {
 };
 
 export const save = (record, formik) => {
-  return async (dispatch, getState, config) => {
+  return (dispatch, getState, config) => {
     const controller = config.controller;
-    controller.saveDraft(record, {
+    return controller.saveDraft(record, {
       formik,
       store: { dispatch, getState, config },
     });
@@ -32,7 +32,7 @@ export const save = (record, formik) => {
 };
 
 export const submitAction = (action, event, formik) => {
-  return async (dispatch, getState, config) => {
+  return (dispatch, getState, config) => {
     dispatch({
       type: FORM_ACTION_EVENT_EMITTED,
       payload: action,
@@ -42,23 +42,21 @@ export const submitAction = (action, event, formik) => {
 };
 
 export const submitFormData = (record, formik) => {
-  return async (dispatch, getState, config) => {
+  return (dispatch, getState, config) => {
     const formState = getState().deposit.formState;
     switch (formState) {
       case FORM_SAVING:
-        dispatch(save(record, formik));
-        break;
+        return dispatch(save(record, formik));
       case FORM_PUBLISHING:
-        dispatch(publish(record, formik));
-        break;
+        return dispatch(publish(record, formik));
       default:
-        console.log('onSubmit triggered some other way');
+        console.log(`onSubmit triggered with unknown action ${formState}`);
     }
   };
 };
 
 /**
- * Returns the async function that controls draft deletion.
+ * Returns the function that controls draft deletion.
  *
  * This function is different from the save/publish above because this thunk
  * is independent of form submission.
@@ -67,12 +65,12 @@ export const submitFormData = (record, formik) => {
  * @param {object} formik - formik object
  */
 export const discard = (event, formik) => {
-  return async (dispatch, getState, extra) => {
+  return (dispatch, getState, extra) => {
     const controller = extra.controller;
-    let record = getState().deposit.record;
-    controller.deleteDraft(record, {
+    const record = getState().deposit.record;
+    return controller.deleteDraft(record, {
       formik,
       store: { dispatch, getState, extra },
     });
-  }
+  };
 };

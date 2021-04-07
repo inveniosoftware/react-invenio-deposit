@@ -11,19 +11,17 @@
 import axios from 'axios';
 import _indexOf from 'lodash/indexOf';
 import {
-  FILE_UPLOAD_FAILED,
   FILE_DELETED_SUCCESS,
-  FILE_UPLOAD_INITIATE,
-  FILE_UPLOAD_START,
+  FILE_DELETE_FAILED,
   FILE_UPLOAD_CANCELLED,
+  FILE_UPLOAD_FAILED,
+  FILE_UPLOAD_FINISHED,
+  FILE_UPLOAD_INITIATE,
   FILE_UPLOAD_IN_PROGRESS,
   FILE_UPLOAD_SET_CANCEL_FUNCTION,
-  FILE_UPLOAD_FINISHED,
-  FILE_DELETE_FAILED,
+  FILE_UPLOAD_START,
   SET_DEFAULT_PREVIEW_FILE,
   SET_DEFAULT_PREVIEW_FILE_FAILED,
-  SET_FILES_ENABLED,
-  SET_FILES_ENABLED_FAILED,
 } from './state/types';
 
 export class DepositFileUploader {
@@ -96,7 +94,7 @@ export class DepositFileUploader {
       payload: { filename: file.name },
     });
     try {
-      const resp = await this.apiClient.uploadFile(
+      await this.apiClient.uploadFile(
         uploadUrl,
         file,
         (e) => {
@@ -127,7 +125,7 @@ export class DepositFileUploader {
 
   finalizeUpload = async (finalizeUploadUrl, file, { store }) => {
     try {
-      // Independently on what is the status of the filalize step we start
+      // Regardless of what is the status of the finalize step we start
       // the next upload in the queue
       this._removeFromCurrentUploads(file);
       this._uploadNext();
@@ -160,7 +158,7 @@ export class DepositFileUploader {
       const finalizeFileUrl = initializedFileMetadata.links.commit;
       const deleteFileUrl = initializedFileMetadata.links.self;
       try {
-        const resp = await this.startUpload(startUploadUrl, file, {
+        await this.startUpload(startUploadUrl, file, {
           store,
         });
         this.finalizeUpload(finalizeFileUrl, file, { store });
@@ -172,7 +170,7 @@ export class DepositFileUploader {
         ].some((msg) => e.message === msg);
         if (isUploadCancelledOrFailed) {
           // TODO: Should we delete the file automatically?
-          const resp = await this.deleteUpload(deleteFileUrl, file, {
+          await this.deleteUpload(deleteFileUrl, file, {
             store,
           });
           store.dispatch({
@@ -190,7 +188,7 @@ export class DepositFileUploader {
 
   deleteUpload = async (fileDeletionUrl, file, { store }) => {
     try {
-      const resp = await this.apiClient.deleteFile(fileDeletionUrl);
+      await this.apiClient.deleteFile(fileDeletionUrl);
       store.dispatch({
         type: FILE_DELETED_SUCCESS,
         payload: {
@@ -206,30 +204,14 @@ export class DepositFileUploader {
     const response = await this.apiClient.setFilesMetadata(defaultPreviewUrl, {
       default_preview: defaultPreview,
     });
-    if ( 200 <= response.code && response.code < 300 ) {
+    const isSuccess = 200 <= response.code && response.code < 300;
+    if (isSuccess) {
       store.dispatch({
         type: SET_DEFAULT_PREVIEW_FILE,
         payload: { filename: defaultPreview },
       });
     } else {
       store.dispatch({ type: SET_DEFAULT_PREVIEW_FILE_FAILED });
-    }
-  };
-
-  setFilesEnabled = async (enableFileUrl, filesEnabled, { store }) => {
-    const response = await this.apiClient.setFilesMetadata(enableFileUrl, {
-      enabled: filesEnabled,
-    });
-    if ( 200 <= response.code && response.code < 300 ) {
-      store.dispatch({
-        type: SET_FILES_ENABLED,
-        payload: {
-          filesEnabled: response.data.enabled,
-          links: response.data.links
-        },
-      });
-    } else {
-      store.dispatch({ type: SET_FILES_ENABLED_FAILED });
     }
   };
 }
