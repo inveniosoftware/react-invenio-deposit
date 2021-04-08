@@ -31,14 +31,15 @@ const DialogText = ({ action }) => {
 };
 
 export class DeleteButtonComponent extends Component {
-  state = { modalOpen: false };
+  state = { modalOpen: false, isDeleting: false };
 
   handleOpen = () => this.setState({ modalOpen: true });
 
   handleClose = () => this.setState({ modalOpen: false });
 
   isDisabled = (formik) => {
-    return !this.props.isSaved || formik.isSubmitting;
+    const { isDeleting } = this.state;
+    return !this.props.isSaved || formik.isSubmitting || isDeleting;
   };
 
   render() {
@@ -49,10 +50,11 @@ export class DeleteButtonComponent extends Component {
       isVersion,
       ...uiProps // only has ActionButton props
     } = this.props;
-
+    const { isDeleting } = this.state;
     const handleDelete = (event, formik) => {
       deleteClick(event, formik);
       this.handleClose();
+      this.setState({ isDeleting: true });
     };
 
     let action = '';
@@ -77,7 +79,11 @@ export class DeleteButtonComponent extends Component {
         >
           {(formik) => (
             <>
-              <Icon name="trash alternate outline" />
+              {formik.isSubmitting && isDeleting ? (
+                <Icon size="large" loading name="spinner" />
+              ) : (
+                <Icon name="trash alternate outline" />
+              )}
               {capitalizedAction}
             </>
           )}

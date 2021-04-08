@@ -24,6 +24,10 @@ export class PreviewButtonComponent extends Component {
     previousFormState: '',
   };
 
+  isDisabled = (formik) => {
+    return formik.isSubmitting;
+  };
+
   render() {
     const { record, saveClick, formState, ...uiProps } = this.props;
     const { isLoading, previewButtonClicked, previousFormState } = this.state;
@@ -50,6 +54,7 @@ export class PreviewButtonComponent extends Component {
     return (
       <ActionButton
         name="preview"
+        isDisabled={this.isDisabled}
         onClick={(event, formik) => {
           saveClick(event, formik);
           this.setState({
@@ -63,7 +68,7 @@ export class PreviewButtonComponent extends Component {
       >
         {(formik) => (
           <>
-            {isLoading ? (
+            {formik.isSubmitting && isLoading ? (
               <Icon size="large" loading name="spinner" />
             ) : (
               <Icon name="eye" />
