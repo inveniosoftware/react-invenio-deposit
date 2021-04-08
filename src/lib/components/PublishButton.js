@@ -35,21 +35,17 @@ export class PublishButtonComponent extends Component {
       this.handleClose();
     };
 
-
-    const isDisabled = () => {
+    const isDisabled = (formik) => {
       const noFilesUploaded = !numberOfFiles;
       // Files are broken if you publish without either uploading a file
       // or explicitely mark the draft as "Metadata only"
       // Temporarely disable publish also in that case until the backend
       // can validate it correctly and report back errors on partial save
-      return (
-        formState !== FORM_SAVE_SUCCEEDED || (filesEnabled && noFilesUploaded)
-      );
+      return formik.isSubmitting || (filesEnabled && noFilesUploaded);
     };
 
-    const action = "publish";
+    const action = 'publish';
     const capitalizedAction = toCapitalCase(action);
-
     return (
       <>
         <ActionButton
@@ -63,7 +59,7 @@ export class PublishButtonComponent extends Component {
         >
           {(formik) => (
             <>
-              { ( formik.isSubmitting && formState === FORM_PUBLISHING ) ? (
+              {formik.isSubmitting && formState === FORM_PUBLISHING ? (
                 <Icon size="large" loading name="spinner" />
               ) : (
                 <Icon name="upload" />
