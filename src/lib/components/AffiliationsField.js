@@ -5,13 +5,12 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { ArrayField, FieldLabel } from 'react-invenio-forms';
-import { Button, Form, Icon } from 'semantic-ui-react';
-import { IdentifiersField } from './IdentifiersField';
-import { RemoteSelectField } from 'react-invenio-forms';
 import _get from 'lodash/get';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { ArrayField, FieldLabel, RemoteSelectField } from 'react-invenio-forms';
+import { Button, Form, Icon } from 'semantic-ui-react';
+import { IdentifiersField } from './Identifiers/IdentifiersField';
 
 //TODO: remove after backend will be implemented
 const fetchedOptions = [
