@@ -5,18 +5,17 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
+import React, { Component } from 'react';
 import {
-  TextField,
-  GroupField,
   ArrayField,
   FieldLabel,
+  GroupField,
+  SelectField,
+  TextField,
 } from 'react-invenio-forms';
-import { Button, Form, Icon } from 'semantic-ui-react';
-import { SelectField } from 'react-invenio-forms';
-import { emptyIdentifier } from '../record';
+import { Button, Form } from 'semantic-ui-react';
+import { emptyIdentifier } from '../../record';
 
 /** Identifiers array component */
 export class IdentifiersField extends Component {
@@ -35,26 +34,24 @@ export class IdentifiersField extends Component {
         >
           {({ array, arrayHelpers, indexPath, key }) => (
             <GroupField widths="equal">
-              {schemeOptions &&
+              {schemeOptions && (
                 <SelectField
                   fieldPath={`${key}.scheme`}
                   label={'Scheme'}
                   options={schemeOptions}
                 />
-              }
-              {!schemeOptions &&
+              )}
+              {!schemeOptions && (
                 <TextField fieldPath={`${key}.scheme`} label={'Scheme'} />
-              }
+              )}
               <TextField fieldPath={`${key}.identifier`} label={'Identifier'} />
               <Form.Field>
                 <Form.Field>
                   <label>&nbsp;</label>
                   <Button
-                    icon
+                    icon="close"
                     onClick={() => arrayHelpers.remove(indexPath)}
-                  >
-                    <Icon name="close" size="large" />
-                  </Button>
+                  />
                 </Form.Field>
               </Form.Field>
             </GroupField>
@@ -75,7 +72,7 @@ IdentifiersField.propTypes = {
       text: PropTypes.string,
       value: PropTypes.string,
     })
-  )
+  ),
 };
 
 IdentifiersField.defaultProps = {
