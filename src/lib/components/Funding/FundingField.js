@@ -118,6 +118,10 @@ FundingField.propTypes = {
   // searchConfig: PropTypes.object.isRequired, //TODO: Proper backend endpoint
   required: PropTypes.bool,
   serializeAwards: PropTypes.func,
+  // options: PropTypes.shape({
+  //   funder: PropTypes.array.isRequired,
+  //   award: PropTypes.array.isRequired,
+  // }).isRequired,
 };
 
 FundingField.defaultProps = {

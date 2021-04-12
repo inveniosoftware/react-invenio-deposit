@@ -7,7 +7,7 @@
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Grid, Header, Menu, Form } from 'semantic-ui-react';
+import { Dropdown, Modal, Search, Icon } from 'semantic-ui-react';
 import {
   ReactSearchKit,
   SearchBar,
@@ -21,6 +21,8 @@ import { OverridableContext } from 'react-overridable';
 import { Formik } from 'formik';
 import { TextAreaField, TextField, ActionButton } from 'react-invenio-forms';
 import * as Yup from 'yup';
+
+import { AwardResults } from './AwardResults';
 
 const ModalTypes = {
   STANDARD: 'standard',
@@ -39,7 +41,57 @@ const ModalActions = {
 //   }),
 // });
 
-export function FundingModal(props) {
+const dummy = {
+  funder: [
+    {
+      name: 'National Institutes of Health (US)',
+      id: 'funder1',
+      scheme: 'funderScheme1',
+    },
+    {
+      name: 'European Commission (EU)',
+      id: 'funder2',
+      scheme: 'funderScheme2',
+    },
+  ],
+  award: [
+    {
+      title: 'CANCER &AIDS DRUGS--PRECLIN PHARMACOL/TOXICOLOGY',
+      number: 'N01CM037835-016',
+      id: 'awardA',
+      scheme: 'awardSchemeA',
+      parentScheme: 'funderScheme1',
+      parentId: 'funder1',
+    },
+    {
+      title:
+        'Beyond the Standard Model at the LHC and with Atom Interferometers.',
+      number: '228169',
+      id: 'awardB1',
+      scheme: 'awardSchemeB',
+      parentScheme: 'funderScheme2',
+      parentId: 'funder2',
+    },
+    {
+      title: 'Environmental Conditions in Glaucoma Patients',
+      number: '747441',
+      id: 'awardB2',
+      scheme: 'awardSchemeB',
+      parentScheme: 'funderScheme2',
+      parentId: 'funder2',
+    },
+  ],
+};
+
+export function FundingModal({
+  action,
+  mode,
+  handleSubmit,
+  trigger,
+  onAwardChange,
+  searchConfig,
+  ...props
+}) {
   const [open, setOpen] = useState(false);
 
   const openModal = () => setOpen(true);
@@ -47,7 +99,7 @@ export function FundingModal(props) {
   const closeModal = () => setOpen(false);
 
   const onSubmit = (values, formikBag) => {
-    props.onAwardChange(values.selectedAward);
+    onAwardChange(values.selectedAward);
     formikBag.setSubmitting(false);
     formikBag.resetForm();
     closeModal();
@@ -59,51 +111,98 @@ export function FundingModal(props) {
     number: '',
   };
   // TODO:
-  // const searchApi = new InvenioSearchApi(props.searchConfig.searchApi);
+  // const searchApi = new InvenioSearchApi(searchConfig.searchApi);
   return (
     <Formik
       initialValues={{
-        selectedAward: props.initialAward,
+        selectedAward: initialAward,
       }}
       onSubmit={onSubmit}
       // validationSchema={LicenseSchema}
     >
       <Modal
-        onOpen={() => openModal()}
+        onOpen={openModal}
         open={open}
-        trigger={props.trigger}
+        trigger={trigger}
         onClose={closeModal}
         closeIcon
       >
         <Modal.Header as="h6" className="deposit-modal-header">
-          TODO
+          {mode === 'standard' ? 'Add standard award' : 'Add funder'}
         </Modal.Header>
-        <Modal.Content scrolling>TODO</Modal.Content>
-        <Modal.Actions>TODO</Modal.Actions>
+        <Modal.Content>
+          <div
+            className="filters"
+            style={{ display: 'flex', justifyContent: 'space-between' }}
+          >
+            {/* <SearchBar
+              autofocus
+              actionProps={{
+                icon: 'search',
+                content: null,
+                className: 'search',
+              }}
+            /> */}
+            <Search />
+            <span style={{ display: 'flex', alignItems: 'center' }}>
+              <Icon name="filter" />
+              <Dropdown
+                placeholder="Funder..."
+                search
+                selection
+                options={dummy.funder.map(({ id, name }) => ({
+                  key: id,
+                  value: id,
+                  text: name,
+                }))}
+              />
+            </span>
+          </div>
+          <AwardResults dummy={dummy} />
+        </Modal.Content>
+        <Modal.Actions>
+          <ActionButton
+            name="cancel"
+            onClick={(values, formikBag) => {
+              formikBag.resetForm();
+              closeModal();
+            }}
+            icon="remove"
+            content="Cancel"
+            floated="left"
+          />
+          <ActionButton
+            name="submit"
+            onClick={(event, formik) => formik.handleSubmit(event)}
+            primary
+            icon="checkmark"
+            content={action === ModalActions.ADD ? 'Add award' : 'Change award'}
+          />
+        </Modal.Actions>
       </Modal>
     </Formik>
   );
 }
 
-// LicenseModal.propTypes = {
-//   mode: PropTypes.oneOf(['standard', 'custom']).isRequired,
-//   action: PropTypes.oneOf(['add', 'edit']).isRequired,
-//   initialLicense: PropTypes.shape({
-//     id: PropTypes.string,
-//     title: PropTypes.string,
-//     description: PropTypes.string,
-//   }),
-//   trigger: PropTypes.object.isRequired,
-//   onLicenseChange: PropTypes.func.isRequired,
-//   searchConfig: PropTypes.shape({
-//     searchApi: PropTypes.shape({
-//       axios: PropTypes.shape({
-//         headers: PropTypes.object,
-//       }),
-//     }).isRequired,
-//     initialQueryState: PropTypes.shape({
-//       filters: PropTypes.arrayOf(PropTypes.array),
-//     }).isRequired,
-//   }).isRequired,
-//   serializeLicenses: PropTypes.func,
-// };
+FundingModal.propTypes = {
+  mode: PropTypes.oneOf(['standard', 'custom']).isRequired,
+  action: PropTypes.oneOf(['add', 'edit']).isRequired,
+  initialAward: PropTypes.shape({
+    id: PropTypes.string,
+    title: PropTypes.string,
+    number: PropTypes.string,
+  }),
+  trigger: PropTypes.object.isRequired,
+  onAwardChange: PropTypes.func.isRequired,
+  //   searchConfig: PropTypes.shape({
+  //     searchApi: PropTypes.shape({
+  //       axios: PropTypes.shape({
+  //         headers: PropTypes.object,
+  //       }),
+  //     }).isRequired,
+  //     initialQueryState: PropTypes.shape({
+  //       filters: PropTypes.arrayOf(PropTypes.array),
+  //     }).isRequired,
+  //   }).isRequired,
+  // serializeAwards: PropTypes.func,
+};
