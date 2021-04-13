@@ -44,7 +44,7 @@ function FundingFieldForm(props) {
             const key = `${arrayPath}.${indexPath}`;
             const awardTitle = value.award?.title;
             const funderName = value.funder?.name;
-            //TODO: how do we know if it's custom or standard?
+            // if award has no id, it's a custom one
             const awardType = value.award?.id ? 'standard' : 'custom';
             return (
               <FundingFieldItem
@@ -60,7 +60,7 @@ function FundingFieldForm(props) {
                   replaceAward: formikArrayReplace,
                   removeAward: formikArrayRemove,
                   searchConfig: props.searchConfig,
-                  serializeAwards: props.serializeAwards,
+                  // serializeAwards: props.serializeAwards,
                 }}
               />
             );
@@ -115,13 +115,9 @@ FundingField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string,
   labelIcon: PropTypes.string,
-  // searchConfig: PropTypes.object.isRequired, //TODO: Proper backend endpoint
+  searchConfig: PropTypes.object.isRequired,
   required: PropTypes.bool,
   serializeAwards: PropTypes.func,
-  // options: PropTypes.shape({
-  //   funder: PropTypes.array.isRequired,
-  //   award: PropTypes.array.isRequired,
-  // }).isRequired,
 };
 
 FundingField.defaultProps = {

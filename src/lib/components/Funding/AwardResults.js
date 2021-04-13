@@ -8,24 +8,21 @@
 import React from 'react';
 import _get from 'lodash/get';
 import { Item, Header, Radio } from 'semantic-ui-react';
+import { withState } from 'react-searchkit';
 import { FastField } from 'formik';
 
-export function AwardResults({ dummy }) {
-  const getAwardFunder = (funderId) =>
-    dummy.funder.find((funder) => funder.id === funderId);
-
+export const AwardResults = withState(({ currentResultsState: results }) => {
   const serializeAward = (award) => ({
-    funder: getAwardFunder(award.parentId),
+    funder: award.funder,
     award,
   });
 
   return (
     <FastField name="selectedAward">
       {({ form: { values, setFieldValue } }) => {
-        debugger;
         return (
           <Item.Group>
-            {dummy.award.map((award) => (
+            {results.data.hits.map((award) => (
               <Item
                 key={award.id}
                 onClick={() =>
@@ -44,7 +41,7 @@ export function AwardResults({ dummy }) {
                 <Item.Content className="license-item-content">
                   <Header size="small">{award.title}</Header>
                   <Item.Description className="license-item-description">
-                    {getAwardFunder(award.parentId).name}
+                    {award.funder.name}
                   </Item.Description>
                 </Item.Content>
               </Item>
@@ -54,4 +51,4 @@ export function AwardResults({ dummy }) {
       }}
     </FastField>
   );
-}
+});
