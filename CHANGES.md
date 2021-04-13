@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.13.4 (released 2021-04-13)
+
+Version 0.13.3 (released 2021-04-07)
+
 Version 0.13.2 (released 2021-03-31)
 
 Version 0.13.1 (released 2021-03-26)
