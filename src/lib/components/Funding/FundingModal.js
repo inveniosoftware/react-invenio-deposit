@@ -6,24 +6,24 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Dropdown, Grid, Modal, Icon } from 'semantic-ui-react';
 import {
   ReactSearchKit,
   SearchBar,
   InvenioSearchApi,
-  Toggle,
   ResultsLoader,
   EmptyResults,
   Error,
 } from 'react-searchkit';
 import { OverridableContext } from 'react-overridable';
 import { Formik } from 'formik';
-import { TextAreaField, TextField, ActionButton } from 'react-invenio-forms';
+import { ActionButton } from 'react-invenio-forms';
 import * as Yup from 'yup';
-import axios from 'axios';
 
 import { AwardResults } from './AwardResults';
+import { CustomAwardForm } from './CustomAwardForm';
 
 const ModalTypes = {
   STANDARD: 'standard',
@@ -62,7 +62,6 @@ export function FundingModal({
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => {
-          console.log(res);
           setFundersWithAwards(res.data.hits.hits);
         })
         .catch((err) => console.log(err));
@@ -101,7 +100,7 @@ export function FundingModal({
         closeIcon
       >
         <Modal.Header as="h6" className="deposit-modal-header">
-          {mode === 'standard' ? 'Add standard award' : 'Add funder'}
+          {mode === 'standard' ? 'Add standard award' : 'Add missing'}
         </Modal.Header>
         <Modal.Content>
           {mode === ModalTypes.STANDARD && (
@@ -147,7 +146,9 @@ export function FundingModal({
               </Grid>
             </ReactSearchKit>
           )}
-          {mode === ModalTypes.CUSTOM && 'TODO'}
+          {mode === ModalTypes.CUSTOM && (
+            <CustomAwardForm initialAward={initialAward} />
+          )}
         </Modal.Content>
         <Modal.Actions>
           <ActionButton
