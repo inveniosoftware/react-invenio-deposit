@@ -18,6 +18,9 @@ import {
   SET_DEFAULT_PREVIEW_FILE,
   SET_DEFAULT_PREVIEW_FILE_FAILED,
   TOGGLE_FILES_ENABLED,
+  FILE_IMPORT_STARTED,
+  FILE_IMPORT_SUCCESS,
+  FILE_IMPORT_FAILED,
 } from '../types';
 
 export const UploadState = {
@@ -158,6 +161,22 @@ export default (state = initialState, action) => {
     case FILE_DELETE_FAILED:
       // TODO: handle
       return state;
+    case FILE_IMPORT_STARTED:
+      return {
+        ...state,
+        isFileImportInProgress: true,
+      };
+    case FILE_IMPORT_SUCCESS:
+      return {
+        ...state,
+        entries: { ...action.payload.files },
+        isFileImportInProgress: false,
+      };
+    case FILE_IMPORT_FAILED:
+      return {
+        ...state,
+        isFileImportInProgress: false,
+      };
     case SET_DEFAULT_PREVIEW_FILE:
       return {
         ...state,

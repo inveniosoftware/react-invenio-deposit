@@ -22,7 +22,11 @@ import {
   FILE_UPLOAD_START,
   SET_DEFAULT_PREVIEW_FILE,
   SET_DEFAULT_PREVIEW_FILE_FAILED,
+  FILE_IMPORT_STARTED,
+  FILE_IMPORT_SUCCESS,
+  FILE_IMPORT_FAILED,
 } from './state/types';
+import { UploadState } from './state/reducers/files';
 
 export class DepositFileUploader {
   constructor(apiClient, { fileUploadConcurrency } = {}) {
@@ -212,6 +216,38 @@ export class DepositFileUploader {
       });
     } else {
       store.dispatch({ type: SET_DEFAULT_PREVIEW_FILE_FAILED });
+    }
+  };
+
+  importParentRecordFiles = async (importFilesUrl, { store }) => {
+    store.dispatch({ type: FILE_IMPORT_STARTED });
+    try {
+      const response = await this.apiClient.importParentRecordFiles(
+        importFilesUrl
+      );
+
+      const files = response.data.entries.reduce(
+        (acc, file) => ({
+          ...acc,
+          [file.key]: {
+            status: UploadState.finished,
+            size: file.size,
+            name: file.key,
+            progress: 100,
+            checksum: file.checksum,
+            links: file.links,
+          },
+        }),
+        {}
+      );
+      store.dispatch({
+        type: FILE_IMPORT_SUCCESS,
+        payload: { files },
+      });
+    } catch (e) {
+      console.log(e);
+      //TODO: show notification on failure
+      store.dispatch({ type: FILE_IMPORT_FAILED });
     }
   };
 }

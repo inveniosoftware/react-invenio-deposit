@@ -16,6 +16,16 @@ export const uploadDraftFiles = (draft, files) => {
   };
 };
 
+export const importParentRecordFiles = () => {
+  return (dispatch, getState, config) => {
+    const controller = config.controller;
+    const draft = getState().deposit.record;
+    return controller.importParentRecordFiles(draft, {
+      store: { dispatch, getState, config },
+    });
+  };
+};
+
 export const deleteDraftFile = (file) => {
   return (dispatch, getState, config) => {
     const controller = config.controller;

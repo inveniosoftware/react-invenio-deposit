@@ -11,6 +11,7 @@ import {
   setDefaultPreview,
   toggleFilesEnabled,
   uploadDraftFiles,
+  importParentRecordFiles,
 } from '../../state/actions';
 import { FileUploaderComponent } from './FileUploader';
 
@@ -24,12 +25,18 @@ const mapStateToProps = (state) => {
     record: state.deposit.record,
     config: state.deposit.config,
     permissions: state.deposit.permissions,
+    isFileImportInProgress: state.files.isFileImportInProgress,
+    hasParentRecord: Boolean(
+      state.deposit.record?.versions?.index &&
+        state.deposit.record?.versions?.index > 1
+    ),
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   uploadFilesToDraft: (draft, files) =>
     dispatch(uploadDraftFiles(draft, files)),
+  importRecordFilesToDraft: () => dispatch(importParentRecordFiles()),
   deleteFileFromRecord: (file) => dispatch(deleteDraftFile(file)),
   setDefaultPreviewFile: (filename) => dispatch(setDefaultPreview(filename)),
   toggleFilesEnabled: (filesEnabled) =>
