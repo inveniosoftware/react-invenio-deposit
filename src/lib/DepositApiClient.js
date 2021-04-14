@@ -7,7 +7,6 @@
 
 import axios from 'axios';
 
-
 const CancelToken = axios.CancelToken;
 
 /**
@@ -25,7 +24,6 @@ export class DepositApiClientResponse {
   }
 }
 
-
 /**
  * API Client for deposits.
  *
@@ -41,7 +39,7 @@ export class DepositApiClient {
     try {
       let response = await axios_call();
       return new DepositApiClientResponse(
-        response.data,  // exclude errors?
+        response.data, // exclude errors?
         response.data.errors,
         response.status
       );
@@ -61,11 +59,9 @@ export class DepositApiClient {
    */
   async create(draft) {
     return this.createResponse(() =>
-      axios.post(
-        this.createUrl,
-        draft,
-        { headers: { 'Content-Type': 'application/json' } }
-      )
+      axios.post(this.createUrl, draft, {
+        headers: { 'Content-Type': 'application/json' },
+      })
     );
   }
 
@@ -76,11 +72,9 @@ export class DepositApiClient {
    */
   async save(draft) {
     return this.createResponse(() =>
-      axios.put(
-        draft.links.self,
-        draft,
-        {headers: { 'Content-Type': 'application/json' } }
-      )
+      axios.put(draft.links.self, draft, {
+        headers: { 'Content-Type': 'application/json' },
+      })
     );
   }
 
@@ -162,6 +156,18 @@ export class DepositApiClient {
     return axios.delete(deleteUrl);
   }
 
+  importParentRecordFiles(importFilesUrl) {
+    return axios.post(
+      importFilesUrl,
+      {},
+      {
+        headers: {
+          'content-type': 'application/json',
+        },
+      }
+    );
+  }
+
   /**
    * Sets the files metadata (enabled, default preview).
    *
@@ -170,13 +176,9 @@ export class DepositApiClient {
    */
   async setFilesMetadata(setFileMetadataUrl, data) {
     return this.createResponse(() =>
-      axios.put(
-        setFileMetadataUrl,
-        data,
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
+      axios.put(setFileMetadataUrl, data, {
+        headers: { 'Content-Type': 'application/json' },
+      })
     );
   }
 }

@@ -8,7 +8,7 @@
 import { useFormikContext } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { Grid, Icon, Message, Modal } from 'semantic-ui-react';
+import { Button, Grid, Icon, Message, Modal } from 'semantic-ui-react';
 import { UploadState } from '../../state/reducers/files';
 import { NewVersionButton } from '../NewVersionButton';
 import { FileUploaderArea } from './FileUploaderArea';
@@ -23,11 +23,16 @@ export const FileUploaderComponent = ({
   files,
   filesEnabled,
   isDraftRecord,
+  hasParentRecord,
   quota,
   permissions,
   record,
   toggleFilesEnabled,
   uploadFilesToDraft,
+  importRecordFilesToDraft,
+  importButtonIcon,
+  importButtonText,
+  isFileImportInProgress,
   ...uiProps
 }) => {
   // We extract the working copy of the draft stored as `values` in formik
@@ -113,6 +118,9 @@ export const FileUploaderComponent = ({
     dropzoneParams['disabled'] = true;
   }
 
+  const displayImportBtn =
+    filesEnabled && isDraftRecord && hasParentRecord && !filesList.length;
+
   return (
     <>
       <Grid style={{ marginBottom: '20px' }}>
@@ -130,6 +138,28 @@ export const FileUploaderComponent = ({
             />
           )}
         </Grid.Row>
+        {displayImportBtn && (
+          <Grid.Row className="file-import-note-row">
+            <Grid.Column width={16}>
+              <Message visible info>
+                <p>
+                  <Icon name="warning sign" />
+                  Import files from the previous record version &nbsp;
+                  <Button
+                    type="button"
+                    size="mini"
+                    primary={true}
+                    icon={importButtonIcon}
+                    content={importButtonText}
+                    onClick={() => importRecordFilesToDraft()}
+                    disabled={isFileImportInProgress}
+                    loading={isFileImportInProgress}
+                  />
+                </p>
+              </Message>
+            </Grid.Column>
+          </Grid.Row>
+        )}
         {filesEnabled && (
           <Grid.Row className="file-upload-area-row">
             <FileUploaderArea
@@ -205,6 +235,7 @@ FileUploaderComponent.propTypes = {
   files: fileDetailsShape,
   filesEnabled: PropTypes.bool,
   isDraftRecord: PropTypes.bool,
+  hasParentRecord: PropTypes.bool,
   quota: PropTypes.shape({
     maxStorage: PropTypes.number,
     maxFiles: PropTypes.number,
@@ -213,16 +244,23 @@ FileUploaderComponent.propTypes = {
   toggleFilesEnabled: PropTypes.func,
   uploadButtonIcon: PropTypes.string,
   uploadButtonText: PropTypes.string,
+  importButtonIcon: PropTypes.string,
+  importButtonText: PropTypes.string,
+  isFileImportInProgress: PropTypes.bool,
+  importRecordFilesToDraft: PropTypes.func,
   uploadFilesToDraft: PropTypes.func,
 };
 
 FileUploaderComponent.defaultProps = {
   dragText: 'Drag and drop file(s)',
   isDraftRecord: true,
+  hasParentRecord: false,
   quota: {
     maxFiles: 5,
     maxStorage: 10 ** 10,
   },
   uploadButtonIcon: 'upload',
   uploadButtonText: 'Upload files',
+  importButtonIcon: 'upload',
+  importButtonText: 'Import files',
 };

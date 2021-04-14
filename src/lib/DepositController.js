@@ -115,10 +115,11 @@ export class DepositController {
       return {
         ...errors,
         metadata: {
-          files: "Missing uploaded files. To disable files for this record please mark 'Metadata-only record' checkbox.",
-          ...errors.metadata
-        }
-      }
+          files:
+            "Missing uploaded files. To disable files for this record please mark 'Metadata-only record' checkbox.",
+          ...errors.metadata,
+        },
+      };
     }
     return errors;
   }
@@ -215,5 +216,19 @@ export class DepositController {
     this.fileUploader.setDefaultPreview(defaultPreviewUrl, filename, {
       store,
     });
+  }
+
+  /**
+   * Imports parent record files into the draft
+   *
+   * Should only be used with already saved draft
+   *
+   * @param {object} draft - current draft
+   * @param {object} store - redux store
+   */
+  async importParentRecordFiles(draft, { store }) {
+    if (!draft.id) return;
+    const importFilesUrl = draft.links.self + '/actions/files-import';
+    await this.fileUploader.importParentRecordFiles(importFilesUrl, { store });
   }
 }
