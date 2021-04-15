@@ -16,6 +16,7 @@ import {
   ResultsLoader,
   EmptyResults,
   Error,
+  Pagination,
 } from 'react-searchkit';
 import { OverridableContext } from 'react-overridable';
 import { Formik } from 'formik';
@@ -24,6 +25,11 @@ import * as Yup from 'yup';
 
 import { AwardResults } from './AwardResults';
 import { CustomAwardForm } from './CustomAwardForm';
+import { NoAwardResults } from './NoAwardResults';
+
+const overriddenComponents = {
+  'EmptyResults.element': NoAwardResults,
+};
 
 const ModalTypes = {
   STANDARD: 'standard',
@@ -44,7 +50,7 @@ const ModalActions = {
 
 export function FundingModal({
   action,
-  mode,
+  mode: initialMode,
   handleSubmit,
   trigger,
   onAwardChange,
@@ -53,6 +59,7 @@ export function FundingModal({
 }) {
   const [open, setOpen] = useState(false);
   const [fundersWithAwards, setFundersWithAwards] = useState([]);
+  const [mode, setMode] = useState(initialMode);
 
   useEffect(() => {
     if (open) {
@@ -69,11 +76,15 @@ export function FundingModal({
   }, [open]);
 
   const openModal = () => setOpen(true);
-  const closeModal = () => setOpen(false);
+  const closeModal = () => {
+    setMode(initialMode);
+    setOpen(false);
+  };
   const onSubmit = (values, formikBag) => {
     onAwardChange(values.selectedAward);
     formikBag.setSubmitting(false);
     formikBag.resetForm();
+    setMode(initialMode);
     closeModal();
   };
 
@@ -104,47 +115,60 @@ export function FundingModal({
         </Modal.Header>
         <Modal.Content>
           {mode === ModalTypes.STANDARD && (
-            <ReactSearchKit
-              searchApi={searchApi}
-              appName={'awards'}
-              urlHandlerApi={{ enabled: false }}
-              // initialQueryState={props.searchConfig.initialQueryState}
-            >
-              <Grid>
-                <Grid.Row>
-                  <Grid.Column width={8} floated="left" verticalAlign="middle">
-                    <SearchBar
-                      autofocus
-                      actionProps={{
-                        icon: 'search',
-                        content: null,
-                        className: 'search',
-                      }}
-                    />
-                  </Grid.Column>
-                  <Grid.Column width={8} floated="right" textAlign="right">
-                    <span>
-                      <Icon name="filter" />
-                      <Dropdown
-                        placeholder="Funder..."
-                        search
-                        selection
-                        options={fundersWithAwards.map(({ id, name }) => ({
-                          key: id,
-                          value: id,
-                          text: name,
-                        }))}
+            <OverridableContext.Provider value={overriddenComponents}>
+              <ReactSearchKit
+                searchApi={searchApi}
+                appName={'awards'}
+                urlHandlerApi={{ enabled: false }}
+                initialQueryState={searchConfig.initialQueryState}
+              >
+                <Grid padded>
+                  <Grid.Row>
+                    <Grid.Column
+                      width={8}
+                      floated="left"
+                      verticalAlign="middle"
+                    >
+                      <SearchBar
+                        autofocus
+                        actionProps={{
+                          icon: 'search',
+                          content: null,
+                          className: 'search',
+                        }}
                       />
-                    </span>
-                  </Grid.Column>
-                </Grid.Row>
-                <ResultsLoader>
-                  <EmptyResults />
-                  <Error />
-                  <AwardResults />
-                </ResultsLoader>
-              </Grid>
-            </ReactSearchKit>
+                    </Grid.Column>
+                    <Grid.Column width={8} floated="right" textAlign="right">
+                      <span>
+                        <Icon name="filter" />
+                        <Dropdown
+                          placeholder="Funder..."
+                          search
+                          selection
+                          options={fundersWithAwards.map(({ id, name }) => ({
+                            key: id,
+                            value: id,
+                            text: name,
+                          }))}
+                        />
+                      </span>
+                    </Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <ResultsLoader>
+                      <EmptyResults
+                        switchToCustom={() => setMode(ModalTypes.CUSTOM)}
+                      />
+                      <Error />
+                      <AwardResults />
+                    </ResultsLoader>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Pagination />
+                  </Grid.Row>
+                </Grid>
+              </ReactSearchKit>
+            </OverridableContext.Provider>
           )}
           {mode === ModalTypes.CUSTOM && (
             <CustomAwardForm initialAward={initialAward} />
@@ -190,9 +214,7 @@ FundingModal.propTypes = {
         headers: PropTypes.object,
       }),
     }).isRequired,
-    // initialQueryState: PropTypes.shape({
-    //   filters: PropTypes.arrayOf(PropTypes.array),
-    // }).isRequired,
+    initialQueryState: PropTypes.object.isRequired,
   }).isRequired,
   // serializeAwards: PropTypes.func,
 };
