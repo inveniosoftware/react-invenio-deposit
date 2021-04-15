@@ -17,7 +17,6 @@ import {
   FILE_UPLOAD_START,
   SET_DEFAULT_PREVIEW_FILE,
   SET_DEFAULT_PREVIEW_FILE_FAILED,
-  TOGGLE_FILES_ENABLED,
   FILE_IMPORT_STARTED,
   FILE_IMPORT_SUCCESS,
   FILE_IMPORT_FAILED,
@@ -185,11 +184,6 @@ export default (state = initialState, action) => {
     case SET_DEFAULT_PREVIEW_FILE_FAILED:
       // TODO: handle
       return state;
-    case TOGGLE_FILES_ENABLED:
-      return {
-        ...state,
-        enabled: action.payload.filesEnabled,
-      };
     default:
       return state;
   }

@@ -17,7 +17,6 @@ import _get from 'lodash/get';
 const preloadFiles = (files) => {
   const _files = _cloneDeep(files);
   return {
-    enabled: files.enabled,
     defaultFilePreview: files.default_preview || null,
     links: files.links || {},
     entries: _get(_files, 'entries', [])

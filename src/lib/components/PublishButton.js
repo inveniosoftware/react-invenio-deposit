@@ -5,13 +5,14 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import _isEmpty from 'lodash/isEmpty';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Icon, Button, Modal } from 'semantic-ui-react';
 import { ActionButton } from 'react-invenio-forms';
 
 import { submitAction } from '../state/actions';
-import { FORM_PUBLISHING, FORM_SAVE_SUCCEEDED } from '../state/types';
+import { FORM_PUBLISHING } from '../state/types';
 import { toCapitalCase } from '../utils';
 
 export class PublishButtonComponent extends Component {
@@ -27,6 +28,7 @@ export class PublishButtonComponent extends Component {
       publishClick,
       filesEnabled,
       numberOfFiles,
+      errors,
       ...uiProps
     } = this.props;
 
@@ -36,12 +38,9 @@ export class PublishButtonComponent extends Component {
     };
 
     const isDisabled = (formik) => {
-      const noFilesUploaded = !numberOfFiles;
-      // Files are broken if you publish without either uploading a file
-      // or explicitely mark the draft as "Metadata only"
-      // Temporarely disable publish also in that case until the backend
-      // can validate it correctly and report back errors on partial save
-      return formik.isSubmitting || (filesEnabled && noFilesUploaded);
+      const filesMissing = filesEnabled && !numberOfFiles;
+      const hasErrors = !_isEmpty(errors);
+      return formik.isSubmitting || hasErrors || filesMissing;
     };
 
     const action = 'publish';
@@ -97,8 +96,9 @@ export class PublishButtonComponent extends Component {
 
 const mapStateToProps = (state) => ({
   formState: state.deposit.formState,
-  filesEnabled: state.files.enabled,
+  filesEnabled: state.deposit.record.files.enabled,
   numberOfFiles: Object.values(state.files.entries).length,
+  errors: state.deposit.errors,
 });
 
 const mapDispatchToProps = (dispatch) => ({

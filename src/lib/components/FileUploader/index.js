@@ -16,12 +16,12 @@ import {
 import { FileUploaderComponent } from './FileUploader';
 
 const mapStateToProps = (state) => {
-  const { links, defaultFilePreview, entries, enabled } = state.files;
+  const { links, defaultFilePreview, entries } = state.files;
   return {
     files: entries,
     links,
     defaultFilePreview,
-    filesEnabled: enabled,
+    filesEnabled: state.deposit.record.files.enabled,
     record: state.deposit.record,
     config: state.deposit.config,
     permissions: state.deposit.permissions,
