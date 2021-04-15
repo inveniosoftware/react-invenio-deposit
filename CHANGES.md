@@ -1,5 +1,11 @@
 # Changes
 
+Version 0.13.5 (released 2021-04-16)
+
+* Pass files.enabled in the draft API payload
+* Disable Publish button if errors
+* Use backend error message to indicate missing files
+
 Version 0.13.4 (released 2021-04-13)
 
 Version 0.13.3 (released 2021-04-07)
