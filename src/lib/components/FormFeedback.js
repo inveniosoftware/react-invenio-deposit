@@ -19,6 +19,7 @@ import { leafTraverse } from '../utils';
 
 
 const defaultLabels = {
+  'files.enabled': 'Files',
   'metadata.resource_type': 'Resource type',
   'metadata.title': 'Title',
   'metadata.additional_titles': 'Title',  // to display under Title label
@@ -92,8 +93,18 @@ class DisconnectedFormFeedback extends Component {
    * @returns object
    */
   toLabelledErrorMessages(errors) {
-    // Step 0 - get the relevant sub-object
-    const step0 = _get(errors, "metadata", {});
+    // Step 0 - Create object with collapsed 1st and 2nd level keys
+    //          e.g., {metadata: {creators: ,,,}} => {"metadata.creators": ...}
+    // For now, only for metadata and files
+    const metadata = errors.metadata || {};
+    const step0_metadata = Object.entries(metadata).map(([key, value]) => {
+      return ["metadata." + key, value];
+    });
+    const files = errors.files || {};
+    const step0_files = Object.entries(files).map(([key, value]) => {
+      return ["files." + key, value];
+    });
+    const step0 = Object.fromEntries(step0_metadata.concat(step0_files));
 
     // Step 1 - Transform each error value into array of error messages
     const step1 = Object.fromEntries(
@@ -107,12 +118,9 @@ class DisconnectedFormFeedback extends Component {
     // additional_titles)
     const labelledErrorMessages = {};
     for (const key in step1) {
-      const fullKey = "metadata." + key;
-      const label = this.labels[fullKey] || "Unknown field";
-
-      let messages = labelledErrorMessages[label] || []
-      step1[key].forEach((message) => messages.push(message));
-      labelledErrorMessages[label] = messages;
+      const label = this.labels[key] || "Unknown field";
+      let messages = labelledErrorMessages[label] || [];
+      labelledErrorMessages[label] = messages.concat(step1[key]);
     }
 
     return labelledErrorMessages;

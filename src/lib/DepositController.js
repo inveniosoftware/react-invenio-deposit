@@ -78,7 +78,6 @@ export class DepositController {
 
     let data = recordSerializer.deserialize(response.data || {});
     let errors = recordSerializer.deserializeErrors(response.errors || []);
-    errors = this._validateDraftFiles(store.getState().files, errors);
 
     // response 100% successful
     if (200 <= response.code && response.code < 300 && _isEmpty(errors)) {
@@ -105,23 +104,6 @@ export class DepositController {
     }
 
     formik.setSubmitting(false);
-  }
-
-  _validateDraftFiles(files, errors) {
-    const filesEnabled = files.enabled;
-    const numberOfFiles = Object.values(files.entries).length;
-
-    if (filesEnabled && !numberOfFiles) {
-      return {
-        ...errors,
-        metadata: {
-          files:
-            "Missing uploaded files. To disable files for this record please mark 'Metadata-only record' checkbox.",
-          ...errors.metadata,
-        },
-      };
-    }
-    return errors;
   }
 
   /**
@@ -200,6 +182,13 @@ export class DepositController {
       let response = await this.createDraft(draft, { store });
       draft = response.data;
     }
+
+    // We have to save draft before we upload files, because files might have
+    // been disabled and we need to re-enable them first. We do it
+    // "stealthily" (not using saveDraft) so as to provide a nice UX.
+    const recordSerializer = store.config.recordSerializer;
+    let payload = recordSerializer.serialize(draft);
+    await this.apiClient.save(payload);
 
     for (const file of files) {
       const uploadFileUrl = draft.links.files;

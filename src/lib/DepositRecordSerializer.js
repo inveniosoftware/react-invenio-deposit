@@ -201,6 +201,7 @@ export class DepositRecordSerializer {
       'id',
       'links',
       'defaultFilePreview',
+      'files',
     ]);
     for (let key in this.depositRecordSchema) {
       serializedRecord = this.depositRecordSchema[key].serialize(
