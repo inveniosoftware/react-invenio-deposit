@@ -42,7 +42,6 @@ function FundingFieldForm(props) {
             const arrayPath = fieldPath;
             const indexPath = index;
             const key = `${arrayPath}.${indexPath}`;
-            const awardTitle = value.award?.title;
             const funderName = value.funder?.name;
             // if award has no id, it's a custom one
             const awardType = value.award?.id ? 'standard' : 'custom';
@@ -53,7 +52,7 @@ function FundingFieldForm(props) {
                   index,
                   compKey: key,
                   initialAward: awardType === 'custom' ? value : null,
-                  awardTitle,
+                  award: value.award,
                   funderName,
                   awardType,
                   moveAward: formikArrayMove,

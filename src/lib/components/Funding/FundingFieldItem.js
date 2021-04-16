@@ -8,7 +8,7 @@
 
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { Button, List, Ref } from 'semantic-ui-react';
+import { Button, Label, List, Ref } from 'semantic-ui-react';
 
 import { FundingModal } from './FundingModal';
 
@@ -16,7 +16,7 @@ export const FundingFieldItem = ({
   compKey,
   index,
   initialAward,
-  awardTitle,
+  award,
   funderName,
   awardType,
   moveAward,
@@ -87,8 +87,23 @@ export const FundingFieldItem = ({
         </Ref>
         <Ref innerRef={preview}>
           <List.Content>
-            <List.Header>{awardTitle || funderName}</List.Header>
-            {!!awardTitle && <List.Description>{funderName}</List.Description>}
+            <List.Header>
+              {!!award?.title ? (
+                <span>
+                  {award?.title}{' '}
+                  {!!award?.number && (
+                    <Label basic size="mini">
+                      {award?.number}
+                    </Label>
+                  )}
+                </span>
+              ) : (
+                funderName
+              )}
+            </List.Header>
+            {!!award?.title && (
+              <List.Description>{funderName}</List.Description>
+            )}
           </List.Content>
         </Ref>
       </List.Item>
