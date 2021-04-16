@@ -17,7 +17,7 @@ export function CustomAwardForm({ initialAward }) {
     <Form>
       <RemoteSelectField
         fieldPath="selectedAward.funder.id"
-        // TODO: Use PROD url eventually
+        // TODO: Use PROD URL eventually
         suggestionAPIUrl="http://127.0.0.1:9999/api/vocabularies/funders"
         suggestionAPIHeaders={{
           Accept: 'application/vnd.inveniordm.v1+json',
@@ -36,7 +36,8 @@ export function CustomAwardForm({ initialAward }) {
         noQueryMessage="Search for funder..."
         required
         onChange={(data, formikProps) => {
-          // Set funder name
+          // XXX: set funder name manually, as `RemoteSelectField`
+          // only allows setting a single value via `fieldPath`.
           const funderId = data.value;
           if (funderId) {
             const name = data.options.find((op) => op.key === funderId).text;

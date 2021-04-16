@@ -23,7 +23,6 @@ export const FundingFieldItem = ({
   replaceAward,
   removeAward,
   searchConfig,
-  // serializeAwards,
 }) => {
   const dropRef = React.useRef(null);
   const [_, drag, preview] = useDrag({
@@ -77,7 +76,6 @@ export const FundingFieldItem = ({
                 Edit
               </Button>
             }
-            // serializeAwards={serializeAwards}
           />
           <Button size="mini" type="button" onClick={() => removeAward(index)}>
             Remove

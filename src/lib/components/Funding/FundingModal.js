@@ -41,12 +41,16 @@ const ModalActions = {
   EDIT: 'edit',
 };
 
-// const AwardSchema = Yup.object().shape({
-//   selectedAward: Yup.object().shape({
-//     title: Yup.string().required('Title is a required field.'),
-//     link: Yup.string().url('Link must be a valid URL'),
-//   }),
-// });
+const FundingSchema = Yup.object().shape({
+  selectedAward: Yup.object().shape({
+    funder: Yup.object().shape({
+      id: Yup.string().required('Funder is a required field.'),
+    }),
+    award: Yup.object().shape({
+      link: Yup.string().url('Link must be a valid URL'),
+    }),
+  }),
+});
 
 export function FundingModal({
   action,
@@ -64,7 +68,7 @@ export function FundingModal({
   useEffect(() => {
     if (open) {
       axios
-        // FIXME: use PROD url
+        // FIXME: use PROD URL eventually
         .get('http://127.0.0.1:9999/api/vocabularies/funders/awards', {
           headers: { 'Content-Type': 'application/json' },
         })
@@ -89,10 +93,11 @@ export function FundingModal({
   };
 
   const initialAward = props.initialAward || {
-    title: '',
-    id: null,
-    number: '',
-    link: '',
+    award: {
+      title: '',
+      number: '',
+      link: '',
+    },
   };
   const searchApi = new InvenioSearchApi(searchConfig.searchApi);
   return (
@@ -101,7 +106,7 @@ export function FundingModal({
         selectedAward: initialAward,
       }}
       onSubmit={onSubmit}
-      // validationSchema={AwardSchema}
+      validationSchema={FundingSchema}
     >
       <Modal
         onOpen={openModal}
@@ -205,6 +210,7 @@ FundingModal.propTypes = {
     id: PropTypes.string,
     title: PropTypes.string,
     number: PropTypes.string,
+    link: PropTypes.string,
   }),
   trigger: PropTypes.object.isRequired,
   onAwardChange: PropTypes.func.isRequired,
@@ -216,5 +222,4 @@ FundingModal.propTypes = {
     }).isRequired,
     initialQueryState: PropTypes.object.isRequired,
   }).isRequired,
-  // serializeAwards: PropTypes.func,
 };

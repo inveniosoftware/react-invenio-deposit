@@ -60,7 +60,6 @@ function FundingFieldForm(props) {
                   replaceAward: formikArrayReplace,
                   removeAward: formikArrayRemove,
                   searchConfig: props.searchConfig,
-                  // serializeAwards: props.serializeAwards,
                 }}
               />
             );
@@ -78,7 +77,6 @@ function FundingFieldForm(props) {
             }}
             mode="standard"
             action="add"
-            // serializeAwards={props.serializeAwards}
           />
           <FundingModal
             searchConfig={props.searchConfig}
