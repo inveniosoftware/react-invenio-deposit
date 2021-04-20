@@ -139,7 +139,7 @@ FormikAccessRightField.defaultProps = {
 
 
 const mapStateToProps = (state) => ({
-  isMetadataOnly: !state.files.enabled,
+  isMetadataOnly: !state.deposit.record.files.enabled,
 });
 
 
