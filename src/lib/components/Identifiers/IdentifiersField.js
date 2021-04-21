@@ -33,19 +33,28 @@ export class IdentifiersField extends Component {
           required={required}
         >
           {({ array, arrayHelpers, indexPath, key }) => (
-            <GroupField widths="equal" optimized>
+            <GroupField optimized>
+              <TextField
+                fieldPath={`${key}.identifier`}
+                label={'Identifier'}
+                width={11}
+              />
               {schemeOptions && (
                 <SelectField
                   fieldPath={`${key}.scheme`}
                   label={'Scheme'}
                   options={schemeOptions}
                   optimized
+                  width={5}
                 />
               )}
               {!schemeOptions && (
-                <TextField fieldPath={`${key}.scheme`} label={'Scheme'} />
+                <TextField
+                  fieldPath={`${key}.scheme`}
+                  label={'Scheme'}
+                  width={5}
+                />
               )}
-              <TextField fieldPath={`${key}.identifier`} label={'Identifier'} />
               <Form.Field>
                 <Form.Field>
                   <label>&nbsp;</label>

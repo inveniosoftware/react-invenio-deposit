@@ -167,4 +167,50 @@ export class DepositApiClient {
       }
     );
   }
+
+  /**
+   * Calls the API to reserve a PID.
+   *
+   */
+  async reservePID(links, pidType) {
+    return this.createResponse(() => {
+      const link = `${links.self}/pids/${pidType}`;
+      // PIDS-FIXME: should be uncommented when links for pids are released in backend
+      // const link = _get(links, `self_${pidType}`, '');
+      // if (link === '') {
+      //   throw Error(`Cannot get the link to discard the PID for ${pidType}`);
+      // }
+
+      return axios.post(
+        link,
+        {},
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    });
+  }
+
+  /**
+   * Calls the API to discard a previously reserved PID.
+   *
+   */
+  async discardPID(links, pidType) {
+    return this.createResponse(() => {
+      const link = `${links.self}/pids/${pidType}`;
+      // PIDS-FIXME: should be uncommented when links for pids are released in backend
+      // const link = _get(links, `self_${pidType}`, '');
+      // if (link === '') {
+      //   throw Error(`Cannot get the link to discard the PID for ${pidType}`);
+      // }
+
+      return axios.delete(
+        link,
+        {},
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    });
+  }
 }
