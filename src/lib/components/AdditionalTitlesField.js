@@ -33,7 +33,7 @@ export class AdditionalTitlesField extends Component {
           <GroupField fieldPath={fieldPath}>
             <TextField
               fieldPath={`${key}.title`}
-              label={'Additional Title'}
+              label={'Additional title'}
               optimized
               width={5}
             />
