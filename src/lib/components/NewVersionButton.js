@@ -39,7 +39,7 @@ export const NewVersionButton = (props) => {
             loading={loading}
           >
             <Icon name="tag" />
-            New Version
+            New version
           </Button>
         </div>
       }
