@@ -17,12 +17,14 @@ import {
   FORM_SAVING,
 } from '../state/types';
 
+const initialState = {
+  isLoading: false,
+  previewButtonClicked: false,
+  previousFormState: '',
+};
+
 export class PreviewButtonComponent extends Component {
-  state = {
-    isLoading: false,
-    previewButtonClicked: false,
-    previousFormState: '',
-  };
+  state = initialState;
 
   isDisabled = (formik) => {
     return formik.isSubmitting;
@@ -37,6 +39,7 @@ export class PreviewButtonComponent extends Component {
           this.setState({ previousFormState: formState });
           break;
         case FORM_SAVE_SUCCEEDED:
+          this.setState(initialState);
           window.location = `/records/${record.id}?preview=1`;
           break;
         case FORM_SAVE_PARTIALLY_SUCCEEDED:
