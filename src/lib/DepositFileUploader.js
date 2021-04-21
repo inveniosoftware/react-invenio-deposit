@@ -10,9 +10,13 @@
 
 import axios from 'axios';
 import _indexOf from 'lodash/indexOf';
+import { UploadState } from './state/reducers/files';
 import {
   FILE_DELETED_SUCCESS,
   FILE_DELETE_FAILED,
+  FILE_IMPORT_FAILED,
+  FILE_IMPORT_STARTED,
+  FILE_IMPORT_SUCCESS,
   FILE_UPLOAD_CANCELLED,
   FILE_UPLOAD_FAILED,
   FILE_UPLOAD_FINISHED,
@@ -20,11 +24,7 @@ import {
   FILE_UPLOAD_IN_PROGRESS,
   FILE_UPLOAD_SET_CANCEL_FUNCTION,
   FILE_UPLOAD_START,
-  FILE_IMPORT_STARTED,
-  FILE_IMPORT_SUCCESS,
-  FILE_IMPORT_FAILED,
 } from './state/types';
-import { UploadState } from './state/reducers/files';
 
 export class DepositFileUploader {
   constructor(apiClient, { fileUploadConcurrency } = {}) {
@@ -228,7 +228,6 @@ export class DepositFileUploader {
         payload: { files },
       });
     } catch (e) {
-      console.log(e);
       //TODO: show notification on failure
       store.dispatch({ type: FILE_IMPORT_FAILED });
     }

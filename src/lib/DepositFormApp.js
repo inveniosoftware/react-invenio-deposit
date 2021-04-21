@@ -6,14 +6,13 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import { configureStore } from './store';
+import { DepositApiClient } from './DepositApiClient';
 import { DepositBootstrap } from './DepositBootstrap';
 import { DepositController } from './DepositController';
-import { DepositApiClient } from './DepositApiClient';
-import { DepositRecordSerializer } from './DepositRecordSerializer';
 import { DepositFileUploader } from './DepositFileUploader';
+import { DepositRecordSerializer } from './DepositRecordSerializer';
+import { configureStore } from './store';
 
 export class DepositFormApp extends Component {
   constructor(props) {

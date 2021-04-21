@@ -18,6 +18,10 @@ import {
   ACTION_SAVE_FAILED,
   ACTION_SAVE_PARTIALLY_SUCCEEDED,
   ACTION_SAVE_SUCCEEDED,
+  DISCARD_PID_FAILED,
+  DISCARD_PID_SUCCESS,
+  RESERVE_PID_FAILED,
+  RESERVE_PID_SUCCESS,
 } from './state/types';
 
 export class DepositController {
@@ -225,4 +229,54 @@ export class DepositController {
     const importFilesUrl = draft.links.self + '/actions/files-import';
     await this.fileUploader.importParentRecordFiles(importFilesUrl, { store });
   }
+
+  /**
+   * Reserve a PID
+   */
+  reservePID = async (draft, pidType, { formik, store }) => {
+    const recordSerializer = store.config.recordSerializer;
+
+    const response = await this.apiClient.reservePID(draft, pidType);
+
+    let data = recordSerializer.deserialize(response.data || {});
+    let errors = recordSerializer.deserializeErrors(response.errors || []);
+
+    if (200 <= response.code && response.code < 300 && _isEmpty(errors)) {
+      store.dispatch({
+        type: RESERVE_PID_SUCCESS,
+        payload: { data },
+      });
+    } else {
+      store.dispatch({
+        type: RESERVE_PID_FAILED,
+        payload: { data, errors },
+      });
+      formik.setErrors(errors);
+    }
+  };
+
+  /**
+   * Discard a previously reserved PID
+   */
+  discardPID = async (draft, pidType, { formik, store }) => {
+    const recordSerializer = store.config.recordSerializer;
+
+    const response = await this.apiClient.discardPID(draft, pidType);
+
+    let data = recordSerializer.deserialize(response.data || {});
+    let errors = recordSerializer.deserializeErrors(response.errors || []);
+
+    if (200 <= response.code && response.code < 300 && _isEmpty(errors)) {
+      store.dispatch({
+        type: DISCARD_PID_SUCCESS,
+        payload: { data },
+      });
+    } else {
+      store.dispatch({
+        type: DISCARD_PID_FAILED,
+        payload: { data, errors },
+      });
+      formik.setErrors(errors);
+    }
+  };
 }

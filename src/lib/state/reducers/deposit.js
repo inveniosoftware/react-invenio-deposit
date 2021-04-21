@@ -8,18 +8,24 @@
 import {
   ACTION_CREATE_SUCCEEDED,
   ACTION_DELETE_FAILED,
-  ACTION_PUBLISH_SUCCEEDED,
   ACTION_PUBLISH_FAILED,
+  ACTION_PUBLISH_SUCCEEDED,
+  ACTION_SAVE_FAILED,
   ACTION_SAVE_PARTIALLY_SUCCEEDED,
   ACTION_SAVE_SUCCEEDED,
-  ACTION_SAVE_FAILED,
+  DISCARD_PID_FAILED,
+  DISCARD_PID_STARTED,
+  DISCARD_PID_SUCCESS,
   FORM_ACTION_EVENT_EMITTED,
   FORM_DELETE_FAILED,
-  FORM_PUBLISH_SUCCEEDED,
   FORM_PUBLISH_FAILED,
-  FORM_SAVE_SUCCEEDED,
-  FORM_SAVE_PARTIALLY_SUCCEEDED,
+  FORM_PUBLISH_SUCCEEDED,
   FORM_SAVE_FAILED,
+  FORM_SAVE_PARTIALLY_SUCCEEDED,
+  FORM_SAVE_SUCCEEDED,
+  RESERVE_PID_FAILED,
+  RESERVE_PID_STARTED,
+  RESERVE_PID_SUCCESS,
 } from '../types';
 
 export default (state = {}, action) => {
@@ -71,6 +77,27 @@ export default (state = {}, action) => {
         ...state,
         errors: { ...action.payload.errors },
         formState: FORM_PUBLISH_FAILED,
+      };
+    case RESERVE_PID_STARTED:
+    case DISCARD_PID_STARTED:
+      return {
+        ...state,
+        reservePIDsLoading: true,
+      };
+    case RESERVE_PID_SUCCESS:
+    case DISCARD_PID_SUCCESS:
+      return {
+        ...state,
+        record: { ...state.record, ...action.payload.data },
+        errors: {},
+        reservePIDsLoading: false,
+      };
+    case RESERVE_PID_FAILED:
+    case DISCARD_PID_FAILED:
+      return {
+        ...state,
+        errors: { ...action.payload.errors },
+        reservePIDsLoading: false,
       };
     default:
       return state;
