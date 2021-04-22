@@ -142,9 +142,7 @@ export const FileUploaderComponent = ({
           <Grid.Row className="file-import-note-row">
             <Grid.Column width={16}>
               <Message visible info>
-                <p>
-                  <Icon name="warning sign" />
-                  Import files from the previous record version &nbsp;
+                <div style={{ display: 'inline-block', float: 'right' }}>
                   <Button
                     type="button"
                     size="mini"
@@ -155,6 +153,10 @@ export const FileUploaderComponent = ({
                     disabled={isFileImportInProgress}
                     loading={isFileImportInProgress}
                   />
+                </div>
+                <p style={{ marginTop: '5px', display: 'inline-block' }}>
+                  <Icon name="warning sign" />
+                  Import files from the previous record version &nbsp;
                 </p>
               </Message>
             </Grid.Column>
