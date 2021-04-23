@@ -155,8 +155,8 @@ export const FileUploaderComponent = ({
                   />
                 </div>
                 <p style={{ marginTop: '5px', display: 'inline-block' }}>
-                  <Icon name="warning sign" />
-                  Import files from the previous record version &nbsp;
+                  <Icon name="info circle" />
+                  You can import files from the previous version.
                 </p>
               </Message>
             </Grid.Column>
@@ -263,6 +263,6 @@ FileUploaderComponent.defaultProps = {
   },
   uploadButtonIcon: 'upload',
   uploadButtonText: 'Upload files',
-  importButtonIcon: 'upload',
+  importButtonIcon: 'sync',
   importButtonText: 'Import files',
 };
