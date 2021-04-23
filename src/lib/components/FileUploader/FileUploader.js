@@ -6,6 +6,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 import { useFormikContext } from 'formik';
+import _get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Button, Grid, Icon, Message, Modal } from 'semantic-ui-react';
@@ -21,13 +22,11 @@ export const FileUploaderComponent = ({
   config,
   defaultFilePreview,
   files,
-  filesEnabled,
   isDraftRecord,
   hasParentRecord,
   quota,
   permissions,
   record,
-  toggleFilesEnabled,
   uploadFilesToDraft,
   importRecordFilesToDraft,
   importButtonIcon,
@@ -37,6 +36,7 @@ export const FileUploaderComponent = ({
 }) => {
   // We extract the working copy of the draft stored as `values` in formik
   const { values: formikDraft } = useFormikContext();
+  const filesEnabled = _get(formikDraft, "files.enabled", false);
   const [warningMsg, setWarningMsg] = useState();
 
   let filesList = Object.values(files).map((fileState) => {
@@ -134,7 +134,6 @@ export const FileUploaderComponent = ({
               filesSize={filesSize}
               isDraftRecord={isDraftRecord}
               quota={quota}
-              toggleFilesEnabled={toggleFilesEnabled}
             />
           )}
         </Grid.Row>
@@ -235,7 +234,6 @@ FileUploaderComponent.propTypes = {
   defaultFilePreview: PropTypes.string,
   dragText: PropTypes.string,
   files: fileDetailsShape,
-  filesEnabled: PropTypes.bool,
   isDraftRecord: PropTypes.bool,
   hasParentRecord: PropTypes.bool,
   quota: PropTypes.shape({
@@ -243,7 +241,6 @@ FileUploaderComponent.propTypes = {
     maxFiles: PropTypes.number,
   }),
   record: PropTypes.object,
-  toggleFilesEnabled: PropTypes.func,
   uploadButtonIcon: PropTypes.string,
   uploadButtonText: PropTypes.string,
   importButtonIcon: PropTypes.string,

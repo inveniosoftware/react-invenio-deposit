@@ -4,6 +4,7 @@
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
+import { useFormikContext } from 'formik';
 import React from 'react';
 import { Checkbox, Grid, Icon, Label, List, Popup } from 'semantic-ui-react';
 import { humanReadableBytes } from './utils';
@@ -16,8 +17,9 @@ export const FileUploaderToolbar = ({
   filesSize,
   filesEnabled,
   quota,
-  toggleFilesEnabled,
 }) => {
+  const { setFieldValue } = useFormikContext();
+
   return (
     <>
       <Grid.Column verticalAlign="middle" floated="left" width={6}>
@@ -26,7 +28,7 @@ export const FileUploaderToolbar = ({
             <List.Item>
               <Checkbox
                 label={'Metadata-only record'}
-                onChange={() => toggleFilesEnabled(!filesEnabled)}
+                onChange={() => setFieldValue("files.enabled", !filesEnabled)}
                 disabled={filesList.length > 0}
                 checked={!filesEnabled}
               />

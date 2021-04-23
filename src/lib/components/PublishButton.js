@@ -5,6 +5,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -26,7 +27,6 @@ export class PublishButtonComponent extends Component {
     const {
       formState,
       publishClick,
-      filesEnabled,
       numberOfFiles,
       errors,
       ...uiProps
@@ -38,6 +38,7 @@ export class PublishButtonComponent extends Component {
     };
 
     const isDisabled = (formik) => {
+      const filesEnabled = _get(formik.values, "files.enabled", false);
       const filesMissing = filesEnabled && !numberOfFiles;
       const hasErrors = !_isEmpty(errors);
       return formik.isSubmitting || hasErrors || filesMissing;
@@ -96,7 +97,6 @@ export class PublishButtonComponent extends Component {
 
 const mapStateToProps = (state) => ({
   formState: state.deposit.formState,
-  filesEnabled: state.deposit.record.files.enabled,
   numberOfFiles: Object.values(state.files.entries).length,
   errors: state.deposit.errors,
 });

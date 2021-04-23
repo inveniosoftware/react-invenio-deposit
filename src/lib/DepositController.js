@@ -181,14 +181,14 @@ export class DepositController {
       // TODO: Deal with case when create fails
       let response = await this.createDraft(draft, { store });
       draft = response.data;
+    } else {
+      // We have to save draft before we upload files, because files might have
+      // been disabled and we need to re-enable them first. We do it
+      // "stealthily" (not using saveDraft) so as to provide a nice UX.
+      const recordSerializer = store.config.recordSerializer;
+      let payload = recordSerializer.serialize(draft);
+      await this.apiClient.save(payload);
     }
-
-    // We have to save draft before we upload files, because files might have
-    // been disabled and we need to re-enable them first. We do it
-    // "stealthily" (not using saveDraft) so as to provide a nice UX.
-    const recordSerializer = store.config.recordSerializer;
-    let payload = recordSerializer.serialize(draft);
-    await this.apiClient.save(payload);
 
     for (const file of files) {
       const uploadFileUrl = draft.links.files;
