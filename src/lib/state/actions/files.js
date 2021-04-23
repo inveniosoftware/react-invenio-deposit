@@ -5,8 +5,6 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { ACTION_TOGGLE_FILES_ENABLED } from '../types';
-
 export const uploadDraftFiles = (draft, files) => {
   return (dispatch, getState, config) => {
     const controller = config.controller;
@@ -41,17 +39,6 @@ export const setDefaultPreview = (filename) => {
     const defaultPreviewUrl = getState().files.links.self;
     return controller.setDefaultPreviewFile(defaultPreviewUrl, filename, {
       store: { dispatch, getState, config },
-    });
-  };
-};
-
-export const toggleFilesEnabled = (filesEnabled) => {
-  return (dispatch) => {
-    return dispatch({
-      type: ACTION_TOGGLE_FILES_ENABLED,
-      payload: {
-        filesEnabled: filesEnabled,
-      },
     });
   };
 };
