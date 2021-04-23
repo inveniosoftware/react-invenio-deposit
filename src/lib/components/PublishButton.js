@@ -15,6 +15,13 @@ import { submitAction } from '../state/actions';
 import { FORM_PUBLISHING } from '../state/types';
 import { toCapitalCase } from '../utils';
 
+const requiredFieldsForValidDraft = [
+  'title',
+  'resource_type',
+  'publication_date',
+  'creators',
+];
+
 export class PublishButtonComponent extends Component {
   state = { confirmOpen: false };
 
@@ -29,6 +36,7 @@ export class PublishButtonComponent extends Component {
       filesEnabled,
       numberOfFiles,
       errors,
+      deposit,
       ...uiProps
     } = this.props;
 
@@ -38,9 +46,14 @@ export class PublishButtonComponent extends Component {
     };
 
     const isDisabled = (formik) => {
-      const filesMissing = filesEnabled && !numberOfFiles;
+      const filesAreValid =
+        (filesEnabled && numberOfFiles > 0) || !filesEnabled;
       const hasErrors = !_isEmpty(errors);
-      return formik.isSubmitting || hasErrors || filesMissing;
+      const missingRequiredFields = requiredFieldsForValidDraft.some((e) =>
+        _isEmpty(deposit.record.metadata[e])
+      );
+      const validDraft = !missingRequiredFields && filesAreValid;
+      return formik.isSubmitting || hasErrors || !validDraft;
     };
 
     const action = 'publish';
@@ -96,6 +109,7 @@ export class PublishButtonComponent extends Component {
 
 const mapStateToProps = (state) => ({
   formState: state.deposit.formState,
+  deposit: state.deposit,
   filesEnabled: state.deposit.record.files.enabled,
   numberOfFiles: Object.values(state.files.entries).length,
   errors: state.deposit.errors,
