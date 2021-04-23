@@ -83,6 +83,7 @@ export class CreatibutorsIdentifiers extends Component {
         // `icon` is set to `null` in order to hide the dropdown default icon
         icon={null}
         onAddItem={this.handleIdentifierAddition}
+        optimized
       />
     );
   }

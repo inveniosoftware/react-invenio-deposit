@@ -89,7 +89,7 @@ export function embargoSection(embargo) {
             <>
               <Divider hidden />
               <EmbargoDateField fieldPath="access.embargo.until" required />
-              <TextAreaField label="Embargo reason" fieldPath={"access.embargo.reason"} placeholder="Optionally, describe the reason for the embargo." />
+              <TextAreaField label="Embargo reason" fieldPath={"access.embargo.reason"} placeholder="Optionally, describe the reason for the embargo." optimized />
             </>
           )}
           {embargo.is(EmbargoState.LIFTED) && (
