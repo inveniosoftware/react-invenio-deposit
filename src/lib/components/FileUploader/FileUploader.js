@@ -20,7 +20,6 @@ import { humanReadableBytes } from './utils';
 //       the `useFormikContext` hook.
 export const FileUploaderComponent = ({
   config,
-  defaultFilePreview,
   files,
   isDraftRecord,
   hasParentRecord,
@@ -165,11 +164,10 @@ export const FileUploaderComponent = ({
           <Grid.Row className="file-upload-area-row">
             <FileUploaderArea
               {...uiProps}
-              filesEnabled={filesEnabled}
               filesList={filesList}
               dropzoneParams={dropzoneParams}
               isDraftRecord={isDraftRecord}
-              defaultFilePreview={defaultFilePreview}
+              filesEnabled={filesEnabled}
             />
           </Grid.Row>
         )}
@@ -231,7 +229,6 @@ const fileDetailsShape = PropTypes.objectOf(
 
 FileUploaderComponent.propTypes = {
   config: PropTypes.object,
-  defaultFilePreview: PropTypes.string,
   dragText: PropTypes.string,
   files: fileDetailsShape,
   isDraftRecord: PropTypes.bool,

@@ -32,13 +32,3 @@ export const deleteDraftFile = (file) => {
     });
   };
 };
-
-export const setDefaultPreview = (filename) => {
-  return (dispatch, getState, config) => {
-    const controller = config.controller;
-    const defaultPreviewUrl = getState().files.links.self;
-    return controller.setDefaultPreviewFile(defaultPreviewUrl, filename, {
-      store: { dispatch, getState, config },
-    });
-  };
-};
