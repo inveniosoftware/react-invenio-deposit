@@ -43,9 +43,13 @@ export class AdditionalTitlesField extends Component {
               options={options.type}
               width={5}
             />
-            {/* temporary: February release removal
-                  TODO: Re-enable in next releases*/}
-            {/* <LanguagesField
+            <LanguagesField
+              fieldPath={`${key}.lang`}
+              // initialOptions={
+              //   _get(this.props.record, "ui.languages", [])
+              //   // needed because dumped empty record from backend gives [null]
+              //   .filter((lang) => lang !== null)
+              // }
               serializeSuggestions={(suggestions) =>
                 suggestions.map((item) => ({
                   text: item.title_l10n,
@@ -53,14 +57,13 @@ export class AdditionalTitlesField extends Component {
                   key: item.id,
                 }))
               }
-              fieldPath={`${key}.lang`}
               label={'Language'}
               multiple={false}
               placeholder={'Select language'}
               labelIcon={null}
               clearable
               width={5}
-            /> */}
+            />
             <Form.Field width={1}>
               <label>&nbsp;</label>
               <Button icon onClick={() => arrayHelpers.remove(indexPath)}>

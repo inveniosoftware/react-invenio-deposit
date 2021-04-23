@@ -57,16 +57,21 @@ export class AdditionalDescriptionsField extends Component {
                     options={options.type}
                     required
                   />
-                  {/* temporary: January release removal
-                  TODO: Re-enable in next releases*/}
-                  {/* <LanguagesField
+                  <LanguagesField
                     fieldPath={`${key}.lang`}
+                    // serializeSuggestions={(suggestions) =>
+                    //   suggestions.map((item) => ({
+                    //     text: item.title_l10n,
+                    //     value: item.id,
+                    //     key: item.id,
+                    //   }))
+                    // }
                     label={'Language'}
                     multiple={false}
                     placeholder={'Select language'}
                     labelIcon={null}
                     clearable
-                  /> */}
+                  />
                 </Grid.Column>
               </Grid.Row>
             </Grid>
