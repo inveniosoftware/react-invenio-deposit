@@ -201,12 +201,6 @@ export class DepositController {
     this.fileUploader.deleteUpload(deleteFileUrl, file, { store });
   }
 
-  setDefaultPreviewFile(defaultPreviewUrl, filename, { store }) {
-    this.fileUploader.setDefaultPreview(defaultPreviewUrl, filename, {
-      store,
-    });
-  }
-
   /**
    * Imports parent record files into the draft
    *

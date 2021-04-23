@@ -167,18 +167,4 @@ export class DepositApiClient {
       }
     );
   }
-
-  /**
-   * Sets the files metadata (enabled, default preview).
-   *
-   * @param {string} setFileMetadataUrl - the Files API URL
-   * @param {object} data - the files metadata
-   */
-  async setFilesMetadata(setFileMetadataUrl, data) {
-    return this.createResponse(() =>
-      axios.put(setFileMetadataUrl, data, {
-        headers: { 'Content-Type': 'application/json' },
-      })
-    );
-  }
 }

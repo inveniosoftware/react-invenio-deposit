@@ -204,21 +204,6 @@ export class DepositFileUploader {
     }
   };
 
-  setDefaultPreview = async (defaultPreviewUrl, defaultPreview, { store }) => {
-    const response = await this.apiClient.setFilesMetadata(defaultPreviewUrl, {
-      default_preview: defaultPreview,
-    });
-    const isSuccess = 200 <= response.code && response.code < 300;
-    if (isSuccess) {
-      store.dispatch({
-        type: SET_DEFAULT_PREVIEW_FILE,
-        payload: { filename: defaultPreview },
-      });
-    } else {
-      store.dispatch({ type: SET_DEFAULT_PREVIEW_FILE_FAILED });
-    }
-  };
-
   importParentRecordFiles = async (importFilesUrl, { store }) => {
     store.dispatch({ type: FILE_IMPORT_STARTED });
     try {

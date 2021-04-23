@@ -4,6 +4,8 @@
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
+import { useFormikContext } from 'formik';
+import _get from 'lodash/get';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
@@ -19,7 +21,6 @@ import {
   Checkbox,
 } from 'semantic-ui-react';
 import { humanReadableBytes } from './utils';
-import _get from 'lodash/get';
 
 const FileTableHeader = ({ isDraftRecord }) => (
   <Table.Header>
@@ -52,88 +53,92 @@ const FileTableRow = ({
   file,
   deleteFileFromRecord,
   defaultPreview,
-  onPreviewClick,
-}) => (
-  <Table.Row key={file.name} className="file-table-row">
-    <Table.Cell className="file-table-cell" width={2}>
-      <Checkbox
-        checked={
-          defaultPreview.checked && defaultPreview.filename === file.name
+  setDefaultPreview,
+}) => {
+  const isDefaultPreview = defaultPreview === file.name;
+  return (
+    <Table.Row key={file.name} className="file-table-row">
+      <Table.Cell className="file-table-cell" width={2}>
+        {/* TODO: Investigate if react-deposit-forms optimized Checkbox field
+                  would be more performant */
         }
-        onClick={() => onPreviewClick(file)}
-      />
-    </Table.Cell>
-    <Table.Cell className="file-table-cell" width={10}>
-      {file.upload.pending ? (
-        file.name
-      ) : (
-        <a
-          href={_get(file, 'links.content', '')}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {file.name}
-        </a>
-      )}
-      <br />
-      {file.checksum && (
-        <div className="ui text-muted">
-          <span style={{ fontSize: '10px' }}>{file.checksum}</span>{' '}
-          <Popup
-            content="This is the file fingerprint (MD5 checksum), which can be used to verify the file integrity."
-            trigger={<Icon fitted name="help circle" size="small" />}
-            position="top center"
-          />
-        </div>
-      )}
-    </Table.Cell>
-    <Table.Cell className="file-table-cell" width={2}>
-      {file.size ? humanReadableBytes(file.size) : ''}
-    </Table.Cell>
-    {isDraftRecord && (
-      <Table.Cell className="file-table-cell file-upload-pending" width={2}>
-        {!file.upload?.pending && (
-          <Progress
-            className="file-upload-progress"
-            percent={file.upload.progress}
-            error={file.upload.failed}
-            size="medium"
-            color="blue"
-            progress
-            autoSuccess
-            active={!file.upload.initial}
-            disabled={file.upload.initial}
-          />
-        )}
-        {file.upload?.pending && <span>Pending</span>}
+        <Checkbox
+          checked={isDefaultPreview}
+          onChange={() => setDefaultPreview(isDefaultPreview ? '' : file.name)}
+        />
       </Table.Cell>
-    )}
-    {isDraftRecord && (
-      <Table.Cell textAlign="right" width={2} className="file-table-cell">
-        {file.upload && !(file.upload.ongoing || file.upload.initial) && (
-          <Icon
-            link
-            className="action"
-            name="trash alternate outline"
-            color="blue"
-            onClick={() => deleteFileFromRecord(file)}
-          />
-        )}
-        {file.upload && file.upload.ongoing && (
-          <Button
-            compact
-            type="button"
-            negative
-            size="tiny"
-            onClick={() => file.upload.cancel()}
+      <Table.Cell className="file-table-cell" width={10}>
+        {file.upload.pending ? (
+          file.name
+        ) : (
+          <a
+            href={_get(file, 'links.content', '')}
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Cancel
-          </Button>
+            {file.name}
+          </a>
+        )}
+        <br />
+        {file.checksum && (
+          <div className="ui text-muted">
+            <span style={{ fontSize: '10px' }}>{file.checksum}</span>{' '}
+            <Popup
+              content="This is the file fingerprint (MD5 checksum), which can be used to verify the file integrity."
+              trigger={<Icon fitted name="help circle" size="small" />}
+              position="top center"
+            />
+          </div>
         )}
       </Table.Cell>
-    )}
-  </Table.Row>
-);
+      <Table.Cell className="file-table-cell" width={2}>
+        {file.size ? humanReadableBytes(file.size) : ''}
+      </Table.Cell>
+      {isDraftRecord && (
+        <Table.Cell className="file-table-cell file-upload-pending" width={2}>
+          {!file.upload?.pending && (
+            <Progress
+              className="file-upload-progress"
+              percent={file.upload.progress}
+              error={file.upload.failed}
+              size="medium"
+              color="blue"
+              progress
+              autoSuccess
+              active={!file.upload.initial}
+              disabled={file.upload.initial}
+            />
+          )}
+          {file.upload?.pending && <span>Pending</span>}
+        </Table.Cell>
+      )}
+      {isDraftRecord && (
+        <Table.Cell textAlign="right" width={2} className="file-table-cell">
+          {file.upload && !(file.upload.ongoing || file.upload.initial) && (
+            <Icon
+              link
+              className="action"
+              name="trash alternate outline"
+              color="blue"
+              onClick={() => deleteFileFromRecord(file)}
+            />
+          )}
+          {file.upload && file.upload.ongoing && (
+            <Button
+              compact
+              type="button"
+              negative
+              size="tiny"
+              onClick={() => file.upload.cancel()}
+            >
+              Cancel
+            </Button>
+          )}
+        </Table.Cell>
+      )}
+    </Table.Row>
+  );
+}
 
 const FileUploadBox = ({
   isDraftRecord,
@@ -176,70 +181,33 @@ const FilesListTable = ({
   isDraftRecord,
   filesList,
   deleteFileFromRecord,
-  defaultPreview,
-  onPreviewClick,
-}) => (
-  <Table>
-    <FileTableHeader isDraftRecord={isDraftRecord} />
-    <Table.Body>
-      {filesList.map((file) => {
-        return (
-          <FileTableRow
-            key={file.name}
-            isDraftRecord={isDraftRecord}
-            file={file}
-            deleteFileFromRecord={deleteFileFromRecord}
-            defaultPreview={defaultPreview}
-            onPreviewClick={onPreviewClick}
-          />
-        );
-      })}
-    </Table.Body>
-  </Table>
-);
+}) => {
+  const { setFieldValue, values: formikDraft } = useFormikContext();
+  const defaultPreview = _get(formikDraft, "files.default_preview", '');
+  return (
+    <Table>
+      <FileTableHeader isDraftRecord={isDraftRecord} />
+      <Table.Body>
+        {filesList.map((file) => {
+          return (
+            <FileTableRow
+              key={file.name}
+              isDraftRecord={isDraftRecord}
+              file={file}
+              deleteFileFromRecord={deleteFileFromRecord}
+              defaultPreview={defaultPreview}
+              setDefaultPreview={
+                (filename) => setFieldValue("files.default_preview", filename)
+              }
+            />
+          );
+        })}
+      </Table.Body>
+    </Table>
+  );
+}
 
 export class FileUploaderArea extends Component {
-  constructor(props) {
-    super();
-    this.state = {
-      defaultPreview: {
-        filename: '',
-        checked: false,
-      },
-    };
-    if (props.defaultFilePreview) {
-      this.state.defaultPreview = {
-        filename: props.defaultFilePreview,
-        checked: true,
-      };
-    }
-  }
-
-  onPreviewClick = (file) => {
-    this.setState((prevState) => {
-      if (
-        prevState.defaultPreview.filename === file.name &&
-        prevState.defaultPreview.checked
-      ) {
-        // Set defaultPreview to null when selected file is unchecked
-        this.props.setDefaultPreviewFile(null);
-        return {
-          defaultPreview: {
-            filename: file.name,
-            checked: false,
-          },
-        };
-      }
-      this.props.setDefaultPreviewFile(file.name);
-      return {
-        defaultPreview: {
-          filename: file.name,
-          checked: true,
-        },
-      };
-    });
-  };
-
   render() {
     const { filesEnabled, dropzoneParams, filesList } = this.props;
     return filesEnabled ? (
@@ -252,8 +220,6 @@ export class FileUploaderArea extends Component {
                 <Grid.Column verticalAlign="middle">
                   <FilesListTable
                     {...this.props}
-                    onPreviewClick={this.onPreviewClick}
-                    defaultPreview={this.state.defaultPreview}
                   />
                 </Grid.Column>
               )}
@@ -277,3 +243,17 @@ export class FileUploaderArea extends Component {
     );
   }
 }
+
+FileUploaderArea.propTypes = {
+  defaultFilePreview: PropTypes.string,
+  deleteFileFromRecord: PropTypes.func,
+  dragText: PropTypes.string,
+  dropzoneParams: PropTypes.object,
+  filesEnabled: PropTypes.bool,
+  filesList: PropTypes.array,
+  isDraftRecord: PropTypes.bool,
+  links: PropTypes.object,
+  setDefaultPreviewFile: PropTypes.func,
+  uploadButtonIcon: PropTypes.string,
+  uploadButtonText: PropTypes.string
+};

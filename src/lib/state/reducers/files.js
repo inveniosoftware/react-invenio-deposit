@@ -15,8 +15,6 @@ import {
   FILE_UPLOAD_IN_PROGRESS,
   FILE_UPLOAD_SET_CANCEL_FUNCTION,
   FILE_UPLOAD_START,
-  SET_DEFAULT_PREVIEW_FILE,
-  SET_DEFAULT_PREVIEW_FILE_FAILED,
   FILE_IMPORT_STARTED,
   FILE_IMPORT_SUCCESS,
   FILE_IMPORT_FAILED,
@@ -176,14 +174,6 @@ export default (state = initialState, action) => {
         ...state,
         isFileImportInProgress: false,
       };
-    case SET_DEFAULT_PREVIEW_FILE:
-      return {
-        ...state,
-        defaultFilePreview: action.payload.filename,
-      };
-    case SET_DEFAULT_PREVIEW_FILE_FAILED:
-      // TODO: handle
-      return state;
     default:
       return state;
   }

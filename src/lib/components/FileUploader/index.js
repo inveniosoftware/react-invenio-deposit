@@ -8,18 +8,16 @@
 import { connect } from 'react-redux';
 import {
   deleteDraftFile,
-  setDefaultPreview,
   uploadDraftFiles,
   importParentRecordFiles,
 } from '../../state/actions';
 import { FileUploaderComponent } from './FileUploader';
 
 const mapStateToProps = (state) => {
-  const { links, defaultFilePreview, entries } = state.files;
+  const { links, entries } = state.files;
   return {
     files: entries,
     links,
-    defaultFilePreview,
     record: state.deposit.record,
     config: state.deposit.config,
     permissions: state.deposit.permissions,
@@ -36,7 +34,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(uploadDraftFiles(draft, files)),
   importRecordFilesToDraft: () => dispatch(importParentRecordFiles()),
   deleteFileFromRecord: (file) => dispatch(deleteDraftFile(file)),
-  setDefaultPreviewFile: (filename) => dispatch(setDefaultPreview(filename)),
 });
 
 export const FileUploader = connect(
