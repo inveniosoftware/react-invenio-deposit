@@ -43,7 +43,7 @@ export class DatesField extends Component {
         required={required}
       >
         {({ array, arrayHelpers, indexPath, key, form }) => (
-          <GroupField fieldPath={fieldPath}>
+          <GroupField fieldPath={fieldPath} optimized>
             <TextField
               fieldPath={`${key}.date`}
               label={'Date'}
@@ -57,6 +57,7 @@ export class DatesField extends Component {
               options={options.type}
               required
               width={5}
+              optimized
             />
             <TextField
               fieldPath={`${key}.description`}

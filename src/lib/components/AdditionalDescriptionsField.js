@@ -56,6 +56,7 @@ export class AdditionalDescriptionsField extends Component {
                     label={'Type'}
                     options={options.type}
                     required
+                    optimized
                   />
                   {/* temporary: January release removal
                   TODO: Re-enable in next releases*/}

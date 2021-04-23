@@ -244,6 +244,7 @@ export class CreatibutorsModal extends Component {
                         );
                         this.focusInput();
                       }}
+                      optimized
                     />
                     <RadioField
                       fieldPath={typeFieldPath}
@@ -260,6 +261,7 @@ export class CreatibutorsModal extends Component {
                         );
                         this.focusInput();
                       }}
+                      optimized
                     />
                   </Form.Group>
                   <Form.Group widths="equal">
@@ -337,6 +339,7 @@ export class CreatibutorsModal extends Component {
                     placeholder="Select role"
                     {...(this.isCreator() && { clearable: true })}
                     required={!this.isCreator()}
+                    optimized
                   />
                 </Form>
               </Modal.Content>

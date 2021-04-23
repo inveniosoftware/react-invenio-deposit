@@ -30,11 +30,10 @@ export class AdditionalTitlesField extends Component {
         fieldPath={fieldPath}
       >
         {({ array, arrayHelpers, indexPath, key }) => (
-          <GroupField fieldPath={fieldPath}>
+          <GroupField fieldPath={fieldPath} optimized>
             <TextField
               fieldPath={`${key}.title`}
               label={'Additional title'}
-              optimized
               width={5}
             />
             <SelectField
@@ -42,6 +41,7 @@ export class AdditionalTitlesField extends Component {
               label={'Type'}
               options={options.type}
               width={5}
+              optimized
             />
             {/* temporary: February release removal
                   TODO: Re-enable in next releases*/}

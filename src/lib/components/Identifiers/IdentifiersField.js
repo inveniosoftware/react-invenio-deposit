@@ -33,12 +33,13 @@ export class IdentifiersField extends Component {
           required={required}
         >
           {({ array, arrayHelpers, indexPath, key }) => (
-            <GroupField widths="equal">
+            <GroupField widths="equal" optimized>
               {schemeOptions && (
                 <SelectField
                   fieldPath={`${key}.scheme`}
                   label={'Scheme'}
                   options={schemeOptions}
+                  optimized
                 />
               )}
               {!schemeOptions && (
