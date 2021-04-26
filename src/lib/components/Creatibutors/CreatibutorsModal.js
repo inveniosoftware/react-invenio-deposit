@@ -48,11 +48,6 @@ export class CreatibutorsModal extends Component {
           return schema.required('Family name is a required field.');
         }
       }),
-      given_name: Yup.string().when('type', (type, schema) => {
-        if (type === CREATIBUTOR_TYPE.PERSON && this.isCreator()) {
-          return schema.required('Given name is a required field.');
-        }
-      }),
       name: Yup.string().when('type', (type, schema) => {
         if (type === CREATIBUTOR_TYPE.ORGANIZATION && this.isCreator()) {
           return schema.required('Name is a required field.');
@@ -281,7 +276,6 @@ export class CreatibutorsModal extends Component {
                           label="Given name(s)"
                           placeholder="Given name"
                           fieldPath={givenNameFieldPath}
-                          required={this.isCreator()}
                         />
                       </>
                     ) : (
