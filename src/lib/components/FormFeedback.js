@@ -17,12 +17,11 @@ import {
 } from '../state/types';
 import { leafTraverse } from '../utils';
 
-
 const defaultLabels = {
   'files.enabled': 'Files',
   'metadata.resource_type': 'Resource type',
   'metadata.title': 'Title',
-  'metadata.additional_titles': 'Title',  // to display under Title label
+  'metadata.additional_titles': 'Title', // to display under Title label
   'metadata.publication_date': 'Publication date',
   'metadata.creators': 'Creators',
   'metadata.contributors': 'Contributors',
@@ -35,14 +34,15 @@ const defaultLabels = {
   'metadata.version': 'Version',
   'metadata.publisher': 'Publisher',
   'metadata.related_identifiers': 'Related works',
-}
+  'access.embargo.until': 'Embargo until',
+};
 
 class DisconnectedFormFeedback extends Component {
   constructor(props) {
     super(props);
     this.labels = {
       ...defaultLabels,
-      ...props.labels
+      ...props.labels,
     };
   }
 
@@ -58,7 +58,9 @@ class DisconnectedFormFeedback extends Component {
     } else {
       return (
         <ul>
-          {messages.map((m, i) => <li key={i}>{m}</li>)}
+          {messages.map((m, i) => (
+            <li key={i}>{m}</li>
+          ))}
         </ul>
       );
     }
@@ -79,8 +81,10 @@ class DisconnectedFormFeedback extends Component {
    * @returns array of Strings (error messages)
    */
   toErrorMessages(errorValue) {
-    let messages = []
-    let store = (l) => { messages.push(l) };
+    let messages = [];
+    let store = (l) => {
+      messages.push(l);
+    };
     leafTraverse(errorValue, store);
     return messages;
   }
@@ -95,16 +99,22 @@ class DisconnectedFormFeedback extends Component {
   toLabelledErrorMessages(errors) {
     // Step 0 - Create object with collapsed 1st and 2nd level keys
     //          e.g., {metadata: {creators: ,,,}} => {"metadata.creators": ...}
-    // For now, only for metadata and files
+    // For now, only for metadata, files and access.embargo
     const metadata = errors.metadata || {};
     const step0_metadata = Object.entries(metadata).map(([key, value]) => {
-      return ["metadata." + key, value];
+      return ['metadata.' + key, value];
     });
     const files = errors.files || {};
     const step0_files = Object.entries(files).map(([key, value]) => {
-      return ["files." + key, value];
+      return ['files.' + key, value];
     });
-    const step0 = Object.fromEntries(step0_metadata.concat(step0_files));
+    const access = errors.access?.embargo || {};
+    const step0_access = Object.entries(access).map(([key, value]) => {
+      return ['access.embargo.' + key, value];
+    });
+    const step0 = Object.fromEntries(
+      step0_metadata.concat(step0_files).concat(step0_access)
+    );
 
     // Step 1 - Transform each error value into array of error messages
     const step1 = Object.fromEntries(
@@ -118,7 +128,7 @@ class DisconnectedFormFeedback extends Component {
     // additional_titles)
     const labelledErrorMessages = {};
     for (const key in step1) {
-      const label = this.labels[key] || "Unknown field";
+      const label = this.labels[key] || 'Unknown field';
       let messages = labelledErrorMessages[label] || [];
       labelledErrorMessages[label] = messages.concat(step1[key]);
     }
@@ -177,7 +187,7 @@ class DisconnectedFormFeedback extends Component {
         <Grid container>
           <Grid.Column width={15} textAlign="left">
             <strong>{message}</strong>
-            { listErrors.length > 0 && <Message.List>{listErrors}</Message.List> }
+            {listErrors.length > 0 && <Message.List>{listErrors}</Message.List>}
           </Grid.Column>
         </Grid>
       </Message>
