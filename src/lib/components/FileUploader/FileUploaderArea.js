@@ -56,6 +56,15 @@ const FileTableRow = ({
   setDefaultPreview,
 }) => {
   const isDefaultPreview = defaultPreview === file.name;
+
+  const handleDelete = (file) => {
+    deleteFileFromRecord(file).then(() => {
+      if (isDefaultPreview) {
+        setDefaultPreview('');
+      }
+    });
+  };
+
   return (
     <Table.Row key={file.name} className="file-table-row">
       <Table.Cell className="file-table-cell" width={2}>
@@ -120,7 +129,7 @@ const FileTableRow = ({
               className="action"
               name="trash alternate outline"
               color="blue"
-              onClick={() => deleteFileFromRecord(file)}
+              onClick={() => handleDelete(file)}
             />
           )}
           {file.upload && file.upload.ongoing && (
