@@ -51,7 +51,7 @@ export class FundingField extends Component {
         required={required}
       >
         {({ array, arrayHelpers, indexPath, key, form }) => (
-          <GroupField widths="equal">
+          <GroupField widths="equal" optimized>
             <SelectField
               error={this.groupErrors(form.errors)}
               fieldPath={`${key}.funder`}
@@ -78,6 +78,7 @@ export class FundingField extends Component {
               })()}
               placeholder="Funding organization..."
               required
+              optimized
             />
             <SelectField
               error={this.groupErrors(form.errors)}
@@ -114,6 +115,7 @@ export class FundingField extends Component {
               })()}
               placeholder="Award number/acronym/name ..."
               required
+              optimized
             />
             <Form.Field>
               <label>&nbsp;</label>

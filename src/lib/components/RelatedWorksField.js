@@ -40,7 +40,7 @@ export class RelatedWorksField extends Component {
           required={required}
         >
           {({ array, arrayHelpers, indexPath, key }) => (
-            <GroupField>
+            <GroupField optimized>
               <SelectField
                 clearable
                 fieldPath={`${key}.relation_type`}
@@ -48,6 +48,7 @@ export class RelatedWorksField extends Component {
                 options={options.relations}
                 placeholder={'Select relation...'}
                 width={3}
+                optimized
               />
               <SelectField
                 clearable
@@ -55,6 +56,7 @@ export class RelatedWorksField extends Component {
                 label="Scheme"
                 options={options.scheme}
                 width={2}
+                optimized
               />
               <TextField
                 fieldPath={`${key}.identifier`}
