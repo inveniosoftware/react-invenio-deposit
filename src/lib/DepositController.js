@@ -196,9 +196,15 @@ export class DepositController {
     }
   }
 
-  deleteDraftFile(file, { store }) {
+  /**
+   * Delete an uploaded file.
+   *
+   * @param {object} file - file to delete
+   * @param {object} store - redux store
+   */
+  async deleteDraftFile(file, { store }) {
     const deleteFileUrl = file.links.self;
-    this.fileUploader.deleteUpload(deleteFileUrl, file, { store });
+    await this.fileUploader.deleteUpload(deleteFileUrl, file, { store });
   }
 
   /**
