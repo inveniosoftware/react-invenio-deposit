@@ -7,24 +7,23 @@
 
 import _cloneDeep from 'lodash/cloneDeep';
 import _defaults from 'lodash/defaults';
-import _set from 'lodash/set';
-import _get from 'lodash/get';
-import _isNumber from 'lodash/isNumber';
+import _isArray from 'lodash/isArray';
 import _isBoolean from 'lodash/isBoolean';
 import _isEmpty from 'lodash/isEmpty';
-import _isObject from 'lodash/isObject';
-import _isArray from 'lodash/isArray';
 import _isNull from 'lodash/isNull';
-import _pickBy from 'lodash/pickBy';
-import _pick from 'lodash/pick';
+import _isNumber from 'lodash/isNumber';
+import _isObject from 'lodash/isObject';
 import _mapValues from 'lodash/mapValues';
+import _pick from 'lodash/pick';
+import _pickBy from 'lodash/pickBy';
+import _set from 'lodash/set';
+import { DatesField, Field, VocabularyField } from './fields';
 import {
   emptyDate,
   emptyFunding,
   emptyIdentifier,
   emptyRelatedWork,
 } from './record';
-import { DatesField, Field, VocabularyField } from './fields';
 
 export class DepositRecordSerializer {
   depositRecordSchema = {
@@ -33,6 +32,11 @@ export class DepositRecordSerializer {
     }),
     links: new Field({
       fieldpath: 'links',
+    }),
+    pids: new Field({
+      fieldpath: 'pids',
+      deserializedDefault: {},
+      serializedDefault: {},
     }),
     title: new Field({
       fieldpath: 'metadata.title',
@@ -152,6 +156,7 @@ export class DepositRecordSerializer {
       'files',
       'is_published',
       'versions',
+      'pids',
     ]);
 
     for (let key in this.depositRecordSchema) {
@@ -202,6 +207,7 @@ export class DepositRecordSerializer {
       'links',
       'defaultFilePreview',
       'files',
+      'pids',
     ]);
     for (let key in this.depositRecordSchema) {
       serializedRecord = this.depositRecordSchema[key].serialize(
