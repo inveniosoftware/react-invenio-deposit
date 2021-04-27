@@ -171,6 +171,7 @@ describe('DepositRecordSerializer', () => {
           record: 'public',
           files: 'public',
         },
+        pids: {},
       };
 
       const deserializedRecord = serializer.deserialize(record);
@@ -178,7 +179,7 @@ describe('DepositRecordSerializer', () => {
       expect(deserializedRecord).toEqual(expectedRecord);
     });
 
-    it('deserializes a full record', () => {
+    it('deserialize a full record', () => {
       const record = {
         access: {
           access_right: 'open',
@@ -194,6 +195,13 @@ describe('DepositRecordSerializer', () => {
             'https://127.0.0.1:5000/api/records/wk205-00878/draft/actions/publish',
           self: 'https://127.0.0.1:5000/api/records/wk205-00878/draft',
           self_html: 'https://127.0.0.1:5000/uploads/wk205-00878',
+        },
+        pids: {
+          doi: {
+            identifier: '10.1234/rec.nz13t-me993',
+            provider: 'datacite',
+            client: 'rdm',
+          },
         },
         metadata: {
           contributors: [
@@ -293,6 +301,13 @@ describe('DepositRecordSerializer', () => {
             'https://127.0.0.1:5000/api/records/wk205-00878/draft/actions/publish',
           self: 'https://127.0.0.1:5000/api/records/wk205-00878/draft',
           self_html: 'https://127.0.0.1:5000/uploads/wk205-00878',
+        },
+        pids: {
+          doi: {
+            identifier: '10.1234/rec.nz13t-me993',
+            provider: 'datacite',
+            client: 'rdm',
+          },
         },
         metadata: {
           contributors: [
