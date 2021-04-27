@@ -52,9 +52,11 @@ export class DeleteButtonComponent extends Component {
     } = this.props;
     const { isDeleting } = this.state;
     const handleDelete = (event, formik) => {
-      deleteClick(event, formik);
-      this.handleClose();
       this.setState({ isDeleting: true });
+      deleteClick(event, formik).then(() => {
+        this.setState({ isDeleting: false });
+      });
+      this.handleClose();
     };
 
     let action = '';
@@ -103,9 +105,12 @@ export class DeleteButtonComponent extends Component {
             <Button onClick={this.handleClose} floated="left">
               Cancel
             </Button>
-            <Button {...color} onClick={handleDelete}>
-              {capitalizedAction}
-            </Button>
+            <ActionButton
+              {...color}
+              name="delete"
+              onClick={handleDelete}
+              content={capitalizedAction}
+            />
           </Modal.Actions>
         </Modal>
       </>

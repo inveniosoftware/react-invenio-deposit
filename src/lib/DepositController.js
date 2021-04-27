@@ -12,6 +12,7 @@ import _isEmpty from 'lodash/isEmpty';
 import _set from 'lodash/set';
 import {
   ACTION_CREATE_SUCCEEDED,
+  ACTION_DELETE_FAILED,
   ACTION_PUBLISH_FAILED,
   ACTION_PUBLISH_SUCCEEDED,
   ACTION_SAVE_FAILED,
@@ -156,14 +157,18 @@ export class DepositController {
    * @param {object} draft - current draft
    */
   async deleteDraft(draft, { formik, store }) {
-    const uploadsURL = '/uploads';
-
     if (draft.id) {
-      await this.apiClient.delete(draft);
-      // TODO: If error, set banner - goes with larger task about
-      //       banner feedback
-      // For expediency assume all good
+      const response = await this.apiClient.delete(draft);
+      if (!(200 <= response.code && response.code < 300)) {
+        store.dispatch({
+          type: ACTION_DELETE_FAILED,
+          payload: {},
+        });
+        return;
+      }
     }
+
+    const uploadsURL = '/uploads';
     window.location.replace(uploadsURL);
   }
 

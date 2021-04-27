@@ -7,12 +7,14 @@
 
 import {
   ACTION_CREATE_SUCCEEDED,
+  ACTION_DELETE_FAILED,
   ACTION_PUBLISH_SUCCEEDED,
   ACTION_PUBLISH_FAILED,
   ACTION_SAVE_PARTIALLY_SUCCEEDED,
   ACTION_SAVE_SUCCEEDED,
   ACTION_SAVE_FAILED,
   FORM_ACTION_EVENT_EMITTED,
+  FORM_DELETE_FAILED,
   FORM_PUBLISH_SUCCEEDED,
   FORM_PUBLISH_FAILED,
   FORM_SAVE_SUCCEEDED,
@@ -27,6 +29,11 @@ export default (state = {}, action) => {
         ...state,
         record: { ...state.record, ...action.payload.data },
         formState: null,
+      };
+    case ACTION_DELETE_FAILED:
+      return {
+        ...state,
+        formState: FORM_DELETE_FAILED,
       };
     case FORM_ACTION_EVENT_EMITTED:
       return {

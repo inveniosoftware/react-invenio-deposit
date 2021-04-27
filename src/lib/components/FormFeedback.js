@@ -10,6 +10,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Message } from 'semantic-ui-react';
 import {
+  FORM_DELETE_FAILED,
   FORM_PUBLISH_FAILED,
   FORM_SAVE_FAILED,
   FORM_SAVE_PARTIALLY_SUCCEEDED,
@@ -142,6 +143,7 @@ class DisconnectedFormFeedback extends Component {
       FORM_SAVE_PARTIALLY_SUCCEEDED,
       FORM_SAVE_FAILED,
       FORM_PUBLISH_FAILED,
+      FORM_DELETE_FAILED,
     ];
     const formState = this.props.formState;
 
@@ -164,6 +166,9 @@ class DisconnectedFormFeedback extends Component {
         // TODO: use the backend error message
         message = 'There was an internal error (and the record was not saved).';
         break;
+      case FORM_DELETE_FAILED:
+        feedback = 'negative';
+        message = 'There was an internal error (and the record was not deleted).';
       default:
     }
 
