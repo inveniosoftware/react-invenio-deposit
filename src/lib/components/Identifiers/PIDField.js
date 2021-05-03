@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { FieldLabel } from 'react-invenio-forms';
 import { connect } from 'react-redux';
-import { Form, Radio } from 'semantic-ui-react';
+import { Form, Popup, Radio } from 'semantic-ui-react';
 import { discardPID, reservePID } from '../../state/actions';
 
 const PROVIDER_EXTERNAL = 'unmanaged';
@@ -53,14 +53,19 @@ ReservePIDBtn.defaultProps = {
  */
 class UnreservePIDBtn extends Component {
   render() {
-    const { disabled, handleDiscardPID, loading } = this.props;
+    const { disabled, handleDiscardPID, loading, pidType } = this.props;
     return (
-      <Form.Button
-        disabled={disabled || loading}
-        loading={loading}
-        icon="close"
-        onClick={handleDiscardPID}
-        size="mini"
+      <Popup
+        content={'Discard the reserved ' + pidType}
+        trigger={
+          <Form.Button
+            disabled={disabled || loading}
+            loading={loading}
+            icon="close"
+            onClick={handleDiscardPID}
+            size="mini"
+          />
+        }
       />
     );
   }
@@ -69,6 +74,7 @@ class UnreservePIDBtn extends Component {
 UnreservePIDBtn.propTypes = {
   disabled: PropTypes.bool,
   handleDiscardPID: PropTypes.func.isRequired,
+  pidType: PropTypes.string.isRequired,
 };
 
 UnreservePIDBtn.defaultProps = {
@@ -153,6 +159,7 @@ class ManagedIdentifierComponent extends Component {
       identifier,
       pidPlaceholder,
       reservePIDsLoading,
+      pidType,
     } = this.props;
     const hasIdentifier = identifier !== '';
 
@@ -170,6 +177,7 @@ class ManagedIdentifierComponent extends Component {
         disabled={disabled}
         handleDiscardPID={this.handleDiscardPID}
         loading={reservePIDsLoading}
+        pidType={this.props.pidType}
       />
     );
 
