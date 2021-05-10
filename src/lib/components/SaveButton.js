@@ -20,11 +20,20 @@ export class SaveButtonComponent extends Component {
   render() {
     const { formState, saveClick, ...uiProps } = this.props;
 
+    function handleClick(e, formik) {
+      saveClick(e, formik);
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }
+
     return (
       <ActionButton
         isDisabled={this.isDisabled}
         name="save"
-        onClick={saveClick}
+        onClick={handleClick}
         icon
         labelPosition="left"
         {...uiProps}
