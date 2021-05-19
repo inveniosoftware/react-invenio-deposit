@@ -56,7 +56,7 @@ export class DepositRecordSerializer {
       deserializedDefault: [],
       serializedDefault: [],
     }),
-    resource_type: new Field({
+    resource_type: new VocabularyField({
       fieldpath: 'metadata.resource_type',
       deserializedDefault: '',
     }),
