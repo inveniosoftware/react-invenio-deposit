@@ -1,5 +1,11 @@
 # Changes
 
+Version 0.14.0 (released 2021-05-19)
+
+* resource_type is now a vocabulary field (i.e. of the shape `{id: <id>}`),
+  so changes are made to accomodate this
+* Mark May release
+
 Version 0.13.5 (released 2021-04-16)
 
 * Pass files.enabled in the draft API payload
