@@ -77,7 +77,9 @@ export class DepositFileUploader {
         initializeUploadUrl,
         file.name
       );
-      const initializedFile = resp.data.entries[0];
+      const initializedFile = resp.data.entries.filter(
+        (entry) => entry.key === file.name
+      )[0]; // this should throw an error if not found
       store.dispatch({
         type: FILE_UPLOAD_INITIATE,
         payload: {
