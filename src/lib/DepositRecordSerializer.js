@@ -17,7 +17,12 @@ import _mapValues from 'lodash/mapValues';
 import _pick from 'lodash/pick';
 import _pickBy from 'lodash/pickBy';
 import _set from 'lodash/set';
-import { DatesField, Field, VocabularyField } from './fields';
+import {
+  ArrayFieldWithVocabulary,
+  DatesField,
+  Field,
+  VocabularyField,
+} from './fields';
 import {
   emptyDate,
   emptyFunding,
@@ -83,8 +88,9 @@ export class DepositRecordSerializer {
       fieldpath: 'metadata.identifiers',
       deserializedDefault: [emptyIdentifier],
     }),
-    related_identifiers: new Field({
+    related_identifiers: new ArrayFieldWithVocabulary({
       fieldpath: 'metadata.related_identifiers',
+      vocabularyFieldPath: 'resource_type',
       deserializedDefault: [emptyRelatedWork],
     }),
     subjects: new VocabularyField({

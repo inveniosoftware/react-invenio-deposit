@@ -110,7 +110,7 @@ describe('DepositRecordSerializer', () => {
               {
                 scheme: 'doi',
                 identifier: '10.5281/zenodo.9999988',
-                resource_type: { type: 'image', subtype: 'image-photo' },
+                resource_type: 'image-photo',
                 relation_type: 'requires',
               },
             ],
@@ -123,7 +123,7 @@ describe('DepositRecordSerializer', () => {
           {
             scheme: 'doi',
             identifier: '10.5281/zenodo.9999988',
-            resource_type: { type: 'image', subtype: 'image-photo' },
+            resource_type: { id: 'image-photo' },
             relation_type: 'requires',
           },
         ]);
@@ -236,7 +236,7 @@ describe('DepositRecordSerializer', () => {
             },
           ],
           publication_date: '2020-09-28',
-          resource_type: { type: 'lesson' },
+          resource_type: { id: 'lesson' },
           title: 'Test 2020-1028 13:34',
           additional_titles: [
             { title: 'Another title', type: 'abstract', lang: 'dan' },
@@ -253,7 +253,7 @@ describe('DepositRecordSerializer', () => {
             {
               scheme: 'doi',
               identifier: '10.5281/zenodo.9999988',
-              resource_type: { type: 'image', subtype: 'image-photo' },
+              resource_type: { id: 'image-photo' },
               relation_type: 'requires',
             },
           ],
@@ -345,7 +345,7 @@ describe('DepositRecordSerializer', () => {
             },
           ],
           publication_date: '2020-09-28',
-          resource_type: { type: 'lesson' },
+          resource_type: 'lesson',
           title: 'Test 2020-1028 13:34',
           additional_titles: [
             { title: 'Another title', type: 'abstract', lang: 'dan' },
@@ -359,7 +359,7 @@ describe('DepositRecordSerializer', () => {
             {
               scheme: 'doi',
               identifier: '10.5281/zenodo.9999988',
-              resource_type: { type: 'image', subtype: 'image-photo' },
+              resource_type: 'image-photo',
               relation_type: 'requires',
             },
           ],
