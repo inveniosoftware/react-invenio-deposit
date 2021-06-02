@@ -9,6 +9,7 @@ export { AccessRightField } from './AccessRightField';
 export { AdditionalTitlesField } from './AdditionalTitlesField';
 export { AffiliationsField } from './AffiliationsField';
 export { ComingSoonField } from './ComingSoonField';
+export { CitationField } from './CitationField';
 export { CreatibutorsField } from './Creatibutors';
 export { DatesField } from './DatesField';
 export { DeleteButton } from './DeleteButton';
