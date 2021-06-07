@@ -21,26 +21,25 @@ import {
   PublicMetadataOnly,
   Restricted,
   RestrictedFiles,
-  RestrictedMetadataOnly } from "./Access";
-
+  RestrictedMetadataOnly,
+} from './Access';
 
 class Protection {
   static create(access, isMetadataOnly) {
     const embargo = new Embargo({
       state: EmbargoState.from(access),
-      date: access.embargo ? access.embargo.until : "",
-      reason: access.embargo ? access.embargo.reason : ""
+      date: access.embargo ? access.embargo.until : '',
+      reason: access.embargo ? access.embargo.reason : '',
     });
-
-    if (access.record === "public") {
+    if (access.record === 'public') {
       if (isMetadataOnly) {
         return new PublicMetadataOnly(embargo);
-      } else if (access.files === "public") {
+      } else if (access.files === 'public') {
         return new PublicFiles(embargo);
       } else if (embargo.is(EmbargoState.APPLIED)) {
         return new EmbargoedFiles(embargo);
       } else {
-        return new RestrictedFiles(embargo);  // technically no embargo
+        return new RestrictedFiles(embargo); // technically no embargo
       }
     } else {
       if (isMetadataOnly) {
@@ -50,14 +49,13 @@ class Protection {
           return new RestrictedMetadataOnly(embargo); // technically no embargo
         }
       } else if (embargo.is(EmbargoState.APPLIED)) {
-          return new Embargoed(embargo);
+        return new Embargoed(embargo);
       } else {
-        return new Restricted(embargo);  // technically no embargo
+        return new Restricted(embargo); // technically no embargo
       }
     }
   }
 }
-
 
 class AccessRightFieldComponent extends Component {
   /** Top-level Access Right Component */
@@ -65,7 +63,7 @@ class AccessRightFieldComponent extends Component {
   render() {
     const {
       fieldPath,
-      formik,  // this is our access to the shared current draft
+      formik, // this is our access to the shared current draft
       isMetadataOnly,
       label,
       labelIcon,
@@ -91,11 +89,12 @@ class AccessRightFieldComponent extends Component {
 
             <Divider hidden />
 
-            <p><b>Options</b></p>
+            <p>
+              <b>Options</b>
+            </p>
             <Divider />
 
-            {protection.renderEmbargoSection()}
-
+            {protection.renderEmbargoSection(formik.form.initialValues.access)}
           </Form.Field>
         </Card.Content>
       </Card>
@@ -113,7 +112,7 @@ class FormikAccessRightField extends Component {
     // So we add/remove a prop to FastField based on the presence of files.
     // This way, FastField only renders when the things (access and isMetadataOnly)
     // it cares about change, as it should be.
-    const change = this.props.isMetadataOnly ? {change: true} : {}
+    const change = this.props.isMetadataOnly ? { change: true } : {};
     return (
       <FastField
         name={this.props.fieldPath}
@@ -137,11 +136,9 @@ FormikAccessRightField.defaultProps = {
   fieldPath: 'access',
 };
 
-
 const mapStateToProps = (state) => ({
   isMetadataOnly: !state.deposit.record.files.enabled,
 });
-
 
 export const AccessRightField = connect(
   mapStateToProps,

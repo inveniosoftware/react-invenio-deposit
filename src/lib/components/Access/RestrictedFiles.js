@@ -39,8 +39,8 @@ export class RestrictedFiles {
 
   }
 
-  renderEmbargoSection() {
-    return embargoSection(this.embargo);
+  renderEmbargoSection(initialAccessValues) {
+    return embargoSection(initialAccessValues, this.embargo);
   }
 
 }
