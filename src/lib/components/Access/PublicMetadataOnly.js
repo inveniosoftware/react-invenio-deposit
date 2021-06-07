@@ -39,8 +39,8 @@ export class PublicMetadataOnly {
     />;
   }
 
-  renderEmbargoSection() {
-    return embargoSection(this.embargo);
+  renderEmbargoSection(initialAccessValues) {
+    return embargoSection(initialAccessValues, this.embargo);
   }
 
 }

@@ -6,19 +6,18 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 import React from 'react';
+import _isEmpty from 'lodash/isEmpty';
+
 import { DateTime } from 'luxon';
 import { Divider, Icon, List, Message } from 'semantic-ui-react';
-import {
-  TextAreaField,
-} from 'react-invenio-forms';
+import { TextAreaField } from 'react-invenio-forms';
 
 import { EmbargoState } from './Embargo';
 import { ProtectionButtons } from './ProtectionButtons';
 import { EmbargoCheckboxField } from './EmbargoCheckboxField';
 import { EmbargoDateField } from './EmbargoDateField';
 
-
-export function MetadataSection({isPublic}) {
+export function MetadataSection({ isPublic }) {
   return (
     <>
       <p>Full record</p>
@@ -27,13 +26,9 @@ export function MetadataSection({isPublic}) {
   );
 }
 
-
 export function filesButtons(filesPublic) {
-  return (
-    <ProtectionButtons active={filesPublic} fieldPath="access.files" />
-  );
+  return <ProtectionButtons active={filesPublic} fieldPath="access.files" />;
 }
-
 
 export function filesSection(filesStyle, filesContent) {
   return (
@@ -44,27 +39,27 @@ export function filesSection(filesStyle, filesContent) {
   );
 }
 
-
-export function MessageSection({intent, icon, title, text}) {
+export function MessageSection({ intent, icon, title, text }) {
   return (
     <Message visible {...intent}>
       <strong>
         <Icon name={icon} /> {title}
       </strong>
       {/* Needed to override semantic-ui's Card styling */}
-      <p style={{marginTop: "0.25em"}}>{text}</p>
+      <p style={{ marginTop: '0.25em' }}>{text}</p>
     </Message>
-  )
+  );
 }
 
-
-export function embargoSection(embargo) {
-  const fmtDate = (
-    embargo.date
-    ? DateTime.fromISO(embargo.date)
-      .toLocaleString(DateTime.DATE_FULL) // e.g. June 21, 2021
-    : "???"
-  );
+export function embargoSection(initialAccessValues, embargo) {
+  const fmtDate = initialAccessValues.embargo?.until
+    ? DateTime.fromISO(initialAccessValues.embargo?.until).toLocaleString(
+        DateTime.DATE_FULL
+      ) // e.g. June 21, 2021
+    : '???';
+  const embargoWasLifted =
+    !initialAccessValues.embargo?.active &&
+    !_isEmpty(initialAccessValues.embargo?.until);
 
   return (
     <List>
@@ -78,25 +73,37 @@ export function embargoSection(embargo) {
         <List.Content>
           <List.Header>
             <label
-              className={embargo.is(EmbargoState.DISABLED) ? "disabled" : ""}
-              htmlFor={"access.embargo.active"}
+              className={embargo.is(EmbargoState.DISABLED) ? 'disabled' : ''}
+              htmlFor={'access.embargo.active'}
             >
-              Apply an embargo <Icon name="clock outline"/>
+              Apply an embargo <Icon name="clock outline" />
             </label>
           </List.Header>
-          <List.Description className={"disabled"}>Record or files protection must be <b>restricted</b> to apply an embargo.</List.Description>
+          <List.Description className={'disabled'}>
+            Record or files protection must be <b>restricted</b> to apply an
+            embargo.
+          </List.Description>
           {embargo.is(EmbargoState.APPLIED) && (
             <>
               <Divider hidden />
               <EmbargoDateField fieldPath="access.embargo.until" required />
-              <TextAreaField label="Embargo reason" fieldPath={"access.embargo.reason"} placeholder="Optionally, describe the reason for the embargo." optimized />
+              <TextAreaField
+                label="Embargo reason"
+                fieldPath={'access.embargo.reason'}
+                placeholder="Optionally, describe the reason for the embargo."
+                optimized
+              />
             </>
           )}
-          {embargo.is(EmbargoState.LIFTED) && (
+          {embargoWasLifted && (
             <>
               <Divider hidden />
               <p>Embargo was lifted on {fmtDate}.</p>
-              <p><b>Reason</b>: {embargo.reason}.</p>
+              {initialAccessValues.embargo.reason && (
+                <p>
+                  <b>Reason</b>: {initialAccessValues.embargo.reason}.
+                </p>
+              )}
             </>
           )}
         </List.Content>

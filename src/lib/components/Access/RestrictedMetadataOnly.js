@@ -41,9 +41,9 @@ export class RestrictedMetadataOnly {
 
   }
 
-  renderEmbargoSection() {
+  renderEmbargoSection(initialAccessValues) {
     // Same as Embargoed, same as Public
-    return embargoSection(this.embargo);
+    return embargoSection(initialAccessValues, this.embargo);
   }
 
 }
