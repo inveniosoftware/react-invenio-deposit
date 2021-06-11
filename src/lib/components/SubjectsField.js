@@ -7,28 +7,23 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FieldLabel, RemoteSelectField } from 'react-invenio-forms';
+import { FieldLabel, GroupField, RemoteSelectField } from 'react-invenio-forms';
 import { Form } from 'semantic-ui-react';
 import _get from 'lodash/get';
 
-//TODO: remove after backend will be implemented
-const fetchedOptions = [
-  { title: 'Deep Learning', id: 'dl', scheme: 'user' },
-  { title: 'MeSH: Cognitive Neuroscience', id: 'cn', scheme: 'mesh' },
-  { title: 'FAST: Glucagonoma', id: 'gl', scheme: 'fast' },
-];
 
 export class SubjectsField extends Component {
   state = {
     limitTo: 'all',
   };
 
-  serializeSubjects = (subjects) =>
-    subjects.map((subject) => ({
-      text: subject.title,
-      value: _get(subject, 'id', subject.title),
-      key: _get(subject, 'id', subject.title),
+  serializeSubjects = (subjects) => {
+    return subjects.map((subject) => ({
+      text: subject.title_l10n,
+      value: _get(subject, 'id', subject.id),
+      key: _get(subject, 'id', subject.id),
     }));
+  };
 
   render() {
     const {
@@ -44,9 +39,8 @@ export class SubjectsField extends Component {
     } = this.props;
     const { limitTo } = this.state;
     return (
-      <>
+      <GroupField>
         <RemoteSelectField
-          allowAdditions
           initialSuggestions={initialOptions}
           fieldPath={fieldPath}
           suggestionAPIUrl="/api/vocabularies/subjects"
@@ -63,17 +57,17 @@ export class SubjectsField extends Component {
             <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
           }
           noQueryMessage="Search for subjects.."
-          fetchedOptions={fetchedOptions}
+          width={11}
         />
         <Form.Dropdown
-          inline
           selection
           onChange={(event, data) => this.setState({ limitTo: data.value })}
           options={limitToOptions}
           value={limitTo}
           label={'Limit To'}
+          width={5}
         />
-      </>
+      </GroupField>
     );
   }
 }
@@ -101,5 +95,5 @@ SubjectsField.defaultProps = {
   labelIcon: 'tag',
   multiple: true,
   clearable: true,
-  placeholder: 'Search or create subjects',
+  placeholder: 'Search for a subject by name',
 };
