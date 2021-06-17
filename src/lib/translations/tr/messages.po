@@ -1,0 +1,24 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"POT-Creation-Date: 2021-06-29T13:05:15.622Z\n"
+"PO-Revision-Date: 2021-06-29 13:20+0000\n"
+"Language-Team: Turkish (https://www.transifex.com/inveniosoftware/teams/23537/tr/)\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: tr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"mime-version: 1.0\n"
+
+msgid "New version"
+msgstr ""
+
+msgid "New upload"
+msgstr ""
+
+msgid "Edit upload"
+msgstr ""
+
+msgid "Storage available"
+msgstr ""
