@@ -8,6 +8,13 @@
   "files": [
     "dist"
   ],
+  "config": {
+    "languages": [
+      "en",
+      "de",
+      "tr"
+    ]
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "rimraf dist && NODE_ENV=production rollup -c",
@@ -17,6 +24,10 @@
     "postlink-dist": "cd dist && rm -rf node_modules",
     "unlink-dist": "cd dist && npm unlink && rm package*",
     "watch": "NODE_ENV=development rollup --watch -c",
+    "i18n-scan": "i18next-scanner --config i18next-scanner.config.js src/**/*.{js,jsx}",
+    "i18n-conv-json": "i18next-conv -l en -s ./src/lib/translations/en/translations.json -t ./src/lib/translations/translations.pot",
+    "i18n-conv-po": "i18next-conv -l $npm_config_lang -s ./src/lib/translations/$npm_config_lang/messages.po -t ./src/lib/translations/$npm_config_lang/translations.json",
+    "i18n-conv-po-all": "node ./getTextConverter.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.js",
@@ -36,7 +47,9 @@
     "lodash": "^4.17.15",
     "semantic-ui-react": "^0.88.0",
     "semantic-ui-css": "^2.4.1",
-    "@babel/runtime": "^7.9.0"
+    "@babel/runtime": "^7.9.0",
+    "i18next": "^20.3.1",
+    "i18next-browser-languagedetector": "^6.1.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
@@ -44,6 +57,7 @@
     "@ckeditor/ckeditor5-react": "^2.1.0",
     "@rollup/plugin-babel": "^5.0.0",
     "@rollup/plugin-commonjs": "^11.1.0",
+    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^7.1.3",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -55,6 +69,8 @@
     "enzyme-to-json": "^3.4.3",
     "expect": "^26.0.1",
     "formik": "^2.1.4",
+    "i18next-conv": "^10.2.0",
+    "i18next-scanner": "^3.0.0",
     "json": "^9.0.6",
     "lodash": "^4.17.15",
     "prettier": "^2.0.5",

@@ -1,0 +1,22 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"mime-version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"POT-Creation-Date: 2021-06-29T13:05:15.622Z\n"
+"PO-Revision-Date: 2021-06-29T13:05:15.622Z\n"
+"Language: en\n"
+
+msgid "New version"
+msgstr ""
+
+msgid "New upload"
+msgstr ""
+
+msgid "Edit upload"
+msgstr ""
+
+msgid "Storage available"
+msgstr ""
