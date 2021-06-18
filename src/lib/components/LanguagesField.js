@@ -71,4 +71,11 @@ LanguagesField.defaultProps = {
   multiple: true,
   clearable: true,
   placeholder: 'Search for a language by name (e.g "eng", "fr" or "Polish")',
+  serializeSuggestions: (suggestions) => (
+    suggestions.map((suggestion) => ({
+      text: suggestion.title_l10n,
+      value: suggestion.id,
+      key: suggestion.id,
+    }))
+  ),
 };
