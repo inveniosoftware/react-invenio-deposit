@@ -52,13 +52,15 @@ export class DepositRecordSerializer {
       vocabularyFieldPath: ['type', 'lang'],
       deserializedDefault: [],
     }),
-    creators: new Field({
+    creators: new ArrayFieldWithVocabulary({
       fieldpath: 'metadata.creators',
+      vocabularyFieldPath: 'role',
       deserializedDefault: [],
       serializedDefault: [],
     }),
-    contributors: new Field({
+    contributors: new ArrayFieldWithVocabulary({
       fieldpath: 'metadata.contributors',
+      vocabularyFieldPath: 'role',
       deserializedDefault: [],
       serializedDefault: [],
     }),
@@ -165,7 +167,6 @@ export class DepositRecordSerializer {
       'versions',
       'pids',
     ]);
-
     for (let key in this.depositRecordSchema) {
       deserializedRecord = this.depositRecordSchema[key].deserialize(
         deserializedRecord

@@ -30,6 +30,10 @@ const displayCreatibutorName = ({ familyName, givenName, affiliationName }) => {
 };
 
 class CreatibutorsFieldForm extends Component {
+  sortOptions = (options) => {
+    return options.sort((o1, o2) => o1.text.localeCompare(o2.text));
+  };
+
   render() {
     const {
       form: { values, errors },
@@ -115,7 +119,7 @@ class CreatibutorsFieldForm extends Component {
               action="add"
               addLabel={this.props.modal.addLabel}
               editLabel={this.props.modal.editLabel}
-              roleOptions={roleOptions}
+              roleOptions={this.sortOptions(roleOptions)}
               schema={schema}
               trigger={
                 <Button type="button">
