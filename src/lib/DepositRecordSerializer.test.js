@@ -216,7 +216,7 @@ describe('DepositRecordSerializer', () => {
                   },
                 ],
               },
-              role: 'datacurator',
+              role: { id: 'datacurator' },
             },
           ],
           creators: [
