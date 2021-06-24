@@ -169,6 +169,10 @@ export class CreatibutorsModal extends Component {
     formikBag.resetForm();
     switch (this.state.action) {
       case 'saveAndContinue':
+        // Needed to close and open the modal to reset the internal
+        // state of the cmp inside the modal
+        this.closeModal();
+        this.openModal();
         this.changeContent();
         break;
       case 'saveAndClose':
