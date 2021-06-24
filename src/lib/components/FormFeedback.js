@@ -5,7 +5,6 @@
 // Invenio App RDM is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import _get from 'lodash/get';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Message } from 'semantic-ui-react';
@@ -163,12 +162,13 @@ class DisconnectedFormFeedback extends Component {
       case FORM_SAVE_FAILED:
       case FORM_PUBLISH_FAILED:
         feedback = 'negative';
-        // TODO: use the backend error message
         message = 'There was an internal error (and the record was not saved).';
         break;
       case FORM_DELETE_FAILED:
         feedback = 'negative';
-        message = 'There was an internal error (and the record was not deleted).';
+        message =
+          'There was an internal error (and the record was not deleted).';
+        break;
       default:
     }
 

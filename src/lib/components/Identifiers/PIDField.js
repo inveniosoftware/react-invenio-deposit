@@ -7,6 +7,7 @@
 
 import { FastField } from 'formik';
 import _debounce from 'lodash/debounce';
+import _get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { FieldLabel } from 'react-invenio-forms';
@@ -14,7 +15,6 @@ import { connect } from 'react-redux';
 import { Form, Popup, Radio } from 'semantic-ui-react';
 import { discardPID, reservePID } from '../../state/actions';
 
-const PROVIDER_EXTERNAL = 'unmanaged';
 const UPDATE_PID_DEBOUNCE_MS = 200;
 
 /**
@@ -177,7 +177,7 @@ class ManagedIdentifierComponent extends Component {
         disabled={disabled}
         handleDiscardPID={this.handleDiscardPID}
         loading={reservePIDsLoading}
-        pidType={this.props.pidType}
+        pidType={pidType}
       />
     );
 
@@ -270,12 +270,13 @@ class UnmanagedIdentifierCmp extends Component {
 
   render() {
     const { localIdentifier } = this.state;
-    const { helpText, pidPlaceholder } = this.props;
+    const { error, helpText, pidPlaceholder } = this.props;
 
     return (
       <>
         <Form.Field width={8}>
           <Form.Input
+            error={error}
             onChange={(e, { value }) => this.onChange(value)}
             value={localIdentifier}
             placeholder={pidPlaceholder}
@@ -289,6 +290,7 @@ class UnmanagedIdentifierCmp extends Component {
 }
 
 UnmanagedIdentifierCmp.propTypes = {
+  error: PropTypes.object,
   helpText: PropTypes.string,
   identifier: PropTypes.string.isRequired,
   onIdentifierChanged: PropTypes.func.isRequired,
@@ -296,6 +298,7 @@ UnmanagedIdentifierCmp.propTypes = {
 };
 
 UnmanagedIdentifierCmp.defaultProps = {
+  error: null,
   helpText: null,
 };
 
@@ -318,11 +321,11 @@ class CustomPIDField extends Component {
   }
 
   onExternalIdentifierChanged = (identifier) => {
-    const { form, fieldPath } = this.props;
+    const { form, fieldPath, unmanagedProvider } = this.props;
 
     const pid = {
       identifier: identifier,
-      provider: PROVIDER_EXTERNAL,
+      provider: unmanagedProvider,
     };
 
     this.debounced && this.debounced.cancel();
@@ -347,6 +350,7 @@ class CustomPIDField extends Component {
       pidPlaceholder,
       required,
       unmanagedHelpText,
+      unmanagedProvider,
       pidType,
       field,
     } = this.props;
@@ -358,7 +362,7 @@ class CustomPIDField extends Component {
     let managedIdentifier = '',
       unmanagedIdentifier = '';
     if (currentIdentifier !== '') {
-      const isProviderExternal = currentProvider === PROVIDER_EXTERNAL;
+      const isProviderExternal = currentProvider === unmanagedProvider;
       managedIdentifier = !isProviderExternal ? currentIdentifier : '';
       unmanagedIdentifier = isProviderExternal ? currentIdentifier : '';
     }
@@ -368,9 +372,12 @@ class CustomPIDField extends Component {
         ? hasManagedIdentifier
         : isManagedSelected;
 
+    const errorMsg = _get(form.errors, fieldPath, false);
+    const error = errorMsg ? { content: errorMsg } : null;
+
     return (
       <>
-        <Form.Field required={required}>
+        <Form.Field required={required} error={error}>
           <FieldLabel htmlFor={fieldPath} icon={pidIcon} label={pidLabel} />
         </Form.Field>
 
@@ -401,6 +408,7 @@ class CustomPIDField extends Component {
 
         {canBeUnmanaged && !_isManagedSelected && (
           <UnmanagedIdentifierCmp
+            error={error}
             identifier={unmanagedIdentifier}
             onIdentifierChanged={(identifier) => {
               this.onExternalIdentifierChanged(identifier);
@@ -421,17 +429,21 @@ CustomPIDField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   isEditingPublishedRecord: PropTypes.bool.isRequired,
   managedHelpText: PropTypes.string,
+  managedProvider: PropTypes.string,
   pidIcon: PropTypes.string.isRequired,
   pidLabel: PropTypes.string.isRequired,
   pidPlaceholder: PropTypes.string.isRequired,
   pidType: PropTypes.string.isRequired,
   required: PropTypes.bool.isRequired,
   unmanagedHelpText: PropTypes.string,
+  unmanagedProvider: PropTypes.string,
 };
 
 CustomPIDField.defaultProps = {
   managedHelpText: null,
+  managedProvider: null,
   unmanagedHelpText: null,
+  unmanagedProvider: null,
 };
 
 /**
@@ -472,12 +484,14 @@ PIDField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   isEditingPublishedRecord: PropTypes.bool.isRequired,
   managedHelpText: PropTypes.string,
+  managedProvider: PropTypes.string,
   pidIcon: PropTypes.string,
   pidLabel: PropTypes.string.isRequired,
   pidPlaceholder: PropTypes.string,
   pidType: PropTypes.string.isRequired,
   required: PropTypes.bool,
   unmanagedHelpText: PropTypes.string,
+  unmanagedProvider: PropTypes.string,
 };
 
 PIDField.defaultProps = {
@@ -485,8 +499,10 @@ PIDField.defaultProps = {
   canBeManaged: true,
   canBeUnmanaged: true,
   managedHelpText: null,
+  managedProvider: null,
   pidIcon: 'barcode',
   pidPlaceholder: '',
   required: false,
   unmanagedHelpText: null,
+  unmanagedProvider: null,
 };
