@@ -47,8 +47,9 @@ export class DepositRecordSerializer {
       fieldpath: 'metadata.title',
       deserializedDefault: '',
     }),
-    additional_titles: new Field({
+    additional_titles: new ArrayFieldWithVocabulary({
       fieldpath: 'metadata.additional_titles',
+      vocabularyFieldPath: ['type', 'lang'],
       deserializedDefault: [],
     }),
     creators: new Field({
@@ -90,7 +91,7 @@ export class DepositRecordSerializer {
     }),
     related_identifiers: new ArrayFieldWithVocabulary({
       fieldpath: 'metadata.related_identifiers',
-      vocabularyFieldPath: 'resource_type',
+      vocabularyFieldPath: ['resource_type'],
       deserializedDefault: [emptyRelatedWork],
     }),
     subjects: new VocabularyField({

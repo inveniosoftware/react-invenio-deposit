@@ -13,7 +13,7 @@ import { AdditionalTitlesField } from './AdditionalTitlesField';
 
 export class TitlesField extends Component {
   render() {
-    const { fieldPath, options, label, required } = this.props;
+    const { fieldPath, options, label, required, recordUI } = this.props;
 
     return (
       <>
@@ -22,7 +22,7 @@ export class TitlesField extends Component {
           label={<FieldLabel htmlFor={fieldPath} icon={'book'} label={label} />}
           required={required}
         />
-        <AdditionalTitlesField options={options} />
+        <AdditionalTitlesField options={options} recordUI={recordUI} />
       </>
     );
   }
@@ -47,6 +47,7 @@ TitlesField.propTypes = {
     ),
   }).isRequired,
   required: PropTypes.bool,
+  recordUI: PropTypes.object,
 };
 
 TitlesField.defaultProps = {

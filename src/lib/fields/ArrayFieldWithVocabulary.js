@@ -31,20 +31,22 @@ export class ArrayFieldWithVocabulary {
     let fieldValue = _get(record, this.fieldpath, this.deserializedDefault);
     if (fieldValue !== null) {
       // Deserialize the vocabulary value
-      fieldValue = fieldValue.map((element) => {
-        let vocabularyValue = _get(
-          element,
-          this.vocabularyFieldPath,
-          this.deserializedVocabularyDefault
-        );
-        if (!_isEmpty(vocabularyValue)) {
-          return _set(
-            _cloneDeep(element),
-            this.vocabularyFieldPath,
-            vocabularyValue.id
+      this.vocabularyFieldPath.forEach((vocabularyFieldPath) => {
+        fieldValue = fieldValue.map((element) => {
+          let vocabularyValue = _get(
+            element,
+            vocabularyFieldPath,
+            this.deserializedVocabularyDefault
           );
-        }
-        return element;
+          if (!_isEmpty(vocabularyValue)) {
+            return _set(
+              _cloneDeep(element),
+              vocabularyFieldPath,
+              vocabularyValue.id
+            );
+          }
+          return element;
+        });
       });
       return _set(_cloneDeep(record), this.fieldpath, fieldValue);
     }
@@ -55,20 +57,20 @@ export class ArrayFieldWithVocabulary {
     let fieldValue = _get(record, this.fieldpath, this.serializedDefault);
     if (fieldValue !== null) {
       // Serialize the vocabulary value
-      fieldValue = fieldValue.map((element) => {
-        let vocabularyValue = _get(
-          element,
-          this.vocabularyFieldPath,
-          this.serializedVocabularyDefault
-        );
-        if (vocabularyValue !== null) {
-          return _set(
-            _cloneDeep(element),
-            this.vocabularyFieldPath,
-            {id: vocabularyValue}
+      this.vocabularyFieldPath.forEach((vocabularyFieldPath) => {
+        fieldValue = fieldValue.map((element) => {
+          let vocabularyValue = _get(
+            element,
+            vocabularyFieldPath,
+            this.serializedVocabularyDefault
           );
-        }
-        return element;
+          if (vocabularyValue !== null) {
+            return _set(_cloneDeep(element), vocabularyFieldPath, {
+              id: vocabularyValue,
+            });
+          }
+          return element;
+        });
       });
       return _set(_cloneDeep(record), this.fieldpath, fieldValue);
     }

@@ -239,7 +239,11 @@ describe('DepositRecordSerializer', () => {
           resource_type: { id: 'lesson' },
           title: 'Test 2020-1028 13:34',
           additional_titles: [
-            { title: 'Another title', type: 'abstract', lang: 'dan' },
+            {
+              title: 'Another title',
+              type: { title: 'Abstract', id: 'abstract' },
+              lang: { title: 'Danish', id: 'dan' },
+            },
           ],
           dates: [{ date: '1920/2020', type: 'collected', description: 'foo' }],
           languages: [
