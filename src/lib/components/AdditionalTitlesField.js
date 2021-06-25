@@ -21,8 +21,7 @@ import { LanguagesField } from './LanguagesField';
 
 export class AdditionalTitlesField extends Component {
   render() {
-    const { fieldPath, options } = this.props;
-
+    const { fieldPath, options, recordUI } = this.props;
     return (
       <ArrayField
         addButtonLabel={'Add titles'}
@@ -43,15 +42,18 @@ export class AdditionalTitlesField extends Component {
               width={5}
               optimized
             />
-            {/* temporary: February release removal
-                  TODO: Re-enable in next releases*/}
-            {/* <LanguagesField
+            <LanguagesField
               serializeSuggestions={(suggestions) =>
                 suggestions.map((item) => ({
                   text: item.title_l10n,
                   value: item.id,
                   key: item.id,
                 }))
+              }
+              initialOptions={
+                recordUI?.additional_titles[indexPath]?.lang
+                  ? [recordUI.additional_titles[indexPath].lang]
+                  : []
               }
               fieldPath={`${key}.lang`}
               label={'Language'}
@@ -60,7 +62,7 @@ export class AdditionalTitlesField extends Component {
               labelIcon={null}
               clearable
               width={5}
-            /> */}
+            />
             <Form.Field width={1}>
               <label>&nbsp;</label>
               <Button icon onClick={() => arrayHelpers.remove(indexPath)}>
@@ -90,6 +92,7 @@ AdditionalTitlesField.propTypes = {
       })
     ),
   }),
+  recordUI: PropTypes.object,
 };
 
 AdditionalTitlesField.defaultProps = {

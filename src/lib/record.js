@@ -21,7 +21,7 @@ export const emptyAffiliation = {
 export const emptyAdditionalTitle = {
   lang: '',
   title: '',
-  type: 'alternativetitle',
+  type: 'alternative-title',
 };
 
 export const emptyAdditionalDescription = {
