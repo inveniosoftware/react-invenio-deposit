@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.15.2 (released 2021-06-29)
+* subjects is now a vocabulary field
+
 Version 0.14.0 (released 2021-05-19)
 
 * resource_type is now a vocabulary field (i.e. of the shape `{id: <id>}`),
