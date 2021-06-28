@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2021 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -25,6 +25,12 @@ export class SubjectsField extends Component {
     }));
   };
 
+  prepareSuggest = (searchQuery) => {
+    const limitTo = this.state.limitTo;
+    const prefix = limitTo === 'all' ? '' : `${limitTo}:`;
+    return `${prefix}${searchQuery}`;
+  }
+
   render() {
     const {
       fieldPath,
@@ -37,35 +43,41 @@ export class SubjectsField extends Component {
       limitToOptions,
       initialOptions,
     } = this.props;
-    const { limitTo } = this.state;
     return (
       <GroupField>
+        <Form.Field width={5}>
+          <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+          <GroupField>
+            <Form.Field width={7} style={{marginBottom: "auto", marginTop: "auto"}}>
+              Suggest from
+            </Form.Field>
+            <Form.Dropdown
+              defaultValue={limitToOptions[0].value}
+              fluid
+              onChange={(event, data) => this.setState({ limitTo: data.value })}
+              options={limitToOptions}
+              selection
+              width={8}
+            />
+          </GroupField>
+        </Form.Field>
+
         <RemoteSelectField
-          initialSuggestions={initialOptions}
+          clearable={clearable}
           fieldPath={fieldPath}
+          initialSuggestions={initialOptions}
+          label={<label>&nbsp;</label>}  /** For alignmnent purposes */
+          multiple={multiple}
+          noQueryMessage="Search for subjects.."
+          placeholder={placeholder}
+          preSearchChange={this.prepareSuggest}
+          required={required}
+          serializeSuggestions={this.serializeSubjects}
           suggestionAPIUrl="/api/vocabularies/subjects"
-          suggestionAPIQueryParams={{ limit_to: limitTo }}
           suggestionAPIHeaders={{
             Accept: 'application/vnd.inveniordm.v1+json',
           }}
-          serializeSuggestions={this.serializeSubjects}
-          placeholder={placeholder}
-          required={required}
-          clearable={clearable}
-          multiple={multiple}
-          label={
-            <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
-          }
-          noQueryMessage="Search for subjects.."
           width={11}
-        />
-        <Form.Dropdown
-          selection
-          onChange={(event, data) => this.setState({ limitTo: data.value })}
-          options={limitToOptions}
-          value={limitTo}
-          label={'Limit To'}
-          width={5}
         />
       </GroupField>
     );
