@@ -1,5 +1,5 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
+// Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
@@ -18,9 +18,9 @@ import _pick from 'lodash/pick';
 import _pickBy from 'lodash/pickBy';
 import _set from 'lodash/set';
 import {
-  ArrayFieldWithVocabulary,
   DatesField,
   Field,
+  SchemaField,
   VocabularyField,
 } from './fields';
 import {
@@ -47,31 +47,83 @@ export class DepositRecordSerializer {
       fieldpath: 'metadata.title',
       deserializedDefault: '',
     }),
-    additional_titles: new ArrayFieldWithVocabulary({
+    additional_titles: new SchemaField({
       fieldpath: 'metadata.additional_titles',
-      vocabularyFieldPath: ['type', 'lang'],
-      deserializedDefault: [],
+      schema: {
+        title: new Field({
+          fieldpath: 'title',
+        }),
+        type: new VocabularyField({
+          fieldpath: 'type',
+          deserializedDefault: '',
+          serializedDefault: '',
+        }),
+        lang: new VocabularyField({
+          fieldpath: 'lang',
+          deserializedDefault: '',
+          serializedDefault: '',
+        })
+      }
     }),
-    additional_descriptions: new ArrayFieldWithVocabulary({
+    additional_descriptions: new SchemaField({
       fieldpath: 'metadata.additional_descriptions',
-      vocabularyFieldPath: ['type', 'lang'],
-      deserializedDefault: [],
+      schema: {
+        description: new Field({
+          fieldpath: 'description',
+        }),
+        type: new VocabularyField({
+          fieldpath: 'type',
+          deserializedDefault: '',
+          serializedDefault: '',
+        }),
+        lang: new VocabularyField({
+          fieldpath: 'lang',
+          deserializedDefault: '',
+          serializedDefault: '',
+        })
+      }
     }),
-    creators: new ArrayFieldWithVocabulary({
+    creators: new SchemaField({
       fieldpath: 'metadata.creators',
-      vocabularyFieldPath: ['role'],
-      deserializedDefault: [],
-      serializedDefault: [],
+      schema: {
+        person_or_org: new Field({
+          fieldpath: 'person_or_org',
+        }),
+        role: new VocabularyField({
+          fieldpath: 'role',
+          deserializedDefault: '',
+          serializedDefault: '',
+        }),
+        affiliations: new VocabularyField({
+          fieldpath: 'affiliations',
+          labelField: 'name',
+          deserializedDefault: [],
+          serializedDefault: [],
+        })
+      }
     }),
-    contributors: new ArrayFieldWithVocabulary({
+    contributors: new SchemaField({
       fieldpath: 'metadata.contributors',
-      vocabularyFieldPath: ['role'],
-      deserializedDefault: [],
-      serializedDefault: [],
+      schema: {
+        person_or_org: new Field({
+          fieldpath: 'person_or_org',
+        }),
+        role: new VocabularyField({
+          fieldpath: 'role',
+          deserializedDefault: '',
+          serializedDefault: '',
+        }),
+        affiliations: new VocabularyField({
+          fieldpath: 'affiliations',
+          deserializedDefault: [],
+          serializedDefault: [],
+        })
+      }
     }),
     resource_type: new VocabularyField({
       fieldpath: 'metadata.resource_type',
       deserializedDefault: '',
+      serializedDefault: '',
     }),
     access: new Field({
       fieldpath: 'access',
@@ -91,19 +143,38 @@ export class DepositRecordSerializer {
     languages: new VocabularyField({
       fieldpath: 'metadata.languages',
       deserializedDefault: [],
+      serializedDefault: [],
     }),
     identifiers: new Field({
       fieldpath: 'metadata.identifiers',
       deserializedDefault: [emptyIdentifier],
     }),
-    related_identifiers: new ArrayFieldWithVocabulary({
+    related_identifiers: new SchemaField({
       fieldpath: 'metadata.related_identifiers',
-      vocabularyFieldPath: ['resource_type'],
+      schema: {
+        scheme: new Field({
+          fieldpath: 'scheme',
+        }),
+        identifier: new Field({
+          fieldpath: 'identifier',
+        }),
+        relation_type: new VocabularyField({
+          fieldpath: 'relation_type',
+          deserializedDefault: '',
+          serializedDefault: '',
+        }),
+        resource_type: new VocabularyField({
+          fieldpath: 'resource_type',
+          deserializedDefault: '',
+          serializedDefault: '',
+        })
+      },
       deserializedDefault: [emptyRelatedWork],
     }),
     subjects: new VocabularyField({
       fieldpath: 'metadata.subjects',
       deserializedDefault: [],
+      serializedDefault: [],
     }),
     funding: new Field({
       fieldpath: 'metadata.funding',
@@ -177,6 +248,7 @@ export class DepositRecordSerializer {
         deserializedRecord
       );
     }
+    
     return deserializedRecord;
   }
 

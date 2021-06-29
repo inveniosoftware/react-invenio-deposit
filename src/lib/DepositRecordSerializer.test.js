@@ -124,7 +124,7 @@ describe('DepositRecordSerializer', () => {
             scheme: 'doi',
             identifier: '10.5281/zenodo.9999988',
             resource_type: { id: 'image-photo' },
-            relation_type: 'requires',
+            relation_type: { id: 'requires'}
           },
         ]);
       });
@@ -225,13 +225,8 @@ describe('DepositRecordSerializer', () => {
               person_or_org: { name: 'John Doe', type: 'personal' },
               affiliations: [
                 {
+                  id: '01ggx4157',
                   name: 'CERN',
-                  identifiers: [
-                    {
-                      identifier: '01ggx4157',
-                      scheme: 'ror',
-                    },
-                  ],
                 },
               ],
             },
@@ -324,6 +319,7 @@ describe('DepositRecordSerializer', () => {
         metadata: {
           contributors: [
             {
+              affiliations: [],
               person_or_org: {
                 name: 'Jane Smith',
                 type: 'personal',
@@ -339,21 +335,12 @@ describe('DepositRecordSerializer', () => {
           ],
           creators: [
             {
-              affiliations: [
-                {
-                  name: 'CERN',
-                  identifiers: [
-                    {
-                      scheme: 'ror',
-                      identifier: '01ggx4157',
-                    },
-                  ],
-                },
-              ],
+              affiliations: ['01ggx4157'],
               person_or_org: {
                 name: 'John Doe',
                 type: 'personal',
               },
+              role: '',
             },
           ],
           publication_date: '2020-09-28',
