@@ -12,40 +12,43 @@ import _cloneDeep from 'lodash/cloneDeep';
 import { Field } from './Field';
 
 export class VocabularyField extends Field {
+  constructor({
+    fieldpath,
+    deserializedDefault = null,
+    serializedDefault = null,
+    labelField = 'title',
+  }) {
+    super({fieldpath, deserializedDefault, serializedDefault})
+    this.labelField = labelField
+  }
+
   deserialize(record) {
-    let fieldValue = _get(record, this.fieldpath, this.deserializedDefault);
+    const fieldValue = _get(record, this.fieldpath, this.deserializedDefault);
+    let deserializedValue = null
     if (fieldValue !== null) {
-      const value = (
+      deserializedValue = (
         Array.isArray(fieldValue)
-        ? fieldValue.map((value) => value.id || value.title)
-        : (fieldValue.id || fieldValue)  // resource type is the only case
+        ? fieldValue.map((value) => value.id || _get(value, this.labelField))
+        : (fieldValue.id ||  _get(fieldValue, this.labelField))  // resource type is the only case
                                          // falling in this branch and we don't
                                          // rely on title for id.
       );
-      return _set(
-        _cloneDeep(record),
-        this.fieldpath,
-        value
-      );
     }
-    return record;
+
+    return _set(_cloneDeep(record), this.fieldpath, deserializedValue || fieldValue);
   }
 
   serialize(record) {
-    // TODO: serializedDefault should be in output format, not input format
     let fieldValue = _get(record, this.fieldpath, this.serializedDefault);
+    let serializedValue = null
     if (fieldValue !== null) {
-      const value = (
+      serializedValue = (
         Array.isArray(fieldValue)
         ? fieldValue.map((value) => ({ id: value }))
         : {id: fieldValue}
       );
-      return _set(
-        _cloneDeep(record),
-        this.fieldpath,
-        value
-      );
     }
-    return record;
+
+    return _set(_cloneDeep(record), this.fieldpath, serializedValue || fieldValue);
   }
 }

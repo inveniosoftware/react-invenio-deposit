@@ -12,7 +12,6 @@ import { Modal, Grid, Header, Form, Ref } from 'semantic-ui-react';
 import { Formik } from 'formik';
 import {
   SelectField,
-  RemoteSelectField,
   TextField,
   ActionButton,
   RadioField,
@@ -21,6 +20,7 @@ import * as Yup from 'yup';
 import _get from 'lodash/get';
 import _find from 'lodash/find';
 import _map from 'lodash/map';
+import { AffiliationsField } from './../AffiliationsField'
 import { CreatibutorsIdentifiers } from './CreatibutorsIdentifiers';
 import { CREATIBUTOR_TYPE } from './type';
 
@@ -117,16 +117,21 @@ export class CreatibutorsModal extends Component {
       return findField(initialIdentifiers, 'identifier', identifier);
     });
 
-    const initialAffilliations = _get(
+    const initialAffiliations = _get(
       this.props.initialCreatibutor,
       affiliationsFieldPath,
       []
     );
-    const affiliations = submittedCreatibutor.affiliations.map(
-      (affiliation) => {
-        return findField(initialAffilliations, 'name', affiliation);
-      }
+
+    const submittedAffiliations = _get(
+      submittedCreatibutor,
+      affiliationsFieldPath,
+      []
     );
+
+    const affiliations = submittedAffiliations.map((affiliation) => {
+      return findField(initialAffiliations, 'id', affiliation);
+    });
 
     return {
       ...submittedCreatibutor,
@@ -134,7 +139,7 @@ export class CreatibutorsModal extends Component {
         ...submittedCreatibutor.person_or_org,
         identifiers,
       },
-      affiliations,
+      affiliations: affiliations,
     };
   };
 
@@ -147,7 +152,7 @@ export class CreatibutorsModal extends Component {
    */
   deserializeCreatibutor = (initialCreatibutor) => {
     const identifiersFieldPath = 'person_or_org.identifiers';
-
+    
     return {
       // default type to personal
       person_or_org: {
@@ -301,30 +306,8 @@ export class CreatibutorsModal extends Component {
                     )}
                     fieldPath={identifiersFieldPath}
                   />
-                  <RemoteSelectField
+                  <AffiliationsField
                     fieldPath={affiliationsFieldPath}
-                    suggestionAPIUrl="/api/vocabularies/affiliations"
-                    suggestionAPIHeaders={{
-                      Accept: 'application/vnd.inveniordm.v1+json',
-                    }}
-                    placeholder={'Search for an affiliation by name'}
-                    clearable
-                    multiple
-                    initialSuggestions={_get(
-                      initialCreatibutor,
-                      'affiliations',
-                      []
-                    )}
-                    serializeSuggestions={(affiliations) =>
-                      _map(affiliations, (affiliation) => ({
-                        text: affiliation.name,
-                        value: affiliation.name,
-                        key: affiliation.name,
-                      }))
-                    }
-                    label="Affiliations"
-                    noQueryMessage="Search for affiliations..."
-                    allowAdditions
                   />
                   <SelectField
                     fieldPath={roleFieldPath}
@@ -400,17 +383,7 @@ CreatibutorsModal.propTypes = {
         })
       ),
     }),
-    affiliations: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string,
-        identifiers: PropTypes.arrayOf(
-          PropTypes.shape({
-            scheme: PropTypes.string,
-            identifier: PropTypes.string,
-          })
-        ),
-      })
-    ),
+    affiliations: PropTypes.array,
     role: PropTypes.string,
   }),
   trigger: PropTypes.object.isRequired,

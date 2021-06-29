@@ -76,7 +76,7 @@ ResourceTypeField.propTypes = {
   fieldPath: PropTypes.string,
   label: PropTypes.string,
   labelIcon: PropTypes.string,
-  labelClassName: PropTypes.string,
+  labelclassname: PropTypes.string,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       icon: PropTypes.string,
@@ -92,5 +92,5 @@ ResourceTypeField.defaultProps = {
   fieldPath: 'metadata.resource_type',
   label: 'Resource type',
   labelIcon: 'tag',
-  labelClassName: 'field-label-class',
+  labelclassname: 'field-label-class',
 };
