@@ -13,8 +13,14 @@ import { AdditionalDescriptionsField } from './AdditionalDescriptionsField';
 
 export class DescriptionsField extends Component {
   render() {
-    const { fieldPath, label, labelIcon, options, editorConfig } = this.props;
-
+    const {
+      fieldPath,
+      label,
+      labelIcon,
+      options,
+      editorConfig,
+      recordUI,
+    } = this.props;
     return (
       <>
         <RichInputField
@@ -26,7 +32,7 @@ export class DescriptionsField extends Component {
           optimized
           required
         />
-        <AdditionalDescriptionsField options={options} />
+        <AdditionalDescriptionsField recordUI={recordUI} options={options} />
       </>
     );
   }
@@ -37,6 +43,7 @@ DescriptionsField.propTypes = {
   label: PropTypes.string,
   labelIcon: PropTypes.string,
   editorConfig: PropTypes.object,
+  recordUI: PropTypes.object,
 };
 
 DescriptionsField.defaultProps = {
@@ -44,4 +51,5 @@ DescriptionsField.defaultProps = {
   label: 'Description',
   labelIcon: 'pencil',
   editorConfig: {},
+  recordUI: {},
 };

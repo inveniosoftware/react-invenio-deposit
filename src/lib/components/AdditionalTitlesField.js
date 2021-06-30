@@ -51,7 +51,8 @@ export class AdditionalTitlesField extends Component {
                 }))
               }
               initialOptions={
-                recordUI?.additional_titles[indexPath]?.lang
+                recordUI?.additional_titles &&
+                recordUI.additional_titles[indexPath]?.lang
                   ? [recordUI.additional_titles[indexPath].lang]
                   : []
               }

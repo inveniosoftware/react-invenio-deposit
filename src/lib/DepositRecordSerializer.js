@@ -52,15 +52,20 @@ export class DepositRecordSerializer {
       vocabularyFieldPath: ['type', 'lang'],
       deserializedDefault: [],
     }),
+    additional_descriptions: new ArrayFieldWithVocabulary({
+      fieldpath: 'metadata.additional_descriptions',
+      vocabularyFieldPath: ['type', 'lang'],
+      deserializedDefault: [],
+    }),
     creators: new ArrayFieldWithVocabulary({
       fieldpath: 'metadata.creators',
-      vocabularyFieldPath: 'role',
+      vocabularyFieldPath: ['role'],
       deserializedDefault: [],
       serializedDefault: [],
     }),
     contributors: new ArrayFieldWithVocabulary({
       fieldpath: 'metadata.contributors',
-      vocabularyFieldPath: 'role',
+      vocabularyFieldPath: ['role'],
       deserializedDefault: [],
       serializedDefault: [],
     }),
