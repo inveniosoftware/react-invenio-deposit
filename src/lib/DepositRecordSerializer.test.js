@@ -155,6 +155,7 @@ describe('DepositRecordSerializer', () => {
         metadata: {
           title: '',
           additional_titles: [],
+          additional_descriptions: [],
           creators: [],
           contributors: [],
           resource_type: '',
@@ -242,6 +243,13 @@ describe('DepositRecordSerializer', () => {
             {
               title: 'Another title',
               type: { title: 'Abstract', id: 'abstract' },
+              lang: { title: 'Danish', id: 'dan' },
+            },
+          ],
+          additional_descriptions: [
+            {
+              description: 'Another description',
+              type: { title: 'Other', id: 'other' },
               lang: { title: 'Danish', id: 'dan' },
             },
           ],
@@ -353,6 +361,9 @@ describe('DepositRecordSerializer', () => {
           title: 'Test 2020-1028 13:34',
           additional_titles: [
             { title: 'Another title', type: 'abstract', lang: 'dan' },
+          ],
+          additional_descriptions: [
+            { description: 'Another description', type: 'other', lang: 'dan' },
           ],
           dates: [{ date: '1920/2020', type: 'collected', description: 'foo' }],
           languages: ['en_id', 'fr_id'],

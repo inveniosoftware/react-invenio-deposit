@@ -10,19 +10,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Grid, Icon } from 'semantic-ui-react';
 
-import {
-  ArrayField,
-  GroupField,
-  SelectField,
-  RichInputField,
-} from 'react-invenio-forms';
+import { ArrayField, SelectField, RichInputField } from 'react-invenio-forms';
 import { emptyAdditionalDescription } from '../record';
 import { LanguagesField } from './LanguagesField';
 
 export class AdditionalDescriptionsField extends Component {
   render() {
-    const { fieldPath, options } = this.props;
-
+    const { fieldPath, options, recordUI } = this.props;
     return (
       <ArrayField
         addButtonLabel={'Add description'}
@@ -58,16 +52,27 @@ export class AdditionalDescriptionsField extends Component {
                     required
                     optimized
                   />
-                  {/* temporary: January release removal
-                  TODO: Re-enable in next releases*/}
-                  {/* <LanguagesField
+                  <LanguagesField
+                    serializeSuggestions={(suggestions) =>
+                      suggestions.map((item) => ({
+                        text: item.title_l10n,
+                        value: item.id,
+                        key: item.id,
+                      }))
+                    }
+                    initialOptions={
+                      recordUI?.additional_descriptions &&
+                      recordUI.additional_descriptions[indexPath]?.lang
+                        ? [recordUI.additional_descriptions[indexPath].lang]
+                        : []
+                    }
                     fieldPath={`${key}.lang`}
                     label={'Language'}
                     multiple={false}
                     placeholder={'Select language'}
                     labelIcon={null}
                     clearable
-                  /> */}
+                  />
                 </Grid.Column>
               </Grid.Row>
             </Grid>
@@ -94,8 +99,10 @@ AdditionalDescriptionsField.propTypes = {
       })
     ),
   }),
+  recordUI: PropTypes.object,
 };
 
 AdditionalDescriptionsField.defaultProps = {
   fieldPath: 'metadata.additional_descriptions',
+  recordUI: {},
 };
