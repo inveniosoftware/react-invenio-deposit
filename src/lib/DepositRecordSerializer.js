@@ -136,8 +136,21 @@ export class DepositRecordSerializer {
       fieldpath: 'metadata.publication_date',
       deserializedDefault: '',
     }),
-    dates: new DatesField({
+    dates: new SchemaField({
       fieldpath: 'metadata.dates',
+      schema: {
+        date: new Field({
+          fieldpath: 'date',
+        }),
+        type: new VocabularyField({
+          fieldpath: 'type',
+          deserializedDefault: '',
+          serializedDefault: '',
+        }),
+        description: new Field({
+          fieldpath: 'description',
+        })
+      },
       deserializedDefault: [emptyDate],
     }),
     languages: new VocabularyField({

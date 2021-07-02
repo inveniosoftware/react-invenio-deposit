@@ -50,7 +50,7 @@ describe('DepositRecordSerializer', () => {
         expect(serializedRecord.metadata.dates).toEqual([
           {
             date: '2020/08',
-            type: 'accepted',
+            type: {'id': 'accepted'},
             description: 'bar',
           },
         ]);
@@ -248,7 +248,7 @@ describe('DepositRecordSerializer', () => {
               lang: { title: 'Danish', id: 'dan' },
             },
           ],
-          dates: [{ date: '1920/2020', type: 'collected', description: 'foo' }],
+          dates: [{ date: '1920/2020', type: {id: 'collected'}, description: 'foo' }],
           languages: [
             { title: 'en', id: 'en_id' },
             { title: 'fr', id: 'fr_id' },

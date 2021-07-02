@@ -40,7 +40,7 @@ export const emptyRelatedWork = {
 export const emptyDate = {
   date: '',
   description: '',
-  type: 'accepted',
+  type: '',
 };
 
 export const emptyFunding = {
