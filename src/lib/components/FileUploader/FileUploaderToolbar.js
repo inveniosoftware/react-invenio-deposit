@@ -9,7 +9,7 @@ import { useFormikContext } from 'formik';
 import React from 'react';
 import { Checkbox, Grid, Icon, Label, List, Popup } from 'semantic-ui-react';
 import { humanReadableBytes } from './utils';
-import i18next from '../../i18next';
+import { i18next } from '../../i18next';
 
 // NOTE: This component has to be a function component to allow
 //       the `useFormikContext` hook.
@@ -30,7 +30,7 @@ export const FileUploaderToolbar = ({
             <List.Item>
               <Checkbox
                 label={'Metadata-only record'}
-                onChange={() => setFieldValue("files.enabled", !filesEnabled)}
+                onChange={() => setFieldValue('files.enabled', !filesEnabled)}
                 disabled={filesList.length > 0}
                 checked={!filesEnabled}
               />

@@ -8,13 +8,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Header } from 'semantic-ui-react';
-import i18next from '../i18next';
+import { i18next } from '../i18next';
 
 class DepositFormTitleComponent extends Component {
   render() {
     let content = '';
     if (!this.props.isPublished) {
-      content = this.props.isVersion ? i18next.t('New version') : i18next.t('New upload');
+      content = this.props.isVersion
+        ? i18next.t('New version')
+        : i18next.t('New upload');
     } else {
       content = i18next.t('Edit upload');
     }

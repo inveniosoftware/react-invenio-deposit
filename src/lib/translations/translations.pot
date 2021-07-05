@@ -5,18 +5,21 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2021-06-29T13:05:15.622Z\n"
-"PO-Revision-Date: 2021-06-29T13:05:15.622Z\n"
+"POT-Creation-Date: 2021-07-06T12:52:44.528Z\n"
+"PO-Revision-Date: 2021-07-06T12:52:44.528Z\n"
 "Language: en\n"
 
 msgid "New version"
-msgstr ""
+msgstr "New version"
 
 msgid "New upload"
-msgstr ""
+msgstr "New upload"
 
 msgid "Edit upload"
-msgstr ""
+msgstr "Edit upload"
 
 msgid "Storage available"
-msgstr ""
+msgstr "Storage available"
+
+msgid "Add identifier"
+msgstr "Add identifier"

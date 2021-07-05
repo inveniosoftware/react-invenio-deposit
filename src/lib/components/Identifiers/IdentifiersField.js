@@ -15,6 +15,7 @@ import {
   TextField,
 } from 'react-invenio-forms';
 import { Button, Form } from 'semantic-ui-react';
+import { i18next } from '../../i18next';
 import { emptyIdentifier } from '../../record';
 
 /** Identifiers array component */
@@ -24,7 +25,7 @@ export class IdentifiersField extends Component {
     return (
       <>
         <ArrayField
-          addButtonLabel={'Add identifier'}
+          addButtonLabel={i18next.t('Add identifier')}
           defaultNewValue={emptyIdentifier}
           fieldPath={fieldPath}
           label={
