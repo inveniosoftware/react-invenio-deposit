@@ -12,7 +12,8 @@
     "languages": [
       "en",
       "de",
-      "tr"
+      "tr",
+      "el"
     ]
   },
   "scripts": {
@@ -24,10 +25,10 @@
     "postlink-dist": "cd dist && rm -rf node_modules",
     "unlink-dist": "cd dist && npm unlink && rm package*",
     "watch": "NODE_ENV=development rollup --watch -c",
-    "i18n-scan": "i18next-scanner --config i18next-scanner.config.js src/**/*.{js,jsx}",
-    "i18n-conv-json": "i18next-conv -l en -s ./src/lib/translations/en/translations.json -t ./src/lib/translations/translations.pot",
-    "i18n-conv-po": "i18next-conv -l $npm_config_lang -s ./src/lib/translations/$npm_config_lang/messages.po -t ./src/lib/translations/$npm_config_lang/translations.json",
-    "i18n-conv-po-all": "node ./getTextConverter.js",
+    "extract_messages": "i18next-scanner --config i18next-scanner.config.js 'src/**/*.{js,jsx}'",
+    "postextract_messages": "i18next-conv -l en -s ./src/lib/translations/messages/en/translations.json -t ./src/lib/translations/translations.pot",
+    "compile_catalog": "node ./src/lib/translations/scripts/compileCatalog.js",
+    "init_catalog": "node ./src/lib/translations/scripts/initCatalog",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.js",
@@ -35,6 +36,8 @@
   },
   "dependencies": {},
   "peerDependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^16.0.0",
+    "@ckeditor/ckeditor5-react": "^2.1.0",
     "axios": "^0.21.1",
     "formik": "^2.1.4",
     "react": "^16.13.1",
