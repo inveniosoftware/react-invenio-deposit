@@ -1,7 +1,11 @@
 # Changes
 
-Version 0.15.2 (released 2021-06-29)
+Version 0.15.3 (released 2021-07-06)
 * subjects is now a vocabulary field
+* some translation support
+
+Version 0.15.2 (released 2021-07-01)
+* type and language vocabularies
 
 Version 0.14.0 (released 2021-05-19)
 
