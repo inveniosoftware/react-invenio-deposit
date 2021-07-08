@@ -8,4 +8,7 @@
 export { DatesField } from './DatesField';
 export { Field } from './Field';
 export { SchemaField } from './SchemaField';
-export { VocabularyField } from './VocabularyField';
+export {
+  AllowAdditionsVocabularyField,
+  VocabularyField,
+} from './VocabularyField';

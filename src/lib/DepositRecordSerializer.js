@@ -18,7 +18,7 @@ import _pick from 'lodash/pick';
 import _pickBy from 'lodash/pickBy';
 import _set from 'lodash/set';
 import {
-  DatesField,
+  AllowAdditionsVocabularyField,
   Field,
   SchemaField,
   VocabularyField,
@@ -62,8 +62,8 @@ export class DepositRecordSerializer {
           fieldpath: 'lang',
           deserializedDefault: '',
           serializedDefault: '',
-        })
-      }
+        }),
+      },
     }),
     additional_descriptions: new SchemaField({
       fieldpath: 'metadata.additional_descriptions',
@@ -80,8 +80,8 @@ export class DepositRecordSerializer {
           fieldpath: 'lang',
           deserializedDefault: '',
           serializedDefault: '',
-        })
-      }
+        }),
+      },
     }),
     creators: new SchemaField({
       fieldpath: 'metadata.creators',
@@ -94,13 +94,13 @@ export class DepositRecordSerializer {
           deserializedDefault: '',
           serializedDefault: '',
         }),
-        affiliations: new VocabularyField({
+        affiliations: new AllowAdditionsVocabularyField({
           fieldpath: 'affiliations',
-          labelField: 'name',
           deserializedDefault: [],
           serializedDefault: [],
-        })
-      }
+          labelField: 'name',
+        }),
+      },
     }),
     contributors: new SchemaField({
       fieldpath: 'metadata.contributors',
@@ -117,8 +117,8 @@ export class DepositRecordSerializer {
           fieldpath: 'affiliations',
           deserializedDefault: [],
           serializedDefault: [],
-        })
-      }
+        }),
+      },
     }),
     resource_type: new VocabularyField({
       fieldpath: 'metadata.resource_type',
@@ -149,7 +149,7 @@ export class DepositRecordSerializer {
         }),
         description: new Field({
           fieldpath: 'description',
-        })
+        }),
       },
       deserializedDefault: [emptyDate],
     }),
@@ -180,7 +180,7 @@ export class DepositRecordSerializer {
           fieldpath: 'resource_type',
           deserializedDefault: '',
           serializedDefault: '',
-        })
+        }),
       },
       deserializedDefault: [emptyRelatedWork],
     }),
@@ -257,11 +257,10 @@ export class DepositRecordSerializer {
       'pids',
     ]);
     for (let key in this.depositRecordSchema) {
-      deserializedRecord = this.depositRecordSchema[key].deserialize(
-        deserializedRecord
-      );
+      deserializedRecord =
+        this.depositRecordSchema[key].deserialize(deserializedRecord);
     }
-    
+
     return deserializedRecord;
   }
 
@@ -308,9 +307,8 @@ export class DepositRecordSerializer {
       'pids',
     ]);
     for (let key in this.depositRecordSchema) {
-      serializedRecord = this.depositRecordSchema[key].serialize(
-        serializedRecord
-      );
+      serializedRecord =
+        this.depositRecordSchema[key].serialize(serializedRecord);
     }
     // Remove empty values again because serialization may add some back
     serializedRecord = this.removeEmptyValues(serializedRecord);

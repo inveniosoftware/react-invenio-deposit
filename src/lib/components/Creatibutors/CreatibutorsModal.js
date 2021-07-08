@@ -9,7 +9,7 @@
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Grid, Header, Form, Ref } from 'semantic-ui-react';
-import { Formik } from 'formik';
+import { Formik, getIn } from 'formik';
 import {
   SelectField,
   TextField,
@@ -20,7 +20,7 @@ import * as Yup from 'yup';
 import _get from 'lodash/get';
 import _find from 'lodash/find';
 import _map from 'lodash/map';
-import { AffiliationsField } from './../AffiliationsField'
+import { AffiliationsField } from './../AffiliationsField';
 import { CreatibutorsIdentifiers } from './CreatibutorsIdentifiers';
 import { CREATIBUTOR_TYPE } from './type';
 
@@ -117,21 +117,11 @@ export class CreatibutorsModal extends Component {
       return findField(initialIdentifiers, 'identifier', identifier);
     });
 
-    const initialAffiliations = _get(
-      this.props.initialCreatibutor,
-      affiliationsFieldPath,
-      []
-    );
-
     const submittedAffiliations = _get(
       submittedCreatibutor,
       affiliationsFieldPath,
       []
     );
-
-    const affiliations = submittedAffiliations.map((affiliation) => {
-      return findField(initialAffiliations, 'id', affiliation);
-    });
 
     return {
       ...submittedCreatibutor,
@@ -139,7 +129,7 @@ export class CreatibutorsModal extends Component {
         ...submittedCreatibutor.person_or_org,
         identifiers,
       },
-      affiliations: affiliations,
+      affiliations: submittedAffiliations,
     };
   };
 
@@ -152,7 +142,7 @@ export class CreatibutorsModal extends Component {
    */
   deserializeCreatibutor = (initialCreatibutor) => {
     const identifiersFieldPath = 'person_or_org.identifiers';
-    
+
     return {
       // default type to personal
       person_or_org: {
@@ -163,7 +153,7 @@ export class CreatibutorsModal extends Component {
           'identifier'
         ),
       },
-      affiliations: _map(_get(initialCreatibutor, 'affiliations', []), 'name'),
+      affiliations: _get(initialCreatibutor, 'affiliations', []),
       role: _get(initialCreatibutor, 'role', ''),
     };
   };
@@ -306,9 +296,7 @@ export class CreatibutorsModal extends Component {
                     )}
                     fieldPath={identifiersFieldPath}
                   />
-                  <AffiliationsField
-                    fieldPath={affiliationsFieldPath}
-                  />
+                  <AffiliationsField fieldPath={affiliationsFieldPath} />
                   <SelectField
                     fieldPath={roleFieldPath}
                     label={'Role'}
