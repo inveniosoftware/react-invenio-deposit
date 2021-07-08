@@ -16,39 +16,71 @@ export class VocabularyField extends Field {
     fieldpath,
     deserializedDefault = null,
     serializedDefault = null,
-    labelField = 'title',
+    labelField = 'name',
   }) {
-    super({fieldpath, deserializedDefault, serializedDefault})
-    this.labelField = labelField
+    super({ fieldpath, deserializedDefault, serializedDefault });
+    this.labelField = labelField;
   }
 
   deserialize(record) {
     const fieldValue = _get(record, this.fieldpath, this.deserializedDefault);
-    let deserializedValue = null
+    const _deserialize = (value) => value.id;
+    let deserializedValue = null;
     if (fieldValue !== null) {
-      deserializedValue = (
-        Array.isArray(fieldValue)
-        ? fieldValue.map((value) => value.id || _get(value, this.labelField))
-        : (fieldValue.id ||  _get(fieldValue, this.labelField))  // resource type is the only case
-                                         // falling in this branch and we don't
-                                         // rely on title for id.
-      );
+      deserializedValue = Array.isArray(fieldValue)
+        ? fieldValue.map(_deserialize)
+        : _deserialize(fieldValue);
     }
-
-    return _set(_cloneDeep(record), this.fieldpath, deserializedValue || fieldValue);
+    return _set(
+      _cloneDeep(record),
+      this.fieldpath,
+      deserializedValue || fieldValue
+    );
   }
 
   serialize(record) {
     let fieldValue = _get(record, this.fieldpath, this.serializedDefault);
-    let serializedValue = null
+    let serializedValue = null;
     if (fieldValue !== null) {
-      serializedValue = (
-        Array.isArray(fieldValue)
-        ? fieldValue.map((value) => ({ id: value }))
-        : {id: fieldValue}
-      );
+      serializedValue = Array.isArray(fieldValue)
+        ? fieldValue.map((value) => {
+            if (typeof value === 'string') {
+              return { id: value };
+            } else {
+              return value;
+            }
+          })
+        : { id: fieldValue }; // fieldValue is a string
     }
 
-    return _set(_cloneDeep(record), this.fieldpath, serializedValue || fieldValue);
+    return _set(
+      _cloneDeep(record),
+      this.fieldpath,
+      serializedValue || fieldValue
+    );
+  }
+}
+
+export class AllowAdditionsVocabularyField extends VocabularyField {
+  deserialize(record) {
+    const fieldValue = _get(record, this.fieldpath, this.deserializedDefault);
+    // We deserialize the values in the format
+    // {id: 'vocab_id', <labelField>: 'vacab_name'} for controlled values
+    // and {<labelField>: 'vocab_name'} for user added entries
+    const _deserialize = (value) => ({
+      ...(value.id ? { id: value.id } : {}),
+      [this.labelField]: value[this.labelField],
+    });
+    let deserializedValue = null;
+    if (fieldValue !== null) {
+      deserializedValue = Array.isArray(fieldValue)
+        ? fieldValue.map(_deserialize)
+        : _deserialize(fieldValue);
+    }
+    return _set(
+      _cloneDeep(record),
+      this.fieldpath,
+      deserializedValue || fieldValue
+    );
   }
 }

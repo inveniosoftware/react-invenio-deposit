@@ -50,7 +50,7 @@ describe('DepositRecordSerializer', () => {
         expect(serializedRecord.metadata.dates).toEqual([
           {
             date: '2020/08',
-            type: {'id': 'accepted'},
+            type: { id: 'accepted' },
             description: 'bar',
           },
         ]);
@@ -124,7 +124,7 @@ describe('DepositRecordSerializer', () => {
             scheme: 'doi',
             identifier: '10.5281/zenodo.9999988',
             resource_type: { id: 'image-photo' },
-            relation_type: { id: 'requires'}
+            relation_type: { id: 'requires' },
           },
         ]);
       });
@@ -248,7 +248,13 @@ describe('DepositRecordSerializer', () => {
               lang: { title: 'Danish', id: 'dan' },
             },
           ],
-          dates: [{ date: '1920/2020', type: {id: 'collected'}, description: 'foo' }],
+          dates: [
+            {
+              date: '1920/2020',
+              type: { id: 'collected' },
+              description: 'foo',
+            },
+          ],
           languages: [
             { title: 'en', id: 'en_id' },
             { title: 'fr', id: 'fr_id' },
@@ -335,7 +341,12 @@ describe('DepositRecordSerializer', () => {
           ],
           creators: [
             {
-              affiliations: ['01ggx4157'],
+              affiliations: [
+                {
+                  id: '01ggx4157',
+                  name: 'CERN',
+                },
+              ],
               person_or_org: {
                 name: 'John Doe',
                 type: 'personal',
