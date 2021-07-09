@@ -12,7 +12,7 @@ import { translations } from './translations/messages';
 const options = {
   fallbackLng: 'en', // fallback keys
   returnEmptyString: false,
-  debug: true,
+  debug: process.env.NODE_ENV === 'development',
   resources: translations,
   // specify language detection order
   detection: {
