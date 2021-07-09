@@ -9,27 +9,27 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FieldLabel, GroupField, RemoteSelectField } from 'react-invenio-forms';
 import { Form } from 'semantic-ui-react';
-import _get from 'lodash/get';
-
+import { Field, getIn } from 'formik';
 
 export class SubjectsField extends Component {
   state = {
     limitTo: 'all',
   };
 
-  serializeSubjects = (subjects) => {
-    return subjects.map((subject) => ({
-      text: subject.title_l10n,
-      value: _get(subject, 'id', subject.id),
-      key: _get(subject, 'id', subject.id),
+  serializeSubjects = (subjects) =>
+    subjects.map((subject) => ({
+      text: subject.subject,
+      value: subject.subject,
+      key: subject.subject,
+      ...(subject.id ? { id: subject.id } : {}),
+      subject: subject.subject,
     }));
-  };
 
   prepareSuggest = (searchQuery) => {
     const limitTo = this.state.limitTo;
     const prefix = limitTo === 'all' ? '' : `${limitTo}:`;
     return `${prefix}${searchQuery}`;
-  }
+  };
 
   render() {
     const {
@@ -41,14 +41,16 @@ export class SubjectsField extends Component {
       placeholder,
       clearable,
       limitToOptions,
-      initialOptions,
     } = this.props;
     return (
       <GroupField>
         <Form.Field width={5}>
           <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
           <GroupField>
-            <Form.Field width={7} style={{marginBottom: "auto", marginTop: "auto"}}>
+            <Form.Field
+              width={7}
+              style={{ marginBottom: 'auto', marginTop: 'auto' }}
+            >
               Suggest from
             </Form.Field>
             <Form.Dropdown
@@ -61,24 +63,47 @@ export class SubjectsField extends Component {
             />
           </GroupField>
         </Form.Field>
-
-        <RemoteSelectField
-          clearable={clearable}
-          fieldPath={fieldPath}
-          initialSuggestions={initialOptions}
-          label={<label>&nbsp;</label>}  /** For alignmnent purposes */
-          multiple={multiple}
-          noQueryMessage="Search for subjects.."
-          placeholder={placeholder}
-          preSearchChange={this.prepareSuggest}
-          required={required}
-          serializeSuggestions={this.serializeSubjects}
-          suggestionAPIUrl="/api/vocabularies/subjects"
-          suggestionAPIHeaders={{
-            Accept: 'application/vnd.inveniordm.v1+json',
+        <Field name={this.props.fieldPath}>
+          {({ form: { values } }) => {
+            return (
+              <RemoteSelectField
+                clearable={clearable}
+                fieldPath={fieldPath}
+                initialSuggestions={getIn(values, fieldPath, [])}
+                multiple={multiple}
+                noQueryMessage="Search or create subjects.."
+                placeholder={placeholder}
+                preSearchChange={this.prepareSuggest}
+                required={required}
+                serializeSuggestions={this.serializeSubjects}
+                serializeAddedValue={(value) => ({
+                  text: value,
+                  value: value,
+                  key: value,
+                  subject: value,
+                })}
+                suggestionAPIUrl="/api/subjects"
+                onValueChange={({ formikProps }, selectedSuggestions) => {
+                  formikProps.form.setFieldValue(
+                    fieldPath,
+                    // save the suggestion objects so we can extract information
+                    // about which value added by the user
+                    selectedSuggestions
+                  );
+                }}
+                value={getIn(values, fieldPath, []).map((val) => val.subject)}
+                label={
+                  <FieldLabel
+                    htmlFor={`${fieldPath}.subject`}
+                    label={'Subject'}
+                  />
+                }
+                allowAdditions
+                width={11}
+              />
+            );
           }}
-          width={11}
-        />
+        </Field>
       </GroupField>
     );
   }

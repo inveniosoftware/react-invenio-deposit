@@ -113,10 +113,11 @@ export class DepositRecordSerializer {
           deserializedDefault: '',
           serializedDefault: '',
         }),
-        affiliations: new VocabularyField({
+        affiliations: new AllowAdditionsVocabularyField({
           fieldpath: 'affiliations',
           deserializedDefault: [],
           serializedDefault: [],
+          labelField: 'name',
         }),
       },
     }),
@@ -184,10 +185,11 @@ export class DepositRecordSerializer {
       },
       deserializedDefault: [emptyRelatedWork],
     }),
-    subjects: new VocabularyField({
+    subjects: new AllowAdditionsVocabularyField({
       fieldpath: 'metadata.subjects',
       deserializedDefault: [],
       serializedDefault: [],
+      labelField: 'subject',
     }),
     funding: new Field({
       fieldpath: 'metadata.funding',
