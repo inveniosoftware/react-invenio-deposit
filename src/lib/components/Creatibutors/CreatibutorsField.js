@@ -30,9 +30,9 @@ const displayCreatibutorName = ({ familyName, givenName, affiliationName }) => {
 };
 
 class CreatibutorsFieldForm extends Component {
-  // sortOptions = (options) => {
-  //   return options.sort((o1, o2) => o1.text.localeCompare(o2.text));
-  // };
+  sortOptions = (options) => {
+    return options.sort((o1, o2) => o1.text.localeCompare(o2.text));
+  };
 
   render() {
     const {

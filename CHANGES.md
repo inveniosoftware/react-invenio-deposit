@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.15.4 (released 2021-07-09)
+* affiliations vocabulary integration
+
 Version 0.15.3 (released 2021-07-06)
 * subjects is now a vocabulary field
 * some translation support
