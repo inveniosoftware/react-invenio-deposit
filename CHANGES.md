@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.15.5 (released 2021-07-09)
+* subjects vocabulary integration
+
 Version 0.15.4 (released 2021-07-09)
 * affiliations vocabulary integration
 
