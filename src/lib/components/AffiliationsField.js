@@ -25,7 +25,7 @@ export class AffiliationsField extends Component {
     const { fieldPath } = this.props;
     return (
       <Field name={this.props.fieldPath}>
-        {({ form: { values }, ...rest }) => {
+        {({ form: { values } }) => {
           return (
             <RemoteSelectField
               fieldPath={fieldPath}

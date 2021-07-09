@@ -47,7 +47,10 @@ export class VocabularyField extends Field {
             if (typeof value === 'string') {
               return { id: value };
             } else {
-              return value;
+              return {
+                ...(value.id ? { id: value.id } : {}),
+                [this.labelField]: value[this.labelField],
+              };
             }
           })
         : { id: fieldValue }; // fieldValue is a string

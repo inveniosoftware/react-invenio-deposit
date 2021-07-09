@@ -272,7 +272,7 @@ describe('DepositRecordSerializer', () => {
           ],
           subjects: [
             {
-              title: 'MeSH: Cognitive Neuroscience',
+              subject: 'MeSH: Cognitive Neuroscience',
               id: 'mesh_1',
             },
           ],
@@ -376,7 +376,12 @@ describe('DepositRecordSerializer', () => {
               relation_type: 'requires',
             },
           ],
-          subjects: ['mesh_1'],
+          subjects: [
+            {
+              id: 'mesh_1',
+              subject: 'MeSH: Cognitive Neuroscience',
+            },
+          ],
           funding: [
             {
               funder: {
