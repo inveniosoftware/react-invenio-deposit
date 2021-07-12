@@ -39,10 +39,10 @@ export class PreviewButtonComponent extends Component {
           this.setState({ previousFormState: formState });
           break;
         case FORM_SAVE_SUCCEEDED:
+        case FORM_SAVE_PARTIALLY_SUCCEEDED:
           this.setState(initialState);
           window.location = `/records/${record.id}?preview=1`;
           break;
-        case FORM_SAVE_PARTIALLY_SUCCEEDED:
         case FORM_SAVE_FAILED:
           this.setState({
             isLoading: false,
