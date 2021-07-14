@@ -29,7 +29,7 @@ export const FileUploaderToolbar = ({
           <List horizontal>
             <List.Item>
               <Checkbox
-                label={'Metadata-only record'}
+                label={i18next.t('Metadata-only record')}
                 onChange={() => setFieldValue('files.enabled', !filesEnabled)}
                 disabled={filesList.length > 0}
                 checked={!filesEnabled}
@@ -57,7 +57,8 @@ export const FileUploaderToolbar = ({
                   ? { color: 'blue' }
                   : {})}
               >
-                {filesList.length} out of {quota.maxFiles} files
+                {i18next.t(`{{length}} out of {{maxfiles}} files`,
+                {length: filesList.length, maxfiles: quota.maxFiles})}
               </Label>
             </List.Item>
             <List.Item>
@@ -67,7 +68,7 @@ export const FileUploaderToolbar = ({
                   ? { color: 'blue' }
                   : {})}
               >
-                {humanReadableBytes(filesSize)} out of{' '}
+                {humanReadableBytes(filesSize)} {i18next.t('out of')}{' '}
                 {humanReadableBytes(quota.maxStorage)}
               </Label>
             </List.Item>

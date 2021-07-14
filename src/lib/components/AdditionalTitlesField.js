@@ -18,13 +18,14 @@ import {
 } from 'react-invenio-forms';
 import { emptyAdditionalTitle } from '../record';
 import { LanguagesField } from './LanguagesField';
+import { i18next } from '../i18next';
 
 export class AdditionalTitlesField extends Component {
   render() {
     const { fieldPath, options, recordUI } = this.props;
     return (
       <ArrayField
-        addButtonLabel={'Add titles'}
+        addButtonLabel={i18next.t('Add titles')}
         defaultNewValue={emptyAdditionalTitle}
         fieldPath={fieldPath}
       >

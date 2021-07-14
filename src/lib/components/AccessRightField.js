@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C)      2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -10,7 +11,7 @@ import PropTypes from 'prop-types';
 import { FastField } from 'formik';
 import { FieldLabel } from 'react-invenio-forms';
 import { Card, Divider, Form } from 'semantic-ui-react';
-
+import { i18next } from '../i18next';
 import {
   Embargo,
   EmbargoState,
@@ -90,7 +91,7 @@ class AccessRightFieldComponent extends Component {
             <Divider hidden />
 
             <p>
-              <b>Options</b>
+              <b>{i18next.t('Options')}</b>
             </p>
             <Divider />
 

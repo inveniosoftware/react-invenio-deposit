@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -10,6 +11,7 @@ import PropTypes from 'prop-types';
 import { FieldLabel, GroupField, RemoteSelectField } from 'react-invenio-forms';
 import { Form } from 'semantic-ui-react';
 import { Field, getIn } from 'formik';
+import { i18next } from '../i18next';
 
 export class SubjectsField extends Component {
   state = {
@@ -71,7 +73,7 @@ export class SubjectsField extends Component {
                 fieldPath={fieldPath}
                 initialSuggestions={getIn(values, fieldPath, [])}
                 multiple={multiple}
-                noQueryMessage="Search or create subjects.."
+                noQueryMessage={i18next.t('Search or create subjects..')}
                 placeholder={placeholder}
                 preSearchChange={this.prepareSuggest}
                 required={required}
@@ -95,7 +97,7 @@ export class SubjectsField extends Component {
                 label={
                   <FieldLabel
                     htmlFor={`${fieldPath}.subject`}
-                    label={'Subject'}
+                    label={i18next.t('Subject')}
                   />
                 }
                 allowAdditions
@@ -128,9 +130,9 @@ SubjectsField.propTypes = {
 
 SubjectsField.defaultProps = {
   fieldPath: 'metadata.subjects',
-  label: 'Subjects',
+  label: i18next.t('Subjects'),
   labelIcon: 'tag',
   multiple: true,
   clearable: true,
-  placeholder: 'Search for a subject by name',
+  placeholder: i18next.t('Search for a subject by name'),
 };

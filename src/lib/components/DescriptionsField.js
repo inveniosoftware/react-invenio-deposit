@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020 CERN.
 // Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -10,17 +11,12 @@ import PropTypes from 'prop-types';
 
 import { FieldLabel, RichInputField } from 'react-invenio-forms';
 import { AdditionalDescriptionsField } from './AdditionalDescriptionsField';
+import { i18next } from '../i18next';
 
 export class DescriptionsField extends Component {
   render() {
-    const {
-      fieldPath,
-      label,
-      labelIcon,
-      options,
-      editorConfig,
-      recordUI,
-    } = this.props;
+    const { fieldPath, label, labelIcon, options, editorConfig, recordUI } =
+      this.props;
     return (
       <>
         <RichInputField
@@ -48,7 +44,7 @@ DescriptionsField.propTypes = {
 
 DescriptionsField.defaultProps = {
   fieldPath: 'metadata.description',
-  label: 'Description',
+  label: i18next.t('Description'),
   labelIcon: 'pencil',
   editorConfig: {},
   recordUI: {},

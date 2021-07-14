@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -11,18 +12,21 @@ import { connect } from 'react-redux';
 import { Button, Icon, Modal } from 'semantic-ui-react';
 import { discard } from '../state/actions';
 import { toCapitalCase } from '../utils';
+import { i18next } from '../i18next';
 
 const DialogText = ({ action }) => {
   let text = '';
   switch (action) {
     case 'discard changes':
-      text = 'Are you sure you want to discard the changes to this draft?';
+      text = i18next.t(
+        'Are you sure you want to discard the changes to this draft?'
+      );
       break;
     case 'discard version':
-      text = 'Are you sure you want to delete this new version?';
+      text = i18next.t('Are you sure you want to delete this new version?');
       break;
     case 'delete':
-      text = 'Are you sure you want to delete this draft?';
+      text = i18next.t('Are you sure you want to delete this draft?');
       break;
     default:
       break;
@@ -61,9 +65,11 @@ export class DeleteButtonComponent extends Component {
 
     let action = '';
     if (!this.props.isPublished) {
-      action = this.props.isVersion ? 'discard version' : 'delete';
+      action = this.props.isVersion
+        ? i18next.t('discard version')
+        : i18next.t('delete');
     } else {
-      action = 'discard changes';
+      action = i18next.t('discard changes');
     }
     const color = { color: isPublished ? 'yellow' : 'red' };
     const capitalizedAction = toCapitalCase(action);

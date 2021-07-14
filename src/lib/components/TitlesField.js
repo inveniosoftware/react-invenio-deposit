@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020 CERN.
 // Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -10,6 +11,7 @@ import PropTypes from 'prop-types';
 
 import { FieldLabel, TextField } from 'react-invenio-forms';
 import { AdditionalTitlesField } from './AdditionalTitlesField';
+import { i18next } from '../i18next';
 
 export class TitlesField extends Component {
   render() {
@@ -52,5 +54,5 @@ TitlesField.propTypes = {
 
 TitlesField.defaultProps = {
   fieldPath: 'metadata.title',
-  label: 'Title',
+  label: i18next.t('Title'),
 };

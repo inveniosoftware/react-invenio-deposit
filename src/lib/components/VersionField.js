@@ -10,6 +10,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { FieldLabel, TextField } from 'react-invenio-forms';
+import { i18next } from '../i18next';
 
 export class VersionField extends Component {
   render() {
@@ -45,7 +46,7 @@ VersionField.propTypes = {
 
 VersionField.defaultProps = {
   fieldPath: 'metadata.version',
-  label: 'Version',
+  label: i18next.t('Version'),
   labelIcon: 'code branch',
   placeholder: '',
 };

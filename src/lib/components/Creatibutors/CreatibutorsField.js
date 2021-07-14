@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2021 CERN.
 // Copyright (C) 2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -17,6 +18,7 @@ import { DndProvider } from 'react-dnd';
 import { CreatibutorsModal } from './CreatibutorsModal';
 import { CreatibutorsFieldItem } from './CreatibutorsFieldItem';
 import { CREATIBUTOR_TYPE } from './type';
+import { i18next } from '../../i18next';
 
 const displayCreatibutorName = ({ familyName, givenName, affiliationName }) => {
   let displayName = familyName;
@@ -166,5 +168,5 @@ CreatibutorsField.defaultProps = {
     addLabel: 'Add creator',
     editLabel: 'Edit creator',
   },
-  addButtonLabel: 'Add creator',
+  addButtonLabel: i18next.t('Add creator'),
 };

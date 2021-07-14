@@ -15,6 +15,7 @@ import { ActionButton } from 'react-invenio-forms';
 import { submitAction } from '../state/actions';
 import { FORM_PUBLISHING } from '../state/types';
 import { toCapitalCase } from '../utils';
+import { i18next } from '../i18next';
 
 export class PublishButtonComponent extends Component {
   state = { confirmOpen: false };
@@ -24,13 +25,8 @@ export class PublishButtonComponent extends Component {
   handleClose = () => this.setState({ confirmOpen: false });
 
   render() {
-    const {
-      formState,
-      publishClick,
-      numberOfFiles,
-      errors,
-      ...uiProps
-    } = this.props;
+    const { formState, publishClick, numberOfFiles, errors, ...uiProps } =
+      this.props;
 
     const handlePublish = (event, formik) => {
       publishClick(event, formik);
@@ -38,13 +34,13 @@ export class PublishButtonComponent extends Component {
     };
 
     const isDisabled = (formik) => {
-      const filesEnabled = _get(formik.values, "files.enabled", false);
+      const filesEnabled = _get(formik.values, 'files.enabled', false);
       const filesMissing = filesEnabled && !numberOfFiles;
       const hasErrors = !_isEmpty(errors);
       return formik.isSubmitting || hasErrors || filesMissing;
     };
 
-    const action = 'publish';
+    const action = i18next.t('publish');
     const capitalizedAction = toCapitalCase(action);
     return (
       <>
@@ -75,7 +71,11 @@ export class PublishButtonComponent extends Component {
             size="small"
           >
             <Modal.Content>
-              <h3>Are you sure you want to {action} this record?</h3>
+              <h3>
+                {i18next.t(`Are you sure you want to {{action}} this record?`, {
+                  action: action,
+                })}
+              </h3>
             </Modal.Content>
             <Modal.Actions>
               <Button onClick={this.handleClose} floated="left">

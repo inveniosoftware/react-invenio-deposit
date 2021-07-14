@@ -14,6 +14,8 @@ const options = {
   returnEmptyString: false,
   debug: process.env.NODE_ENV === 'development',
   resources: translations,
+  keySeparator: false,
+  nsSeparator: false,
   // specify language detection order
   detection: {
     order: ['htmlTag'],

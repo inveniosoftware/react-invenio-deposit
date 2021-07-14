@@ -20,6 +20,7 @@ import { Button, Form, Icon } from 'semantic-ui-react';
 
 import { emptyRelatedWork } from '../record';
 import { ResourceTypeField } from './ResourceTypeField';
+import { i18next } from '../i18next';
 
 export class RelatedWorksField extends Component {
   render() {
@@ -27,11 +28,13 @@ export class RelatedWorksField extends Component {
 
     return (
       <>
-        <label className="helptext" style={{marginBottom: "10px"}}>
-          Specify identifiers of related works. Supported identifiers include DOI, Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, URNs, and URLs.
+        <label className="helptext" style={{ marginBottom: '10px' }}>
+          {i18next.t(
+            'Specify identifiers of related works. Supported identifiers include DOI, Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, URNs, and URLs.'
+          )}
         </label>
         <ArrayField
-          addButtonLabel={'Add related work'}
+          addButtonLabel={i18next.t('Add related work')}
           defaultNewValue={emptyRelatedWork}
           fieldPath={fieldPath}
           label={
@@ -44,45 +47,42 @@ export class RelatedWorksField extends Component {
               <SelectField
                 clearable
                 fieldPath={`${key}.relation_type`}
-                label="Relation"
+                label={i18next.t('Relation')}
                 options={options.relations}
-                placeholder={'Select relation...'}
+                placeholder={i18next.t('Select relation...')}
                 width={3}
                 optimized
               />
               <SelectField
                 clearable
                 fieldPath={`${key}.scheme`}
-                label="Scheme"
+                label={i18next.t('Scheme')}
                 options={options.scheme}
                 width={2}
                 optimized
               />
               <TextField
                 fieldPath={`${key}.identifier`}
-                label="Identifier"
+                label={i18next.t('Identifier')}
                 width={4}
               />
 
-            <ResourceTypeField
-              clearable
-              fieldPath={`${key}.resource_type`}
-              labelIcon={''}  // Otherwise breaks alignment
-              options={options.resource_type}
-              width={6}
-              labelclassname="small field-label-class"
-            />
+              <ResourceTypeField
+                clearable
+                fieldPath={`${key}.resource_type`}
+                labelIcon={''} // Otherwise breaks alignment
+                options={options.resource_type}
+                width={6}
+                labelclassname="small field-label-class"
+              />
 
-            <Form.Field width={1}>
-              <label>&nbsp;</label>
-              <Button
-                icon
-                onClick={() => arrayHelpers.remove(indexPath)}
-                >
-                <Icon name="close" />
-              </Button>
-            </Form.Field>
-          </GroupField>
+              <Form.Field width={1}>
+                <label>&nbsp;</label>
+                <Button icon onClick={() => arrayHelpers.remove(indexPath)}>
+                  <Icon name="close" />
+                </Button>
+              </Form.Field>
+            </GroupField>
           )}
         </ArrayField>
       </>
@@ -99,6 +99,6 @@ RelatedWorksField.propTypes = {
 
 RelatedWorksField.defaultProps = {
   fieldPath: 'metadata.related_identifiers',
-  label: 'Related works',
+  label: i18next.t('Related works'),
   labelIcon: 'barcode',
 };
