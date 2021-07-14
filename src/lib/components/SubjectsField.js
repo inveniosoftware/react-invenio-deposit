@@ -18,14 +18,18 @@ export class SubjectsField extends Component {
     limitTo: 'all',
   };
 
-  serializeSubjects = (subjects) =>
-    subjects.map((subject) => ({
-      text: subject.subject,
-      value: subject.subject,
-      key: subject.subject,
-      ...(subject.id ? { id: subject.id } : {}),
-      subject: subject.subject,
-    }));
+  serializeSubjects = (subjects) => (
+    subjects.map((subject) => {
+      const scheme = subject.scheme ? `(${subject.scheme}) ` : '';
+      return {
+        text: scheme + subject.subject,
+        value: subject.subject,
+        key: subject.subject,
+        ...(subject.id ? { id: subject.id } : {}),
+        subject: subject.subject,
+      }
+    })
+  );
 
   prepareSuggest = (searchQuery) => {
     const limitTo = this.state.limitTo;
@@ -94,12 +98,7 @@ export class SubjectsField extends Component {
                   );
                 }}
                 value={getIn(values, fieldPath, []).map((val) => val.subject)}
-                label={
-                  <FieldLabel
-                    htmlFor={`${fieldPath}.subject`}
-                    label={i18next.t('Subject')}
-                  />
-                }
+                label={<label>&nbsp;</label>}  /** For alignment purposes */
                 allowAdditions
                 width={11}
               />
