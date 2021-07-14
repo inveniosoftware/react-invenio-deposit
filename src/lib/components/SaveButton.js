@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -11,6 +12,7 @@ import { connect } from 'react-redux';
 import { Icon } from 'semantic-ui-react';
 import { submitAction } from '../state/actions';
 import { FORM_SAVING } from '../state/types';
+import { i18next } from '../i18next';
 
 export class SaveButtonComponent extends Component {
   isDisabled = (formik) => {
@@ -25,7 +27,7 @@ export class SaveButtonComponent extends Component {
       window.scrollTo({
         top: 0,
         left: 0,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
     }
 
@@ -45,7 +47,7 @@ export class SaveButtonComponent extends Component {
             ) : (
               <Icon name="save" />
             )}
-            Save draft
+            {i18next.t('Save draft')}
           </>
         )}
       </ActionButton>

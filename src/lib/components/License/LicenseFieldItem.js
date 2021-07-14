@@ -11,6 +11,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import { Button, List, Ref } from 'semantic-ui-react';
 import _truncate from 'lodash/truncate';
 import { LicenseModal } from './LicenseModal';
+import { i18next } from '../../i18next';
 
 export const LicenseFieldItem = ({
   compKey,
@@ -85,7 +86,7 @@ export const LicenseFieldItem = ({
             type="button"
             onClick={() => removeLicense(index)}
           >
-            Remove
+            {i18next.t('Remove')}
           </Button>
         </List.Content>
         <Ref innerRef={drag}>
@@ -102,8 +103,8 @@ export const LicenseFieldItem = ({
             {link && (
               <span>
                 <a href={link} target="_blank" rel="noopener noreferrer">
-                {licenseDescription && (<span>&nbsp;</span>)}
-                Read more
+                  {licenseDescription && <span>&nbsp;</span>}
+                  {i18next.t('Read more')}
                 </a>
               </span>
             )}

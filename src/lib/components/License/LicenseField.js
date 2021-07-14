@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -15,6 +16,7 @@ import { Button, Form, Icon, List } from 'semantic-ui-react';
 
 import { LicenseModal } from './LicenseModal';
 import { LicenseFieldItem } from './LicenseFieldItem';
+import { i18next } from '../../i18next';
 
 class LicenseFieldForm extends Component {
   render() {
@@ -71,7 +73,7 @@ class LicenseFieldForm extends Component {
               trigger={
                 <Button type="button" key="standard">
                   <Icon name="add" />
-                  Add standard
+                  {i18next.t('Add standard')}
                 </Button>
               }
               onLicenseChange={(selectedLicense) => {
@@ -86,7 +88,7 @@ class LicenseFieldForm extends Component {
               trigger={
                 <Button type="button" key="custom">
                   <Icon name="add" />
-                  Add custom
+                  {i18next.t('Add custom')}
                 </Button>
               }
               onLicenseChange={(selectedLicense) => {
@@ -127,7 +129,7 @@ LicenseField.propTypes = {
 
 LicenseField.defaultProps = {
   fieldPath: 'metadata.rights',
-  label: 'Licenses',
+  label: i18next.t('Licenses'),
   labelIcon: 'drivers license',
   required: false,
 };

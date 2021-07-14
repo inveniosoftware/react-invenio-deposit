@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -9,6 +10,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { FieldLabel, RemoteSelectField } from 'react-invenio-forms';
 import { Field, getIn } from 'formik';
+import { i18next } from '../i18next';
 
 /**Affiliation input component */
 export class AffiliationsField extends Component {
@@ -35,14 +37,14 @@ export class AffiliationsField extends Component {
               }}
               initialSuggestions={getIn(values, fieldPath, [])}
               serializeSuggestions={this.serializeAffiliations}
-              placeholder="Search or create affiliation'"
+              placeholder={i18next.t("Search or create affiliation'")}
               label={
                 <FieldLabel
                   htmlFor={`${fieldPath}.name`}
-                  label={'Affiliations'}
+                  label={i18next.t('Affiliations')}
                 />
               }
-              noQueryMessage="Search for affiliations.."
+              noQueryMessage={i18next.t('Search for affiliations..')}
               allowAdditions
               clearable
               multiple

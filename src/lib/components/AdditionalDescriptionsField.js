@@ -13,13 +13,14 @@ import { Button, Form, Grid, Icon } from 'semantic-ui-react';
 import { ArrayField, SelectField, RichInputField } from 'react-invenio-forms';
 import { emptyAdditionalDescription } from '../record';
 import { LanguagesField } from './LanguagesField';
+import { i18next } from '../i18next';
 
 export class AdditionalDescriptionsField extends Component {
   render() {
     const { fieldPath, options, recordUI } = this.props;
     return (
       <ArrayField
-        addButtonLabel={'Add description'}
+        addButtonLabel={i18next.t('Add description')}
         defaultNewValue={emptyAdditionalDescription}
         fieldPath={fieldPath}
       >
@@ -30,7 +31,7 @@ export class AdditionalDescriptionsField extends Component {
                 <Grid.Column width={12}>
                   <RichInputField
                     fieldPath={`${key}.description`}
-                    label={'Additional Description'}
+                    label={i18next.t('Additional Description')}
                     optimized={true}
                     required
                   />
@@ -47,7 +48,7 @@ export class AdditionalDescriptionsField extends Component {
                   </Form.Field>
                   <SelectField
                     fieldPath={`${key}.type`}
-                    label={'Type'}
+                    label={i18next.t('Type')}
                     options={options.type}
                     required
                     optimized
@@ -67,9 +68,9 @@ export class AdditionalDescriptionsField extends Component {
                         : []
                     }
                     fieldPath={`${key}.lang`}
-                    label={'Language'}
+                    label={i18next.t('Language')}
                     multiple={false}
-                    placeholder={'Select language'}
+                    placeholder={i18next.t('Select language')}
                     labelIcon={null}
                     clearable
                   />

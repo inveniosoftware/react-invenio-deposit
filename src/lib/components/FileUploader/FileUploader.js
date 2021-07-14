@@ -15,6 +15,7 @@ import { NewVersionButton } from '../NewVersionButton';
 import { FileUploaderArea } from './FileUploaderArea';
 import { FileUploaderToolbar } from './FileUploaderToolbar';
 import { humanReadableBytes } from './utils';
+import { i18next } from '../../i18next';
 
 // NOTE: This component has to be a function component to allow
 //       the `useFormikContext` hook.
@@ -35,7 +36,7 @@ export const FileUploaderComponent = ({
 }) => {
   // We extract the working copy of the draft stored as `values` in formik
   const { values: formikDraft } = useFormikContext();
-  const filesEnabled = _get(formikDraft, "files.enabled", false);
+  const filesEnabled = _get(formikDraft, 'files.enabled', false);
   const [warningMsg, setWarningMsg] = useState();
 
   let filesList = Object.values(files).map((fileState) => {
@@ -94,9 +95,10 @@ export const FileUploaderComponent = ({
               header="Could not upload file(s)."
               content={
                 <>
-                  Uploading the selected files would result in{' '}
-                  {humanReadableBytes(filesSize + acceptedFilesSize)} but the
-                  limit is {humanReadableBytes(quota.maxStorage)}.
+                  {i18next.t('Uploading the selected files would result in')}{' '}
+                  {humanReadableBytes(filesSize + acceptedFilesSize)}
+                  {i18next.t('but the limit is')}
+                  {humanReadableBytes(quota.maxStorage)}.
                 </>
               }
             />
@@ -154,7 +156,7 @@ export const FileUploaderComponent = ({
                 </div>
                 <p style={{ marginTop: '5px', display: 'inline-block' }}>
                   <Icon name="info circle" />
-                  You can import files from the previous version.
+                  {i18next.t('You can import files from the previous version.')}
                 </p>
               </Message>
             </Grid.Column>
@@ -177,8 +179,9 @@ export const FileUploaderComponent = ({
               <Message visible warning>
                 <p>
                   <Icon name="warning sign" />
-                  File addition, removal or modification are not allowed after
-                  you have published your upload.
+                  {i18next.t(
+                    'File addition, removal or modification are not allowed after you have published your upload.'
+                  )}
                 </p>
               </Message>
             </Grid.Column>
@@ -196,7 +199,9 @@ export const FileUploaderComponent = ({
                 />
                 <p style={{ marginTop: '5px', display: 'inline-block' }}>
                   <Icon name="info circle" size="large" />
-                  You must create a new version to add, modify or delete files.
+                  {i18next.t(
+                    'You must create a new version to add, modify or delete files.'
+                  )}
                 </p>
               </Message>
             </Grid.Column>
@@ -248,7 +253,7 @@ FileUploaderComponent.propTypes = {
 };
 
 FileUploaderComponent.defaultProps = {
-  dragText: 'Drag and drop file(s)',
+  dragText: i18next.t('Drag and drop file(s)'),
   isDraftRecord: true,
   hasParentRecord: false,
   quota: {
@@ -256,7 +261,7 @@ FileUploaderComponent.defaultProps = {
     maxStorage: 10 ** 10,
   },
   uploadButtonIcon: 'upload',
-  uploadButtonText: 'Upload files',
+  uploadButtonText: i18next.t('Upload files'),
   importButtonIcon: 'sync',
-  importButtonText: 'Import files',
+  importButtonText: i18next.t('Import files'),
 };

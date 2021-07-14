@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020 CERN.
 // Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -8,6 +9,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FieldLabel, RemoteSelectField } from 'react-invenio-forms';
+import { i18next } from '../i18next';
 
 export class LanguagesField extends Component {
   render() {
@@ -38,7 +40,7 @@ export class LanguagesField extends Component {
         label={
           <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
         }
-        noQueryMessage="Search for languages..."
+        noQueryMessage={i18next.t('Search for languages...')}
         {...(serializeSuggestions && { serializeSuggestions })}
         {...uiProps}
       />
@@ -66,9 +68,11 @@ LanguagesField.propTypes = {
 
 LanguagesField.defaultProps = {
   fieldPath: 'metadata.languages',
-  label: 'Languages',
+  label: i18next.t('Languages'),
   labelIcon: 'globe',
   multiple: true,
   clearable: true,
-  placeholder: 'Search for a language by name (e.g "eng", "fr" or "Polish")',
+  placeholder: i18next.t(
+    'Search for a language by name (e.g "eng", "fr" or "Polish")'
+  ),
 };

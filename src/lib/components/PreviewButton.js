@@ -1,5 +1,6 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2021 CERN.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -8,7 +9,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Icon } from 'semantic-ui-react';
 import { ActionButton } from 'react-invenio-forms';
-
+import { i18next } from '../i18next';
 import { submitAction } from '../state/actions';
 import {
   FORM_SAVE_FAILED,
@@ -76,7 +77,7 @@ export class PreviewButtonComponent extends Component {
             ) : (
               <Icon name="eye" />
             )}
-            Preview
+            {i18next.t('Preview')}
           </>
         )}
       </ActionButton>

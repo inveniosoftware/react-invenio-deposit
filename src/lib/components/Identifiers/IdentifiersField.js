@@ -37,13 +37,13 @@ export class IdentifiersField extends Component {
             <GroupField optimized>
               <TextField
                 fieldPath={`${key}.identifier`}
-                label={'Identifier'}
+                label={i18next.t('Identifier')}
                 width={11}
               />
               {schemeOptions && (
                 <SelectField
                   fieldPath={`${key}.scheme`}
-                  label={'Scheme'}
+                  label={i18next.t('Scheme')}
                   options={schemeOptions}
                   optimized
                   width={5}
@@ -52,7 +52,7 @@ export class IdentifiersField extends Component {
               {!schemeOptions && (
                 <TextField
                   fieldPath={`${key}.scheme`}
-                  label={'Scheme'}
+                  label={i18next.t('Scheme')}
                   width={5}
                 />
               )}
@@ -88,6 +88,6 @@ IdentifiersField.propTypes = {
 
 IdentifiersField.defaultProps = {
   fieldPath: 'metadata.identifiers',
-  label: 'Identifier(s)',
+  label: i18next.t('Identifier(s)'),
   labelIcon: 'barcode',
 };

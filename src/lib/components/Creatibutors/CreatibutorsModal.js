@@ -23,6 +23,7 @@ import _map from 'lodash/map';
 import { AffiliationsField } from './../AffiliationsField';
 import { CreatibutorsIdentifiers } from './CreatibutorsIdentifiers';
 import { CREATIBUTOR_TYPE } from './type';
+import { i18next } from '../../i18next';
 
 const ModalActions = {
   ADD: 'add',
@@ -34,7 +35,7 @@ export class CreatibutorsModal extends Component {
     super(props);
     this.state = {
       open: false,
-      saveAndContinueLabel: 'Save and add another',
+      saveAndContinueLabel: i18next.t('Save and add another'),
       action: null,
     };
     this.inputRef = createRef();
@@ -45,18 +46,18 @@ export class CreatibutorsModal extends Component {
       type: Yup.string(),
       family_name: Yup.string().when('type', (type, schema) => {
         if (type === CREATIBUTOR_TYPE.PERSON && this.isCreator()) {
-          return schema.required('Family name is a required field.');
+          return schema.required(i18next.t('Family name is a required field.'));
         }
       }),
       name: Yup.string().when('type', (type, schema) => {
         if (type === CREATIBUTOR_TYPE.ORGANIZATION && this.isCreator()) {
-          return schema.required('Name is a required field.');
+          return schema.required(i18next.t('Name is a required field.'));
         }
       }),
     }),
     role: Yup.string().when('_', (_, schema) => {
       if (!this.isCreator()) {
-        return schema.required('Role is a required field.');
+        return schema.required(i18next.t('Role is a required field.'));
       }
     }),
   });
@@ -74,10 +75,12 @@ export class CreatibutorsModal extends Component {
   };
 
   changeContent = () => {
-    this.setState({ saveAndContinueLabel: 'Added' });
+    this.setState({ saveAndContinueLabel: i18next.t('Added') });
     // change in 2 sec
     setTimeout(() => {
-      this.setState({ saveAndContinueLabel: 'Save and add another' });
+      this.setState({
+        saveAndContinueLabel: i18next.t('Save and add another'),
+      });
     }, 2000);
   };
 
@@ -222,7 +225,7 @@ export class CreatibutorsModal extends Component {
                   <Form.Group>
                     <RadioField
                       fieldPath={typeFieldPath}
-                      label="Person"
+                      label={i18next.t('Person')}
                       checked={
                         _get(values, typeFieldPath) === CREATIBUTOR_TYPE.PERSON
                       }
@@ -238,7 +241,7 @@ export class CreatibutorsModal extends Component {
                     />
                     <RadioField
                       fieldPath={typeFieldPath}
-                      label="Organization"
+                      label={i18next.t('Organization')}
                       checked={
                         _get(values, typeFieldPath) ===
                         CREATIBUTOR_TYPE.ORGANIZATION
@@ -259,8 +262,8 @@ export class CreatibutorsModal extends Component {
                     CREATIBUTOR_TYPE.PERSON ? (
                       <>
                         <TextField
-                          label="Family name"
-                          placeholder="Family name"
+                          label={i18next.t('Family name')}
+                          placeholder={i18next.t('Family name')}
                           fieldPath={familyNameFieldPath}
                           required={this.isCreator()}
                           // forward ref to Input component because Form.Input
@@ -268,15 +271,15 @@ export class CreatibutorsModal extends Component {
                           input={{ ref: this.inputRef }}
                         />
                         <TextField
-                          label="Given name(s)"
-                          placeholder="Given name"
+                          label={i18next.t('Given name(s)')}
+                          placeholder={i18next.t('Given name')}
                           fieldPath={givenNameFieldPath}
                         />
                       </>
                     ) : (
                       <TextField
-                        label="Name"
-                        placeholder="Organization name"
+                        label={i18next.t('Name')}
+                        placeholder={i18next.t('Organization name')}
                         fieldPath={nameFieldPath}
                         required={this.isCreator()}
                         // forward ref to Input component because Form.Input
@@ -299,9 +302,9 @@ export class CreatibutorsModal extends Component {
                   <AffiliationsField fieldPath={affiliationsFieldPath} />
                   <SelectField
                     fieldPath={roleFieldPath}
-                    label={'Role'}
+                    label={i18next.t('Role')}
                     options={this.props.roleOptions}
-                    placeholder="Select role"
+                    placeholder={i18next.t('Select role')}
                     {...(this.isCreator() && { clearable: true })}
                     required={!this.isCreator()}
                     optimized
@@ -316,7 +319,7 @@ export class CreatibutorsModal extends Component {
                     this.closeModal();
                   }}
                   icon="remove"
-                  content="Cancel"
+                  content={i18next.t('Cancel')}
                   floated="left"
                 />
                 {this.props.action === ModalActions.ADD && (
@@ -342,7 +345,7 @@ export class CreatibutorsModal extends Component {
                   }}
                   primary
                   icon="checkmark"
-                  content="Save"
+                  content={i18next.t('Save')}
                 />
               </Modal.Actions>
             </Modal>
