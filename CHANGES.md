@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.15.6 (released 2021-07-14)
+* improvements to subjects vocabulary integration
+* fix subjects label bug
+
 Version 0.15.5 (released 2021-07-09)
 * subjects vocabulary integration
 
