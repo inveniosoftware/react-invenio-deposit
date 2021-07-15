@@ -57,7 +57,7 @@ export class SubjectsField extends Component {
               width={7}
               style={{ marginBottom: 'auto', marginTop: 'auto' }}
             >
-              Suggest from
+              {i18next.t('Suggest from')}
             </Form.Field>
             <Form.Dropdown
               defaultValue={limitToOptions[0].value}

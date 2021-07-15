@@ -16,11 +16,12 @@ import { EmbargoState } from './Embargo';
 import { ProtectionButtons } from './ProtectionButtons';
 import { EmbargoCheckboxField } from './EmbargoCheckboxField';
 import { EmbargoDateField } from './EmbargoDateField';
+import { i18next } from '../../i18next';
 
 export function MetadataSection({ isPublic }) {
   return (
     <>
-      <p>Full record</p>
+      <p>{i18next.t('Full record')}</p>
       <ProtectionButtons active={isPublic} fieldPath="access.record" />
     </>
   );
@@ -33,7 +34,7 @@ export function filesButtons(filesPublic) {
 export function filesSection(filesStyle, filesContent) {
   return (
     <>
-      <p style={filesStyle}>Files only</p>
+      <p style={filesStyle}>{i18next.t('Files only')}</p>
       {filesContent}
     </>
   );
@@ -76,21 +77,25 @@ export function embargoSection(initialAccessValues, embargo) {
               className={embargo.is(EmbargoState.DISABLED) ? 'disabled' : ''}
               htmlFor={'access.embargo.active'}
             >
-              Apply an embargo <Icon name="clock outline" />
+              {i18next.t('Apply an embargo')} <Icon name="clock outline" />
             </label>
           </List.Header>
           <List.Description className={'disabled'}>
-            Record or files protection must be <b>restricted</b> to apply an
-            embargo.
+            {/* TODO: use of Trans Component for jsx translations */}
+            {i18next.t('Record or files protection must be ')}
+            <b>{i18next.t('restricted')}</b>
+            {i18next.t(' to apply an embargo.')}
           </List.Description>
           {embargo.is(EmbargoState.APPLIED) && (
             <>
               <Divider hidden />
               <EmbargoDateField fieldPath="access.embargo.until" required />
               <TextAreaField
-                label="Embargo reason"
+                label={i18next.t('Embargo reason')}
                 fieldPath={'access.embargo.reason'}
-                placeholder="Optionally, describe the reason for the embargo."
+                placeholder={i18next.t(
+                  'Optionally, describe the reason for the embargo.'
+                )}
                 optimized
               />
             </>
@@ -98,10 +103,15 @@ export function embargoSection(initialAccessValues, embargo) {
           {embargoWasLifted && (
             <>
               <Divider hidden />
-              <p>Embargo was lifted on {fmtDate}.</p>
+              <p>
+                {i18next.t(`Embargo was lifted on {{fmtDate}}.`, {
+                  fmtDate: fmtDate,
+                })}
+              </p>
               {initialAccessValues.embargo.reason && (
                 <p>
-                  <b>Reason</b>: {initialAccessValues.embargo.reason}.
+                  <b>{i18next.t('Reason')}</b>:{' '}
+                  {initialAccessValues.embargo.reason}.
                 </p>
               )}
             </>

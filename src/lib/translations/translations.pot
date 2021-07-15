@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2021-07-14T14:11:46.087Z\n"
-"PO-Revision-Date: 2021-07-14T14:11:46.087Z\n"
+"POT-Creation-Date: 2021-07-15T10:16:58.292Z\n"
+"PO-Revision-Date: 2021-07-15T10:16:58.292Z\n"
 "Language: en\n"
 
 msgid "New version"
@@ -223,9 +223,6 @@ msgstr "Recommended"
 msgid "Search or create subjects.."
 msgstr "Search or create subjects.."
 
-msgid "Subject"
-msgstr "Subject"
-
 msgid "Subjects"
 msgstr "Subjects"
 
@@ -336,3 +333,114 @@ msgstr "discard changes"
 
 msgid "Options"
 msgstr "Options"
+
+msgid "The full record is restricted."
+msgstr "The full record is restricted."
+
+msgid "On"
+msgstr "On"
+
+msgid ""
+"the record and the files will automatically be made publicly accessible. "
+"Until then, the record and the files can"
+msgstr ""
+"the record and the files will automatically be made publicly accessible. "
+"Until then, the record and the files can"
+
+msgid "only"
+msgstr "only"
+
+msgid "be accessed by"
+msgstr "be accessed by"
+
+msgid "users specified"
+msgstr "users specified"
+
+msgid "in the permissions."
+msgstr "in the permissions."
+
+msgid "The record and files are publicly accessible."
+msgstr "The record and files are publicly accessible."
+
+msgid "The record and files can"
+msgstr "The record and files can"
+
+msgid "Full record"
+msgstr "Full record"
+
+msgid "Files only"
+msgstr "Files only"
+
+msgid "Apply an embargo"
+msgstr "Apply an embargo"
+
+msgid "Record or files protection must be "
+msgstr "Record or files protection must be "
+
+msgid "restricted"
+msgstr "restricted"
+
+msgid " to apply an embargo."
+msgstr " to apply an embargo."
+
+msgid "Embargo reason"
+msgstr "Embargo reason"
+
+msgid "Optionally, describe the reason for the embargo."
+msgstr "Optionally, describe the reason for the embargo."
+
+msgid "Embargo was lifted on {{fmtDate}}."
+msgstr "Embargo was lifted on {{fmtDate}}."
+
+msgid "Reason"
+msgstr "Reason"
+
+msgid "Filename"
+msgstr "Filename"
+
+msgid "Size"
+msgstr "Size"
+
+msgid "Progress"
+msgstr "Progress"
+
+msgid ""
+"This is the file fingerprint (MD5 checksum), which can be used to verify "
+"the file integrity."
+msgstr ""
+"This is the file fingerprint (MD5 checksum), which can be used to verify "
+"the file integrity."
+
+msgid "Pending"
+msgstr "Pending"
+
+msgid "or"
+msgstr "or"
+
+msgid "This is a Metadata only record"
+msgstr "This is a Metadata only record"
+
+msgid "Public"
+msgstr "Public"
+
+msgid "Restricted"
+msgstr "Restricted"
+
+msgid "The record is publicly accessible. The files can"
+msgstr "The record is publicly accessible. The files can"
+
+msgid "Public with restricted files"
+msgstr "Public with restricted files"
+
+msgid "Suggest from"
+msgstr "Suggest from"
+
+msgid ""
+"Mostly relevant for software and dataset uploads. A semantic version string "
+"is preferred see"
+msgstr ""
+"Mostly relevant for software and dataset uploads. A semantic version string "
+"is preferred see"
+
+msgid "but any version string is accepted."
+msgstr "but any version string is accepted."

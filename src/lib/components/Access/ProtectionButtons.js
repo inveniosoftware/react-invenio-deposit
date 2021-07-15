@@ -1,13 +1,14 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
 import { FastField } from 'formik';
-
+import { i18next } from '../../i18next';
 
 class ProtectionButtonsComponent extends Component {
   /**
@@ -46,7 +47,7 @@ class ProtectionButtonsComponent extends Component {
           compact
           attached
         >
-          Public
+          {i18next.t('Public')}
         </Button>
         <Button
           {...this.getButtonProps(!active, "red")}
@@ -54,7 +55,7 @@ class ProtectionButtonsComponent extends Component {
           compact
           attached
         >
-          Restricted
+          {i18next.t('Restricted')}
         </Button>
 
       </Button.Group>
