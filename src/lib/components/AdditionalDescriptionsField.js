@@ -14,6 +14,7 @@ import { ArrayField, SelectField, RichInputField } from 'react-invenio-forms';
 import { emptyAdditionalDescription } from '../record';
 import { LanguagesField } from './LanguagesField';
 import { i18next } from '@translations/i18next';
+import { sortOptions } from '../utils';
 
 export class AdditionalDescriptionsField extends Component {
   render() {
@@ -49,7 +50,7 @@ export class AdditionalDescriptionsField extends Component {
                   <SelectField
                     fieldPath={`${key}.type`}
                     label={i18next.t('Type')}
-                    options={options.type}
+                    options={sortOptions(options.type)}
                     required
                     optimized
                   />
