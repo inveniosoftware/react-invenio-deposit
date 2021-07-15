@@ -22,7 +22,9 @@ export const LicenseFieldItem = ({
   licenseType,
   moveLicense,
   replaceLicense,
+  replaceUILicense,
   removeLicense,
+  removeUILicense,
   searchConfig,
   serializeLicenses,
   link,
@@ -69,6 +71,7 @@ export const LicenseFieldItem = ({
           <LicenseModal
             searchConfig={searchConfig}
             onLicenseChange={(selectedLicense) => {
+              replaceUILicense(index, selectedLicense);
               replaceLicense(index, selectedLicense);
             }}
             mode={licenseType}
@@ -84,7 +87,10 @@ export const LicenseFieldItem = ({
           <Button
             size="mini"
             type="button"
-            onClick={() => removeLicense(index)}
+            onClick={() => {
+              removeUILicense(index);
+              removeLicense(index);
+            }}
           >
             {i18next.t('Remove')}
           </Button>

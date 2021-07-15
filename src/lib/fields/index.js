@@ -11,4 +11,5 @@ export { SchemaField } from './SchemaField';
 export {
   AllowAdditionsVocabularyField,
   VocabularyField,
+  RightsVocabularyField,
 } from './VocabularyField';

@@ -20,6 +20,7 @@ import _set from 'lodash/set';
 import {
   AllowAdditionsVocabularyField,
   Field,
+  RightsVocabularyField,
   SchemaField,
   VocabularyField,
 } from './fields';
@@ -31,6 +32,9 @@ import {
 } from './record';
 
 export class DepositRecordSerializer {
+  constructor(defaultLocale) {
+    this.defaultLocale = defaultLocale;
+  }
   depositRecordSchema = {
     files: new Field({
       fieldpath: 'files',
@@ -199,6 +203,12 @@ export class DepositRecordSerializer {
       fieldpath: 'metadata.version',
       deserializedDefault: '',
     }),
+    rights: new RightsVocabularyField({
+      fieldpath: 'metadata.rights',
+      deserializedDefault: [],
+      serializedDefault: [],
+      localeFields: ['title', 'description'],
+    }),
   };
 
   /**
@@ -257,12 +267,14 @@ export class DepositRecordSerializer {
       'is_published',
       'versions',
       'pids',
+      'ui',
     ]);
     for (let key in this.depositRecordSchema) {
-      deserializedRecord =
-        this.depositRecordSchema[key].deserialize(deserializedRecord);
+      deserializedRecord = this.depositRecordSchema[key].deserialize(
+        deserializedRecord,
+        this.defaultLocale
+      );
     }
-
     return deserializedRecord;
   }
 
@@ -309,8 +321,10 @@ export class DepositRecordSerializer {
       'pids',
     ]);
     for (let key in this.depositRecordSchema) {
-      serializedRecord =
-        this.depositRecordSchema[key].serialize(serializedRecord);
+      serializedRecord = this.depositRecordSchema[key].serialize(
+        serializedRecord,
+        this.defaultLocale
+      );
     }
     // Remove empty values again because serialization may add some back
     serializedRecord = this.removeEmptyValues(serializedRecord);

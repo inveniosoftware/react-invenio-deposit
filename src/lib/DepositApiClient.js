@@ -60,7 +60,10 @@ export class DepositApiClient {
   async create(draft) {
     return this.createResponse(() =>
       axios.post(this.createUrl, draft, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/vnd.inveniordm.v1+json',
+        },
       })
     );
   }
@@ -73,7 +76,10 @@ export class DepositApiClient {
   async save(draft) {
     return this.createResponse(() =>
       axios.put(draft.links.self, draft, {
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/vnd.inveniordm.v1+json',
+        },
       })
     );
   }

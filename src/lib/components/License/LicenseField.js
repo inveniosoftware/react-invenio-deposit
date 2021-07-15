@@ -24,6 +24,7 @@ class LicenseFieldForm extends Component {
       label,
       labelIcon,
       fieldPath,
+      uiFieldPath,
       form: { values, errors },
       move: formikArrayMove,
       push: formikArrayPush,
@@ -31,6 +32,32 @@ class LicenseFieldForm extends Component {
       replace: formikArrayReplace,
       required,
     } = this.props;
+
+    /**
+     * Removes license from UI object
+     * @param {number} index
+     */
+    const removeUILicense = (index) => {
+      const uiValues = getIn(values, `${uiFieldPath}`, '');
+      uiValues.splice(index, 1);
+    };
+
+    /**
+     * Replaces license in UI object
+     * @param {number} index
+     * @param {Object} selectedLicense
+     */
+    const replaceUILicense = (index, selectedLicense) => {
+      const uiValues = getIn(values, `${uiFieldPath}`, '');
+      const UIserialize = (selectedLicense) => ({
+        id: selectedLicense.id,
+        description_l10n: selectedLicense.description,
+        title_l10n: selectedLicense.title,
+        link: selectedLicense.link,
+      });
+      uiValues.splice(index, 1, UIserialize(selectedLicense));
+    };
+
     return (
       <DndProvider backend={HTML5Backend}>
         <Form.Field required={required}>
@@ -44,10 +71,29 @@ class LicenseFieldForm extends Component {
               const arrayPath = fieldPath;
               const indexPath = index;
               const key = `${arrayPath}.${indexPath}`;
+              const uiKey = `${uiFieldPath}.${indexPath}`;
               const licenseType = value.id ? 'standard' : 'custom';
-              const description = getIn(values, `${key}.description`, '');
-              const link = getIn(values, `${key}.link`, '');
-              const title = getIn(values, `${key}.title`, '');
+              const description = getIn(
+                values,
+                `${uiKey}.description_l10n`,
+                getIn(values, `${key}.description`)
+              );
+              const link = value.id
+                ? getIn(
+                    values,
+                    `${uiKey}.props.url`,
+                    getIn(values, `${key}.props.url`, '')
+                  )
+                : getIn(
+                    values,
+                    `${uiKey}.link`,
+                    getIn(values, `${key}.link`, '')
+                  );
+              const title = getIn(
+                values,
+                `${uiKey}.title_l10n`,
+                getIn(values, `${key}.title`, '')
+              );
               return (
                 <LicenseFieldItem
                   key={key}
@@ -60,7 +106,9 @@ class LicenseFieldForm extends Component {
                     licenseTitle: title,
                     moveLicense: formikArrayMove,
                     replaceLicense: formikArrayReplace,
+                    replaceUILicense: replaceUILicense,
                     removeLicense: formikArrayRemove,
+                    removeUILicense: removeUILicense,
                     searchConfig: this.props.searchConfig,
                     serializeLicenses: this.props.serializeLicenses,
                     link: link,
@@ -130,6 +178,7 @@ LicenseField.propTypes = {
 LicenseField.defaultProps = {
   fieldPath: 'metadata.rights',
   label: i18next.t('Licenses'),
+  uiFieldPath: 'ui.rights',
   labelIcon: 'drivers license',
   required: false,
 };

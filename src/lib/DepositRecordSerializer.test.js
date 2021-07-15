@@ -14,7 +14,8 @@ import {
 } from './record';
 
 describe('DepositRecordSerializer', () => {
-  const serializer = new DepositRecordSerializer();
+  const defaultLocale = 'en';
+  const serializer = new DepositRecordSerializer(defaultLocale);
 
   describe('removeEmptyValues', () => {
     const record = {
@@ -165,6 +166,7 @@ describe('DepositRecordSerializer', () => {
           identifiers: [emptyIdentifier],
           related_identifiers: [emptyRelatedWork],
           subjects: [],
+          rights: [],
           funding: [emptyFunding],
           version: '',
         },
@@ -261,6 +263,20 @@ describe('DepositRecordSerializer', () => {
           ],
           identifiers: [
             { scheme: 'doi', identifier: '10.5281/zenodo.9999999' },
+          ],
+          rights: [
+            {
+              id: 'id_cc_4.0',
+            },
+            {
+              title: {
+                en: 'A custom license',
+              },
+              description: {
+                en: 'A custom description',
+              },
+              link: 'https://customlicense.com',
+            },
           ],
           related_identifiers: [
             {
@@ -382,6 +398,16 @@ describe('DepositRecordSerializer', () => {
               subject: 'MeSH: Cognitive Neuroscience',
             },
           ],
+          rights: [
+            {
+              id: 'id_cc_4.0',
+            },
+            {
+              title: 'A custom license',
+              description: 'A custom description',
+              link: 'https://customlicense.com',
+            },
+          ],
           funding: [
             {
               funder: {
@@ -398,6 +424,9 @@ describe('DepositRecordSerializer', () => {
             },
           ],
           version: 'v2.0.0',
+        },
+        ui: {
+          publication_date_l10n: 'Sep 28, 2020',
         },
       };
       expect(deserializedRecord).toEqual(expectedRecord);
