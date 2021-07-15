@@ -31,7 +31,7 @@ export class DepositFormApp extends Component {
 
     const recordSerializer = props.recordSerializer
       ? props.recordSerializer
-      : new DepositRecordSerializer();
+      : new DepositRecordSerializer(props.config.default_locale);
 
     const appConfig = {
       config: props.config,

@@ -82,6 +82,8 @@ export class LicenseModal extends Component {
         }}
         onSubmit={this.onSubmit}
         validationSchema={LicenseSchema}
+        validateOnChange={false}
+        validateOnBlur={false}
       >
         <Modal
           onOpen={() => this.openModal()}
