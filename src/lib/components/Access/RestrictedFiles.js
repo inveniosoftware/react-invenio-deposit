@@ -1,12 +1,14 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 import React from 'react';
 
 import { embargoSection, filesButtons, filesSection, MessageSection, MetadataSection } from './utils';
+import { i18next } from '../../i18next';
 
 // Public record restricted files
 export class RestrictedFiles {
@@ -28,14 +30,23 @@ export class RestrictedFiles {
   }
 
   renderMessageSection() {
-    const text = <>The record is publicly accessible. The files can <b>only</b> be accessed by <b>users specified</b> in the permissions.</>;
+    const text = (
+      <>
+        {/* TODO: use of Trans Component for jsx translations */}
+        {i18next.t('The record is publicly accessible. The files can')}{' '}
+        <b>{i18next.t('only')}</b> {i18next.t('be accessed by')}{' '}
+        <b>{i18next.t('users specified')}</b> {i18next.t('in the permissions.')}
+      </>
+    );
 
-    return <MessageSection
-      intent={{warning: true}}
-      icon="lock"
-      title="Public with restricted files"
-      text={text}
-    />;
+    return (
+      <MessageSection
+        intent={{ warning: true }}
+        icon="lock"
+        title={i18next.t('Public with restricted files')}
+        text={text}
+      />
+    );
 
   }
 

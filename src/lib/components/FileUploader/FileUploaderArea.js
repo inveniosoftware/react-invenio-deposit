@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020 CERN.
 // Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -20,27 +21,29 @@ import {
   Popup,
   Checkbox,
 } from 'semantic-ui-react';
+import { i18next } from '../../i18next';
+
 import { humanReadableBytes } from './utils';
 
 const FileTableHeader = ({ isDraftRecord }) => (
   <Table.Header>
     <Table.Row className="file-table-row">
       <Table.HeaderCell className="file-table-header-cell">
-        Preview{' '}
+        {i18next.t('Preview')}{' '}
         <Popup
           content="Set the default preview"
           trigger={<Icon fitted name="help circle" size="small" />}
         />
       </Table.HeaderCell>
       <Table.HeaderCell className="file-table-header-cell">
-        Filename
+      {i18next.t('Filename')}
       </Table.HeaderCell>
       <Table.HeaderCell className="file-table-header-cell">
-        Size
+      {i18next.t('Size')}
       </Table.HeaderCell>
       {isDraftRecord && (
         <Table.HeaderCell textAlign="center" className="file-table-header-cell">
-          Progress
+          {i18next.t('Progress')}
         </Table.HeaderCell>
       )}
       {isDraftRecord && <Table.HeaderCell className="file-table-header-cell" />}
@@ -93,7 +96,7 @@ const FileTableRow = ({
           <div className="ui text-muted">
             <span style={{ fontSize: '10px' }}>{file.checksum}</span>{' '}
             <Popup
-              content="This is the file fingerprint (MD5 checksum), which can be used to verify the file integrity."
+              content={i18next.t('This is the file fingerprint (MD5 checksum), which can be used to verify the file integrity.')}
               trigger={<Icon fitted name="help circle" size="small" />}
               position="top center"
             />
@@ -118,7 +121,7 @@ const FileTableRow = ({
               disabled={file.upload.initial}
             />
           )}
-          {file.upload?.pending && <span>Pending</span>}
+          {file.upload?.pending && <span>{i18next.t('Pending')}</span>}
         </Table.Cell>
       )}
       {isDraftRecord && (
@@ -140,7 +143,7 @@ const FileTableRow = ({
               size="tiny"
               onClick={() => file.upload.cancel()}
             >
-              Cancel
+              {i18next.t('Cancel')}
             </Button>
           )}
         </Table.Cell>
@@ -170,7 +173,7 @@ const FileUploadBox = ({
           <Grid.Column width="7">
             <Header size="small">{dragText}</Header>
           </Grid.Column>
-          <Grid.Column width="2">- or -</Grid.Column>
+          <Grid.Column width="2">- {i18next.t('or')} -</Grid.Column>
           <Grid.Column width="7">
             <Button
               type="button"
@@ -243,7 +246,7 @@ export class FileUploaderArea extends Component {
           <Grid textAlign="center">
             <Grid.Row verticalAlign="middle">
               <Grid.Column>
-                <Header size="medium">This is a Metadata only record</Header>
+                <Header size="medium">{i18next.t('This is a Metadata only record')}</Header>
               </Grid.Column>
             </Grid.Row>
           </Grid>
