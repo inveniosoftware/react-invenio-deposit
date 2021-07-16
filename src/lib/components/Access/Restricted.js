@@ -7,8 +7,14 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 import React from 'react';
 
-import { embargoSection, filesSection, MessageSection, MetadataSection } from './utils';
+import {
+  embargoSection,
+  filesSection,
+  MessageSection,
+  MetadataSection,
+} from './utils';
 import { i18next } from '../../i18next';
+import { Trans } from 'react-i18next';
 
 // Record and files restricted
 export class Restricted {
@@ -24,37 +30,37 @@ export class Restricted {
   renderFilesSection() {
     // Same as embargoed
     const filesStyle = {
-      opacity: "0.5",
-      cursor: "default !important"
+      opacity: '0.5',
+      cursor: 'default !important',
     };
-    let filesContent = <p style={{...filesStyle, textAlign: "center"}}><em>{i18next.t('The full record is restricted.')}</em></p>;
+    let filesContent = (
+      <p style={{ ...filesStyle, textAlign: 'center' }}>
+        <em>{i18next.t('The full record is restricted.')}</em>
+      </p>
+    );
     return filesSection(filesStyle, filesContent);
   }
 
   renderMessageSection() {
+    const text = (
+      <Trans>
+        The record and files can <b>only</b> be accessed by
+        <b>users specified</b> in the permissions.
+      </Trans>
+    );
 
-            const text = (
-              <>
-                {/* TODO: use of Trans Component for jsx translations */}
-                {i18next.t('The record and files can')}{' '}
-                <b>{i18next.t('only')}</b> {i18next.t('be accessed by')}{' '}
-                <b>{i18next.t('users specified')}</b>{' '}
-                {i18next.t('in the permissions.')}
-              </>
-            );
-
-    return <MessageSection
-      intent={{negative: true}}
-      icon="lock"
-      title={i18next.t('Restricted')}
-      text={text}
-    />;
-
+    return (
+      <MessageSection
+        intent={{ negative: true }}
+        icon="lock"
+        title={i18next.t('Restricted')}
+        text={text}
+      />
+    );
   }
 
   renderEmbargoSection(initialAccessValues) {
     // Same as Embargoed, same as Public
     return embargoSection(initialAccessValues, this.embargo);
   }
-
 }

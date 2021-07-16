@@ -17,6 +17,7 @@ import { ProtectionButtons } from './ProtectionButtons';
 import { EmbargoCheckboxField } from './EmbargoCheckboxField';
 import { EmbargoDateField } from './EmbargoDateField';
 import { i18next } from '../../i18next';
+import { Trans } from 'react-i18next';
 
 export function MetadataSection({ isPublic }) {
   return (
@@ -81,10 +82,10 @@ export function embargoSection(initialAccessValues, embargo) {
             </label>
           </List.Header>
           <List.Description className={'disabled'}>
-            {/* TODO: use of Trans Component for jsx translations */}
-            {i18next.t('Record or files protection must be ')}
-            <b>{i18next.t('restricted')}</b>
-            {i18next.t(' to apply an embargo.')}
+            <Trans>
+              Record or files protection must be <b>restricted</b> to apply an
+              embargo.
+            </Trans>
           </List.Description>
           {embargo.is(EmbargoState.APPLIED) && (
             <>

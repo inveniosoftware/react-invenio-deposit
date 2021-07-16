@@ -9,6 +9,7 @@ import React from 'react';
 
 import { embargoSection, filesButtons, filesSection, MessageSection, MetadataSection } from './utils';
 import { i18next } from '../../i18next';
+import { Trans } from 'react-i18next';
 
 // Public record restricted files
 export class RestrictedFiles {
@@ -30,13 +31,12 @@ export class RestrictedFiles {
   }
 
   renderMessageSection() {
+
     const text = (
-      <>
-        {/* TODO: use of Trans Component for jsx translations */}
-        {i18next.t('The record is publicly accessible. The files can')}{' '}
-        <b>{i18next.t('only')}</b> {i18next.t('be accessed by')}{' '}
-        <b>{i18next.t('users specified')}</b> {i18next.t('in the permissions.')}
-      </>
+      <Trans>
+        The record is publicly accessible. The files can <b>only</b> be accessed
+        by <b>users specified</b> in the permissions.
+      </Trans>
     );
 
     return (
