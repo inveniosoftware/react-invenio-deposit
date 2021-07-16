@@ -76,7 +76,7 @@ export const LicenseFieldItem = ({
             action="edit"
             trigger={
               <Button size="mini" primary type="button">
-                Edit
+                {i18next.t('Edit')}
               </Button>
             }
             serializeLicenses={serializeLicenses}

@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020 CERN.
 // Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -12,7 +13,7 @@ import _get from 'lodash/get';
 import _pick from 'lodash/pick';
 import { ArrayField, FieldLabel, GroupField, SelectField } from 'react-invenio-forms';
 import { Button, Form, Icon } from 'semantic-ui-react';
-
+import { i18next } from '@translations/i18next';
 import { emptyFunding } from '../record';
 
 
@@ -43,7 +44,7 @@ export class FundingField extends Component {
 
     return (
       <ArrayField
-        addButtonLabel={'Add award'} // TODO: Pass by prop
+        addButtonLabel={i18next.t('Add award')} // TODO: Pass by prop
         defaultNewValue={emptyFunding}
         fieldPath={fieldPath}
         label={label}
@@ -58,7 +59,7 @@ export class FundingField extends Component {
               label={
                 <FieldLabel
                   htmlFor={`${key}.funder`}
-                  label={'Funding Organization'}
+                  label={i18next.t('Funding Organization')}
                 />
               }
               options={selectFieldFunderOptions}
@@ -76,7 +77,7 @@ export class FundingField extends Component {
                 const funder = _get(form.values, `${key}.funder`);
                 return funder ? `${funder.scheme} ${funder.identifier}` : '';
               })()}
-              placeholder="Funding organization..."
+              placeholder={i18next.t('Funding organization...')}
               required
               optimized
             />
@@ -86,7 +87,7 @@ export class FundingField extends Component {
               label={
                 <FieldLabel
                   htmlFor={`${key}.award`}
-                  label={'Award'}
+                  label={i18next.t('Award')}
                 />
               }
               options={
@@ -113,7 +114,7 @@ export class FundingField extends Component {
                 const award = _get(form.values, `${key}.award`);
                 return award ? `${award.scheme} ${award.identifier}` : '';
               })()}
-              placeholder="Award number/acronym/name ..."
+              placeholder={i18next.t('Award number/acronym/name ...')}
               required
               optimized
             />
@@ -170,6 +171,6 @@ FundingField.propTypes = {
 
 FundingField.defaultProps = {
   fieldPath: 'metadata.funding',
-  label: 'Awards',
+  label: i18next.t('Awards'),
   labelIcon: 'money bill alternate outline',
 };

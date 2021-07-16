@@ -1,6 +1,7 @@
 // This file is part of InvenioRDM
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // Invenio App RDM is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -17,25 +18,26 @@ import {
   FORM_SAVE_SUCCEEDED,
 } from '../state/types';
 import { leafTraverse } from '../utils';
+import { i18next } from '@translations/i18next';
 
 const defaultLabels = {
-  'files.enabled': 'Files',
-  'metadata.resource_type': 'Resource type',
-  'metadata.title': 'Title',
-  'metadata.additional_titles': 'Title', // to display under Title label
-  'metadata.publication_date': 'Publication date',
-  'metadata.creators': 'Creators',
-  'metadata.contributors': 'Contributors',
-  'metadata.description': 'Description',
+  'files.enabled': i18next.t('Files'),
+  'metadata.resource_type': i18next.t('Resource type'),
+  'metadata.title': i18next.t('Title'),
+  'metadata.additional_titles': i18next.t('Title'), // to display under Title label
+  'metadata.publication_date': i18next.t('Publication date'),
+  'metadata.creators': i18next.t('Creators'),
+  'metadata.contributors': i18next.t('Contributors'),
+  'metadata.description': i18next.t('Description'),
   // to display under Description
-  'metadata.additional_descriptions': 'Description',
-  'metadata.rights': 'Licenses',
-  'metadata.languages': 'Languages',
-  'metadata.dates': 'Dates',
-  'metadata.version': 'Version',
-  'metadata.publisher': 'Publisher',
-  'metadata.related_identifiers': 'Related works',
-  'access.embargo.until': 'Embargo until',
+  'metadata.additional_descriptions': i18next.t('Description'),
+  'metadata.rights': i18next.t('Licenses'),
+  'metadata.languages': i18next.t('Languages'),
+  'metadata.dates': i18next.t('Dates'),
+  'metadata.version': i18next.t('Version'),
+  'metadata.publisher': i18next.t('Publisher'),
+  'metadata.related_identifiers': i18next.t('Related works'),
+  'access.embargo.until': i18next.t('Embargo until'),
 };
 
 class DisconnectedFormFeedback extends Component {
@@ -154,21 +156,21 @@ class DisconnectedFormFeedback extends Component {
     switch (formState) {
       case FORM_SAVE_SUCCEEDED:
         feedback = 'positive';
-        message = 'Record successfully saved.';
+        message = i18next.t('Record successfully saved.');
         break;
       case FORM_SAVE_PARTIALLY_SUCCEEDED:
         feedback = 'warning';
-        message = 'Record saved with validation errors:';
+        message = i18next.t('Record saved with validation errors:');
         break;
       case FORM_SAVE_FAILED:
       case FORM_PUBLISH_FAILED:
         feedback = 'negative';
         // TODO: use the backend error message
-        message = 'There was an internal error (and the record was not saved).';
+        message = i18next.t('There was an internal error (and the record was not saved).');
         break;
       case FORM_DELETE_FAILED:
         feedback = 'negative';
-        message = 'There was an internal error (and the record was not deleted).';
+        message = i18next.t('There was an internal error (and the record was not deleted).');
       default:
     }
 

@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -10,7 +11,7 @@ import {
   FieldLabel,
   TextField,
 } from 'react-invenio-forms';
-
+import { i18next } from '@translations/i18next';
 
 export function EmbargoDateField({ fieldPath, label, labelIcon, placeholder, required }) {
   return (
@@ -27,7 +28,7 @@ export function EmbargoDateField({ fieldPath, label, labelIcon, placeholder, req
 
 EmbargoDateField.defaultProps = {
   fieldPath: 'access.embargo.until',
-  label: 'Embargo until',
+  label: i18next.t('Embargo until'),
   labelIcon: 'calendar',
-  placeholder: 'YYYY-MM-DD',
+  placeholder: i18next.t('YYYY-MM-DD'),
 };
