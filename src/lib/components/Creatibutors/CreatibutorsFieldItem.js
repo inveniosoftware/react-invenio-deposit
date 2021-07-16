@@ -9,7 +9,7 @@ import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { Button, Label, List, Ref } from 'semantic-ui-react';
 import _get from 'lodash/get';
-
+import { i18next } from '@translations/i18next';
 import { CreatibutorsModal } from './CreatibutorsModal';
 
 export const CreatibutorsFieldItem = ({
@@ -85,7 +85,7 @@ export const CreatibutorsFieldItem = ({
             action="edit"
             trigger={
               <Button size="mini" primary type="button">
-                Edit
+                {i18next.t('Edit')}
               </Button>
             }
           />
@@ -94,7 +94,7 @@ export const CreatibutorsFieldItem = ({
             type="button"
             onClick={() => removeCreatibutor(index)}
           >
-            Remove
+            {i18next.t('Remove')}
           </Button>
         </List.Content>
         <Ref innerRef={drag}>
