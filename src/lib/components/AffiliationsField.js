@@ -16,7 +16,9 @@ import { i18next } from '@translations/i18next';
 export class AffiliationsField extends Component {
   serializeAffiliations = (affiliations) =>
     affiliations.map((affiliation) => ({
-      text: affiliation.name,
+      text: affiliation.acronym
+        ? `${affiliation.name} (${affiliation.acronym})`
+        : affiliation.name,
       value: affiliation.name,
       key: affiliation.name,
       ...(affiliation.id ? { id: affiliation.id } : {}),
