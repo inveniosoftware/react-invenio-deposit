@@ -9,7 +9,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getIn, FieldArray } from 'formik';
-import { Button, Form, List, Icon } from 'semantic-ui-react';
+import { Button, Form, Label, List, Icon } from 'semantic-ui-react';
 import _get from 'lodash/get';
 import { FieldLabel } from 'react-invenio-forms';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -49,9 +49,13 @@ class CreatibutorsFieldForm extends Component {
       roleOptions,
       schema,
     } = this.props;
+    const error = getIn(errors, fieldPath, null);
     return (
       <DndProvider backend={HTML5Backend}>
-        <Form.Field required={schema === 'creators'}>
+        <Form.Field
+          required={schema === 'creators'}
+          className={error && 'error'}
+        >
           <FieldLabel
             htmlFor={fieldPath}
             icon={labelIcon}
@@ -124,10 +128,17 @@ class CreatibutorsFieldForm extends Component {
               roleOptions={roleOptions}
               schema={schema}
               trigger={
-                <Button type="button">
-                  <Icon name="add" />
-                  {this.props.addButtonLabel}
-                </Button>
+                <>
+                  <Button type="button">
+                    <Icon name="add" />
+                    {this.props.addButtonLabel}
+                  </Button>
+                  {error && (
+                    <Label pointing="left" prompt>
+                      {error}
+                    </Label>
+                  )}
+                </>
               }
             />
           </List>
