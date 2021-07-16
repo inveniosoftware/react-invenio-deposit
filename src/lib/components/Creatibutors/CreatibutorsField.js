@@ -18,7 +18,7 @@ import { DndProvider } from 'react-dnd';
 import { CreatibutorsModal } from './CreatibutorsModal';
 import { CreatibutorsFieldItem } from './CreatibutorsFieldItem';
 import { CREATIBUTOR_TYPE } from './type';
-import { i18next } from '../../i18next';
+import { i18next } from '@translations/i18next';
 
 const displayCreatibutorName = ({ familyName, givenName, affiliationName }) => {
   let displayName = familyName;

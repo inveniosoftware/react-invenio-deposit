@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { Button, Icon, Modal } from 'semantic-ui-react';
 import { discard } from '../state/actions';
 import { toCapitalCase } from '../utils';
-import { i18next } from '../i18next';
+import { i18next } from '@translations/i18next';
 
 const DialogText = ({ action }) => {
   let text = '';

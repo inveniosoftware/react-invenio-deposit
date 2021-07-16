@@ -8,7 +8,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Header } from 'semantic-ui-react';
-import { i18next } from '../i18next';
+import { i18next } from '@translations/i18next';
 
 class DepositFormTitleComponent extends Component {
   render() {

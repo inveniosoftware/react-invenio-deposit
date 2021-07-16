@@ -21,7 +21,7 @@ import {
   Popup,
   Checkbox,
 } from 'semantic-ui-react';
-import { i18next } from '../../i18next';
+import { i18next } from '@translations/i18next';
 
 import { humanReadableBytes } from './utils';
 
@@ -36,10 +36,10 @@ const FileTableHeader = ({ isDraftRecord }) => (
         />
       </Table.HeaderCell>
       <Table.HeaderCell className="file-table-header-cell">
-      {i18next.t('Filename')}
+        {i18next.t('Filename')}
       </Table.HeaderCell>
       <Table.HeaderCell className="file-table-header-cell">
-      {i18next.t('Size')}
+        {i18next.t('Size')}
       </Table.HeaderCell>
       {isDraftRecord && (
         <Table.HeaderCell textAlign="center" className="file-table-header-cell">
@@ -72,8 +72,7 @@ const FileTableRow = ({
     <Table.Row key={file.name} className="file-table-row">
       <Table.Cell className="file-table-cell" width={2}>
         {/* TODO: Investigate if react-deposit-forms optimized Checkbox field
-                  would be more performant */
-        }
+                  would be more performant */}
         <Checkbox
           checked={isDefaultPreview}
           onChange={() => setDefaultPreview(isDefaultPreview ? '' : file.name)}
@@ -96,7 +95,9 @@ const FileTableRow = ({
           <div className="ui text-muted">
             <span style={{ fontSize: '10px' }}>{file.checksum}</span>{' '}
             <Popup
-              content={i18next.t('This is the file fingerprint (MD5 checksum), which can be used to verify the file integrity.')}
+              content={i18next.t(
+                'This is the file fingerprint (MD5 checksum), which can be used to verify the file integrity.'
+              )}
               trigger={<Icon fitted name="help circle" size="small" />}
               position="top center"
             />
@@ -150,7 +151,7 @@ const FileTableRow = ({
       )}
     </Table.Row>
   );
-}
+};
 
 const FileUploadBox = ({
   isDraftRecord,
@@ -189,13 +190,9 @@ const FileUploadBox = ({
     </Segment>
   );
 
-const FilesListTable = ({
-  isDraftRecord,
-  filesList,
-  deleteFileFromRecord,
-}) => {
+const FilesListTable = ({ isDraftRecord, filesList, deleteFileFromRecord }) => {
   const { setFieldValue, values: formikDraft } = useFormikContext();
-  const defaultPreview = _get(formikDraft, "files.default_preview", '');
+  const defaultPreview = _get(formikDraft, 'files.default_preview', '');
   return (
     <Table>
       <FileTableHeader isDraftRecord={isDraftRecord} />
@@ -208,8 +205,8 @@ const FilesListTable = ({
               file={file}
               deleteFileFromRecord={deleteFileFromRecord}
               defaultPreview={defaultPreview}
-              setDefaultPreview={
-                (filename) => setFieldValue("files.default_preview", filename)
+              setDefaultPreview={(filename) =>
+                setFieldValue('files.default_preview', filename)
               }
             />
           );
@@ -217,7 +214,7 @@ const FilesListTable = ({
       </Table.Body>
     </Table>
   );
-}
+};
 
 export class FileUploaderArea extends Component {
   render() {
@@ -230,9 +227,7 @@ export class FileUploaderArea extends Component {
               <input {...getInputProps()} />
               {filesList.length !== 0 && (
                 <Grid.Column verticalAlign="middle">
-                  <FilesListTable
-                    {...this.props}
-                  />
+                  <FilesListTable {...this.props} />
                 </Grid.Column>
               )}
               <FileUploadBox {...this.props} openFileDialog={openFileDialog} />
@@ -246,7 +241,9 @@ export class FileUploaderArea extends Component {
           <Grid textAlign="center">
             <Grid.Row verticalAlign="middle">
               <Grid.Column>
-                <Header size="medium">{i18next.t('This is a Metadata only record')}</Header>
+                <Header size="medium">
+                  {i18next.t('This is a Metadata only record')}
+                </Header>
               </Grid.Column>
             </Grid.Row>
           </Grid>
@@ -267,5 +264,5 @@ FileUploaderArea.propTypes = {
   links: PropTypes.object,
   setDefaultPreviewFile: PropTypes.func,
   uploadButtonIcon: PropTypes.string,
-  uploadButtonText: PropTypes.string
+  uploadButtonText: PropTypes.string,
 };

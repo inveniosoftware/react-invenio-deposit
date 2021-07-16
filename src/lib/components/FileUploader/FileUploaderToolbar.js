@@ -9,7 +9,7 @@ import { useFormikContext } from 'formik';
 import React from 'react';
 import { Checkbox, Grid, Icon, Label, List, Popup } from 'semantic-ui-react';
 import { humanReadableBytes } from './utils';
-import { i18next } from '../../i18next';
+import { i18next } from '@translations/i18next';
 
 // NOTE: This component has to be a function component to allow
 //       the `useFormikContext` hook.
@@ -57,8 +57,10 @@ export const FileUploaderToolbar = ({
                   ? { color: 'blue' }
                   : {})}
               >
-                {i18next.t(`{{length}} out of {{maxfiles}} files`,
-                {length: filesList.length, maxfiles: quota.maxFiles})}
+                {i18next.t(`{{length}} out of {{maxfiles}} files`, {
+                  length: filesList.length,
+                  maxfiles: quota.maxFiles,
+                })}
               </Label>
             </List.Item>
             <List.Item>

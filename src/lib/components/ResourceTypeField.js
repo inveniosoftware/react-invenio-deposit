@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _get from 'lodash/get';
 import { FieldLabel, SelectField } from 'react-invenio-forms';
-import { i18next } from '../i18next';
+import { i18next } from '@translations/i18next';
 
 export class ResourceTypeField extends Component {
   groupErrors = (errors, fieldPath) => {

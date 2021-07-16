@@ -23,7 +23,7 @@ import _map from 'lodash/map';
 import { AffiliationsField } from './../AffiliationsField';
 import { CreatibutorsIdentifiers } from './CreatibutorsIdentifiers';
 import { CREATIBUTOR_TYPE } from './type';
-import { i18next } from '../../i18next';
+import { i18next } from '@translations/i18next';
 
 const ModalActions = {
   ADD: 'add',

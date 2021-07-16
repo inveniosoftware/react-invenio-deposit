@@ -20,7 +20,7 @@ import { Button, Form, Icon } from 'semantic-ui-react';
 
 import { emptyRelatedWork } from '../record';
 import { ResourceTypeField } from './ResourceTypeField';
-import { i18next } from '../i18next';
+import { i18next } from '@translations/i18next';
 
 export class RelatedWorksField extends Component {
   render() {

@@ -15,7 +15,7 @@ import {
   TextField,
 } from 'react-invenio-forms';
 import { Button, Form } from 'semantic-ui-react';
-import { i18next } from '../../i18next';
+import { i18next } from '@translations/i18next';
 import { emptyIdentifier } from '../../record';
 
 /** Identifiers array component */

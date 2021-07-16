@@ -11,14 +11,14 @@ import PropTypes from 'prop-types';
 import { FieldLabel, GroupField, RemoteSelectField } from 'react-invenio-forms';
 import { Form } from 'semantic-ui-react';
 import { Field, getIn } from 'formik';
-import { i18next } from '../i18next';
+import { i18next } from '@translations/i18next';
 
 export class SubjectsField extends Component {
   state = {
     limitTo: 'all',
   };
 
-  serializeSubjects = (subjects) => (
+  serializeSubjects = (subjects) =>
     subjects.map((subject) => {
       const scheme = subject.scheme ? `(${subject.scheme}) ` : '';
       return {
@@ -27,9 +27,8 @@ export class SubjectsField extends Component {
         key: subject.subject,
         ...(subject.id ? { id: subject.id } : {}),
         subject: subject.subject,
-      }
-    })
-  );
+      };
+    });
 
   prepareSuggest = (searchQuery) => {
     const limitTo = this.state.limitTo;
@@ -98,7 +97,7 @@ export class SubjectsField extends Component {
                   );
                 }}
                 value={getIn(values, fieldPath, []).map((val) => val.subject)}
-                label={<label>&nbsp;</label>}  /** For alignment purposes */
+                label={<label>&nbsp;</label>} /** For alignment purposes */
                 allowAdditions
                 width={11}
               />

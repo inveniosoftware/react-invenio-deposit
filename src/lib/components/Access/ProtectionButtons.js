@@ -8,7 +8,7 @@
 import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
 import { FastField } from 'formik';
-import { i18next } from '../../i18next';
+import { i18next } from '@translations/i18next';
 
 class ProtectionButtonsComponent extends Component {
   /**
@@ -17,31 +17,27 @@ class ProtectionButtonsComponent extends Component {
    * @param activeColor button color when active
    */
   getButtonProps(active, activeColor) {
-    let props = {active};
+    let props = { active };
     if (active) {
-      props["color"] = activeColor;
+      props['color'] = activeColor;
     }
     return props;
   }
 
   render() {
-    const {
-      fieldPath,
-      formik,
-      active,
-    } = this.props;
+    const { fieldPath, formik, active } = this.props;
 
     return (
       <Button.Group widths={'2'}>
         <Button
-          {...this.getButtonProps(active, "green")}
+          {...this.getButtonProps(active, 'green')}
           onClick={(event, data) => {
-            formik.form.setFieldValue(fieldPath, "public");
+            formik.form.setFieldValue(fieldPath, 'public');
             // NOTE: We reset values, so if embargo filled and click Public,
             //       user needs to fill embargo again. Otherwise lots of
             //       bookkeeping.
-            formik.form.setFieldValue("access.embargo", {
-              active: false
+            formik.form.setFieldValue('access.embargo', {
+              active: false,
             });
           }}
           compact
@@ -50,31 +46,31 @@ class ProtectionButtonsComponent extends Component {
           {i18next.t('Public')}
         </Button>
         <Button
-          {...this.getButtonProps(!active, "red")}
-          onClick={(event, data) => formik.form.setFieldValue(fieldPath, "restricted")}
+          {...this.getButtonProps(!active, 'red')}
+          onClick={(event, data) =>
+            formik.form.setFieldValue(fieldPath, 'restricted')
+          }
           compact
           attached
         >
           {i18next.t('Restricted')}
         </Button>
-
       </Button.Group>
     );
   }
 }
 
-
 export class ProtectionButtons extends Component {
   render() {
-    const {
-      fieldPath,
-    } = this.props;
+    const { fieldPath } = this.props;
 
-    return <FastField
-      name={fieldPath}
-      component={(formikProps) => (
-        <ProtectionButtonsComponent formik={formikProps} {...this.props} />
-      )}
-    />;
+    return (
+      <FastField
+        name={fieldPath}
+        component={(formikProps) => (
+          <ProtectionButtonsComponent formik={formikProps} {...this.props} />
+        )}
+      />
+    );
   }
 }

@@ -18,7 +18,7 @@ import {
 } from 'react-invenio-forms';
 import { emptyAdditionalTitle } from '../record';
 import { LanguagesField } from './LanguagesField';
-import { i18next } from '../i18next';
+import { i18next } from '@translations/i18next';
 
 export class AdditionalTitlesField extends Component {
   render() {

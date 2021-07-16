@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { FieldLabel, TextField } from 'react-invenio-forms';
-import { i18next } from '../i18next';
+import { i18next } from '@translations/i18next';
 import { Trans } from 'react-i18next';
 
 export class VersionField extends Component {
