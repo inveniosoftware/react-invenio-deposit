@@ -15,7 +15,7 @@ import { NewVersionButton } from '../NewVersionButton';
 import { FileUploaderArea } from './FileUploaderArea';
 import { FileUploaderToolbar } from './FileUploaderToolbar';
 import { humanReadableBytes } from './utils';
-import { i18next } from '../../i18next';
+import { i18next } from '@translations/i18next';
 
 // NOTE: This component has to be a function component to allow
 //       the `useFormikContext` hook.

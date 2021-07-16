@@ -16,7 +16,7 @@ import { EmbargoState } from './Embargo';
 import { ProtectionButtons } from './ProtectionButtons';
 import { EmbargoCheckboxField } from './EmbargoCheckboxField';
 import { EmbargoDateField } from './EmbargoDateField';
-import { i18next } from '../../i18next';
+import { i18next } from '@translations/i18next';
 import { Trans } from 'react-i18next';
 
 export function MetadataSection({ isPublic }) {

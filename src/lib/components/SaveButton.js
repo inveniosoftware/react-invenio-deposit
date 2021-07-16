@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { Icon } from 'semantic-ui-react';
 import { submitAction } from '../state/actions';
 import { FORM_SAVING } from '../state/types';
-import { i18next } from '../i18next';
+import { i18next } from '@translations/i18next';
 
 export class SaveButtonComponent extends Component {
   isDisabled = (formik) => {

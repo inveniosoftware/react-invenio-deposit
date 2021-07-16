@@ -13,7 +13,7 @@ import { Button, Form, Grid, Icon } from 'semantic-ui-react';
 import { ArrayField, SelectField, RichInputField } from 'react-invenio-forms';
 import { emptyAdditionalDescription } from '../record';
 import { LanguagesField } from './LanguagesField';
-import { i18next } from '../i18next';
+import { i18next } from '@translations/i18next';
 
 export class AdditionalDescriptionsField extends Component {
   render() {

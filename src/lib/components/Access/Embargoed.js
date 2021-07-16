@@ -14,7 +14,7 @@ import {
   MessageSection,
   MetadataSection,
 } from './utils';
-import { i18next } from '../../i18next';
+import { i18next } from '@translations/i18next';
 import { Trans } from 'react-i18next';
 
 // Record and files embargoed
@@ -47,8 +47,10 @@ export class Embargoed {
       : '???';
 
     const text = (
-      <Trans values={{ fmtDate: fmtDate}}>
-        On <b>{{fmtDate}}</b> the record and the files will automatically be made publicly accessible. Until then, the record and the files can <b>only</b> be accessed by <b>users specified</b> in the permissions.
+      <Trans values={{ fmtDate: fmtDate }}>
+        On <b>{{ fmtDate }}</b> the record and the files will automatically be
+        made publicly accessible. Until then, the record and the files can{' '}
+        <b>only</b> be accessed by <b>users specified</b> in the permissions.
       </Trans>
     );
 

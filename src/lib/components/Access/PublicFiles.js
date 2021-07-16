@@ -7,8 +7,14 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 import React from 'react';
 
-import { embargoSection, filesButtons, filesSection, MessageSection, MetadataSection } from './utils';
-import { i18next } from '../../i18next';
+import {
+  embargoSection,
+  filesButtons,
+  filesSection,
+  MessageSection,
+  MetadataSection,
+} from './utils';
+import { i18next } from '@translations/i18next';
 
 // Fully public (metadata + files)
 export class PublicFiles {
@@ -29,16 +35,17 @@ export class PublicFiles {
   renderMessageSection() {
     const text = i18next.t('The record and files are publicly accessible.');
 
-    return <MessageSection
-      intent={{positive: true}}
-      icon="lock open"
-      title={i18next.t('Public')}
-      text={text}
-    />;
+    return (
+      <MessageSection
+        intent={{ positive: true }}
+        icon="lock open"
+        title={i18next.t('Public')}
+        text={text}
+      />
+    );
   }
 
   renderEmbargoSection(initialAccessValues) {
     return embargoSection(initialAccessValues, this.embargo);
   }
-
 }

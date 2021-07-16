@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Icon } from 'semantic-ui-react';
 import { ActionButton } from 'react-invenio-forms';
-import { i18next } from '../i18next';
+import { i18next } from '@translations/i18next';
 import { submitAction } from '../state/actions';
 import {
   FORM_SAVE_FAILED,

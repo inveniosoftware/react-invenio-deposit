@@ -13,7 +13,7 @@ import {
   MessageSection,
   MetadataSection,
 } from './utils';
-import { i18next } from '../../i18next';
+import { i18next } from '@translations/i18next';
 import { Trans } from 'react-i18next';
 
 // Record and files restricted

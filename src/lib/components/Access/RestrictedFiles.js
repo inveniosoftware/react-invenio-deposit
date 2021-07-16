@@ -7,8 +7,14 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 import React from 'react';
 
-import { embargoSection, filesButtons, filesSection, MessageSection, MetadataSection } from './utils';
-import { i18next } from '../../i18next';
+import {
+  embargoSection,
+  filesButtons,
+  filesSection,
+  MessageSection,
+  MetadataSection,
+} from './utils';
+import { i18next } from '@translations/i18next';
 import { Trans } from 'react-i18next';
 
 // Public record restricted files
@@ -31,7 +37,6 @@ export class RestrictedFiles {
   }
 
   renderMessageSection() {
-
     const text = (
       <Trans>
         The record is publicly accessible. The files can <b>only</b> be accessed
@@ -47,11 +52,9 @@ export class RestrictedFiles {
         text={text}
       />
     );
-
   }
 
   renderEmbargoSection(initialAccessValues) {
     return embargoSection(initialAccessValues, this.embargo);
   }
-
 }

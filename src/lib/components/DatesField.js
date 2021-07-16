@@ -17,7 +17,7 @@ import {
 import { Button, Form, Icon } from 'semantic-ui-react';
 
 import { emptyDate } from '../record';
-import { i18next } from '../i18next';
+import { i18next } from '@translations/i18next';
 
 export class DatesField extends Component {
   /** Top-level Dates Component */

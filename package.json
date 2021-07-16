@@ -59,6 +59,7 @@
     "@babel/cli": "^7.5.5",
     "@ckeditor/ckeditor5-build-classic": "^16.0.0",
     "@ckeditor/ckeditor5-react": "^2.1.0",
+    "@rollup/plugin-alias": "^3.1.4",
     "@rollup/plugin-babel": "^5.0.0",
     "@rollup/plugin-commonjs": "^11.1.0",
     "@rollup/plugin-json": "^4.1.0",
@@ -140,6 +141,9 @@
   "jest": {
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
-    ]
+    ],
+    "moduleNameMapper": {
+      "@translations/i18next": "<rootDir>/src/lib/i18next"
+    }
   }
 }

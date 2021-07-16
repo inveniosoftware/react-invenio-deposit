@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 
 import { FieldLabel, TextField } from 'react-invenio-forms';
 import { AdditionalTitlesField } from './AdditionalTitlesField';
-import { i18next } from '../i18next';
+import { i18next } from '@translations/i18next';
 
 export class TitlesField extends Component {
   render() {

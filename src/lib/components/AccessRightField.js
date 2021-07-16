@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import { FastField } from 'formik';
 import { FieldLabel } from 'react-invenio-forms';
 import { Card, Divider, Form } from 'semantic-ui-react';
-import { i18next } from '../i18next';
+import { i18next } from '@translations/i18next';
 import {
   Embargo,
   EmbargoState,

@@ -15,7 +15,7 @@ import { ActionButton } from 'react-invenio-forms';
 import { submitAction } from '../state/actions';
 import { FORM_PUBLISHING } from '../state/types';
 import { toCapitalCase } from '../utils';
-import { i18next } from '../i18next';
+import { i18next } from '@translations/i18next';
 
 export class PublishButtonComponent extends Component {
   state = { confirmOpen: false };

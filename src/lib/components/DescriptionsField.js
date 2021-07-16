@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 
 import { FieldLabel, RichInputField } from 'react-invenio-forms';
 import { AdditionalDescriptionsField } from './AdditionalDescriptionsField';
-import { i18next } from '../i18next';
+import { i18next } from '@translations/i18next';
 
 export class DescriptionsField extends Component {
   render() {

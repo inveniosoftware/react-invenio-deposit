@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { SelectField } from 'react-invenio-forms';
 import _unickBy from 'lodash/unionBy';
-import { i18next } from '../../i18next';
+import { i18next } from '@translations/i18next';
 
 export class CreatibutorsIdentifiers extends Component {
   static propTypes = {

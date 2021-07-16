@@ -24,7 +24,7 @@ import { LicenseResults } from './LicenseResults';
 import { Formik } from 'formik';
 import { TextAreaField, TextField, ActionButton } from 'react-invenio-forms';
 import * as Yup from 'yup';
-import { i18next } from '../../i18next';
+import { i18next } from '@translations/i18next';
 
 const overriddenComponents = {
   'SearchFilters.ToggleComponent': LicenseFilter,
