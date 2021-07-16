@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2021-07-15T10:16:58.292Z\n"
-"PO-Revision-Date: 2021-07-15T10:16:58.292Z\n"
+"POT-Creation-Date: 2021-07-16T07:28:59.435Z\n"
+"PO-Revision-Date: 2021-07-16T07:28:59.435Z\n"
 "Language: en\n"
 
 msgid "New version"
@@ -337,33 +337,8 @@ msgstr "Options"
 msgid "The full record is restricted."
 msgstr "The full record is restricted."
 
-msgid "On"
-msgstr "On"
-
-msgid ""
-"the record and the files will automatically be made publicly accessible. "
-"Until then, the record and the files can"
-msgstr ""
-"the record and the files will automatically be made publicly accessible. "
-"Until then, the record and the files can"
-
-msgid "only"
-msgstr "only"
-
-msgid "be accessed by"
-msgstr "be accessed by"
-
-msgid "users specified"
-msgstr "users specified"
-
-msgid "in the permissions."
-msgstr "in the permissions."
-
 msgid "The record and files are publicly accessible."
 msgstr "The record and files are publicly accessible."
-
-msgid "The record and files can"
-msgstr "The record and files can"
 
 msgid "Full record"
 msgstr "Full record"
@@ -373,15 +348,6 @@ msgstr "Files only"
 
 msgid "Apply an embargo"
 msgstr "Apply an embargo"
-
-msgid "Record or files protection must be "
-msgstr "Record or files protection must be "
-
-msgid "restricted"
-msgstr "restricted"
-
-msgid " to apply an embargo."
-msgstr " to apply an embargo."
 
 msgid "Embargo reason"
 msgstr "Embargo reason"
@@ -426,9 +392,6 @@ msgstr "Public"
 msgid "Restricted"
 msgstr "Restricted"
 
-msgid "The record is publicly accessible. The files can"
-msgstr "The record is publicly accessible. The files can"
-
 msgid "Public with restricted files"
 msgstr "Public with restricted files"
 
@@ -436,11 +399,34 @@ msgid "Suggest from"
 msgstr "Suggest from"
 
 msgid ""
+"On <1><0>{{fmtDate}}</0></1> the record and the files will automatically be "
+"made publicly accessible. Until then, the record and the files can "
+"<3>only</3> be accessed by <5>users specified</5> in the permissions."
+msgstr ""
+"On <1><0>{{fmtDate}}</0></1> the record and the files will automatically be "
+"made publicly accessible. Until then, the record and the files can "
+"<3>only</3> be accessed by <5>users specified</5> in the permissions."
+
+msgid ""
+"The record and files can <1>only</1> be accessed by<3>users specified</3> "
+"in the permissions."
+msgstr ""
+"The record and files can <1>only</1> be accessed by<3>users specified</3> "
+"in the permissions."
+
+msgid ""
+"The record is publicly accessible. The files can <1>only</1> be accessed by "
+"<3>users specified</3> in the permissions."
+msgstr ""
+"The record is publicly accessible. The files can <1>only</1> be accessed by "
+"<3>users specified</3> in the permissions."
+
+msgid "Record or files protection must be <1>restricted</1> to apply an embargo."
+msgstr "Record or files protection must be <1>restricted</1> to apply an embargo."
+
+msgid ""
 "Mostly relevant for software and dataset uploads. A semantic version string "
-"is preferred see"
+"is preferred see<1> semver.org</1>, but any version string is accepted."
 msgstr ""
 "Mostly relevant for software and dataset uploads. A semantic version string "
-"is preferred see"
-
-msgid "but any version string is accepted."
-msgstr "but any version string is accepted."
+"is preferred see<1> semver.org</1>, but any version string is accepted."

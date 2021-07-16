@@ -11,21 +11,22 @@ import PropTypes from 'prop-types';
 
 import { FieldLabel, TextField } from 'react-invenio-forms';
 import { i18next } from '../i18next';
+import { Trans } from 'react-i18next';
 
 export class VersionField extends Component {
   render() {
     const { fieldPath, label, labelIcon, placeholder } = this.props;
     const helpText = (
       <span>
-        {/* TODO: use of Trans Component for jsx translations */}
-        {i18next.t(
-          'Mostly relevant for software and dataset uploads. A semantic version string is preferred see'
-        )}
-        <a href="https://semver.org/" target="_blank">
-          {' '}
-          semver.org
-        </a>
-        , {i18next.t('but any version string is accepted.')}
+        <Trans>
+          Mostly relevant for software and dataset uploads. A semantic version
+          string is preferred see
+          <a href="https://semver.org/" target="_blank">
+            {' '}
+            semver.org
+          </a>
+          , but any version string is accepted.
+        </Trans>
       </span>
     );
 

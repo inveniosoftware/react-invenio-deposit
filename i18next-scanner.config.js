@@ -10,6 +10,9 @@ const { languages } = require('./package').config;
 // mark the strings for translation
 const funcList = ['i18next.t'];
 
+// list of extension to look for
+const extensions = ['.js', '.jsx'];
+
 module.exports = {
   options: {
     debug: true,
@@ -17,9 +20,16 @@ module.exports = {
     browserLanguageDetection: true,
     func: {
       list: funcList,
-      extensions: ['.js', '.jsx'],
+      extensions: extensions,
     },
-    // trans: false, // Enable for using Trans component
+    //using Trans component
+    trans: {
+      component: 'Trans',
+      extensions: extensions,
+      fallbackKey: function (ns, value) {
+        return value;
+      },
+    },
     lngs: languages,
     ns: [
       // file name (.json)
