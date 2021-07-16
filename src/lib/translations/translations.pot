@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2021-07-16T11:04:35.128Z\n"
-"PO-Revision-Date: 2021-07-16T11:04:35.128Z\n"
+"POT-Creation-Date: 2021-07-16T14:00:12.480Z\n"
+"PO-Revision-Date: 2021-07-16T14:00:12.480Z\n"
 "Language: en\n"
 
 msgid "New version"
@@ -505,3 +505,6 @@ msgstr "There was an internal error (and the record was not saved)."
 
 msgid "There was an internal error (and the record was not deleted)."
 msgstr "There was an internal error (and the record was not deleted)."
+
+msgid "The record is publicly accessible."
+msgstr "The record is publicly accessible."

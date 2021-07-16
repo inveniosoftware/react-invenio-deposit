@@ -145,5 +145,6 @@
   "Record successfully saved.": "Record successfully saved.",
   "Record saved with validation errors:": "Record saved with validation errors:",
   "There was an internal error (and the record was not saved).": "There was an internal error (and the record was not saved).",
-  "There was an internal error (and the record was not deleted).": "There was an internal error (and the record was not deleted)."
+  "There was an internal error (and the record was not deleted).": "There was an internal error (and the record was not deleted).",
+  "The record is publicly accessible.": "The record is publicly accessible."
 }
