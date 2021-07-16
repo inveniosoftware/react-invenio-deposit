@@ -1,13 +1,17 @@
 # 
 # Translators:
+# Chriz Uniba <christina.zeller@uni-bamberg.de>, 2021
+# Alizee Pace <alizee.pace@gmail.com>, 2021
+# Tibor Simko <tibor.simko@cern.ch>, 2021
 # Mojib Wali <mojib.wali@tugraz.at>, 2021
+# Alexander Gruber <alexander.gruber@tugraz.at>, 2021
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2021-06-29T13:05:15.622Z\n"
+"POT-Creation-Date: 2021-07-16T07:28:59.435Z\n"
 "PO-Revision-Date: 2021-06-29 13:20+0000\n"
-"Last-Translator: Mojib Wali <mojib.wali@tugraz.at>, 2021\n"
+"Last-Translator: Alexander Gruber <alexander.gruber@tugraz.at>, 2021\n"
 "Language-Team: German (https://www.transifex.com/inveniosoftware/teams/23537/de/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,10 +23,435 @@ msgid "New version"
 msgstr "Neue Version"
 
 msgid "New upload"
-msgstr "Neuer Upload"
+msgstr "Neuer Eintrag"
 
 msgid "Edit upload"
 msgstr "Upload bearbeiten"
 
 msgid "Storage available"
 msgstr "Verfügbarer Speicherplatz"
+
+msgid "Add identifier"
+msgstr "Kennung hinzufügen"
+
+msgid "Add titles"
+msgstr "Titel hinzufügen"
+
+msgid "Uploading the selected files would result in"
+msgstr "Das Hochladen der ausgewählten Dateien würde dazu führen, dass"
+
+msgid "but the limit is"
+msgstr "aber die Grenze ist"
+
+msgid "You can import files from the previous version."
+msgstr "Sie können Dateien aus der Vorgängerversion importieren."
+
+msgid ""
+"File addition, removal or modification are not allowed after you have "
+"published your upload."
+msgstr ""
+"Das Hinzufügen, Entfernen oder Ändern von Dateien ist nicht erlaubt, nachdem"
+" Sie Ihren Upload veröffentlicht haben."
+
+msgid "You must create a new version to add, modify or delete files."
+msgstr ""
+"Sie müssen eine neue Version erstellen, um Dateien hinzuzufügen, zu ändern "
+"oder zu löschen."
+
+msgid "Drag and drop file(s)"
+msgstr "Ziehen und Ablegen von Datei(en)"
+
+msgid "Upload files"
+msgstr "Dateien hochladen"
+
+msgid "Import files"
+msgstr "Dateien importieren"
+
+msgid "Metadata-only record"
+msgstr "Nur-Metadaten Eintrag"
+
+msgid "{{length}} out of {{maxfiles}} files"
+msgstr "{{length}} aus {{maxfiles}} Dateien"
+
+msgid "out of"
+msgstr "aus"
+
+msgid ""
+"In case your upload was already published elsewhere, please use the date of "
+"the first publication. Format: YYYY-MM-DD, YYYY-MM, or YYYY. For intervals "
+"use DATE/DATE, e.g. 1939/1945."
+msgstr ""
+"Falls Ihr Upload bereits an anderer Stelle veröffentlicht wurde, verwenden "
+"Sie bitte das Datum der Erstveröffentlichung. Format: JJJJ-MM-TT, JJJJ-MM, "
+"oder JJJJ. Für Intervalle verwenden Sie DATE/DATE, z. B. 1939/1945."
+
+msgid "Publication date"
+msgstr "Veröffentlichungsdatum"
+
+msgid ""
+"YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD for intervals. MM and DD are optional."
+msgstr ""
+"JJJJ-MM-TT oder JJJJ-MM-TT/ JJJJ-MM-TT für Intervalle. MM und TT sind "
+"optional."
+
+msgid "Resource type"
+msgstr "Art der Ressource"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Add creator"
+msgstr "Ersteller hinzufügen"
+
+msgid "Name identifiers"
+msgstr "Kennungen benennen"
+
+msgid "e.g. ORCID, ISNI or GND."
+msgstr "z.B. ORCID, ISNI oder GND."
+
+msgid "Type the value of an identifier..."
+msgstr "Geben Sie den Wert einer Kennung ein..."
+
+msgid "Save and add another"
+msgstr "Speichern und ein weiteres hinzufügen"
+
+msgid "Family name is a required field."
+msgstr "Der Familienname ist ein Pflichtfeld."
+
+msgid "Name is a required field."
+msgstr "Name ist ein Pflichtfeld."
+
+msgid "Role is a required field."
+msgstr "Rolle ist ein Pflichtfeld."
+
+msgid "Added"
+msgstr "Hinzugefügt"
+
+msgid "Person"
+msgstr "Person"
+
+msgid "Organization"
+msgstr "Organisation"
+
+msgid "Family name"
+msgstr "Familienname"
+
+msgid "Given name(s)"
+msgstr "Vorname(n)"
+
+msgid "Given name"
+msgstr "Vorname"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Organization name"
+msgstr "Name der Organisation"
+
+msgid "Role"
+msgstr "Rolle"
+
+msgid "Select role"
+msgstr "Wählen Sie eine Rolle"
+
+msgid "Cancel"
+msgstr "Abbrechen"
+
+msgid "Save"
+msgstr "Speichern"
+
+msgid "Search or create affiliation'"
+msgstr "Zugehörigkeit suchen oder erstellen'"
+
+msgid "Affiliations"
+msgstr "Zugehörigkeiten"
+
+msgid "Search for affiliations.."
+msgstr "Suche nach Zugehörigkeiten.."
+
+msgid "Description"
+msgstr "Beschreibung"
+
+msgid "Additional Description"
+msgstr "Zusätzliche Beschreibung"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "Language"
+msgstr "Sprache"
+
+msgid "Select language"
+msgstr "Wählen Sie eine Sprache"
+
+msgid "Add description"
+msgstr "Beschreibung hinzufügen"
+
+msgid "Add standard"
+msgstr "Standard hinzufügen"
+
+msgid "Add custom"
+msgstr "Benutzerdefiniertes hinzufügen"
+
+msgid "Licenses"
+msgstr "Lizenzen"
+
+msgid "Remove"
+msgstr "Löschen"
+
+msgid "Read more"
+msgstr "Mehr lesen"
+
+msgid "Title is a required field."
+msgstr "Titel ist ein Pflichtfeld."
+
+msgid "Link must be a valid URL"
+msgstr "Link muss eine gültige URL sein"
+
+msgid "License title"
+msgstr "Lizenztitel"
+
+msgid "Link"
+msgstr "Link"
+
+msgid "License link"
+msgstr "Lizenzlink"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "Data"
+msgstr "Daten"
+
+msgid "Software"
+msgstr "Software"
+
+msgid "Add license"
+msgstr "Lizenz hinzufügen"
+
+msgid "Change license"
+msgstr "Lizenz ändern"
+
+msgid "Recommended"
+msgstr "Empfohlen"
+
+msgid "Search or create subjects.."
+msgstr "Themen suchen oder erstellen..."
+
+msgid "Subjects"
+msgstr "Themen"
+
+msgid "Search for a subject by name"
+msgstr "Suche nach einem Thema anhand des Namens"
+
+msgid "Search for languages..."
+msgstr "Suche nach Sprachen..."
+
+msgid "Languages"
+msgstr "Sprachen"
+
+msgid "Search for a language by name (e.g \"eng\", \"fr\" or \"Polish\")"
+msgstr ""
+"Suche nach einer Sprache anhand des Namens (z. B. \"eng\", \"fr\" oder "
+"\"polnisch\")"
+
+msgid "Add date"
+msgstr "Datum hinzufügen"
+
+msgid "Format: DATE or DATE/DATE where DATE is YYYY or YYYY-MM or YYYY-MM-DD."
+msgstr ""
+"Format: DATUM oder DATUM/DATUM, wobei DATUM JJJJ oder JJJJ-MM oder JJJJ-MM-"
+"TT ist."
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Dates"
+msgstr "Daten"
+
+msgid "YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD"
+msgstr "JJJJ-MM-TT oder JJJJ-MM-TT/ JJJJ-MM-TT"
+
+msgid "Version"
+msgstr "Version"
+
+msgid ""
+"The publisher is used to formulate the citation, so consider the prominence "
+"of the role."
+msgstr ""
+"Der Herausgeber wird zur Formulierung des Zitats verwendet, beachten Sie "
+"also die Bedeutsamkeit der Rolle."
+
+msgid "Publisher"
+msgstr "Herausgeber"
+
+msgid "Enter publisher name"
+msgstr "Herausgebername eingeben"
+
+msgid "Identifier"
+msgstr "Bezeichner"
+
+msgid "Scheme"
+msgstr "Schema"
+
+msgid "Identifier(s)"
+msgstr "Bezeichner(n)"
+
+msgid ""
+"Specify identifiers of related works. Supported identifiers include DOI, "
+"Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS "
+"Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, "
+"URNs, and URLs."
+msgstr ""
+"Geben Sie Bezeichner von verwandten Werken an. Unterstützte Bezeichner sind "
+"DOI, Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS "
+"Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, "
+"URNs und URLs."
+
+msgid "Add related work"
+msgstr "Verwandte Arbeiten hinzufügen"
+
+msgid "Relation"
+msgstr "Relation"
+
+msgid "Select relation..."
+msgstr "Relation auswählen..."
+
+msgid "Related works"
+msgstr "Verwandte Werke"
+
+msgid "Save draft"
+msgstr "Entwurf speichern"
+
+msgid "Preview"
+msgstr "Vorschau"
+
+msgid "Are you sure you want to {{action}} this record?"
+msgstr "Sind Sie sicher, dass Sie diesen Eintrag {{action}} wollen?"
+
+msgid "publish"
+msgstr "veröffentlichen"
+
+msgid "Are you sure you want to discard the changes to this draft?"
+msgstr ""
+"Sind Sie sicher, dass Sie die Änderungen an diesem Entwurf verwerfen wollen?"
+
+msgid "Are you sure you want to delete this new version?"
+msgstr "Sind Sie sicher, dass Sie diese neue Version löschen wollen?"
+
+msgid "Are you sure you want to delete this draft?"
+msgstr "Sind Sie sicher, dass Sie diesen Entwurf löschen möchten?"
+
+msgid "discard version"
+msgstr "verworfene Version"
+
+msgid "delete"
+msgstr "löschen"
+
+msgid "discard changes"
+msgstr "Änderungen verwerfen"
+
+msgid "Options"
+msgstr "Optionen"
+
+msgid "The full record is restricted."
+msgstr "Der vollständige Eintrag ist eingeschränkt."
+
+msgid "The record and files are publicly accessible."
+msgstr "Der Eintrag und die Dateien sind öffentlich zugänglich."
+
+msgid "Full record"
+msgstr "Vollständiger Eintrag"
+
+msgid "Files only"
+msgstr "Nur Dateien"
+
+msgid "Apply an embargo"
+msgstr "Embargo verhängen"
+
+msgid "Embargo reason"
+msgstr "Embargo Grund"
+
+msgid "Optionally, describe the reason for the embargo."
+msgstr "Beschreiben Sie optional den Grund für das Embargo."
+
+msgid "Embargo was lifted on {{fmtDate}}."
+msgstr "Das Embargo wurde am {{fmtDate}} aufgehoben."
+
+msgid "Reason"
+msgstr "Grund"
+
+msgid "Filename"
+msgstr "Dateiname"
+
+msgid "Size"
+msgstr "Größe"
+
+msgid "Progress"
+msgstr "Fortschritt"
+
+msgid ""
+"This is the file fingerprint (MD5 checksum), which can be used to verify the"
+" file integrity."
+msgstr ""
+"Dies ist der Datei-Fingerabdruck (MD5-Prüfsumme), der zur Überprüfung der "
+"Dateiintegrität verwendet werden kann."
+
+msgid "Pending"
+msgstr "Ausstehend"
+
+msgid "or"
+msgstr "oder"
+
+msgid "This is a Metadata only record"
+msgstr "Dies ist ein reiner Metadateneintrag."
+
+msgid "Public"
+msgstr "Öffentlich"
+
+msgid "Restricted"
+msgstr "Eingeschränkt"
+
+msgid "Public with restricted files"
+msgstr "Öffentlich mit eingeschränkten Dateien"
+
+msgid "Suggest from"
+msgstr "Vorschlagen von"
+
+msgid ""
+"On <1><0>{{fmtDate}}</0></1> the record and the files will automatically be "
+"made publicly accessible. Until then, the record and the files can "
+"<3>only</3> be accessed by <5>users specified</5> in the permissions."
+msgstr ""
+"Am <1><0>{{fmtDate}}</0></1> werden der Datensatz und die Dateien "
+"automatisch öffentlich zugänglich gemacht. Bis dahin können <3>nur</3> die "
+"in den Berechtigungen <5>angegebenen Benutzer</5> auf den Eintrag und die "
+"Dateien zugreifen."
+
+msgid ""
+"The record and files can <1>only</1> be accessed by<3>users specified</3> in"
+" the permissions."
+msgstr ""
+"Auf den Eintrag und die Dateien können <1>nur</1> die in den Berechtigungen "
+"<3>angegebenen Benutzer</3> zugreifen."
+
+msgid ""
+"The record is publicly accessible. The files can <1>only</1> be accessed by "
+"<3>users specified</3> in the permissions."
+msgstr ""
+"Der Eintrag ist öffentlich zugänglich. Auf die Dateien können <1>nur</1> die"
+" in den Berechtigungen <3>angegebenen Benutzer</3> zugreifen."
+
+msgid ""
+"Record or files protection must be <1>restricted</1> to apply an embargo."
+msgstr ""
+"Der Schutz von Einträgen oder Dateien muss <1>eingeschränkt</1> werden, um "
+"ein Embargo anzuwenden."
+
+msgid ""
+"Mostly relevant for software and dataset uploads. A semantic version string "
+"is preferred see<1> semver.org</1>, but any version string is accepted."
+msgstr ""
+"Hauptsächlich relevant für Software- und Datensatz-Uploads. Ein semantischer"
+" Versionsstring wird bevorzugt, siehe <1>semver.org</1>, aber jeder "
+"Versionsstring wird akzeptiert."
