@@ -38,7 +38,7 @@ export class EmbargoedFiles {
     );
 
     const text = (
-      <Trans>
+      <Trans i18n={i18next}>
         The record is publicly accessible. On <b>{{ fmtDate }}</b> the files
         will automatically be made publicly accessible. Until then, the files
         can <b>only</b> be accessed by <b>users specified</b> in the

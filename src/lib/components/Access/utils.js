@@ -82,7 +82,7 @@ export function embargoSection(initialAccessValues, embargo) {
             </label>
           </List.Header>
           <List.Description className={'disabled'}>
-            <Trans>
+            <Trans i18n={i18next}>
               Record or files protection must be <b>restricted</b> to apply an
               embargo.
             </Trans>

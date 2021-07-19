@@ -18,7 +18,7 @@ export class VersionField extends Component {
     const { fieldPath, label, labelIcon, placeholder } = this.props;
     const helpText = (
       <span>
-        <Trans>
+        <Trans i18n={i18next}>
           Mostly relevant for software and dataset uploads. A semantic version
           string is preferred see
           <a href="https://semver.org/" target="_blank">

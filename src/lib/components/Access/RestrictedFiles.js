@@ -38,7 +38,7 @@ export class RestrictedFiles {
 
   renderMessageSection() {
     const text = (
-      <Trans>
+      <Trans i18n={i18next}>
         The record is publicly accessible. The files can <b>only</b> be accessed
         by <b>users specified</b> in the permissions.
       </Trans>
