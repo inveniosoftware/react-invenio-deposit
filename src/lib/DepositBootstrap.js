@@ -30,7 +30,6 @@ class DepositBootstrapComponent extends Component {
       <BaseForm
         onSubmit={this.props.submitFormData}
         formik={{
-          enableReinitialize: true,
           initialValues: this.props.record,
         }}
       >
