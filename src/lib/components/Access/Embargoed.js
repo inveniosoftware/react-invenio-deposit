@@ -47,7 +47,7 @@ export class Embargoed {
       : '???';
 
     const text = (
-      <Trans values={{ fmtDate: fmtDate }}>
+      <Trans>
         On <b>{{ fmtDate }}</b> the record and the files will automatically be
         made publicly accessible. Until then, the record and the files can{' '}
         <b>only</b> be accessed by <b>users specified</b> in the permissions.
@@ -58,7 +58,7 @@ export class Embargoed {
       <MessageSection
         intent={{ warning: true }}
         icon="lock"
-        title="Embargoed (full record)"
+        title={i18next.t("Embargoed (full record)")}
         text={text}
       />
     );

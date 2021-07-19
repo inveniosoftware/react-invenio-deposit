@@ -41,7 +41,7 @@ export class EmbargoedMetadataOnly {
     );
 
     const text = (
-      <Trans values={{ fmtDate: fmtDate }}>
+      <Trans>
         On <b>{{ fmtDate }}</b> the record will automatically be made publicly
         accessible. Until then, the record can <b>only</b> be accessed by{' '}
         <b>users specified</b> in the permissions.
