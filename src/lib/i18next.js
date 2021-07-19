@@ -4,11 +4,12 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import React from 'react';
 import i18n from 'i18next';
 
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { translations } from './translations/messages';
-import { initReactI18next } from 'react-i18next';
+import { initReactI18next, Trans as ReactTrans } from 'react-i18next';
 
 const options = {
   fallbackLng: 'en', // fallback keys
@@ -23,6 +24,12 @@ const options = {
     // cache user language off
     caches: [],
   },
+  react: {
+    // Set empty - to allow html tags convert to trans tags
+    // HTML TAG | Trans TAG
+    //  <span>  | <1>
+    transKeepBasicHtmlNodesFor: [],
+  },
 };
 // i18next instance creation
 // https://www.i18next.com/overview/api#instance-creation
@@ -34,5 +41,8 @@ const options = {
 // to mark strings for translation.
 const i18next = i18n.createInstance();
 i18next.use(LanguageDetector).use(initReactI18next).init(options);
+
+// Bind Trans component to i18next instance
+export const Trans = (props) => <ReactTrans i18n={i18next} {...props} />;
 
 export { i18next };
