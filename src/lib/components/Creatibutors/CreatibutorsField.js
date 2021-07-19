@@ -125,19 +125,17 @@ class CreatibutorsFieldForm extends Component {
               roleOptions={sortOptions(roleOptions)}
               schema={schema}
               trigger={
-                <>
-                  <Button type="button">
-                    <Icon name="add" />
-                    {this.props.addButtonLabel}
-                  </Button>
-                  {error && (
-                    <Label pointing="left" prompt>
-                      {error}
-                    </Label>
-                  )}
-                </>
+                <Button type="button">
+                  <Icon name="add" />
+                  {this.props.addButtonLabel}
+                </Button>
               }
             />
+            {error && (
+              <Label pointing="left" prompt>
+                {error}
+              </Label>
+            )}
           </List>
         </Form.Field>
       </DndProvider>
