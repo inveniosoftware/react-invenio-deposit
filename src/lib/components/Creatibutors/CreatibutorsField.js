@@ -9,7 +9,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getIn, FieldArray } from 'formik';
-import { Button, Form, List, Icon } from 'semantic-ui-react';
+import { Button, Form, Label, List, Icon } from 'semantic-ui-react';
 import _get from 'lodash/get';
 import { FieldLabel } from 'react-invenio-forms';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -19,6 +19,7 @@ import { CreatibutorsModal } from './CreatibutorsModal';
 import { CreatibutorsFieldItem } from './CreatibutorsFieldItem';
 import { CREATIBUTOR_TYPE } from './type';
 import { i18next } from '@translations/i18next';
+import { sortOptions } from '../../utils';
 
 const displayCreatibutorName = ({ familyName, givenName, affiliationName }) => {
   let displayName = familyName;
@@ -32,10 +33,6 @@ const displayCreatibutorName = ({ familyName, givenName, affiliationName }) => {
 };
 
 class CreatibutorsFieldForm extends Component {
-  sortOptions = (options) => {
-    return options.sort((o1, o2) => o1.text.localeCompare(o2.text));
-  };
-
   render() {
     const {
       form: { values, errors },
@@ -49,9 +46,13 @@ class CreatibutorsFieldForm extends Component {
       roleOptions,
       schema,
     } = this.props;
+    const error = getIn(errors, fieldPath, null);
     return (
       <DndProvider backend={HTML5Backend}>
-        <Form.Field required={schema === 'creators'}>
+        <Form.Field
+          required={schema === 'creators'}
+          className={error && 'error'}
+        >
           <FieldLabel
             htmlFor={fieldPath}
             icon={labelIcon}
@@ -121,7 +122,7 @@ class CreatibutorsFieldForm extends Component {
               action="add"
               addLabel={this.props.modal.addLabel}
               editLabel={this.props.modal.editLabel}
-              roleOptions={roleOptions}
+              roleOptions={sortOptions(roleOptions)}
               schema={schema}
               trigger={
                 <Button type="button">
@@ -130,6 +131,11 @@ class CreatibutorsFieldForm extends Component {
                 </Button>
               }
             />
+            {error && (
+              <Label pointing="left" prompt>
+                {error}
+              </Label>
+            )}
           </List>
         </Form.Field>
       </DndProvider>

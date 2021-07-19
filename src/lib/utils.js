@@ -27,3 +27,12 @@ export function leafTraverse(obj, func = (l) => l) {
     func(obj);
   }
 }
+
+/**
+ * Sort a list of string values (options).
+ * @param {list} options
+ * @returns
+ */
+export function sortOptions(options) {
+  return options.sort((o1, o2) => o1.text.localeCompare(o2.text));
+}

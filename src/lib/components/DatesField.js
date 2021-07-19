@@ -18,10 +18,10 @@ import { Button, Form, Icon } from 'semantic-ui-react';
 
 import { emptyDate } from '../record';
 import { i18next } from '@translations/i18next';
+import { sortOptions } from '../utils';
 
 export class DatesField extends Component {
   /** Top-level Dates Component */
-
   render() {
     const { fieldPath, options, label, labelIcon, placeholderDate, required } =
       this.props;
@@ -50,7 +50,7 @@ export class DatesField extends Component {
             <SelectField
               fieldPath={`${key}.type`}
               label={i18next.t('Type')}
-              options={options.type}
+              options={sortOptions(options.type)}
               required
               width={5}
               optimized
