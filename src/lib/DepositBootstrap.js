@@ -30,8 +30,9 @@ class DepositBootstrapComponent extends Component {
       <BaseForm
         onSubmit={this.props.submitFormData}
         formik={{
-          enableReinitialize: true,
+          enableReinitialize: true, // Needed for files
           initialValues: this.props.record,
+          ...(this.props.errors && { initialErrors: this.props.errors }), // Needed because of enableReinitialize
         }}
       >
         {this.props.children}
@@ -44,6 +45,7 @@ const mapStateToProps = (state) => {
   const { isFileUploadInProgress, ...files } = state.files;
   return {
     record: state.deposit.record,
+    errors: state.deposit.errors,
     formState: state.deposit.formState,
     fileUploadOngoing: isFileUploadInProgress,
     files: files,

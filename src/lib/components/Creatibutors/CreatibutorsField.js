@@ -35,7 +35,7 @@ const displayCreatibutorName = ({ familyName, givenName, affiliationName }) => {
 class CreatibutorsFieldForm extends Component {
   render() {
     const {
-      form: { values, errors },
+      form: { values, errors, initialErrors, initialValues },
       remove: formikArrayRemove,
       replace: formikArrayReplace,
       move: formikArrayMove,
@@ -46,12 +46,17 @@ class CreatibutorsFieldForm extends Component {
       roleOptions,
       schema,
     } = this.props;
+    const formikValues = getIn(values, fieldPath, []);
+    const formikInitialValues = getIn(initialValues, fieldPath, []);
     const error = getIn(errors, fieldPath, null);
+    const initialError = getIn(initialErrors, fieldPath, null);
+    const creatibutorsError =
+      error || (formikValues === formikInitialValues && initialError);
     return (
       <DndProvider backend={HTML5Backend}>
         <Form.Field
           required={schema === 'creators'}
-          className={error && 'error'}
+          className={creatibutorsError && 'error'}
         >
           <FieldLabel
             htmlFor={fieldPath}
@@ -131,9 +136,9 @@ class CreatibutorsFieldForm extends Component {
                 </Button>
               }
             />
-            {error && (
+            {creatibutorsError && (
               <Label pointing="left" prompt>
-                {error}
+                {creatibutorsError}
               </Label>
             )}
           </List>
