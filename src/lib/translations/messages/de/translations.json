@@ -148,5 +148,6 @@
   "There was an internal error (and the record was not deleted).": "Es lag ein interner Fehler vor (und der Eintrag wurde nicht gelöscht).",
   "The record is publicly accessible.": "Der Eintrag ist öffentlich zugänglich.",
   "The record can <1>only</1> be accessed by <3>users specified</3> in the permissions.": "",
-  "You don't have permissions to create a new version.": ""
+  "You don't have permissions to create a new version.": "",
+  "Alternate identifiers": ""
 }
