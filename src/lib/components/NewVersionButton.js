@@ -1,5 +1,6 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2021 CERN.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -7,6 +8,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Icon, Button, Popup } from 'semantic-ui-react';
+import { i18next } from '@translations/i18next';
 
 export const NewVersionButton = (props) => {
   const [loading, setLoading] = useState(false);
@@ -26,7 +28,7 @@ export const NewVersionButton = (props) => {
 
   return (
     <Popup
-      content="You don't have permissions to create a new version."
+      content={i18next.t("You don't have permissions to create a new version.")}
       disabled={!props.disabled}
       trigger={
         <div style={{ display: 'inline-block', ...props.style }}>
@@ -39,7 +41,7 @@ export const NewVersionButton = (props) => {
             loading={loading}
           >
             <Icon name="tag" />
-            New version
+            {i18next.t('New version')}
           </Button>
         </div>
       }

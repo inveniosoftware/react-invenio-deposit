@@ -3,15 +3,15 @@
 # Chriz Uniba <christina.zeller@uni-bamberg.de>, 2021
 # Alizee Pace <alizee.pace@gmail.com>, 2021
 # Tibor Simko <tibor.simko@cern.ch>, 2021
-# Alexander Gruber <alexander.gruber@tugraz.at>, 2021
 # Mojib Wali <mojib.wali@tugraz.at>, 2021
+# Alexander Gruber <alexander.gruber@tugraz.at>, 2021
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
 "POT-Creation-Date: 2021-07-16T14:00:12.480Z\n"
 "PO-Revision-Date: 2021-06-29 13:20+0000\n"
-"Last-Translator: Mojib Wali <mojib.wali@tugraz.at>, 2021\n"
+"Last-Translator: Alexander Gruber <alexander.gruber@tugraz.at>, 2021\n"
 "Language-Team: German (https://www.transifex.com/inveniosoftware/teams/23537/de/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -453,7 +453,7 @@ msgid ""
 msgstr ""
 "Am <1><0>{{fmtDate}}</0></1> werden der Datensatz und die Dateien "
 "automatisch öffentlich zugänglich gemacht. Bis dahin können <4>nur</4> die "
-"in den <6>Berechtigungen angegebenen Benutzer</6> auf den Datensatz und die "
+"in den Berechtigungen <6>angegebenen Benutzer</6> auf den Datensatz und die "
 "Dateien zugreifen."
 
 msgid "The record has no files."
@@ -469,7 +469,7 @@ msgid ""
 msgstr ""
 "Am <1><0>{{fmtDate}}</0></1> wird der Datensatz automatisch öffentlich "
 "zugänglich gemacht. Bis dahin kann der Datensatz <3>nur</3> von den in den "
-"<6>Berechtigungen angegebenen Benutzern</6> aufgerufen werden."
+"Berechtigungen <6>angegebenen Benutzern</6> aufgerufen werden."
 
 msgid "Embargoed (files-only)"
 msgstr "Embargoed (nur für Dateien)"
@@ -521,18 +521,18 @@ msgid "Contributors"
 msgstr "Mitwirkende"
 
 msgid "Record successfully saved."
-msgstr "Datensatz erfolgreich gespeichert."
+msgstr "Eintrag erfolgreich gespeichert."
 
 msgid "Record saved with validation errors:"
-msgstr "Datensatz mit Überprüfungsfehlern gespeichert:"
+msgstr "Eintrag mit Überprüfungsfehlern gespeichert:"
 
 msgid "There was an internal error (and the record was not saved)."
 msgstr ""
-"Es lag ein interner Fehler vor (und der Datensatz wurde nicht gespeichert)."
+"Es lag ein interner Fehler vor (und der Eintrag wurde nicht gespeichert)."
 
 msgid "There was an internal error (and the record was not deleted)."
 msgstr ""
-"Es lag ein interner Fehler vor (und der Datensatz wurde nicht gelöscht)."
+"Es lag ein interner Fehler vor (und der Eintrag wurde nicht gelöscht)."
 
 msgid "The record is publicly accessible."
 msgstr "Der Eintrag ist öffentlich zugänglich."

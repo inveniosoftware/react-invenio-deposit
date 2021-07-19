@@ -147,5 +147,6 @@
   "There was an internal error (and the record was not saved).": "There was an internal error (and the record was not saved).",
   "There was an internal error (and the record was not deleted).": "There was an internal error (and the record was not deleted).",
   "The record is publicly accessible.": "The record is publicly accessible.",
-  "The record can <1>only</1> be accessed by <3>users specified</3> in the permissions.": "The record can <1>only</1> be accessed by <3>users specified</3> in the permissions."
+  "The record can <1>only</1> be accessed by <3>users specified</3> in the permissions.": "The record can <1>only</1> be accessed by <3>users specified</3> in the permissions.",
+  "You don't have permissions to create a new version.": "You don't have permissions to create a new version."
 }
