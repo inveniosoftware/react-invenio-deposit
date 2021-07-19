@@ -7,12 +7,14 @@
 
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
+import { I18nextProvider } from 'react-i18next';
 import { DepositApiClient } from './DepositApiClient';
 import { DepositBootstrap } from './DepositBootstrap';
 import { DepositController } from './DepositController';
 import { DepositFileUploader } from './DepositFileUploader';
 import { DepositRecordSerializer } from './DepositRecordSerializer';
 import { configureStore } from './store';
+import { i18next } from '@translations/i18next';
 
 export class DepositFormApp extends Component {
   constructor(props) {
@@ -50,7 +52,9 @@ export class DepositFormApp extends Component {
   render() {
     return (
       <Provider store={this.store}>
-        <DepositBootstrap>{this.props.children}</DepositBootstrap>
+        <I18nextProvider i18n={i18next}>
+          <DepositBootstrap>{this.props.children}</DepositBootstrap>
+        </I18nextProvider>
       </Provider>
     );
   }

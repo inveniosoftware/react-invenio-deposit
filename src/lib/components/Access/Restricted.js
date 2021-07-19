@@ -14,8 +14,7 @@ import {
   MetadataSection,
 } from './utils';
 import { i18next } from '@translations/i18next';
-import { Trans } from 'react-i18next';
-
+import { Trans } from '@translations/i18next';
 // Record and files restricted
 export class Restricted {
   constructor(embargo) {

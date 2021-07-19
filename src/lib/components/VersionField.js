@@ -11,8 +11,7 @@ import PropTypes from 'prop-types';
 
 import { FieldLabel, TextField } from 'react-invenio-forms';
 import { i18next } from '@translations/i18next';
-import { Trans } from 'react-i18next';
-
+import { Trans } from '@translations/i18next';
 export class VersionField extends Component {
   render() {
     const { fieldPath, label, labelIcon, placeholder } = this.props;
