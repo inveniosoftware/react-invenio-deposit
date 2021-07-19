@@ -14,19 +14,34 @@ import { discard } from '../state/actions';
 import { toCapitalCase } from '../utils';
 import { i18next } from '@translations/i18next';
 
+// action
+const DISCARD_CHANGES = i18next.t('discard changes');
+const DISCARD_VERSION = i18next.t('discard version');
+const DELETE = i18next.t('delete');
+
+// action messages
+const DISCARD_CHANGES_MSG = i18next.t(
+  'Are you sure you want to discard the changes to this draft?'
+);
+
+const DISCARD_VERSION_MSG = i18next.t(
+  'Are you sure you want to delete this new version?'
+);
+const DISCARD_DELETE_MSG = i18next.t(
+  'Are you sure you want to delete this draft?'
+);
+
 const DialogText = ({ action }) => {
   let text = '';
   switch (action) {
-    case 'discard changes':
-      text = i18next.t(
-        'Are you sure you want to discard the changes to this draft?'
-      );
+    case DISCARD_CHANGES:
+      text = DISCARD_CHANGES_MSG;
       break;
-    case 'discard version':
-      text = i18next.t('Are you sure you want to delete this new version?');
+    case DISCARD_VERSION:
+      text = DISCARD_VERSION_MSG;
       break;
-    case 'delete':
-      text = i18next.t('Are you sure you want to delete this draft?');
+    case DELETE:
+      text = DISCARD_DELETE_MSG;
       break;
     default:
       break;
@@ -65,11 +80,9 @@ export class DeleteButtonComponent extends Component {
 
     let action = '';
     if (!this.props.isPublished) {
-      action = this.props.isVersion
-        ? i18next.t('discard version')
-        : i18next.t('delete');
+      action = this.props.isVersion ? DISCARD_VERSION : DELETE;
     } else {
-      action = i18next.t('discard changes');
+      action = DISCARD_CHANGES;
     }
     const color = { color: isPublished ? 'yellow' : 'red' };
     const capitalizedAction = toCapitalCase(action);
