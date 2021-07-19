@@ -37,6 +37,7 @@ const defaultLabels = {
   'metadata.version': i18next.t('Version'),
   'metadata.publisher': i18next.t('Publisher'),
   'metadata.related_identifiers': i18next.t('Related works'),
+  'metadata.identifiers': i18next.t('Alternate identifiers'),
   'access.embargo.until': i18next.t('Embargo until'),
 };
 
@@ -166,11 +167,15 @@ class DisconnectedFormFeedback extends Component {
       case FORM_PUBLISH_FAILED:
         feedback = 'negative';
         // TODO: use the backend error message
-        message = i18next.t('There was an internal error (and the record was not saved).');
+        message = i18next.t(
+          'There was an internal error (and the record was not saved).'
+        );
         break;
       case FORM_DELETE_FAILED:
         feedback = 'negative';
-        message = i18next.t('There was an internal error (and the record was not deleted).');
+        message = i18next.t(
+          'There was an internal error (and the record was not deleted).'
+        );
       default:
     }
 
