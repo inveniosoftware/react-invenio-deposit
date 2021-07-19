@@ -43,7 +43,7 @@ export class Restricted {
 
   renderMessageSection() {
     const text = (
-      <Trans>
+      <Trans i18n={i18next}>
         The record and files can <b>only</b> be accessed by
         <b>users specified</b> in the permissions.
       </Trans>

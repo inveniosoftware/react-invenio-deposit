@@ -23,6 +23,9 @@ const options = {
     // cache user language off
     caches: [],
   },
+  react: {
+    transKeepBasicHtmlNodesFor: []
+  }
 };
 // i18next instance creation
 // https://www.i18next.com/overview/api#instance-creation
