@@ -48,22 +48,25 @@ export class RelatedWorksField extends Component {
                 clearable
                 fieldPath={`${key}.relation_type`}
                 label={i18next.t('Relation')}
+                optimized
                 options={options.relations}
                 placeholder={i18next.t('Select relation...')}
+                required
                 width={3}
-                optimized
               />
               <SelectField
                 clearable
                 fieldPath={`${key}.scheme`}
                 label={i18next.t('Scheme')}
-                options={options.scheme}
-                width={2}
                 optimized
+                options={options.scheme}
+                required
+                width={2}
               />
               <TextField
                 fieldPath={`${key}.identifier`}
                 label={i18next.t('Identifier')}
+                required
                 width={4}
               />
 

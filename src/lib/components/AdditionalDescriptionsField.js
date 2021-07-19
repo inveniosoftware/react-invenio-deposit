@@ -23,6 +23,7 @@ export class AdditionalDescriptionsField extends Component {
         addButtonLabel={i18next.t('Add description')}
         defaultNewValue={emptyAdditionalDescription}
         fieldPath={fieldPath}
+        className={"additional-descriptions"}
       >
         {({ array, arrayHelpers, indexPath, key }) => (
           <>
@@ -32,7 +33,7 @@ export class AdditionalDescriptionsField extends Component {
                   <RichInputField
                     fieldPath={`${key}.description`}
                     label={i18next.t('Additional Description')}
-                    optimized={true}
+                    optimized
                     required
                   />
                 </Grid.Column>

@@ -38,6 +38,7 @@ export class IdentifiersField extends Component {
               <TextField
                 fieldPath={`${key}.identifier`}
                 label={i18next.t('Identifier')}
+                required
                 width={11}
               />
               {schemeOptions && (
@@ -46,6 +47,7 @@ export class IdentifiersField extends Component {
                   label={i18next.t('Scheme')}
                   options={schemeOptions}
                   optimized
+                  required
                   width={5}
                 />
               )}
@@ -53,6 +55,7 @@ export class IdentifiersField extends Component {
                 <TextField
                   fieldPath={`${key}.scheme`}
                   label={i18next.t('Scheme')}
+                  required
                   width={5}
                 />
               )}

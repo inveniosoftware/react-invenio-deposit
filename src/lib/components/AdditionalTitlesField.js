@@ -34,14 +34,16 @@ export class AdditionalTitlesField extends Component {
             <TextField
               fieldPath={`${key}.title`}
               label={'Additional title'}
+              required
               width={5}
             />
             <SelectField
               fieldPath={`${key}.type`}
               label={'Type'}
-              options={options.type}
-              width={5}
               optimized
+              options={options.type}
+              required
+              width={5}
             />
             <LanguagesField
               serializeSuggestions={(suggestions) =>
