@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.15.8 (released 2021-07-20)
+* improve deposit form error display
+
 Version 0.15.6 (released 2021-07-14)
 * improvements to subjects vocabulary integration
 * fix subjects label bug
