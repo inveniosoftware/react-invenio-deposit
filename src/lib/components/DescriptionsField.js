@@ -26,7 +26,6 @@ export class DescriptionsField extends Component {
             <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
           }
           optimized
-          required
         />
         <AdditionalDescriptionsField recordUI={recordUI} options={options} />
       </>
