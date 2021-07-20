@@ -56,7 +56,7 @@ class UnreservePIDBtn extends Component {
     const { disabled, handleDiscardPID, loading, pidType } = this.props;
     return (
       <Popup
-        content={'Discard the reserved ' + pidType}
+        content={'Discard the reserved ' + pidType.toUpperCase()}
         trigger={
           <Form.Button
             disabled={disabled || loading}
