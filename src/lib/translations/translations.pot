@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2021-07-19T15:12:04.818Z\n"
-"PO-Revision-Date: 2021-07-19T15:12:04.818Z\n"
+"POT-Creation-Date: 2021-07-20T14:54:51.222Z\n"
+"PO-Revision-Date: 2021-07-20T14:54:51.222Z\n"
 "Language: en\n"
 
 msgid "New version"
@@ -21,72 +21,149 @@ msgstr "Edit upload"
 msgid "Storage available"
 msgstr "Storage available"
 
-msgid "Add identifier"
-msgstr "Add identifier"
+msgid "Embargo until"
+msgstr "Embargo until"
+
+msgid "YYYY-MM-DD"
+msgstr "YYYY-MM-DD"
+
+msgid "The full record is restricted."
+msgstr "The full record is restricted."
+
+msgid "Embargoed (full record)"
+msgstr "Embargoed (full record)"
+
+msgid ""
+"On <1><0>{{fmtDate}}</0></1> the record and the files will automatically be "
+"made publicly accessible. Until then, the record and the files can "
+"<4>only</4> be accessed by <6>users specified</6> in the permissions."
+msgstr ""
+"On <1><0>{{fmtDate}}</0></1> the record and the files will automatically be "
+"made publicly accessible. Until then, the record and the files can "
+"<4>only</4> be accessed by <6>users specified</6> in the permissions."
+
+msgid "Embargoed (files-only)"
+msgstr "Embargoed (files-only)"
+
+msgid ""
+"The record is publicly accessible. On <1><0>{{fmtDate}}</0></1> the files "
+"will automatically be made publicly accessible. Until then, the files can "
+"<3>only</3> be accessed by <5>users specified</5> in the permissions."
+msgstr ""
+"The record is publicly accessible. On <1><0>{{fmtDate}}</0></1> the files "
+"will automatically be made publicly accessible. Until then, the files can "
+"<3>only</3> be accessed by <5>users specified</5> in the permissions."
+
+msgid "The record has no files."
+msgstr "The record has no files."
+
+msgid ""
+"On <1><0>{{fmtDate}}</0></1> the record will automatically be made publicly "
+"accessible. Until then, the record can <3>only</3> be accessed by <6>users "
+"specified</6> in the permissions."
+msgstr ""
+"On <1><0>{{fmtDate}}</0></1> the record will automatically be made publicly "
+"accessible. Until then, the record can <3>only</3> be accessed by <6>users "
+"specified</6> in the permissions."
+
+msgid "Public"
+msgstr "Public"
+
+msgid "Restricted"
+msgstr "Restricted"
+
+msgid "The record and files are publicly accessible."
+msgstr "The record and files are publicly accessible."
+
+msgid "The record is publicly accessible."
+msgstr "The record is publicly accessible."
+
+msgid ""
+"The record and files can <1>only</1> be accessed by<3>users specified</3> "
+"in the permissions."
+msgstr ""
+"The record and files can <1>only</1> be accessed by<3>users specified</3> "
+"in the permissions."
+
+msgid "Public with restricted files"
+msgstr "Public with restricted files"
+
+msgid ""
+"The record is publicly accessible. The files can <1>only</1> be accessed by "
+"<3>users specified</3> in the permissions."
+msgstr ""
+"The record is publicly accessible. The files can <1>only</1> be accessed by "
+"<3>users specified</3> in the permissions."
+
+msgid ""
+"The record can <1>only</1> be accessed by <3>users specified</3> in the "
+"permissions."
+msgstr ""
+"The record can <1>only</1> be accessed by <3>users specified</3> in the "
+"permissions."
+
+msgid "Full record"
+msgstr "Full record"
+
+msgid "Files only"
+msgstr "Files only"
+
+msgid "Apply an embargo"
+msgstr "Apply an embargo"
+
+msgid "Embargo reason"
+msgstr "Embargo reason"
+
+msgid "Optionally, describe the reason for the embargo."
+msgstr "Optionally, describe the reason for the embargo."
+
+msgid "Embargo was lifted on {{fmtDate}}."
+msgstr "Embargo was lifted on {{fmtDate}}."
+
+msgid "Reason"
+msgstr "Reason"
+
+msgid "Record or files protection must be <1>restricted</1> to apply an embargo."
+msgstr "Record or files protection must be <1>restricted</1> to apply an embargo."
+
+msgid "Options"
+msgstr "Options"
+
+msgid "Add description"
+msgstr "Add description"
+
+msgid "Additional Description"
+msgstr "Additional Description"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "Select language"
+msgstr "Select language"
 
 msgid "Add titles"
 msgstr "Add titles"
 
-msgid "Uploading the selected files would result in"
-msgstr "Uploading the selected files would result in"
+msgid "Search or create affiliation'"
+msgstr "Search or create affiliation'"
 
-msgid "but the limit is"
-msgstr "but the limit is"
+msgid "Affiliations"
+msgstr "Affiliations"
 
-msgid "You can import files from the previous version."
-msgstr "You can import files from the previous version."
-
-msgid ""
-"File addition, removal or modification are not allowed after you have "
-"published your upload."
-msgstr ""
-"File addition, removal or modification are not allowed after you have "
-"published your upload."
-
-msgid "You must create a new version to add, modify or delete files."
-msgstr "You must create a new version to add, modify or delete files."
-
-msgid "Drag and drop file(s)"
-msgstr "Drag and drop file(s)"
-
-msgid "Upload files"
-msgstr "Upload files"
-
-msgid "Import files"
-msgstr "Import files"
-
-msgid "Metadata-only record"
-msgstr "Metadata-only record"
-
-msgid "{{length}} out of {{maxfiles}} files"
-msgstr "{{length}} out of {{maxfiles}} files"
-
-msgid "out of"
-msgstr "out of"
-
-msgid ""
-"In case your upload was already published elsewhere, please use the date of "
-"the first publication. Format: YYYY-MM-DD, YYYY-MM, or YYYY. For intervals "
-"use DATE/DATE, e.g. 1939/1945."
-msgstr ""
-"In case your upload was already published elsewhere, please use the date of "
-"the first publication. Format: YYYY-MM-DD, YYYY-MM, or YYYY. For intervals "
-"use DATE/DATE, e.g. 1939/1945."
-
-msgid "Publication date"
-msgstr "Publication date"
-
-msgid "YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD for intervals. MM and DD are optional."
-msgstr "YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD for intervals. MM and DD are optional."
-
-msgid "Resource type"
-msgstr "Resource type"
-
-msgid "Title"
-msgstr "Title"
+msgid "Search for affiliations.."
+msgstr "Search for affiliations.."
 
 msgid "Add creator"
 msgstr "Add creator"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Remove"
+msgstr "Remove"
 
 msgid "Name identifiers"
 msgstr "Name identifiers"
@@ -145,99 +222,6 @@ msgstr "Cancel"
 msgid "Save"
 msgstr "Save"
 
-msgid "Search or create affiliation'"
-msgstr "Search or create affiliation'"
-
-msgid "Affiliations"
-msgstr "Affiliations"
-
-msgid "Search for affiliations.."
-msgstr "Search for affiliations.."
-
-msgid "Description"
-msgstr "Description"
-
-msgid "Additional Description"
-msgstr "Additional Description"
-
-msgid "Type"
-msgstr "Type"
-
-msgid "Language"
-msgstr "Language"
-
-msgid "Select language"
-msgstr "Select language"
-
-msgid "Add description"
-msgstr "Add description"
-
-msgid "Add standard"
-msgstr "Add standard"
-
-msgid "Add custom"
-msgstr "Add custom"
-
-msgid "Licenses"
-msgstr "Licenses"
-
-msgid "Remove"
-msgstr "Remove"
-
-msgid "Read more"
-msgstr "Read more"
-
-msgid "Title is a required field."
-msgstr "Title is a required field."
-
-msgid "Link must be a valid URL"
-msgstr "Link must be a valid URL"
-
-msgid "License title"
-msgstr "License title"
-
-msgid "Link"
-msgstr "Link"
-
-msgid "License link"
-msgstr "License link"
-
-msgid "All"
-msgstr "All"
-
-msgid "Data"
-msgstr "Data"
-
-msgid "Software"
-msgstr "Software"
-
-msgid "Add license"
-msgstr "Add license"
-
-msgid "Change license"
-msgstr "Change license"
-
-msgid "Recommended"
-msgstr "Recommended"
-
-msgid "Search or create subjects.."
-msgstr "Search or create subjects.."
-
-msgid "Subjects"
-msgstr "Subjects"
-
-msgid "Search for a subject by name"
-msgstr "Search for a subject by name"
-
-msgid "Search for languages..."
-msgstr "Search for languages..."
-
-msgid "Languages"
-msgstr "Languages"
-
-msgid "Search for a language by name (e.g \"eng\", \"fr\" or \"Polish\")"
-msgstr "Search for a language by name (e.g \"eng\", \"fr\" or \"Polish\")"
-
 msgid "Add date"
 msgstr "Add date"
 
@@ -247,71 +231,23 @@ msgstr "Format: DATE or DATE/DATE where DATE is YYYY or YYYY-MM or YYYY-MM-DD."
 msgid "Date"
 msgstr "Date"
 
+msgid "Description"
+msgstr "Description"
+
 msgid "Dates"
 msgstr "Dates"
 
 msgid "YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD"
 msgstr "YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD"
 
-msgid "Version"
-msgstr "Version"
+msgid "discard changes"
+msgstr "discard changes"
 
-msgid ""
-"The publisher is used to formulate the citation, so consider the prominence "
-"of the role."
-msgstr ""
-"The publisher is used to formulate the citation, so consider the prominence "
-"of the role."
+msgid "discard version"
+msgstr "discard version"
 
-msgid "Publisher"
-msgstr "Publisher"
-
-msgid "Enter publisher name"
-msgstr "Enter publisher name"
-
-msgid "Identifier"
-msgstr "Identifier"
-
-msgid "Scheme"
-msgstr "Scheme"
-
-msgid "Identifier(s)"
-msgstr "Identifier(s)"
-
-msgid ""
-"Specify identifiers of related works. Supported identifiers include DOI, "
-"Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS "
-"Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, "
-"URNs, and URLs."
-msgstr ""
-"Specify identifiers of related works. Supported identifiers include DOI, "
-"Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS "
-"Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, "
-"URNs, and URLs."
-
-msgid "Add related work"
-msgstr "Add related work"
-
-msgid "Relation"
-msgstr "Relation"
-
-msgid "Select relation..."
-msgstr "Select relation..."
-
-msgid "Related works"
-msgstr "Related works"
-
-msgid "Save draft"
-msgstr "Save draft"
-
-msgid "Preview"
-msgstr "Preview"
-
-msgid "Are you sure you want to {{action}} this record?"
-msgstr "Are you sure you want to {{action}} this record?"
-
-msgid "publish"
-msgstr "publish"
+msgid "delete"
+msgstr "delete"
 
 msgid "Are you sure you want to discard the changes to this draft?"
 msgstr "Are you sure you want to discard the changes to this draft?"
@@ -322,44 +258,36 @@ msgstr "Are you sure you want to delete this new version?"
 msgid "Are you sure you want to delete this draft?"
 msgstr "Are you sure you want to delete this draft?"
 
-msgid "discard version"
-msgstr "discard version"
+msgid "Uploading the selected files would result in"
+msgstr "Uploading the selected files would result in"
 
-msgid "delete"
-msgstr "delete"
+msgid "but the limit is"
+msgstr "but the limit is"
 
-msgid "discard changes"
-msgstr "discard changes"
+msgid "You can import files from the previous version."
+msgstr "You can import files from the previous version."
 
-msgid "Options"
-msgstr "Options"
+msgid ""
+"File addition, removal or modification are not allowed after you have "
+"published your upload."
+msgstr ""
+"File addition, removal or modification are not allowed after you have "
+"published your upload."
 
-msgid "The full record is restricted."
-msgstr "The full record is restricted."
+msgid "You must create a new version to add, modify or delete files."
+msgstr "You must create a new version to add, modify or delete files."
 
-msgid "The record and files are publicly accessible."
-msgstr "The record and files are publicly accessible."
+msgid "Drag and drop file(s)"
+msgstr "Drag and drop file(s)"
 
-msgid "Full record"
-msgstr "Full record"
+msgid "Upload files"
+msgstr "Upload files"
 
-msgid "Files only"
-msgstr "Files only"
+msgid "Import files"
+msgstr "Import files"
 
-msgid "Apply an embargo"
-msgstr "Apply an embargo"
-
-msgid "Embargo reason"
-msgstr "Embargo reason"
-
-msgid "Optionally, describe the reason for the embargo."
-msgstr "Optionally, describe the reason for the embargo."
-
-msgid "Embargo was lifted on {{fmtDate}}."
-msgstr "Embargo was lifted on {{fmtDate}}."
-
-msgid "Reason"
-msgstr "Reason"
+msgid "Preview"
+msgstr "Preview"
 
 msgid "Filename"
 msgstr "Filename"
@@ -386,62 +314,62 @@ msgstr "or"
 msgid "This is a Metadata only record"
 msgstr "This is a Metadata only record"
 
-msgid "Public"
-msgstr "Public"
+msgid "Metadata-only record"
+msgstr "Metadata-only record"
 
-msgid "Restricted"
-msgstr "Restricted"
+msgid "{{length}} out of {{maxfiles}} files"
+msgstr "{{length}} out of {{maxfiles}} files"
 
-msgid "Public with restricted files"
-msgstr "Public with restricted files"
+msgid "out of"
+msgstr "out of"
 
-msgid "Suggest from"
-msgstr "Suggest from"
+msgid "Files"
+msgstr "Files"
 
-msgid ""
-"The record and files can <1>only</1> be accessed by<3>users specified</3> "
-"in the permissions."
-msgstr ""
-"The record and files can <1>only</1> be accessed by<3>users specified</3> "
-"in the permissions."
+msgid "Resource type"
+msgstr "Resource type"
 
-msgid ""
-"The record is publicly accessible. The files can <1>only</1> be accessed by "
-"<3>users specified</3> in the permissions."
-msgstr ""
-"The record is publicly accessible. The files can <1>only</1> be accessed by "
-"<3>users specified</3> in the permissions."
+msgid "Title"
+msgstr "Title"
 
-msgid "Record or files protection must be <1>restricted</1> to apply an embargo."
-msgstr "Record or files protection must be <1>restricted</1> to apply an embargo."
+msgid "Publication date"
+msgstr "Publication date"
 
-msgid ""
-"Mostly relevant for software and dataset uploads. A semantic version string "
-"is preferred see<1> semver.org</1>, but any version string is accepted."
-msgstr ""
-"Mostly relevant for software and dataset uploads. A semantic version string "
-"is preferred see<1> semver.org</1>, but any version string is accepted."
+msgid "Creators"
+msgstr "Creators"
 
-msgid "The record has no files."
-msgstr "The record has no files."
+msgid "Contributors"
+msgstr "Contributors"
 
-msgid "Embargoed (full record)"
-msgstr "Embargoed (full record)"
+msgid "Licenses"
+msgstr "Licenses"
 
-msgid "Embargoed (files-only)"
-msgstr "Embargoed (files-only)"
+msgid "Languages"
+msgstr "Languages"
 
-msgid "Embargo until"
-msgstr "Embargo until"
+msgid "Version"
+msgstr "Version"
+
+msgid "Publisher"
+msgstr "Publisher"
+
+msgid "Related works"
+msgstr "Related works"
 
 msgid "Alternate identifiers"
 msgstr "Alternate identifiers"
 
-msgid "YYYY-MM-DD"
-msgstr "YYYY-MM-DD"
+msgid "Record successfully saved."
+msgstr "Record successfully saved."
 
-msgid "Edit"
-msgstr "Edit"
+msgid "Record saved with validation errors:"
+msgstr "Record saved with validation errors:"
+
+msgid "There was an internal error (and the record was not saved)."
+msgstr "There was an internal error (and the record was not saved)."
+
+msgid "There was an internal error (and the record was not deleted)."
+msgstr "There was an internal error (and the record was not deleted)."
 
 msgid "Add award"
 msgstr "Add award"
@@ -461,63 +389,135 @@ msgstr "Award number/acronym/name ..."
 msgid "Awards"
 msgstr "Awards"
 
-msgid "Files"
-msgstr "Files"
+msgid "Add identifier"
+msgstr "Add identifier"
 
-msgid "Creators"
-msgstr "Creators"
+msgid "Identifier"
+msgstr "Identifier"
 
-msgid "Contributors"
-msgstr "Contributors"
+msgid "Scheme"
+msgstr "Scheme"
 
-msgid "Record successfully saved."
-msgstr "Record successfully saved."
+msgid "Identifier(s)"
+msgstr "Identifier(s)"
 
-msgid "Record saved with validation errors:"
-msgstr "Record saved with validation errors:"
+msgid "Search for languages..."
+msgstr "Search for languages..."
 
-msgid "There was an internal error (and the record was not saved)."
-msgstr "There was an internal error (and the record was not saved)."
+msgid "Search for a language by name (e.g \"eng\", \"fr\" or \"Polish\")"
+msgstr "Search for a language by name (e.g \"eng\", \"fr\" or \"Polish\")"
 
-msgid "There was an internal error (and the record was not deleted)."
-msgstr "There was an internal error (and the record was not deleted)."
+msgid "Add standard"
+msgstr "Add standard"
 
-msgid "The record is publicly accessible."
-msgstr "The record is publicly accessible."
+msgid "Add custom"
+msgstr "Add custom"
 
-msgid ""
-"The record can <1>only</1> be accessed by <3>users specified</3> in the "
-"permissions."
-msgstr ""
-"The record can <1>only</1> be accessed by <3>users specified</3> in the "
-"permissions."
+msgid "Read more"
+msgstr "Read more"
+
+msgid "Title is a required field."
+msgstr "Title is a required field."
+
+msgid "Link must be a valid URL"
+msgstr "Link must be a valid URL"
+
+msgid "Recommended"
+msgstr "Recommended"
+
+msgid "All"
+msgstr "All"
+
+msgid "Data"
+msgstr "Data"
+
+msgid "Software"
+msgstr "Software"
+
+msgid "License title"
+msgstr "License title"
+
+msgid "Link"
+msgstr "Link"
+
+msgid "License link"
+msgstr "License link"
+
+msgid "Add license"
+msgstr "Add license"
+
+msgid "Change license"
+msgstr "Change license"
 
 msgid "You don't have permissions to create a new version."
 msgstr "You don't have permissions to create a new version."
 
 msgid ""
-"On <1><0>{{fmtDate}}</0></1> the record and the files will automatically be "
-"made publicly accessible. Until then, the record and the files can "
-"<4>only</4> be accessed by <6>users specified</6> in the permissions."
+"In case your upload was already published elsewhere, please use the date of "
+"the first publication. Format: YYYY-MM-DD, YYYY-MM, or YYYY. For intervals "
+"use DATE/DATE, e.g. 1939/1945."
 msgstr ""
-"On <1><0>{{fmtDate}}</0></1> the record and the files will automatically be "
-"made publicly accessible. Until then, the record and the files can "
-"<4>only</4> be accessed by <6>users specified</6> in the permissions."
+"In case your upload was already published elsewhere, please use the date of "
+"the first publication. Format: YYYY-MM-DD, YYYY-MM, or YYYY. For intervals "
+"use DATE/DATE, e.g. 1939/1945."
+
+msgid "YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD for intervals. MM and DD are optional."
+msgstr "YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD for intervals. MM and DD are optional."
+
+msgid "publish"
+msgstr "publish"
+
+msgid "Are you sure you want to {{action}} this record?"
+msgstr "Are you sure you want to {{action}} this record?"
 
 msgid ""
-"The record is publicly accessible. On <1><0>{{fmtDate}}</0></1> the files "
-"will automatically be made publicly accessible. Until then, the files can "
-"<3>only</3> be accessed by <5>users specified</5> in the permissions."
+"The publisher is used to formulate the citation, so consider the prominence "
+"of the role."
 msgstr ""
-"The record is publicly accessible. On <1><0>{{fmtDate}}</0></1> the files "
-"will automatically be made publicly accessible. Until then, the files can "
-"<3>only</3> be accessed by <5>users specified</5> in the permissions."
+"The publisher is used to formulate the citation, so consider the prominence "
+"of the role."
+
+msgid "Enter publisher name"
+msgstr "Enter publisher name"
 
 msgid ""
-"On <1><0>{{fmtDate}}</0></1> the record will automatically be made publicly "
-"accessible. Until then, the record can <3>only</3> be accessed by <6>users "
-"specified</6> in the permissions."
+"Specify identifiers of related works. Supported identifiers include DOI, "
+"Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS "
+"Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, "
+"URNs, and URLs."
 msgstr ""
-"On <1><0>{{fmtDate}}</0></1> the record will automatically be made publicly "
-"accessible. Until then, the record can <3>only</3> be accessed by <6>users "
-"specified</6> in the permissions."
+"Specify identifiers of related works. Supported identifiers include DOI, "
+"Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS "
+"Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, "
+"URNs, and URLs."
+
+msgid "Add related work"
+msgstr "Add related work"
+
+msgid "Relation"
+msgstr "Relation"
+
+msgid "Select relation..."
+msgstr "Select relation..."
+
+msgid "Save draft"
+msgstr "Save draft"
+
+msgid "Suggest from"
+msgstr "Suggest from"
+
+msgid "Search or create subjects.."
+msgstr "Search or create subjects.."
+
+msgid "Subjects"
+msgstr "Subjects"
+
+msgid "Search for a subject by name"
+msgstr "Search for a subject by name"
+
+msgid ""
+"Mostly relevant for software and dataset uploads. A semantic version string "
+"is preferred see<1> semver.org</1>, but any version string is accepted."
+msgstr ""
+"Mostly relevant for software and dataset uploads. A semantic version string "
+"is preferred see<1> semver.org</1>, but any version string is accepted."
