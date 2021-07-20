@@ -24,13 +24,12 @@ const defaultLabels = {
   'files.enabled': i18next.t('Files'),
   'metadata.resource_type': i18next.t('Resource type'),
   'metadata.title': i18next.t('Title'),
-  'metadata.additional_titles': i18next.t('Title'), // to display under Title label
+  'metadata.additional_titles': i18next.t('Additional titles'),
   'metadata.publication_date': i18next.t('Publication date'),
   'metadata.creators': i18next.t('Creators'),
   'metadata.contributors': i18next.t('Contributors'),
   'metadata.description': i18next.t('Description'),
-  // to display under Description
-  'metadata.additional_descriptions': i18next.t('Description'),
+  'metadata.additional_descriptions': i18next.t('Additional descriptions'),
   'metadata.rights': i18next.t('Licenses'),
   'metadata.languages': i18next.t('Languages'),
   'metadata.dates': i18next.t('Dates'),
@@ -57,12 +56,13 @@ class DisconnectedFormFeedback extends Component {
    * @returns String or React node
    */
   renderErrorMessages(messages) {
-    if (messages.length === 1) {
+    const uniqueMessages = [...new Set(messages)];
+    if (uniqueMessages.length === 1) {
       return messages[0];
     } else {
       return (
         <ul>
-          {messages.map((m, i) => (
+          {uniqueMessages.map((m, i) => (
             <li key={i}>{m}</li>
           ))}
         </ul>
@@ -139,7 +139,6 @@ class DisconnectedFormFeedback extends Component {
 
     return labelledErrorMessages;
   }
-
   render() {
     const visibleStates = [
       FORM_SAVE_SUCCEEDED,
