@@ -9,7 +9,7 @@ import i18n from 'i18next';
 
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { translations } from './translations/messages';
-import { initReactI18next, Trans as ReactTrans } from 'react-i18next';
+import { Trans as ReactTrans } from 'react-i18next';
 
 const options = {
   fallbackLng: 'en', // fallback keys
@@ -40,7 +40,7 @@ const options = {
 // We can use this particular instance for this particular package
 // to mark strings for translation.
 const i18next = i18n.createInstance();
-i18next.use(LanguageDetector).use(initReactI18next).init(options);
+i18next.use(LanguageDetector).init(options);
 
 // Bind Trans component to i18next instance
 export const Trans = (props) => <ReactTrans i18n={i18next} {...props} />;
