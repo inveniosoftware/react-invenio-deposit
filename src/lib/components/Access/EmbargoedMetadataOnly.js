@@ -46,11 +46,11 @@ export class EmbargoedMetadataOnly {
       : '???';
 
     const text = (
-      <Trans>
-        On <b>{{ fmtDate }}</b> the record will automatically be made publicly
-        accessible. Until then, the record can <b>only</b> be accessed by{' '}
-        <b>users specified</b> in the permissions.
-      </Trans>
+      <Trans
+        defaults="On <bold>{{ date }}</bold> the record will automatically be made publicly accessible. Until then, the record can <bold>only</bold> be accessed by <bold>users specified</bold> in the permissions."
+        values={{ date: fmtDate }}
+        components={{ bold: <b /> }}
+      />
     );
 
     return (
