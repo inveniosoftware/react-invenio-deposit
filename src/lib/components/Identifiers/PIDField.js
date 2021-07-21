@@ -53,10 +53,10 @@ ReservePIDBtn.defaultProps = {
  */
 class UnreservePIDBtn extends Component {
   render() {
-    const { disabled, handleDiscardPID, loading, pidType } = this.props;
+    const { disabled, handleDiscardPID, label, loading } = this.props;
     return (
       <Popup
-        content={'Discard the reserved ' + pidType}
+        content={label}
         trigger={
           <Form.Button
             disabled={disabled || loading}
@@ -74,7 +74,7 @@ class UnreservePIDBtn extends Component {
 UnreservePIDBtn.propTypes = {
   disabled: PropTypes.bool,
   handleDiscardPID: PropTypes.func.isRequired,
-  pidType: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
 };
 
 UnreservePIDBtn.defaultProps = {
@@ -153,13 +153,13 @@ class ManagedIdentifierComponent extends Component {
 
   render() {
     const {
+      btnLabelDiscardPID,
       btnLabelGetPID,
       disabled,
       helpText,
       identifier,
       pidPlaceholder,
       reservePIDsLoading,
-      pidType,
     } = this.props;
     const hasIdentifier = identifier !== '';
 
@@ -175,6 +175,7 @@ class ManagedIdentifierComponent extends Component {
     const UnreserveBtn = (
       <UnreservePIDBtn
         disabled={disabled}
+        label={btnLabelDiscardPID}
         handleDiscardPID={this.handleDiscardPID}
         loading={reservePIDsLoading}
         pidType={this.props.pidType}
@@ -213,6 +214,7 @@ ManagedIdentifierComponent.propTypes = {
   form: PropTypes.object.isRequired,
   helpText: PropTypes.string,
   identifier: PropTypes.string.isRequired,
+  pidLabel: PropTypes.string.isRequired,
   pidPlaceholder: PropTypes.string.isRequired,
   pidType: PropTypes.string.isRequired,
   /* from Redux */
@@ -335,6 +337,7 @@ class CustomPIDField extends Component {
   render() {
     const { isManagedSelected } = this.state;
     const {
+      btnLabelDiscardPID,
       btnLabelGetPID,
       canBeManaged,
       canBeUnmanaged,
@@ -390,12 +393,14 @@ class CustomPIDField extends Component {
         {canBeManaged && _isManagedSelected && (
           <ManagedIdentifierCmp
             disabled={isEditingPublishedRecord}
+            btnLabelDiscardPID={btnLabelDiscardPID}
             btnLabelGetPID={btnLabelGetPID}
             form={form}
             identifier={managedIdentifier}
             helpText={managedHelpText}
             pidPlaceholder={pidPlaceholder}
             pidType={pidType}
+            pidLabel={pidLabel}
           />
         )}
 
@@ -415,6 +420,7 @@ class CustomPIDField extends Component {
 }
 
 CustomPIDField.propTypes = {
+  btnLabelDiscardPID: PropTypes.string.isRequired,
   btnLabelGetPID: PropTypes.string.isRequired,
   canBeManaged: PropTypes.bool.isRequired,
   canBeUnmanaged: PropTypes.bool.isRequired,
@@ -466,6 +472,7 @@ export class PIDField extends Component {
 }
 
 PIDField.propTypes = {
+  btnLabelDiscardPID: PropTypes.string,
   btnLabelGetPID: PropTypes.string,
   canBeManaged: PropTypes.bool,
   canBeUnmanaged: PropTypes.bool,
@@ -481,6 +488,7 @@ PIDField.propTypes = {
 };
 
 PIDField.defaultProps = {
+  btnLabelDiscardPID: 'Discard',
   btnLabelGetPID: 'Reserve',
   canBeManaged: true,
   canBeUnmanaged: true,
