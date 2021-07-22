@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2021-07-21T08:04:52.092Z\n"
-"PO-Revision-Date: 2021-07-21T08:04:52.092Z\n"
+"POT-Creation-Date: 2021-07-22T07:29:08.285Z\n"
+"PO-Revision-Date: 2021-07-22T07:29:08.285Z\n"
 "Language: en\n"
 
 msgid "Embargo until"
@@ -531,3 +531,12 @@ msgid ""
 msgstr ""
 "Mostly relevant for software and dataset uploads. A semantic version string "
 "is preferred see<1> semver.org</1>, but any version string is accepted."
+
+msgid "Do you already have a {{pidLabel}} for this upload?"
+msgstr "Do you already have a {{pidLabel}} for this upload?"
+
+msgid "Yes"
+msgstr "Yes"
+
+msgid "No"
+msgstr "No"
