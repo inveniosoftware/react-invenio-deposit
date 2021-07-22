@@ -151,5 +151,8 @@
   "Search or create subjects..": "Search or create subjects..",
   "Subjects": "Subjects",
   "Search for a subject by name": "Search for a subject by name",
-  "Mostly relevant for software and dataset uploads. A semantic version string is preferred see<1> semver.org</1>, but any version string is accepted.": "Mostly relevant for software and dataset uploads. A semantic version string is preferred see<1> semver.org</1>, but any version string is accepted."
+  "Mostly relevant for software and dataset uploads. A semantic version string is preferred see<1> semver.org</1>, but any version string is accepted.": "Mostly relevant for software and dataset uploads. A semantic version string is preferred see<1> semver.org</1>, but any version string is accepted.",
+  "Do you already have a {{pidLabel}} for this upload?": "Do you already have a {{pidLabel}} for this upload?",
+  "Yes": "Yes",
+  "No": "No"
 }

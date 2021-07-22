@@ -13,6 +13,7 @@ import { FieldLabel } from 'react-invenio-forms';
 import { connect } from 'react-redux';
 import { Form, Popup, Radio } from 'semantic-ui-react';
 import { discardPID, reservePID } from '../../state/actions';
+import { i18next } from '@translations/i18next';
 
 const PROVIDER_EXTERNAL = 'unmanaged';
 const UPDATE_PID_DEBOUNCE_MS = 200;
@@ -99,11 +100,13 @@ class ManagedUnmanagedSwitch extends Component {
     return (
       <Form.Group inline>
         <Form.Field>
-          Do you already have a {pidLabel} for this upload?
+          {i18next.t('Do you already have a {{pidLabel}} for this upload?', {
+            pidLabel: pidLabel,
+          })}
         </Form.Field>
         <Form.Field width={2}>
           <Radio
-            label="Yes"
+            label={i18next.t('Yes')}
             name="radioGroup"
             value="unmanaged"
             disabled={disabled}
@@ -113,7 +116,7 @@ class ManagedUnmanagedSwitch extends Component {
         </Form.Field>
         <Form.Field width={2}>
           <Radio
-            label="No"
+            label={i18next.t('No')}
             name="radioGroup"
             value="managed"
             disabled={disabled}
