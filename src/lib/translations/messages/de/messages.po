@@ -2,14 +2,14 @@
 # Translators:
 # Chriz Uniba <christina.zeller@uni-bamberg.de>, 2021
 # Alizee Pace <alizee.pace@gmail.com>, 2021
-# Tibor Simko <tibor.simko@cern.ch>, 2021
 # Alexander Gruber <alexander.gruber@tugraz.at>, 2021
+# Tibor Simko <tibor.simko@cern.ch>, 2021
 # Mojib Wali <mojib.wali@tugraz.at>, 2021
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2021-07-21T08:04:52.092Z\n"
+"POT-Creation-Date: 2021-07-22T07:29:08.285Z\n"
 "PO-Revision-Date: 2021-06-29 13:20+0000\n"
 "Last-Translator: Mojib Wali <mojib.wali@tugraz.at>, 2021\n"
 "Language-Team: German (https://www.transifex.com/inveniosoftware/teams/23537/de/)\n"
@@ -557,3 +557,12 @@ msgstr ""
 "Hauptsächlich relevant für Software- und Datensatz-Uploads. Ein semantischer"
 " Versionsstring wird bevorzugt, siehe <1>semver.org</1>, aber jeder "
 "Versionsstring wird akzeptiert."
+
+msgid "Do you already have a {{pidLabel}} for this upload?"
+msgstr "Haben Sie bereits einen {{pidLabel}} für diesen Eintrag?"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nein"
