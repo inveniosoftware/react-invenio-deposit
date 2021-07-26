@@ -14,6 +14,7 @@ import { CreatibutorsModal } from './CreatibutorsModal';
 
 export const CreatibutorsFieldItem = ({
   compKey,
+  identifiersError,
   index,
   replaceCreatibutor,
   removeCreatibutor,
@@ -61,6 +62,9 @@ export const CreatibutorsFieldItem = ({
       return <Label size="tiny">{friendlyRole}</Label>;
     }
   };
+  const firstError =
+    identifiersError &&
+    identifiersError.find((elem) => ![undefined, null].includes(elem));
 
   // Initialize the ref explicitely
   drop(dropRef);
@@ -110,6 +114,11 @@ export const CreatibutorsFieldItem = ({
               )}
               {displayName} {renderRole(initialCreatibutor?.role, roleOptions)}
             </List.Description>
+            {firstError && (
+              <Label pointing="left" prompt>
+                {firstError.scheme ? firstError.scheme : 'Invalid identifiers'}
+              </Label>
+            )}
           </List.Content>
         </Ref>
       </List.Item>
