@@ -72,6 +72,8 @@ class CreatibutorsFieldForm extends Component {
               const givenNameFieldPath = `${personOrOrgPath}.given_name`;
               const nameFieldPath = `${personOrOrgPath}.name`;
               const affiliationsFieldPath = 'affiliations';
+              const identifiersError =
+                creatibutorsError && creatibutorsError[index]?.person_or_org?.identifiers;
               // Default to person type
               const isPerson =
                 _get(value, typeFieldPath, CREATIBUTOR_TYPE.PERSON) ===
@@ -104,6 +106,7 @@ class CreatibutorsFieldForm extends Component {
               return (
                 <CreatibutorsFieldItem
                   key={key}
+                  identifiersError={identifiersError}
                   {...{
                     displayName,
                     index,
@@ -136,7 +139,7 @@ class CreatibutorsFieldForm extends Component {
                 </Button>
               }
             />
-            {creatibutorsError && (
+            {creatibutorsError && typeof creatibutorsError == 'string' && (
               <Label pointing="left" prompt>
                 {creatibutorsError}
               </Label>
