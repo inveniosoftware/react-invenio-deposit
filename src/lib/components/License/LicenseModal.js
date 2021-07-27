@@ -120,6 +120,7 @@ export class LicenseModal extends Component {
                         verticalAlign="middle"
                       >
                         <SearchBar
+                          placeholder={i18next.t('Search')}
                           autofocus
                           actionProps={{
                             icon: 'search',
