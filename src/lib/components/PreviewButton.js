@@ -67,7 +67,7 @@ export class PreviewButtonComponent extends Component {
           });
         }}
         icon
-        labelPosition="left"
+        labelPosition="center"
         {...uiProps}
       >
         {(formik) => (
