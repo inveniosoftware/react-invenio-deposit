@@ -37,7 +37,7 @@ export class SaveButtonComponent extends Component {
         name="save"
         onClick={handleClick}
         icon
-        labelPosition="left"
+        labelPosition="center"
         {...uiProps}
       >
         {(formik) => (
