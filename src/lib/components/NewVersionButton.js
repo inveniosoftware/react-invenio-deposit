@@ -10,12 +10,19 @@ import axios from 'axios';
 import { Icon, Button, Popup } from 'semantic-ui-react';
 import { i18next } from '@translations/i18next';
 
+const apiConfig = {
+  withCredentials: true,
+  xsrfCookieName: 'csrftoken',
+  xsrfHeaderName: 'X-CSRFToken',
+};
+const axiosWithconfig = axios.create(apiConfig);
+
 export const NewVersionButton = (props) => {
   const [loading, setLoading] = useState(false);
   const handleError = props.onError;
   const handleClick = () => {
     setLoading(true);
-    axios
+    axiosWithconfig
       .post(props.record.links.versions)
       .then((response) => {
         window.location = response.data.links.self_html;

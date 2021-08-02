@@ -8,6 +8,12 @@
 import axios from 'axios';
 
 const CancelToken = axios.CancelToken;
+const apiConfig = {
+  withCredentials: true,
+  xsrfCookieName: 'csrftoken',
+  xsrfHeaderName: 'X-CSRFToken',
+};
+const axiosWithconfig = axios.create(apiConfig);
 
 /**
  * API client response.
@@ -59,7 +65,7 @@ export class DepositApiClient {
    */
   async create(draft) {
     return this.createResponse(() =>
-      axios.post(this.createUrl, draft, {
+      axiosWithconfig.post(this.createUrl, draft, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/vnd.inveniordm.v1+json',
@@ -75,7 +81,7 @@ export class DepositApiClient {
    */
   async save(draft) {
     return this.createResponse(() =>
-      axios.put(draft.links.self, draft, {
+      axiosWithconfig.put(draft.links.self, draft, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/vnd.inveniordm.v1+json',
@@ -91,7 +97,7 @@ export class DepositApiClient {
    */
   async publish(draft) {
     return this.createResponse(() =>
-      axios.post(
+      axiosWithconfig.post(
         draft.links.publish,
         {},
         {
@@ -108,7 +114,7 @@ export class DepositApiClient {
    */
   async delete(draft) {
     return this.createResponse(() =>
-      axios.delete(
+      axiosWithconfig.delete(
         draft.links.self,
         {},
         {
@@ -126,7 +132,7 @@ export class DepositApiClient {
         key: filename,
       },
     ];
-    return axios.post(initializeUploadUrl, payload, {
+    return axiosWithconfig.post(initializeUploadUrl, payload, {
       headers: {
         'content-type': 'application/json',
       },
@@ -137,7 +143,7 @@ export class DepositApiClient {
     const formData = new FormData();
     formData.append('file', file);
 
-    return axios.put(uploadUrl, file, {
+    return axiosWithconfig.put(uploadUrl, file, {
       headers: {
         'content-type': 'application/octet-stream',
       },
@@ -147,7 +153,7 @@ export class DepositApiClient {
   }
 
   finalizeFileUpload(finalizeUploadUrl) {
-    return axios.post(
+    return axiosWithconfig.post(
       finalizeUploadUrl,
       {},
       {
@@ -159,11 +165,11 @@ export class DepositApiClient {
   }
 
   deleteFile(deleteUrl) {
-    return axios.delete(deleteUrl);
+    return axiosWithconfig.delete(deleteUrl);
   }
 
   importParentRecordFiles(importFilesUrl) {
-    return axios.post(
+    return axiosWithconfig.post(
       importFilesUrl,
       {},
       {
@@ -187,7 +193,7 @@ export class DepositApiClient {
       //   throw Error(`Cannot get the link to discard the PID for ${pidType}`);
       // }
 
-      return axios.post(
+      return axiosWithconfig.post(
         link,
         {},
         {
@@ -210,7 +216,7 @@ export class DepositApiClient {
       //   throw Error(`Cannot get the link to discard the PID for ${pidType}`);
       // }
 
-      return axios.delete(
+      return axiosWithconfig.delete(
         link,
         {},
         {
