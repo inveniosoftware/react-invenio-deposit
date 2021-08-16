@@ -65,6 +65,7 @@ export class AdditionalTitlesField extends Component {
               placeholder={'Select language'}
               labelIcon={null}
               clearable
+              selectOnBlur={false}
               width={5}
             />
             <Form.Field width={1}>
