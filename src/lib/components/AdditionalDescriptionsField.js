@@ -75,6 +75,7 @@ export class AdditionalDescriptionsField extends Component {
                     placeholder={i18next.t('Select language')}
                     labelIcon={null}
                     clearable
+                    selectOnBlur={false}
                   />
                 </Grid.Column>
               </Grid.Row>
