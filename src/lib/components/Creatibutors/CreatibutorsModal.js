@@ -261,10 +261,10 @@ export class CreatibutorsModal extends Component {
                       optimized
                     />
                   </Form.Group>
-                  <Form.Group widths="equal">
-                    {_get(values, typeFieldPath, '') ===
-                    CREATIBUTOR_TYPE.PERSON ? (
-                      <>
+                  {_get(values, typeFieldPath, '') ===
+                  CREATIBUTOR_TYPE.PERSON ? (
+                    <div>
+                      <Form.Group widths="equal">
                         <TextField
                           label={i18next.t('Family name')}
                           placeholder={i18next.t('Family name')}
@@ -279,8 +279,23 @@ export class CreatibutorsModal extends Component {
                           placeholder={i18next.t('Given name')}
                           fieldPath={givenNameFieldPath}
                         />
-                      </>
-                    ) : (
+                      </Form.Group>
+                      <Form.Group widths="equal">
+                        <CreatibutorsIdentifiers
+                          initialOptions={_map(
+                            _get(values, identifiersFieldPath, []),
+                            (identifier) => ({
+                              text: identifier,
+                              value: identifier,
+                              key: identifier,
+                            })
+                          )}
+                          fieldPath={identifiersFieldPath}
+                        />
+                      </Form.Group>
+                    </div>
+                  ) : (
+                    <>
                       <TextField
                         label={i18next.t('Name')}
                         placeholder={i18next.t('Organization name')}
@@ -290,19 +305,20 @@ export class CreatibutorsModal extends Component {
                         // doesn't handle it
                         input={{ ref: this.inputRef }}
                       />
-                    )}
-                  </Form.Group>
-                  <CreatibutorsIdentifiers
-                    initialOptions={_map(
-                      _get(values, identifiersFieldPath, []),
-                      (identifier) => ({
-                        text: identifier,
-                        value: identifier,
-                        key: identifier,
-                      })
-                    )}
-                    fieldPath={identifiersFieldPath}
-                  />
+                      <CreatibutorsIdentifiers
+                        initialOptions={_map(
+                          _get(values, identifiersFieldPath, []),
+                          (identifier) => ({
+                            text: identifier,
+                            value: identifier,
+                            key: identifier,
+                          })
+                        )}
+                        fieldPath={identifiersFieldPath}
+                        placeholder={i18next.t('e.g. ROR, ISNI or GND.')}
+                      />
+                    </>
+                  )}
                   <AffiliationsField fieldPath={affiliationsFieldPath} />
                   <SelectField
                     fieldPath={roleFieldPath}
