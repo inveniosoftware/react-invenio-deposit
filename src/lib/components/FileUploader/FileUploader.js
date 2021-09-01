@@ -6,7 +6,9 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 import { useFormikContext } from 'formik';
+import _isEmpty from 'lodash/isEmpty';
 import _get from 'lodash/get';
+import _map from 'lodash/map';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Button, Grid, Icon, Message, Modal } from 'semantic-ui-react';
@@ -73,6 +75,11 @@ export const FileUploaderComponent = ({
       const maxFileStorageReached =
         filesSize + acceptedFilesSize > quota.maxStorage;
 
+      const filesNames = _map(filesList, 'name');
+      const duplicateFiles = acceptedFiles.filter((acceptedFile) =>
+        filesNames.includes(acceptedFile.name)
+      );
+
       if (maxFileNumberReached) {
         setWarningMsg(
           <div className="content">
@@ -101,6 +108,17 @@ export const FileUploaderComponent = ({
                   {humanReadableBytes(quota.maxStorage)}.
                 </>
               }
+            />
+          </div>
+        );
+      } else if (!_isEmpty(duplicateFiles)) {
+        setWarningMsg(
+          <div className="content">
+            <Message
+              warning
+              icon="warning circle"
+              header={i18next.t(`The following files already exist`)}
+              list={_map(duplicateFiles, 'name')}
             />
           </div>
         );
