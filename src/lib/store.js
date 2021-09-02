@@ -21,10 +21,7 @@ const preloadFiles = (files) => {
     links: files.links || {},
     entries: _get(_files, 'entries', [])
       .map((file) => {
-        let hasSize;
-        if (file.size) {
-          hasSize = true;
-        }
+        let hasSize = file.size >= 0;
         const fileState = {
           name: file.key,
           size: file.size || 0,
