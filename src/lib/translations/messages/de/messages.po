@@ -1,11 +1,11 @@
-# 
+#
 # Translators:
 # Chriz Uniba <christina.zeller@uni-bamberg.de>, 2021
 # Alizee Pace <alizee.pace@gmail.com>, 2021
 # Alexander Gruber <alexander.gruber@tugraz.at>, 2021
 # Tibor Simko <tibor.simko@cern.ch>, 2021
 # Mojib Wali <mojib.wali@tugraz.at>, 2021
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
@@ -81,7 +81,7 @@ msgid "The record is publicly accessible."
 msgstr "Der Eintrag ist öffentlich zugänglich."
 
 msgid ""
-"The record and files can <1>only</1> be accessed by<3>users specified</3> in"
+"The record and files can <1>only</1> be accessed by <3>users specified</3> in"
 " the permissions."
 msgstr ""
 "Auf den Eintrag und die Dateien können <1>nur</1> die in den Berechtigungen "

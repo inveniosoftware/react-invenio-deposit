@@ -120,7 +120,7 @@
   "Restricted": "",
   "Public with restricted files": "",
   "Suggest from": "",
-  "The record and files can <1>only</1> be accessed by<3>users specified</3> in the permissions.": "",
+  "The record and files can <1>only</1> be accessed by <3>users specified</3> in the permissions.": "",
   "The record is publicly accessible. The files can <1>only</1> be accessed by <3>users specified</3> in the permissions.": "",
   "Record or files protection must be <1>restricted</1> to apply an embargo.": "",
   "Mostly relevant for software and dataset uploads. A semantic version string is preferred see<1> semver.org</1>, but any version string is accepted.": "",

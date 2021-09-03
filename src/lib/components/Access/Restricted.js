@@ -44,7 +44,7 @@ export class Restricted {
     const text = (
       <Trans>
         The record and files can <b>only</b> be accessed by
-        <b>users specified</b> in the permissions.
+        <b> users specified</b> in the permissions.
       </Trans>
     );
 
