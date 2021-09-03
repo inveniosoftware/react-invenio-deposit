@@ -71,10 +71,10 @@ msgid "The record is publicly accessible."
 msgstr "The record is publicly accessible."
 
 msgid ""
-"The record and files can <1>only</1> be accessed by<3>users specified</3> "
+"The record and files can <1>only</1> be accessed by <3>users specified</3> "
 "in the permissions."
 msgstr ""
-"The record and files can <1>only</1> be accessed by<3>users specified</3> "
+"The record and files can <1>only</1> be accessed by <3>users specified</3> "
 "in the permissions."
 
 msgid "Public with restricted files"
