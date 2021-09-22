@@ -54,6 +54,14 @@ export class RelatedWorksField extends Component {
                 required
                 width={3}
               />
+              
+              <TextField
+                fieldPath={`${key}.identifier`}
+                label={i18next.t('Identifier')}
+                required
+                width={4}
+              />
+
               <SelectField
                 clearable
                 fieldPath={`${key}.scheme`}
@@ -62,12 +70,6 @@ export class RelatedWorksField extends Component {
                 options={options.scheme}
                 required
                 width={2}
-              />
-              <TextField
-                fieldPath={`${key}.identifier`}
-                label={i18next.t('Identifier')}
-                required
-                width={4}
               />
 
               <ResourceTypeField
