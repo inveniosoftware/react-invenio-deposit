@@ -65,26 +65,49 @@ export class VocabularyField extends Field {
 }
 
 export class AllowAdditionsVocabularyField extends VocabularyField {
-  deserialize(record) {
-    const fieldValue = _get(record, this.fieldpath, this.deserializedDefault);
-    // We deserialize the values in the format
-    // {id: 'vocab_id', <labelField>: 'vacab_name'} for controlled values
-    // and {<labelField>: 'vocab_name'} for user added entries
-    const _deserialize = (value) => ({
+  // We deserialize the values in the format
+  // {id: 'vocab_id', <labelField>: 'vocab_name'} for controlled values
+  // and {<labelField>: 'vocab_name'} for user added entries
+  _deserialize(value) {
+    return {
       ...(value.id ? { id: value.id } : {}),
       [this.labelField]: value[this.labelField],
-    });
+    };
+  }
+
+  deserialize(record) {
+    const fieldValue = _get(record, this.fieldpath, this.deserializedDefault);
     let deserializedValue = null;
     if (fieldValue !== null) {
       deserializedValue = Array.isArray(fieldValue)
-        ? fieldValue.map(_deserialize)
-        : _deserialize(fieldValue);
+        ? fieldValue.map((value) => this._deserialize(value))
+        : this._deserialize(fieldValue);
     }
     return _set(
       _cloneDeep(record),
       this.fieldpath,
       deserializedValue || fieldValue
     );
+  }
+}
+
+/**
+ * Serialize and deserialize subject field that can contain vocabulary values, (which
+ * need to merge scheme + subject value) and free text but sharing
+ * structure with the vocabulary values
+ */
+export class SubjectsVocabularyField extends AllowAdditionsVocabularyField {
+  // We deserialize the values in the format
+  // {id: 'vocab_id', <labelField>: '(vocab_scheme) vocab_name'} for controlled values
+  // and {<labelField>: 'vocab_name'} for user added entries
+  _deserialize(value) {
+    console.log(this);
+    return {
+      ...(value.id ? { id: value.id } : {}),
+      [this.labelField]: value.scheme
+        ? `(${value.scheme}) ` + value[this.labelField]
+        : value[this.labelField],
+    };
   }
 }
 
@@ -114,7 +137,6 @@ export class RightsVocabularyField extends VocabularyField {
    * @returns
    */
   deserialize(record, defaultLocale) {
-
     const fieldValue = _get(record, this.fieldpath, this.deserializedDefault);
     const _deserialize = (value) => {
       if ('id' in value) {
