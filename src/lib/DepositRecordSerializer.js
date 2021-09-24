@@ -22,6 +22,7 @@ import {
   Field,
   RightsVocabularyField,
   SchemaField,
+  SubjectsVocabularyField,
   VocabularyField,
 } from './fields';
 import {
@@ -189,7 +190,7 @@ export class DepositRecordSerializer {
       },
       deserializedDefault: [emptyRelatedWork],
     }),
-    subjects: new AllowAdditionsVocabularyField({
+    subjects: new SubjectsVocabularyField({
       fieldpath: 'metadata.subjects',
       deserializedDefault: [],
       serializedDefault: [],

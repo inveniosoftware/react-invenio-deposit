@@ -20,13 +20,13 @@ export class SubjectsField extends Component {
 
   serializeSubjects = (subjects) =>
     subjects.map((subject) => {
-      const scheme = subject.scheme ? `(${subject.scheme}) ` : '';
+      const subjectValue = subject.scheme ? `(${subject.scheme}) ` + subject.subject : subject.subject;
       return {
-        text: scheme + subject.subject,
-        value: subject.subject,
-        key: subject.subject,
+        text: subjectValue,
+        value: subjectValue,
+        key: subjectValue,
         ...(subject.id ? { id: subject.id } : {}),
-        subject: subject.subject,
+        subject: subjectValue,
       };
     });
 
