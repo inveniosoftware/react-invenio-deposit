@@ -258,10 +258,10 @@ export class DepositController {
   /**
    * Discard a previously reserved PID
    */
-  discardPID = async (draft, pidType, { formik, store }) => {
+  discardPID = async (draftLinks, pidType, { formik, store }) => {
     const recordSerializer = store.config.recordSerializer;
 
-    const response = await this.apiClient.discardPID(draft, pidType);
+    const response = await this.apiClient.discardPID(draftLinks, pidType);
 
     let data = recordSerializer.deserialize(response.data || {});
     let errors = recordSerializer.deserializeErrors(response.errors || []);
