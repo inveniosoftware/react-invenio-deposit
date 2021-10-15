@@ -76,7 +76,7 @@ export class SubjectsField extends Component {
                 fieldPath={fieldPath}
                 initialSuggestions={getIn(values, fieldPath, [])}
                 multiple={multiple}
-                noQueryMessage={i18next.t('Search or create subjects..')}
+                noQueryMessage={i18next.t('Search or create subjects...')}
                 placeholder={placeholder}
                 preSearchChange={this.prepareSuggest}
                 required={required}
