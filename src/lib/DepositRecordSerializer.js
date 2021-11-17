@@ -17,6 +17,8 @@ import _mapValues from 'lodash/mapValues';
 import _pick from 'lodash/pick';
 import _pickBy from 'lodash/pickBy';
 import _set from 'lodash/set';
+import _get from 'lodash/get';
+
 import {
   AllowAdditionsVocabularyField,
   Field,
@@ -309,9 +311,7 @@ export class DepositRecordSerializer {
   serialize(record) {
     // NOTE: cloning nows allows us to manipulate the copy with impunity without
     //       affecting the original
-    record = _cloneDeep(record);
-    let serializedRecord = this.removeEmptyValues(record);
-    serializedRecord = _pick(serializedRecord, [
+    let originalRecord = _pick(_cloneDeep(record), [
       'access',
       'metadata',
       'id',
@@ -320,14 +320,25 @@ export class DepositRecordSerializer {
       'files',
       'pids',
     ]);
+    let serializedRecord = this.removeEmptyValues(originalRecord);
+
     for (let key in this.depositRecordSchema) {
       serializedRecord = this.depositRecordSchema[key].serialize(
         serializedRecord,
         this.defaultLocale
       );
     }
+
     // Remove empty values again because serialization may add some back
     serializedRecord = this.removeEmptyValues(serializedRecord);
+
+    // FIXME: move logic in a more sophisticated PIDField
+    let serializedDOI = _get(serializedRecord, 'pids.doi', {});
+    // For external provider, if the identifier is empty instruct the backend
+    // to reset the pids field.
+    if (serializedDOI?.provider === 'external' && !serializedDOI?.identifier) {
+      serializedRecord = _set(serializedRecord, 'pids', {});
+    }
 
     // Finally add back 'metadata' if absent
     // We need to do this for backend validation, unless we mark metadata as
