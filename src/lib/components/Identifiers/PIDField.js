@@ -15,7 +15,7 @@ import { Form, Popup, Radio } from 'semantic-ui-react';
 import { discardPID, reservePID } from '../../state/actions';
 import { i18next } from '@translations/i18next';
 
-const PROVIDER_EXTERNAL = 'unmanaged';
+const PROVIDER_EXTERNAL = 'external';
 const UPDATE_PID_DEBOUNCE_MS = 200;
 
 /**

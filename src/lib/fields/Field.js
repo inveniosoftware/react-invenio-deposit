@@ -14,10 +14,12 @@ export class Field {
     fieldpath,
     deserializedDefault = null,
     serializedDefault = null,
+    allowEmpty = false,
   }) {
     this.fieldpath = fieldpath;
     this.deserializedDefault = deserializedDefault;
     this.serializedDefault = serializedDefault;
+    this.allowEmpty = allowEmpty;
   }
 
   deserialize(record) {
