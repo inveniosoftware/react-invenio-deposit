@@ -8,7 +8,8 @@
 
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Grid, Header, Form, Ref } from 'semantic-ui-react';
+import { RemoteSelectField } from 'react-invenio-forms';
+import { Modal, Grid, Header, Form } from 'semantic-ui-react';
 import { Formik, getIn } from 'formik';
 import {
   SelectField,
@@ -163,6 +164,41 @@ export class CreatibutorsModal extends Component {
 
   isCreator = () => this.props.schema === 'creators';
 
+  serializeSuggestions = (creatibutor) =>
+    creatibutor.map((creatibutor) => {
+      const orcid = _find(creatibutor.identifiers, (identifier) => {
+        return identifier.scheme === 'orcid';
+      });
+
+      let aff_names = '';
+      creatibutor.affiliations.forEach((affiliation, idx) => {
+        aff_names += affiliation.name;
+        if (idx < creatibutor.affiliations.length - 1) {
+          aff_names += ', ';
+        }
+      });
+
+      return {
+        text: creatibutor.name,
+        value: orcid.identifier,
+        extra: creatibutor,
+        key: creatibutor.id,
+        content: (
+          <div>
+            <div>
+              {creatibutor.name} ({orcid.identifier})
+            </div>
+            {aff_names !== '' && (
+              <div>
+                <p>Affiliations</p>
+                <p>{aff_names}</p>
+              </div>
+            )}
+          </div>
+        ),
+      };
+    });
+
   onSubmit = (values, formikBag) => {
     this.props.onCreatibutorChange(this.serializeCreatibutor(values));
     formikBag.setSubmitting(false);
@@ -204,6 +240,7 @@ export class CreatibutorsModal extends Component {
           const identifiersFieldPath = `${personOrOrgPath}.identifiers`;
           const affiliationsFieldPath = 'affiliations';
           const roleFieldPath = 'role';
+
           return (
             <Modal
               onOpen={() => this.openModal()}
@@ -264,6 +301,53 @@ export class CreatibutorsModal extends Component {
                   {_get(values, typeFieldPath, '') ===
                   CREATIBUTOR_TYPE.PERSON ? (
                     <div>
+                      <RemoteSelectField
+                        fieldPath={'creators'}
+                        clearable={true}
+                        multiple={false}
+                        allowAdditions={false}
+                        placeholder="Name, identifier or affiliation name..."
+                        noQueryMessage={i18next.t('Search for names...')}
+                        required={false}
+                        suggestionAPIUrl="/api/names"
+                        serializeSuggestions={this.serializeSuggestions}
+                        // serializeAddedValue={(value) => ({
+                        //   text: value,
+                        //   value: value,
+                        //   key: value,
+                        // })}
+                        onValueChange={(
+                          { formikProps },
+                          selectedSuggestions
+                        ) => {
+                          const identifiers =
+                            selectedSuggestions[0].extra.identifiers.map(
+                              (identifier) => {
+                                return identifier.identifier;
+                              }
+                            );
+                          const affiliations =
+                            selectedSuggestions[0].extra.affiliations.map(
+                              (affiliation) => {
+                                return affiliation;
+                              }
+                            );
+                          let chosen = {
+                            [`${givenNameFieldPath}`]:
+                              selectedSuggestions[0].extra.given_name,
+                            [`${familyNameFieldPath}`]:
+                              selectedSuggestions[0].extra.family_name,
+                            [`${identifiersFieldPath}`]: identifiers,
+                            [`${affiliationsFieldPath}`]: affiliations,
+                          };
+                          Object.entries(chosen).forEach(([path, value]) => {
+                            formikProps.form.setFieldValue(path, value);
+                          });
+                        }}
+                        // value={getIn(values, fieldPath, []).map(
+                        //   (val) => val.subject
+                        // )}
+                      />
                       <Form.Group widths="equal">
                         <TextField
                           label={i18next.t('Family name')}
