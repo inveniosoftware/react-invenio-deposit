@@ -10,7 +10,7 @@ import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { RemoteSelectField } from 'react-invenio-forms';
 import { Modal, Grid, Header, Form } from 'semantic-ui-react';
-import { Formik, getIn } from 'formik';
+import { Formik } from 'formik';
 import {
   SelectField,
   TextField,
@@ -21,6 +21,7 @@ import * as Yup from 'yup';
 import _get from 'lodash/get';
 import _find from 'lodash/find';
 import _map from 'lodash/map';
+import _unickBy from 'lodash/unionBy';
 import { AffiliationsField } from './../AffiliationsField';
 import { CreatibutorsIdentifiers } from './CreatibutorsIdentifiers';
 import { CREATIBUTOR_TYPE } from './type';
@@ -38,6 +39,16 @@ export class CreatibutorsModal extends Component {
       open: false,
       saveAndContinueLabel: i18next.t('Save and add another'),
       action: null,
+      identifiers: [],
+      // {_map(
+      //   _get(values, identifiersFieldPath, []),
+      //   (identifier) => ({
+      //     text: identifier,
+      //     value: identifier,
+      //     key: identifier,
+      //   })
+      // )}
+      affiliations: [],
     };
     this.inputRef = createRef();
   }
@@ -219,6 +230,35 @@ export class CreatibutorsModal extends Component {
     }
   };
 
+  // Identifiers handlers
+  handleIdentifierAddition = (e, { value }) => {
+    this.setState((prevState) => ({
+      identifiers: _unickBy(
+        [
+          {
+            text: value,
+            value: value,
+            key: value,
+          },
+          ...prevState.identifiers,
+        ],
+        'value'
+      ),
+    }));
+  };
+
+  handleIdentifierChange = ({ data, formikProps, fieldPath }) => {
+    const identifiers = data.value.map((option) => ({
+      text: option,
+      value: option,
+      key: option,
+    }));
+    this.setState({
+      identifiers: identifiers,
+    });
+    formikProps.form.setFieldValue(fieldPath, data.value);
+  };
+
   render() {
     const initialCreatibutor = this.props.initialCreatibutor;
     const ActionLabel = () => this.displayActionLabel();
@@ -337,11 +377,16 @@ export class CreatibutorsModal extends Component {
                               selectedSuggestions[0].extra.given_name,
                             [`${familyNameFieldPath}`]:
                               selectedSuggestions[0].extra.family_name,
-                            [`${identifiersFieldPath}`]: identifiers,
+                            // [`${identifiersFieldPath}`]: identifiers,
                             [`${affiliationsFieldPath}`]: affiliations,
                           };
                           Object.entries(chosen).forEach(([path, value]) => {
                             formikProps.form.setFieldValue(path, value);
+                          });
+                          this.handleIdentifierChange({
+                            data: { value: identifiers },
+                            formikProps: formikProps,
+                            fieldPath: identifiersFieldPath,
                           });
                         }}
                         // value={getIn(values, fieldPath, []).map(
@@ -366,15 +411,12 @@ export class CreatibutorsModal extends Component {
                       </Form.Group>
                       <Form.Group widths="equal">
                         <CreatibutorsIdentifiers
-                          initialOptions={_map(
-                            _get(values, identifiersFieldPath, []),
-                            (identifier) => ({
-                              text: identifier,
-                              value: identifier,
-                              key: identifier,
-                            })
-                          )}
+                          options={this.state.identifiers}
                           fieldPath={identifiersFieldPath}
+                          handleChange={this.handleIdentifierChange}
+                          handleIdentifierAddition={
+                            this.handleIdentifierAddition
+                          }
                         />
                       </Form.Group>
                     </div>
@@ -390,7 +432,7 @@ export class CreatibutorsModal extends Component {
                         input={{ ref: this.inputRef }}
                       />
                       <CreatibutorsIdentifiers
-                        initialOptions={_map(
+                        options={_map(
                           _get(values, identifiersFieldPath, []),
                           (identifier) => ({
                             text: identifier,

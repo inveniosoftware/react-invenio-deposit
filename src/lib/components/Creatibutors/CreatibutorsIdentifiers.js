@@ -9,12 +9,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { SelectField } from 'react-invenio-forms';
-import _unickBy from 'lodash/unionBy';
 import { i18next } from '@translations/i18next';
 
 export class CreatibutorsIdentifiers extends Component {
   static propTypes = {
-    initialOptions: PropTypes.arrayOf(
+    options: PropTypes.arrayOf(
       PropTypes.shape({
         key: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired,
@@ -24,6 +23,8 @@ export class CreatibutorsIdentifiers extends Component {
     fieldPath: PropTypes.string,
     label: PropTypes.string,
     placeholder: PropTypes.string,
+    handleChange: PropTypes.func,
+    handleIdentifierAddition: PropTypes.func,
   };
 
   static defaultProps = {
@@ -32,59 +33,22 @@ export class CreatibutorsIdentifiers extends Component {
     placeholder: i18next.t('e.g. ORCID, ISNI or GND.'),
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedOptions: props.initialOptions,
-    };
-  }
-
-  handleIdentifierAddition = (e, { value }) => {
-    this.setState((prevState) => ({
-      selectedOptions: _unickBy(
-        [
-          {
-            text: value,
-            value: value,
-            key: value,
-          },
-          ...prevState.selectedOptions,
-        ],
-        'value'
-      ),
-    }));
-  };
-
-  valuesToOptions = (options) =>
-    options.map((option) => ({
-      text: option,
-      value: option,
-      key: option,
-    }));
-
-  handleChange = ({ data, formikProps }) => {
-    this.setState({
-      selectedOptions: this.valuesToOptions(data.value),
-    });
-    formikProps.form.setFieldValue(this.props.fieldPath, data.value);
-  };
-
   render() {
     return (
       <SelectField
         fieldPath={this.props.fieldPath}
         label={this.props.label}
-        options={this.state.selectedOptions}
+        options={this.props.options}
         placeholder={this.props.placeholder}
         noResultsMessage={i18next.t('Type the value of an identifier...')}
         search
         multiple
         selection
         allowAdditions
-        onChange={this.handleChange}
+        onChange={this.props.handleChange}
         // `icon` is set to `null` in order to hide the dropdown default icon
         icon={null}
-        onAddItem={this.handleIdentifierAddition}
+        onAddItem={this.props.handleIdentifierAddition}
         optimized
       />
     );
