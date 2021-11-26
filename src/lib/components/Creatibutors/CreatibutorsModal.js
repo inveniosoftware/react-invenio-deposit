@@ -40,14 +40,6 @@ export class CreatibutorsModal extends Component {
       saveAndContinueLabel: i18next.t('Save and add another'),
       action: null,
       identifiers: [],
-      // {_map(
-      //   _get(values, identifiersFieldPath, []),
-      //   (identifier) => ({
-      //     text: identifier,
-      //     value: identifier,
-      //     key: identifier,
-      //   })
-      // )}
       affiliations: [],
     };
     this.inputRef = createRef();
@@ -231,7 +223,7 @@ export class CreatibutorsModal extends Component {
   };
 
   // Identifiers handlers
-  handleIdentifierAddition = (e, { value }) => {
+  handleIdentifierAddition = (value) => {
     this.setState((prevState) => ({
       identifiers: _unickBy(
         [
@@ -247,12 +239,13 @@ export class CreatibutorsModal extends Component {
     }));
   };
 
-  handleIdentifierChange = ({ data, formikProps, fieldPath }) => {
+  handleIdentifierChange = (data, formikProps, fieldPath) => {
     const identifiers = data.value.map((option) => ({
       text: option,
       value: option,
       key: option,
     }));
+    console.log('SET', identifiers);
     this.setState({
       identifiers: identifiers,
     });
@@ -262,6 +255,7 @@ export class CreatibutorsModal extends Component {
   render() {
     const initialCreatibutor = this.props.initialCreatibutor;
     const ActionLabel = () => this.displayActionLabel();
+    console.log('RENDER', this.state.identifiers);
     return (
       <Formik
         initialValues={this.deserializeCreatibutor(initialCreatibutor)}
@@ -271,7 +265,7 @@ export class CreatibutorsModal extends Component {
         validateOnChange={false}
         validateOnBlur={false}
       >
-        {({ values, setFieldValue, resetForm }) => {
+        {({ values, resetForm }) => {
           const personOrOrgPath = `person_or_org`;
           const typeFieldPath = `${personOrOrgPath}.type`;
           const familyNameFieldPath = `${personOrOrgPath}.family_name`;
@@ -351,11 +345,6 @@ export class CreatibutorsModal extends Component {
                         required={false}
                         suggestionAPIUrl="/api/names"
                         serializeSuggestions={this.serializeSuggestions}
-                        // serializeAddedValue={(value) => ({
-                        //   text: value,
-                        //   value: value,
-                        //   key: value,
-                        // })}
                         onValueChange={(
                           { formikProps },
                           selectedSuggestions
@@ -383,15 +372,12 @@ export class CreatibutorsModal extends Component {
                           Object.entries(chosen).forEach(([path, value]) => {
                             formikProps.form.setFieldValue(path, value);
                           });
-                          this.handleIdentifierChange({
-                            data: { value: identifiers },
-                            formikProps: formikProps,
-                            fieldPath: identifiersFieldPath,
-                          });
+                          this.handleIdentifierChange(
+                            { value: identifiers },
+                            formikProps,
+                            identifiersFieldPath
+                          );
                         }}
-                        // value={getIn(values, fieldPath, []).map(
-                        //   (val) => val.subject
-                        // )}
                       />
                       <Form.Group widths="equal">
                         <TextField
@@ -410,6 +396,12 @@ export class CreatibutorsModal extends Component {
                         />
                       </Form.Group>
                       <Form.Group widths="equal">
+                        {console.log(
+                          'FORM',
+                          this.isCreator(),
+                          'DATAA',
+                          this.state.identifiers
+                        )}
                         <CreatibutorsIdentifiers
                           options={this.state.identifiers}
                           fieldPath={identifiersFieldPath}
@@ -488,6 +480,7 @@ export class CreatibutorsModal extends Component {
                     this.setState({ action: 'saveAndClose' }, () =>
                       formik.handleSubmit()
                     );
+                    console.log('SAVE', this.state.identifiers);
                   }}
                   primary
                   icon="checkmark"

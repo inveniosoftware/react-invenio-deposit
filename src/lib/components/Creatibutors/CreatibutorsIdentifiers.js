@@ -23,8 +23,8 @@ export class CreatibutorsIdentifiers extends Component {
     fieldPath: PropTypes.string,
     label: PropTypes.string,
     placeholder: PropTypes.string,
-    handleChange: PropTypes.func,
-    handleIdentifierAddition: PropTypes.func,
+    onChange: PropTypes.func,
+    onAddItem: PropTypes.func,
   };
 
   static defaultProps = {
@@ -33,7 +33,19 @@ export class CreatibutorsIdentifiers extends Component {
     placeholder: i18next.t('e.g. ORCID, ISNI or GND.'),
   };
 
+  handleIdentifierAddition = (e, { value }) => {
+    debugger;
+    this.props.onAddItem(value);
+  };
+
+  handleChange = ({ data, formikProps }) => {
+    debugger;
+    this.props.onChange(data, formikProps, this.props.fieldPath);
+    formikProps.form.setFieldValue(this.props.fieldPath, data.value);
+  };
+
   render() {
+    console.log('INNER', this.props.options);
     return (
       <SelectField
         fieldPath={this.props.fieldPath}
@@ -45,10 +57,10 @@ export class CreatibutorsIdentifiers extends Component {
         multiple
         selection
         allowAdditions
-        onChange={this.props.handleChange}
+        onChange={this.handleChange}
         // `icon` is set to `null` in order to hide the dropdown default icon
         icon={null}
-        onAddItem={this.props.handleIdentifierAddition}
+        onAddItem={this.handleIdentifierAddition}
         optimized
       />
     );
