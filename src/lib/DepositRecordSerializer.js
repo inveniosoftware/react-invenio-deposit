@@ -253,14 +253,7 @@ export class DepositRecordSerializer {
   deserialize(record) {
     // NOTE: cloning nows allows us to manipulate the copy with impunity
     //       without affecting the original
-    record = _cloneDeep(record);
-    // Remove empty null values from record. This happens when we create a new
-    // draft and the backend produces an empty record filled in with null
-    // values, array of null values etc.
-    // TODO: Backend should not attempt to provide empty values. It should just
-    //       return existing record in case of edit or {} in case of new.
-    let deserializedRecord = this.removeEmptyValues(record);
-    deserializedRecord = _pick(deserializedRecord, [
+    const originalRecord = _pick(_cloneDeep(record), [
       'access',
       'metadata',
       'id',
@@ -271,6 +264,24 @@ export class DepositRecordSerializer {
       'pids',
       'ui',
     ]);
+
+    // FIXME: move logic in a more sophisticated PIDField that allows empty values
+    // to be sent in the backend
+    let savedPidsFieldValue = originalRecord.pids || {};
+
+    // Remove empty null values from record. This happens when we create a new
+    // draft and the backend produces an empty record filled in with null
+    // values, array of null values etc.
+    // TODO: Backend should not attempt to provide empty values. It should just
+    //       return existing record in case of edit or {} in case of new.
+    let deserializedRecord = this.removeEmptyValues(originalRecord);
+
+    // FIXME: Add back pids field in case it was removed
+    deserializedRecord = {
+      ...deserializedRecord,
+      ...(!_isEmpty(savedPidsFieldValue) ? { pids: savedPidsFieldValue } : {}),
+    };
+
     for (let key in this.depositRecordSchema) {
       deserializedRecord = this.depositRecordSchema[key].deserialize(
         deserializedRecord,
@@ -320,6 +331,11 @@ export class DepositRecordSerializer {
       'files',
       'pids',
     ]);
+
+    // FIXME: move logic in a more sophisticated PIDField that allows empty values
+    // to be sent in the backend
+    let savedPidsFieldValue = originalRecord.pids || {};
+
     let serializedRecord = this.removeEmptyValues(originalRecord);
 
     for (let key in this.depositRecordSchema) {
@@ -332,13 +348,11 @@ export class DepositRecordSerializer {
     // Remove empty values again because serialization may add some back
     serializedRecord = this.removeEmptyValues(serializedRecord);
 
-    // FIXME: move logic in a more sophisticated PIDField
-    let serializedDOI = _get(serializedRecord, 'pids.doi', {});
-    // For external provider, if the identifier is empty instruct the backend
-    // to reset the pids field.
-    if (serializedDOI?.provider === 'external' && !serializedDOI?.identifier) {
-      serializedRecord = _set(serializedRecord, 'pids', {});
-    }
+    // FIXME: Add back pids field in case it was removed
+    serializedRecord = {
+      ...serializedRecord,
+      ...(!_isEmpty(savedPidsFieldValue) ? { pids: savedPidsFieldValue } : {}),
+    };
 
     // Finally add back 'metadata' if absent
     // We need to do this for backend validation, unless we mark metadata as

@@ -6,7 +6,7 @@
 // Invenio App RDM is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import _get from 'lodash/get';
+import _isObject from 'lodash/isObject';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Message } from 'semantic-ui-react';
@@ -38,6 +38,8 @@ const defaultLabels = {
   'metadata.related_identifiers': i18next.t('Related works'),
   'metadata.identifiers': i18next.t('Alternate identifiers'),
   'access.embargo.until': i18next.t('Embargo until'),
+  'pids.doi': i18next.t('DOI'),
+  pids: i18next.t('PIDS'),
 };
 
 class DisconnectedFormFeedback extends Component {
@@ -117,9 +119,11 @@ class DisconnectedFormFeedback extends Component {
       return ['access.embargo.' + key, value];
     });
     const pids = errors.pids || {};
-    const step0_pids = Object.entries(pids).map(([key, value]) => {
-      return ['pids.' + key, value];
-    });
+    const step0_pids = _isObject(pids)
+      ? Object.entries(pids).map(([key, value]) => {
+          return ['pids.' + key, value];
+        })
+      : [['pids', pids]];
     const step0 = Object.fromEntries(
       step0_metadata.concat(step0_files).concat(step0_access).concat(step0_pids)
     );
