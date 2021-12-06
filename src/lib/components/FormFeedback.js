@@ -116,8 +116,12 @@ class DisconnectedFormFeedback extends Component {
     const step0_access = Object.entries(access).map(([key, value]) => {
       return ['access.embargo.' + key, value];
     });
+    const pids = errors.pids || {};
+    const step0_pids = Object.entries(pids).map(([key, value]) => {
+      return ['pids.' + key, value];
+    });
     const step0 = Object.fromEntries(
-      step0_metadata.concat(step0_files).concat(step0_access)
+      step0_metadata.concat(step0_files).concat(step0_access).concat(step0_pids)
     );
 
     // Step 1 - Transform each error value into array of error messages

@@ -346,6 +346,7 @@ class CustomPIDField extends Component {
       canBeUnmanaged,
       form,
       fieldPath,
+      fieldLabel,
       isEditingPublishedRecord,
       managedHelpText,
       pidLabel,
@@ -377,7 +378,7 @@ class CustomPIDField extends Component {
     return (
       <>
         <Form.Field required={required}>
-          <FieldLabel htmlFor={fieldPath} icon={pidIcon} label={pidLabel} />
+          <FieldLabel htmlFor={fieldPath} icon={pidIcon} label={fieldLabel} />
         </Form.Field>
 
         {this.canBeManagedAndUnmanaged && (
@@ -428,6 +429,7 @@ CustomPIDField.propTypes = {
   canBeManaged: PropTypes.bool.isRequired,
   canBeUnmanaged: PropTypes.bool.isRequired,
   fieldPath: PropTypes.string.isRequired,
+  fieldLabel: PropTypes.string.isRequired,
   isEditingPublishedRecord: PropTypes.bool.isRequired,
   managedHelpText: PropTypes.string,
   pidIcon: PropTypes.string.isRequired,
@@ -480,6 +482,7 @@ PIDField.propTypes = {
   canBeManaged: PropTypes.bool,
   canBeUnmanaged: PropTypes.bool,
   fieldPath: PropTypes.string.isRequired,
+  fieldLabel: PropTypes.string.isRequired,
   isEditingPublishedRecord: PropTypes.bool.isRequired,
   managedHelpText: PropTypes.string,
   pidIcon: PropTypes.string,
