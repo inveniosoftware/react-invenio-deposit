@@ -5,7 +5,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { FastField } from 'formik';
+import { FastField, getIn } from 'formik';
 import _debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -275,16 +275,26 @@ class UnmanagedIdentifierCmp extends Component {
 
   render() {
     const { localIdentifier } = this.state;
-    const { helpText, pidPlaceholder } = this.props;
+    const { form, fieldPath, helpText, pidPlaceholder } = this.props;
 
     return (
       <>
-        <Form.Field width={8}>
+        <Form.Field
+          width={8}
+          error={
+            getIn(form.errors, fieldPath, null) ||
+            getIn(form.errors, 'pids', null)
+          }
+        >
           <Form.Input
             onChange={(e, { value }) => this.onChange(value)}
             value={localIdentifier}
             placeholder={pidPlaceholder}
             width={16}
+            error={
+              getIn(form.errors, fieldPath, null) ||
+              getIn(form.errors, 'pids', null)
+            }
           />
         </Form.Field>
         {helpText && <label className="helptext">{helpText}</label>}
@@ -369,15 +379,23 @@ class CustomPIDField extends Component {
       managedIdentifier = !isProviderExternal ? currentIdentifier : '';
       unmanagedIdentifier = isProviderExternal ? currentIdentifier : '';
     }
+
     const hasManagedIdentifier = managedIdentifier !== '';
+
     const _isManagedSelected =
       isManagedSelected === undefined
-        ? hasManagedIdentifier
+        ? hasManagedIdentifier || currentProvider === '' // i.e pids: {}
         : isManagedSelected;
 
     return (
       <>
-        <Form.Field required={required}>
+        <Form.Field
+          required={required}
+          error={
+            getIn(form.errors, fieldPath, null) ||
+            getIn(form.errors, 'pids', null)
+          }
+        >
           <FieldLabel htmlFor={fieldPath} icon={pidIcon} label={fieldLabel} />
         </Form.Field>
 
@@ -386,6 +404,11 @@ class CustomPIDField extends Component {
             disabled={isEditingPublishedRecord || hasManagedIdentifier}
             isManagedSelected={_isManagedSelected}
             onManagedUnmanagedChange={(userSelectedManaged) => {
+              if (userSelectedManaged) {
+                form.setFieldValue('pids', {});
+              } else {
+                this.onExternalIdentifierChanged('');
+              }
               this.setState({
                 isManagedSelected: userSelectedManaged,
               });
@@ -414,6 +437,8 @@ class CustomPIDField extends Component {
             onIdentifierChanged={(identifier) => {
               this.onExternalIdentifierChanged(identifier);
             }}
+            form={form}
+            fieldPath={fieldPath}
             pidPlaceholder={pidPlaceholder}
             helpText={unmanagedHelpText}
           />
