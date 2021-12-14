@@ -9,8 +9,8 @@
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { RemoteSelectField } from 'react-invenio-forms';
-import { Modal, Grid, Header, Form } from 'semantic-ui-react';
-import { Formik } from 'formik';
+import { Modal, Grid, Header, Form, Ref } from 'semantic-ui-react';
+import { Formik, getIn } from 'formik';
 import {
   SelectField,
   TextField,
@@ -255,7 +255,6 @@ export class CreatibutorsModal extends Component {
   render() {
     const initialCreatibutor = this.props.initialCreatibutor;
     const ActionLabel = () => this.displayActionLabel();
-    console.log('RENDER', this.state.identifiers);
     return (
       <Formik
         initialValues={this.deserializeCreatibutor(initialCreatibutor)}
@@ -265,7 +264,7 @@ export class CreatibutorsModal extends Component {
         validateOnChange={false}
         validateOnBlur={false}
       >
-        {({ values, resetForm }) => {
+        {({ values, setFieldValue, resetForm }) => {
           const personOrOrgPath = `person_or_org`;
           const typeFieldPath = `${personOrOrgPath}.type`;
           const familyNameFieldPath = `${personOrOrgPath}.family_name`;
@@ -379,38 +378,42 @@ export class CreatibutorsModal extends Component {
                           );
                         }}
                       />
-                      <Form.Group widths="equal">
-                        <TextField
-                          label={i18next.t('Family name')}
-                          placeholder={i18next.t('Family name')}
-                          fieldPath={familyNameFieldPath}
-                          required={this.isCreator()}
-                          // forward ref to Input component because Form.Input
-                          // doesn't handle it
-                          input={{ ref: this.inputRef }}
-                        />
-                        <TextField
-                          label={i18next.t('Given name(s)')}
-                          placeholder={i18next.t('Given name')}
-                          fieldPath={givenNameFieldPath}
-                        />
-                      </Form.Group>
-                      <Form.Group widths="equal">
-                        {console.log(
-                          'FORM',
-                          this.isCreator(),
-                          'DATAA',
-                          this.state.identifiers
-                        )}
-                        <CreatibutorsIdentifiers
-                          options={this.state.identifiers}
-                          fieldPath={identifiersFieldPath}
-                          handleChange={this.handleIdentifierChange}
-                          handleIdentifierAddition={
-                            this.handleIdentifierAddition
-                          }
-                        />
-                      </Form.Group>
+                      {/*WIP: Just testing hiding the rest of the fields*/}
+                      {this.state.identifiers &&
+                        <React.Fragment>
+                          <Form.Group widths="equal">
+                            <TextField
+                              label={i18next.t('Family name')}
+                              placeholder={i18next.t('Family name')}
+                              fieldPath={familyNameFieldPath}
+                              required={this.isCreator()}
+                              // forward ref to Input component because Form.Input
+                              // doesn't handle it
+                              input={{ ref: this.inputRef }}
+                            />
+                            <TextField
+                              label={i18next.t('Given name(s)')}
+                              placeholder={i18next.t('Given name')}
+                              fieldPath={givenNameFieldPath}
+                            />
+                          </Form.Group>
+                          <Form.Group widths="equal">
+                            <CreatibutorsIdentifiers
+                              options={_map(
+                                _get(values, identifiersFieldPath, []),
+                                (identifier) => ({
+                                  text: identifier,
+                                  value: identifier,
+                                  key: identifier,
+                                })
+                              )}
+                              fieldPath={identifiersFieldPath}
+                              onChange={this.handleIdentifierChange}
+                              onAddItem={this.handleIdentifierAddition}
+                            />
+                          </Form.Group>
+                        </React.Fragment>
+                      }
                     </div>
                   ) : (
                     <>
