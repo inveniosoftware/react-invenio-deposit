@@ -245,9 +245,24 @@ export class CreatibutorsModal extends Component {
       value: option,
       key: option,
     }));
-    console.log('SET', identifiers);
+    console.log('SET ID', identifiers);
     this.setState({
       identifiers: identifiers,
+    });
+    formikProps.form.setFieldValue(fieldPath, data.value);
+  };
+
+  handleAffiliationChange = (data, formikProps, fieldPath) => {
+    const affiliations = data.value.map((option) => ({
+      text: option.acronym ? `${option.name} (${option.acronym})` : option.name,
+      value: option.name,
+      key: option.name,
+      ...(option.id ? { id: option.id } : {}),
+      name: option.name,
+    }));
+    console.log('SET AFF', affiliations);
+    this.setState({
+      affiliations: affiliations,
     });
     formikProps.form.setFieldValue(fieldPath, data.value);
   };
@@ -365,12 +380,16 @@ export class CreatibutorsModal extends Component {
                               selectedSuggestions[0].extra.given_name,
                             [`${familyNameFieldPath}`]:
                               selectedSuggestions[0].extra.family_name,
-                            // [`${identifiersFieldPath}`]: identifiers,
-                            [`${affiliationsFieldPath}`]: affiliations,
                           };
                           Object.entries(chosen).forEach(([path, value]) => {
                             formikProps.form.setFieldValue(path, value);
                           });
+
+                          this.handleAffiliationChange(
+                            { value: affiliations },
+                            formikProps,
+                            affiliationsFieldPath
+                          );
                           this.handleIdentifierChange(
                             { value: identifiers },
                             formikProps,
@@ -378,9 +397,8 @@ export class CreatibutorsModal extends Component {
                           );
                         }}
                       />
-                      {/*WIP: Just testing hiding the rest of the fields*/}
-                      {this.state.identifiers &&
-                        <React.Fragment>
+                      {
+                        <>
                           <Form.Group widths="equal">
                             <TextField
                               label={i18next.t('Family name')}
@@ -412,7 +430,25 @@ export class CreatibutorsModal extends Component {
                               onAddItem={this.handleIdentifierAddition}
                             />
                           </Form.Group>
-                        </React.Fragment>
+                          <AffiliationsField
+                            options={_map(
+                              _get(values, affiliationsFieldPath, []),
+                              (affiliation) => ({
+                                text: affiliation.acronym
+                                  ? `${affiliation.name} (${affiliation.acronym})`
+                                  : affiliation.name,
+                                value: affiliation.name,
+                                key: affiliation.name,
+                                ...(affiliation.id
+                                  ? { id: affiliation.id }
+                                  : {}),
+                                name: affiliation.name,
+                              })
+                            )}
+                            fieldPath={affiliationsFieldPath}
+                            onValueChange={this.handleAffiliationChange}
+                          />
+                        </>
                       }
                     </div>
                   ) : (
@@ -438,9 +474,9 @@ export class CreatibutorsModal extends Component {
                         fieldPath={identifiersFieldPath}
                         placeholder={i18next.t('e.g. ROR, ISNI or GND.')}
                       />
+                      <AffiliationsField fieldPath={affiliationsFieldPath} />
                     </>
                   )}
-                  <AffiliationsField fieldPath={affiliationsFieldPath} />
                   <SelectField
                     fieldPath={roleFieldPath}
                     label={i18next.t('Role')}

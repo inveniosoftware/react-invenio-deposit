@@ -33,19 +33,17 @@ export class CreatibutorsIdentifiers extends Component {
     placeholder: i18next.t('e.g. ORCID, ISNI or GND.'),
   };
 
+  // FIXME: Should we have default vlaues for this props functions?
   handleIdentifierAddition = (e, { value }) => {
-    debugger;
     this.props.onAddItem(value);
   };
 
   handleChange = ({ data, formikProps }) => {
-    debugger;
     this.props.onChange(data, formikProps, this.props.fieldPath);
-    formikProps.form.setFieldValue(this.props.fieldPath, data.value);
   };
 
   render() {
-    console.log('INNER', this.props.options);
+    console.log('INNER ID', this.props.options);
     return (
       <SelectField
         fieldPath={this.props.fieldPath}

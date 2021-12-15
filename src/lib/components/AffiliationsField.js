@@ -25,24 +25,41 @@ export class AffiliationsField extends Component {
       name: affiliation.name,
     }));
 
+  handleOnValueChange = ({ formikProps }, selectedSuggestions) => {
+    this.props.onValueChange(
+      selectedSuggestions,
+      formikProps,
+      this.props.fieldPath
+    );
+  };
+
+  handleValue = (values) => {
+    console.log('values', values);
+    const fromField = getIn(values, this.props.fieldPath, []).map(
+      (val) => val.name
+    );
+    console.log('field', fromField); // YOU CAN SEE THE VALUES ARE THERE
+    return fromField.concat(fromField);
+  };
+
   render() {
-    const { fieldPath } = this.props;
+    console.log('INNER AFF', this.props.options);
     return (
       <Field name={this.props.fieldPath}>
         {({ form: { values } }) => {
           return (
             <RemoteSelectField
-              fieldPath={fieldPath}
+              fieldPath={this.props.fieldPath}
               suggestionAPIUrl="/api/affiliations"
               suggestionAPIHeaders={{
                 Accept: 'application/json',
               }}
-              initialSuggestions={getIn(values, fieldPath, [])}
+              initialSuggestions={this.props.options}
               serializeSuggestions={this.serializeAffiliations}
               placeholder={i18next.t("Search or create affiliation'")}
               label={
                 <FieldLabel
-                  htmlFor={`${fieldPath}.name`}
+                  htmlFor={`${this.props.fieldPath}.name`}
                   label={i18next.t('Affiliations')}
                 />
               }
@@ -50,15 +67,8 @@ export class AffiliationsField extends Component {
               allowAdditions
               clearable
               multiple
-              onValueChange={({ formikProps }, selectedSuggestions) => {
-                formikProps.form.setFieldValue(
-                  fieldPath,
-                  // save the suggestion objects so we can extract information
-                  // about which value added by the user
-                  selectedSuggestions
-                );
-              }}
-              value={getIn(values, fieldPath, []).map((val) => val.name)}
+              onValueChange={this.handleOnValueChange}
+              value={this.handleValue(values)}
             />
           );
         }}
@@ -69,4 +79,13 @@ export class AffiliationsField extends Component {
 
 AffiliationsField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
+  onValueChange: PropTypes.func,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      key: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    })
+  ),
 };
