@@ -431,9 +431,7 @@ export class CreatibutorsModal extends Component {
                             />
                           </Form.Group>
                           <AffiliationsField
-                            options={_map(
-                              _get(values, affiliationsFieldPath, []),
-                              (affiliation) => ({
+                            options={_map(_get(values, affiliationsFieldPath, []), (affiliation) => ({
                                 text: affiliation.acronym
                                   ? `${affiliation.name} (${affiliation.acronym})`
                                   : affiliation.name,

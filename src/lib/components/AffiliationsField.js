@@ -14,6 +14,12 @@ import { i18next } from '@translations/i18next';
 
 /**Affiliation input component */
 export class AffiliationsField extends Component {
+  constructor(props) {
+      super(props);
+      this.state = {
+          affiliations: []
+      }
+  }
   serializeAffiliations = (affiliations) =>
     affiliations.map((affiliation) => ({
       text: affiliation.acronym
@@ -39,11 +45,28 @@ export class AffiliationsField extends Component {
       (val) => val.name
     );
     console.log('field', fromField); // YOU CAN SEE THE VALUES ARE THERE
-    return fromField.concat(fromField);
+    return fromField;
   };
 
+  componentDidMount() {
+      this.setState({
+          affiliations: this.props.options
+      })
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+      console.log('Previous props AFF', prevProps.options)
+      console.log('Current props AFF', this.props.options)
+      if (prevProps.options !== this.props.options) {
+          this.setState({
+              affiliations: this.props.options
+          })
+      }
+  }
+
   render() {
-    console.log('INNER AFF', this.props.options);
+    console.log('INNER AFF props', this.props.options);
+    console.log('INNER AFF state', this.state.affiliations);
     return (
       <Field name={this.props.fieldPath}>
         {({ form: { values } }) => {
@@ -55,6 +78,9 @@ export class AffiliationsField extends Component {
                 Accept: 'application/json',
               }}
               initialSuggestions={this.props.options}
+              // So when I change L80 to the one below, it doesn't work, but the contents of props.options and state.affiliations are the same
+              // initialSuggestions={this.state.affiliations}
+              // Not sure if we can make this fully work without tinkering with the underlying RemoteSelectField
               serializeSuggestions={this.serializeAffiliations}
               placeholder={i18next.t("Search or create affiliation'")}
               label={
