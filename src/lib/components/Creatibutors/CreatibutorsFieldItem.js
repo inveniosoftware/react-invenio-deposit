@@ -110,7 +110,7 @@ export const CreatibutorsFieldItem = ({
               {_get(initialCreatibutor, 'person_or_org.identifiers', []).some(
                 (identifier) => identifier.scheme === 'orcid'
               ) && (
-                <img className="inline-id-icon" src="/static/images/orcid.svg" />
+                <img className="inline-id-icon" src="/static/images/orcid.svg" width="16" height="16" />
               )}
               {displayName} {renderRole(initialCreatibutor?.role, roleOptions)}
             </List.Description>
