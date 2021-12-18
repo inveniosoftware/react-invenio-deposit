@@ -107,12 +107,14 @@ export const CreatibutorsFieldItem = ({
         <Ref innerRef={preview}>
           <List.Content>
             <List.Description>
+              <span class="creatibutor">
               {_get(initialCreatibutor, 'person_or_org.identifiers', []).some(
                 (identifier) => identifier.scheme === 'orcid'
               ) && (
                 <img alt="ORCID logo" className="inline-id-icon" src="/static/images/orcid.svg" width="16" height="16" />
               )}
               {displayName} {renderRole(initialCreatibutor?.role, roleOptions)}
+              </span>
             </List.Description>
             {firstError && (
               <Label pointing="left" prompt>
