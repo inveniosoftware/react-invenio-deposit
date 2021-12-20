@@ -26,7 +26,7 @@ export class AffiliationsField extends Component {
     }));
 
   render() {
-    const { fieldPath } = this.props;
+    const { fieldPath, selectRef } = this.props;
     return (
       <Field name={this.props.fieldPath}>
         {({ form: { values } }) => {
@@ -59,6 +59,7 @@ export class AffiliationsField extends Component {
                 );
               }}
               value={getIn(values, fieldPath, []).map((val) => val.name)}
+              ref={selectRef}
             />
           );
         }}
@@ -69,4 +70,5 @@ export class AffiliationsField extends Component {
 
 AffiliationsField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
+  selectRef: PropTypes.object,
 };

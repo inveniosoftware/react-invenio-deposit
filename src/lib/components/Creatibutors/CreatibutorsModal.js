@@ -15,6 +15,7 @@ import {
   TextField,
   ActionButton,
   RadioField,
+  RemoteSelectField,
 } from 'react-invenio-forms';
 import * as Yup from 'yup';
 import _get from 'lodash/get';
@@ -39,6 +40,8 @@ export class CreatibutorsModal extends Component {
       action: null,
     };
     this.inputRef = createRef();
+    this.identifiersRef = createRef();
+    this.affiliationsRef = createRef();
   }
 
   CreatorSchema = Yup.object({
@@ -183,6 +186,41 @@ export class CreatibutorsModal extends Component {
     }
   };
 
+  serializeSuggestions = (creatibutor) =>
+    creatibutor.map((creatibutor) => {
+      const orcid = _find(creatibutor.identifiers, (identifier) => {
+        return identifier.scheme === 'orcid';
+      });
+
+      let aff_names = '';
+      creatibutor.affiliations.forEach((affiliation, idx) => {
+        aff_names += affiliation.name;
+        if (idx < creatibutor.affiliations.length - 1) {
+          aff_names += ', ';
+        }
+      });
+
+      return {
+        text: creatibutor.name,
+        value: orcid.identifier,
+        extra: creatibutor,
+        key: creatibutor.id,
+        content: (
+          <div>
+            <div>
+              {creatibutor.name} ({orcid.identifier})
+            </div>
+            {aff_names !== '' && (
+              <div>
+                <p>Affiliations</p>
+                <p>{aff_names}</p>
+              </div>
+            )}
+          </div>
+        ),
+      };
+    });
+
   render() {
     const initialCreatibutor = this.props.initialCreatibutor;
     const ActionLabel = () => this.displayActionLabel();
@@ -262,8 +300,66 @@ export class CreatibutorsModal extends Component {
                     />
                   </Form.Group>
                   {_get(values, typeFieldPath, '') ===
-                  CREATIBUTOR_TYPE.PERSON ? (
+                    CREATIBUTOR_TYPE.PERSON ? (
                     <div>
+                      <RemoteSelectField
+                        fieldPath={'creators'}
+                        clearable={true}
+                        multiple={false}
+                        allowAdditions={false}
+                        placeholder="Name, identifier or affiliation name..."
+                        noQueryMessage={i18next.t('Search for names...')}
+                        required={false}
+                        suggestionAPIUrl="/api/names"
+                        serializeSuggestions={this.serializeSuggestions}
+                        onValueChange={(
+                          { event, data, formikProps },
+                          selectedSuggestions
+                        ) => {
+                          if ('relatedTarget' in event) {
+                            // In case it's blur event, just return
+                            return;
+                          }
+                          const identifiers =
+                            selectedSuggestions[0].extra.identifiers.map(
+                              (identifier) => {
+                                return identifier.identifier;
+                              }
+                            );
+                          const affiliations =
+                            selectedSuggestions[0].extra.affiliations.map(
+                              (affiliation) => {
+                                return affiliation;
+                              }
+                            );
+                          let chosen = {
+                            [givenNameFieldPath]: selectedSuggestions[0].extra.given_name,
+                            [familyNameFieldPath]: selectedSuggestions[0].extra.family_name,
+                            [identifiersFieldPath]: identifiers,
+                            [affiliationsFieldPath]: affiliations,
+                          };
+                          Object.entries(chosen).forEach(([path, value]) => {
+                            formikProps.form.setFieldValue(path, value);
+                          });
+                          // Update identifiers render
+                          this.identifiersRef.current.setState({
+                            selectedOptions: this.identifiersRef.current.valuesToOptions(identifiers)
+                          })
+                          // Update affiliations render
+                          const affiliationsState = affiliations.map(({ name }) => ({
+                            text: name, value: name, key: name, name
+                          }))
+                          this.affiliationsRef.current.setState(
+                            {
+                              suggestions: affiliationsState,
+                              selectedSuggestions: affiliationsState,
+                              searchQuery: null,
+                              error: false,
+                              open: false,
+                            },
+                          );
+                        }}
+                      />
                       <Form.Group widths="equal">
                         <TextField
                           label={i18next.t('Family name')}
@@ -291,6 +387,7 @@ export class CreatibutorsModal extends Component {
                             })
                           )}
                           fieldPath={identifiersFieldPath}
+                          ref={this.identifiersRef}
                         />
                       </Form.Group>
                     </div>
@@ -319,7 +416,10 @@ export class CreatibutorsModal extends Component {
                       />
                     </>
                   )}
-                  <AffiliationsField fieldPath={affiliationsFieldPath} />
+                  <AffiliationsField
+                    fieldPath={affiliationsFieldPath}
+                    selectRef={this.affiliationsRef}
+                  />
                   <SelectField
                     fieldPath={roleFieldPath}
                     label={i18next.t('Role')}
