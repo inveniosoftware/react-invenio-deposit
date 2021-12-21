@@ -316,10 +316,6 @@ export class CreatibutorsModal extends Component {
                           { event, data, formikProps },
                           selectedSuggestions
                         ) => {
-                          if ('relatedTarget' in event) {
-                            // In case it's blur event, just return
-                            return;
-                          }
                           const identifiers =
                             selectedSuggestions[0].extra.identifiers.map(
                               (identifier) => {
