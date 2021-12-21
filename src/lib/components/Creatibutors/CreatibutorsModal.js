@@ -8,8 +8,8 @@
 
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Grid, Header, Form, Ref } from 'semantic-ui-react';
-import { Formik, getIn } from 'formik';
+import { Form, Grid, Header, Icon, Image, Modal } from 'semantic-ui-react';
+import { Formik } from 'formik';
 import {
   SelectField,
   TextField,
@@ -206,17 +206,21 @@ export class CreatibutorsModal extends Component {
         extra: creatibutor,
         key: creatibutor.id,
         content: (
-          <div>
-            <div>
-              {creatibutor.name} ({orcid.identifier})
-            </div>
-            {aff_names !== '' && (
-              <div>
-                <p>Affiliations</p>
-                <p>{aff_names}</p>
-              </div>
-            )}
-          </div>
+          <Header>
+            <Header.Content>
+              {creatibutor.name} (
+              <Image
+                src="/static/images/orcid.svg"
+                className="small-icon"
+                verticalAlign="middle"
+              />
+              {orcid.identifier})
+              <a href={`https://orcid.org/${orcid.identifier}`}>
+                <Icon link name="external alternate" className="spaced-left" />
+              </a>
+            </Header.Content>
+            <Header.Subheader>{aff_names}</Header.Subheader>
+          </Header>
         ),
       };
     });
