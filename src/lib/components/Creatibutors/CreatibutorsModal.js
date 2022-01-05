@@ -215,7 +215,11 @@ export class CreatibutorsModal extends Component {
                 verticalAlign="middle"
               />
               {orcid.identifier})
-              <a href={`https://orcid.org/${orcid.identifier}`}>
+              <a
+                href={`https://orcid.org/${orcid.identifier}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Icon link name="external alternate" className="spaced-left" />
               </a>
             </Header.Content>
