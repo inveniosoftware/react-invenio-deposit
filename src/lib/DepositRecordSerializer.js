@@ -165,8 +165,16 @@ export class DepositRecordSerializer {
       deserializedDefault: [],
       serializedDefault: [],
     }),
-    identifiers: new Field({
+    identifiers: new SchemaField({
       fieldpath: 'metadata.identifiers',
+      schema: {
+        scheme: new Field({
+          fieldpath: 'scheme',
+        }),
+        identifier: new Field({
+          fieldpath: 'identifier',
+        }),
+      },
       deserializedDefault: [emptyIdentifier],
     }),
     related_identifiers: new SchemaField({

@@ -161,10 +161,10 @@ describe('DepositRecordSerializer', () => {
           contributors: [],
           resource_type: '',
           publication_date: '',
-          dates: [emptyDate],
+          dates: [{...emptyDate, __key: 0}],
           languages: [],
-          identifiers: [emptyIdentifier],
-          related_identifiers: [emptyRelatedWork],
+          identifiers: [{...emptyIdentifier, __key: 0}],
+          related_identifiers: [{...emptyRelatedWork, __key: 0}],
           subjects: [],
           rights: [],
           funding: [emptyFunding],
@@ -182,7 +182,7 @@ describe('DepositRecordSerializer', () => {
       expect(deserializedRecord).toEqual(expectedRecord);
     });
 
-    it('deserialize a full record', () => {
+    it('deserializes a full record', () => {
       const record = {
         access: {
           access_right: 'open',
@@ -353,6 +353,7 @@ describe('DepositRecordSerializer', () => {
                 ],
               },
               role: 'datacurator',
+              __key: 0,
             },
           ],
           creators: [
@@ -368,21 +369,22 @@ describe('DepositRecordSerializer', () => {
                 type: 'personal',
               },
               role: '',
+              __key: 0,
             },
           ],
           publication_date: '2020-09-28',
           resource_type: 'lesson',
           title: 'Test 2020-1028 13:34',
           additional_titles: [
-            { title: 'Another title', type: 'abstract', lang: 'dan' },
+            { title: 'Another title', type: 'abstract', lang: 'dan', __key: 0 },
           ],
           additional_descriptions: [
-            { description: 'Another description', type: 'other', lang: 'dan' },
+            { description: 'Another description', type: 'other', lang: 'dan', __key: 0 },
           ],
-          dates: [{ date: '1920/2020', type: 'collected', description: 'foo' }],
+          dates: [{ date: '1920/2020', type: 'collected', description: 'foo', __key: 0 }],
           languages: ['en_id', 'fr_id'],
           identifiers: [
-            { scheme: 'doi', identifier: '10.5281/zenodo.9999999' },
+            { scheme: 'doi', identifier: '10.5281/zenodo.9999999', __key: 0 },
           ],
           related_identifiers: [
             {
@@ -390,6 +392,7 @@ describe('DepositRecordSerializer', () => {
               identifier: '10.5281/zenodo.9999988',
               resource_type: 'image-photo',
               relation_type: 'requires',
+              __key: 0,
             },
           ],
           subjects: [

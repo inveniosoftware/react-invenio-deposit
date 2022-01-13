@@ -1,5 +1,6 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2021 CERN.
+// Copyright (C) 2022 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -13,8 +14,8 @@ import { Field } from './Field';
 
 export class SchemaField extends Field {
   /**
-   * IMPORTANT: This component is so far only thought for list, since
-   * the use case of a single object with schema has not rose yet.
+   * IMPORTANT: This component is so far only for list subfields, since
+   * the use case of a single object with schema has not arisen yet.
    */
   constructor({
     fieldpath,
@@ -28,36 +29,43 @@ export class SchemaField extends Field {
   };
 
   /**
-   * Deserialize backend field into format compatible with frontend using
-   * the given schema. 
+   * Deserialize backend field given by `this.fieldPath` from `serialized`
+   * object into format compatible with frontend using `this.schema`.
    * @method
-   * @param {object} element - potentially empty object
-   * @returns {object} frontend compatible element object
+   * @param {object} serialized - in API format
+   * @returns {object} deserialized - in frontent format
    */
-  deserialize(elements) {
-    const fieldValues = _get(elements, this.fieldpath, this.deserializedDefault);
-    const deserializedElements = fieldValues.map((value) => {
+  deserialize(serialized) {
+    const fieldValues = _get(
+      serialized, this.fieldpath, this.deserializedDefault
+    );
+    const deserializedElements = fieldValues.map((value, i) => {
       let deserializedElement = _pick(value, this.schemaKeys);
       this.schemaKeys.forEach((key) => {
         deserializedElement = this.schema[key].deserialize(
           deserializedElement
         );
       });
-      return deserializedElement
+      // Add __key
+      deserializedElement.__key = i;
+      return deserializedElement;
     });
 
-    return _set(_cloneDeep(elements), this.fieldpath, deserializedElements)
-    }
+    return _set(_cloneDeep(serialized), this.fieldpath, deserializedElements);
+  }
 
   /**
-   * Serialize element to send to the backend.
+   * Serialize frontend field given by `this.fieldPath` from `deserialized`
+   * object into format compatible with backend using `this.schema`.
    * @method
-   * @param {object} element - in frontend format
-   * @returns {object} element - in API format
+   * @param {object} deserialized - in frontend format
+   * @returns {object} serialized - in API format
    *
    */
-  serialize(elements) {
-    const fieldValues = _get(elements, this.fieldpath, this.serializedDefault);
+  serialize(deserialized) {
+    const fieldValues = _get(
+      deserialized, this.fieldpath, this.serializedDefault
+    );
     const serializedElements = fieldValues.map((value) => {
       let serializedElement = _pick(value, this.schemaKeys);
       this.schemaKeys.forEach((key) => {
@@ -68,7 +76,9 @@ export class SchemaField extends Field {
       return serializedElement
     });
     if (serializedElements !== null) {
-      return _set(_cloneDeep(elements), this.fieldpath, serializedElements);
+      return _set(
+        _cloneDeep(deserialized), this.fieldpath, serializedElements
+      );
     }
     return elements;
   }
