@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2022 Northwestern University.
 // Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
@@ -51,84 +51,88 @@ export class FundingField extends Component {
         labelIcon={labelIcon}
         required={required}
       >
-        {({ array, arrayHelpers, indexPath, key, form }) => (
-          <GroupField widths="equal" optimized>
-            <SelectField
-              error={this.groupErrors(form.errors)}
-              fieldPath={`${key}.funder`}
-              label={
-                <FieldLabel
-                  htmlFor={`${key}.funder`}
-                  label={i18next.t('Funding Organization')}
-                />
-              }
-              options={selectFieldFunderOptions}
-              onChange={(event, selectedOption) => {
-                const funderFieldPath = `${key}.funder`;
-                const awardFieldPath = `${key}.award`;
-                const [scheme, identifier] = selectedOption.value.split(" ");
-                const funderValue = options.funder.find(
-                  (f) => f.scheme === scheme && f.identifier === identifier
-                );
-                form.setFieldValue(funderFieldPath, funderValue);
-                form.setFieldValue(awardFieldPath, emptyFunding.award);
-              }}
-              value={(()=> {
-                const funder = _get(form.values, `${key}.funder`);
-                return funder ? `${funder.scheme} ${funder.identifier}` : '';
-              })()}
-              placeholder={i18next.t('Funding organization...')}
-              required
-              optimized
-            />
-            <SelectField
-              error={this.groupErrors(form.errors)}
-              fieldPath={`${key}.award`}
-              label={
-                <FieldLabel
-                  htmlFor={`${key}.award`}
-                  label={i18next.t('Award')}
-                />
-              }
-              options={
-                options.award
-                .filter((a) => {
-                  const funder = _get(form.values, `${key}.funder`);
-                  return funder.scheme === a.parentScheme && funder.identifier === a.parentIdentifier
-                })
-                .map(
-                  (a) => Object({text: a.title, value: `${a.scheme} ${a.identifier}`})
-                )
-              }
-              onChange={(event, selectedOption) => {
-                const awardFieldPath = `${key}.award`;
-                const [scheme, identifier] = selectedOption.value.split(" ");
-                let award = options.award.find(
-                  (a) => a.scheme === scheme && a.identifier === identifier
-                );
-                // Get rid of parentScheme + parentIdentifier
-                award = _pick(award, ["identifier", "number", "scheme", "title"]);
-                form.setFieldValue(awardFieldPath, award);
-              }}
-              value={(()=> {
-                const award = _get(form.values, `${key}.award`);
-                return award ? `${award.scheme} ${award.identifier}` : '';
-              })()}
-              placeholder={i18next.t('Award number/acronym/name ...')}
-              required
-              optimized
-            />
-            <Form.Field>
-              <label>&nbsp;</label>
-              <Button
-                icon
-                onClick={() => arrayHelpers.remove(indexPath)}
-              >
-                <Icon name="close" size="large" />
-              </Button>
-            </Form.Field>
-          </GroupField>
-        )}
+        {({ arrayHelpers, indexPath, form }) => {
+          const fieldPathPrefix = `${fieldPath}.${indexPath}`;
+
+          return (
+            <GroupField widths="equal" optimized>
+              <SelectField
+                error={this.groupErrors(form.errors)}
+                fieldPath={`${fieldPathPrefix}.funder`}
+                label={
+                  <FieldLabel
+                    htmlFor={`${fieldPathPrefix}.funder`}
+                    label={i18next.t('Funding Organization')}
+                  />
+                }
+                options={selectFieldFunderOptions}
+                onChange={(event, selectedOption) => {
+                  const funderFieldPath = `${fieldPathPrefix}.funder`;
+                  const awardFieldPath = `${fieldPathPrefix}.award`;
+                  const [scheme, identifier] = selectedOption.value.split(" ");
+                  const funderValue = options.funder.find(
+                    (f) => f.scheme === scheme && f.identifier === identifier
+                  );
+                  form.setFieldValue(funderFieldPath, funderValue);
+                  form.setFieldValue(awardFieldPath, emptyFunding.award);
+                }}
+                value={(()=> {
+                  const funder = _get(form.values, `${fieldPathPrefix}.funder`);
+                  return funder ? `${funder.scheme} ${funder.identifier}` : '';
+                })()}
+                placeholder={i18next.t('Funding organization...')}
+                required
+                optimized
+              />
+              <SelectField
+                error={this.groupErrors(form.errors)}
+                fieldPath={`${fieldPathPrefix}.award`}
+                label={
+                  <FieldLabel
+                    htmlFor={`${fieldPathPrefix}.award`}
+                    label={i18next.t('Award')}
+                  />
+                }
+                options={
+                  options.award
+                  .filter((a) => {
+                    const funder = _get(form.values, `${fieldPathPrefix}.funder`);
+                    return funder.scheme === a.parentScheme && funder.identifier === a.parentIdentifier
+                  })
+                  .map(
+                    (a) => Object({text: a.title, value: `${a.scheme} ${a.identifier}`})
+                  )
+                }
+                onChange={(event, selectedOption) => {
+                  const awardFieldPath = `${fieldPathPrefix}.award`;
+                  const [scheme, identifier] = selectedOption.value.split(" ");
+                  let award = options.award.find(
+                    (a) => a.scheme === scheme && a.identifier === identifier
+                  );
+                  // Get rid of parentScheme + parentIdentifier
+                  award = _pick(award, ["identifier", "number", "scheme", "title"]);
+                  form.setFieldValue(awardFieldPath, award);
+                }}
+                value={(()=> {
+                  const award = _get(form.values, `${fieldPathPrefix}.award`);
+                  return award ? `${award.scheme} ${award.identifier}` : '';
+                })()}
+                placeholder={i18next.t('Award number/acronym/name ...')}
+                required
+                optimized
+              />
+              <Form.Field>
+                <label>&nbsp;</label>
+                <Button
+                  icon
+                  onClick={() => arrayHelpers.remove(indexPath)}
+                >
+                  <Icon name="close" size="large" />
+                </Button>
+              </Form.Field>
+            </GroupField>
+          );
+        }}
       </ArrayField>
     );
   };

@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
-// Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2020-2022 Northwestern University.
 // Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
@@ -38,40 +38,44 @@ export class DatesField extends Component {
         labelIcon={labelIcon}
         required={required}
       >
-        {({ array, arrayHelpers, indexPath, key, form }) => (
-          <GroupField fieldPath={fieldPath} optimized>
-            <TextField
-              fieldPath={`${key}.date`}
-              label={i18next.t('Date')}
-              placeholder={placeholderDate}
-              required
-              width={5}
-            />
-            <SelectField
-              fieldPath={`${key}.type`}
-              label={i18next.t('Type')}
-              options={sortOptions(options.type)}
-              required
-              width={5}
-              optimized
-            />
-            <TextField
-              fieldPath={`${key}.description`}
-              label={i18next.t('Description')}
-              width={5}
-            />
-            <Form.Field width={1}>
-              <label>&nbsp;</label>
-              <Button
-                icon
-                onClick={() => arrayHelpers.remove(indexPath)}
-                type="button"
-              >
-                <Icon name="close" />
-              </Button>
-            </Form.Field>
-          </GroupField>
-        )}
+        {({ arrayHelpers, indexPath }) => {
+          const fieldPathPrefix = `${fieldPath}.${indexPath}`;
+
+          return (
+            <GroupField fieldPath={fieldPath} optimized>
+              <TextField
+                fieldPath={`${fieldPathPrefix}.date`}
+                label={i18next.t('Date')}
+                placeholder={placeholderDate}
+                required
+                width={5}
+              />
+              <SelectField
+                fieldPath={`${fieldPathPrefix}.type`}
+                label={i18next.t('Type')}
+                options={sortOptions(options.type)}
+                required
+                width={5}
+                optimized
+              />
+              <TextField
+                fieldPath={`${fieldPathPrefix}.description`}
+                label={i18next.t('Description')}
+                width={5}
+              />
+              <Form.Field width={1}>
+                <label>&nbsp;</label>
+                <Button
+                  icon
+                  onClick={() => arrayHelpers.remove(indexPath)}
+                  type="button"
+                >
+                  <Icon name="close" />
+                </Button>
+              </Form.Field>
+            </GroupField>
+          );
+        }}
       </ArrayField>
     );
   }

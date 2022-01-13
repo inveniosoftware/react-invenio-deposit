@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2022 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -33,43 +33,46 @@ export class IdentifiersField extends Component {
           }
           required={required}
         >
-          {({ array, arrayHelpers, indexPath, key }) => (
-            <GroupField optimized>
-              <TextField
-                fieldPath={`${key}.identifier`}
-                label={i18next.t('Identifier')}
-                required
-                width={11}
-              />
-              {schemeOptions && (
-                <SelectField
-                  fieldPath={`${key}.scheme`}
-                  label={i18next.t('Scheme')}
-                  options={schemeOptions}
-                  optimized
-                  required
-                  width={5}
-                />
-              )}
-              {!schemeOptions && (
+          {({ arrayHelpers, indexPath }) => {
+            const fieldPathPrefix = `${fieldPath}.${indexPath}`;
+            return (
+              <GroupField>
                 <TextField
-                  fieldPath={`${key}.scheme`}
-                  label={i18next.t('Scheme')}
+                  fieldPath={`${fieldPathPrefix}.identifier`}
+                  label={i18next.t('Identifier')}
                   required
-                  width={5}
+                  width={11}
                 />
-              )}
-              <Form.Field>
-                <Form.Field>
-                  <label>&nbsp;</label>
-                  <Button
-                    icon="close"
-                    onClick={() => arrayHelpers.remove(indexPath)}
+                {schemeOptions && (
+                  <SelectField
+                    fieldPath={`${fieldPathPrefix}.scheme`}
+                    label={i18next.t('Scheme')}
+                    options={schemeOptions}
+                    optimized
+                    required
+                    width={5}
                   />
+                )}
+                {!schemeOptions && (
+                  <TextField
+                    fieldPath={`${fieldPathPrefix}.scheme`}
+                    label={i18next.t('Scheme')}
+                    required
+                    width={5}
+                  />
+                )}
+                <Form.Field>
+                  <Form.Field>
+                    <label>&nbsp;</label>
+                    <Button
+                      icon="close"
+                      onClick={() => arrayHelpers.remove(indexPath)}
+                    />
+                  </Form.Field>
                 </Form.Field>
-              </Form.Field>
-            </GroupField>
-          )}
+              </GroupField>
+            );
+          }}
         </ArrayField>
       </>
     );

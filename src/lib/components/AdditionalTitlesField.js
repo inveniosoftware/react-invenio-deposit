@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
-// Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2020-2022 Northwestern University.
 // Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
@@ -29,53 +29,57 @@ export class AdditionalTitlesField extends Component {
         defaultNewValue={emptyAdditionalTitle}
         fieldPath={fieldPath}
       >
-        {({ array, arrayHelpers, indexPath, key }) => (
-          <GroupField fieldPath={fieldPath} optimized>
-            <TextField
-              fieldPath={`${key}.title`}
-              label={'Additional title'}
-              required
-              width={5}
-            />
-            <SelectField
-              fieldPath={`${key}.type`}
-              label={'Type'}
-              optimized
-              options={options.type}
-              required
-              width={5}
-            />
-            <LanguagesField
-              serializeSuggestions={(suggestions) =>
-                suggestions.map((item) => ({
-                  text: item.title_l10n,
-                  value: item.id,
-                  key: item.id,
-                }))
-              }
-              initialOptions={
-                recordUI?.additional_titles &&
-                recordUI.additional_titles[indexPath]?.lang
-                  ? [recordUI.additional_titles[indexPath].lang]
-                  : []
-              }
-              fieldPath={`${key}.lang`}
-              label={'Language'}
-              multiple={false}
-              placeholder={'Select language'}
-              labelIcon={null}
-              clearable
-              selectOnBlur={false}
-              width={5}
-            />
-            <Form.Field width={1}>
-              <label>&nbsp;</label>
-              <Button icon onClick={() => arrayHelpers.remove(indexPath)}>
-                <Icon name="close" />
-              </Button>
-            </Form.Field>
-          </GroupField>
-        )}
+        {({ arrayHelpers, indexPath }) => {
+          const fieldPathPrefix = `${fieldPath}.${indexPath}`;
+
+          return (
+            <GroupField fieldPath={fieldPath} optimized>
+              <TextField
+                fieldPath={`${fieldPathPrefix}.title`}
+                label={'Additional title'}
+                required
+                width={5}
+              />
+              <SelectField
+                fieldPath={`${fieldPathPrefix}.type`}
+                label={'Type'}
+                optimized
+                options={options.type}
+                required
+                width={5}
+              />
+              <LanguagesField
+                serializeSuggestions={(suggestions) =>
+                  suggestions.map((item) => ({
+                    text: item.title_l10n,
+                    value: item.id,
+                    fieldPathPrefix: item.id,
+                  }))
+                }
+                initialOptions={
+                  recordUI?.additional_titles &&
+                  recordUI.additional_titles[indexPath]?.lang
+                    ? [recordUI.additional_titles[indexPath].lang]
+                    : []
+                }
+                fieldPath={`${fieldPathPrefix}.lang`}
+                label={'Language'}
+                multiple={false}
+                placeholder={'Select language'}
+                labelIcon={null}
+                clearable
+                selectOnBlur={false}
+                width={5}
+              />
+              <Form.Field width={1}>
+                <label>&nbsp;</label>
+                <Button icon onClick={() => arrayHelpers.remove(indexPath)}>
+                  <Icon name="close" />
+                </Button>
+              </Form.Field>
+            </GroupField>
+          );
+        }}
       </ArrayField>
     );
   }

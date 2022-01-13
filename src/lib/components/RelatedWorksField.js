@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
-// Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2020-2022 Northwestern University.
 // Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
@@ -42,53 +42,57 @@ export class RelatedWorksField extends Component {
           }
           required={required}
         >
-          {({ array, arrayHelpers, indexPath, key }) => (
-            <GroupField optimized>
-              <SelectField
-                clearable
-                fieldPath={`${key}.relation_type`}
-                label={i18next.t('Relation')}
-                optimized
-                options={options.relations}
-                placeholder={i18next.t('Select relation...')}
-                required
-                width={3}
-              />
-              
-              <TextField
-                fieldPath={`${key}.identifier`}
-                label={i18next.t('Identifier')}
-                required
-                width={4}
-              />
+          {({ arrayHelpers, indexPath }) => {
+            const fieldPathPrefix = `${fieldPath}.${indexPath}`;
 
-              <SelectField
-                clearable
-                fieldPath={`${key}.scheme`}
-                label={i18next.t('Scheme')}
-                optimized
-                options={options.scheme}
-                required
-                width={2}
-              />
+            return (
+              <GroupField optimized>
+                <SelectField
+                  clearable
+                  fieldPath={`${fieldPathPrefix}.relation_type`}
+                  label={i18next.t('Relation')}
+                  optimized
+                  options={options.relations}
+                  placeholder={i18next.t('Select relation...')}
+                  required
+                  width={3}
+                />
 
-              <ResourceTypeField
-                clearable
-                fieldPath={`${key}.resource_type`}
-                labelIcon={''} // Otherwise breaks alignment
-                options={options.resource_type}
-                width={6}
-                labelclassname="small field-label-class"
-              />
+                <TextField
+                  fieldPath={`${fieldPathPrefix}.identifier`}
+                  label={i18next.t('Identifier')}
+                  required
+                  width={4}
+                />
 
-              <Form.Field width={1}>
-                <label>&nbsp;</label>
-                <Button icon onClick={() => arrayHelpers.remove(indexPath)}>
-                  <Icon name="close" />
-                </Button>
-              </Form.Field>
-            </GroupField>
-          )}
+                <SelectField
+                  clearable
+                  fieldPath={`${fieldPathPrefix}.scheme`}
+                  label={i18next.t('Scheme')}
+                  optimized
+                  options={options.scheme}
+                  required
+                  width={2}
+                />
+
+                <ResourceTypeField
+                  clearable
+                  fieldPath={`${fieldPathPrefix}.resource_type`}
+                  labelIcon={''} // Otherwise breaks alignment
+                  options={options.resource_type}
+                  width={6}
+                  labelclassname="small field-label-class"
+                />
+
+                <Form.Field width={1}>
+                  <label>&nbsp;</label>
+                  <Button icon onClick={() => arrayHelpers.remove(indexPath)}>
+                    <Icon name="close" />
+                  </Button>
+                </Form.Field>
+              </GroupField>
+            );
+          }}
         </ArrayField>
       </>
     );
