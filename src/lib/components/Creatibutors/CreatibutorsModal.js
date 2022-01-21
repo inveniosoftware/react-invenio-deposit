@@ -38,6 +38,7 @@ export class CreatibutorsModal extends Component {
       open: false,
       saveAndContinueLabel: i18next.t('Save and add another'),
       action: null,
+      showPersonForm: false,
     };
     this.inputRef = createRef();
     this.identifiersRef = createRef();
@@ -65,7 +66,7 @@ export class CreatibutorsModal extends Component {
     }),
   });
 
-  focusInput = () => this.inputRef.current.focus();
+  focusInput = () => {};
 
   openModal = () => {
     this.setState({ open: true, action: null }, () => {
@@ -186,8 +187,8 @@ export class CreatibutorsModal extends Component {
     }
   };
 
-  serializeSuggestions = (creatibutor) =>
-    creatibutor.map((creatibutor) => {
+  serializeSuggestions = (creatibutors) => {
+    let results = creatibutors.map((creatibutor) => {
       const orcid = _find(creatibutor.identifiers, (identifier) => {
         return identifier.scheme === 'orcid';
       });
@@ -228,6 +229,81 @@ export class CreatibutorsModal extends Component {
         ),
       };
     });
+
+    results.push({
+      text: 'Manual entry',
+      value: 'Manual entry',
+      extra: 'Manual entry',
+      key: 'manual-entry',
+      content: (
+          <Header>
+            <Header.Content>
+              <p>Couldn't find your person? You can <a>create a new entry</a></p>
+            </Header.Content>
+          </Header>
+      ),
+    });
+    return results;
+  }
+
+  onPersonSearchChange = ({ event, data, formikProps }, selectedSuggestions) => {
+    if (selectedSuggestions[0].key === 'manual-entry') {
+      this.setState({
+        showPersonForm: true
+      })
+      return
+    }
+
+    this.setState({
+      showPersonForm: true
+    }, () => {
+      const identifiers =
+        selectedSuggestions[0].extra.identifiers.map(
+          (identifier) => {
+            return identifier.identifier;
+          }
+        );
+      const affiliations =
+        selectedSuggestions[0].extra.affiliations.map(
+          (affiliation) => {
+            return affiliation;
+          }
+        );
+
+      const personOrOrgPath = `person_or_org`;
+      const familyNameFieldPath = `${personOrOrgPath}.family_name`;
+      const givenNameFieldPath = `${personOrOrgPath}.given_name`;
+      const identifiersFieldPath = `${personOrOrgPath}.identifiers`;
+      const affiliationsFieldPath = 'affiliations';
+
+      let chosen = {
+        [givenNameFieldPath]: selectedSuggestions[0].extra.given_name,
+        [familyNameFieldPath]: selectedSuggestions[0].extra.family_name,
+        [identifiersFieldPath]: identifiers,
+        [affiliationsFieldPath]: affiliations,
+      };
+      Object.entries(chosen).forEach(([path, value]) => {
+        formikProps.form.setFieldValue(path, value);
+      });
+      // Update identifiers render
+      this.identifiersRef.current.setState({
+        selectedOptions: this.identifiersRef.current.valuesToOptions(identifiers)
+      })
+      // Update affiliations render
+      const affiliationsState = affiliations.map(({ name }) => ({
+        text: name, value: name, key: name, name
+      }))
+      this.affiliationsRef.current.setState(
+          {
+            suggestions: affiliationsState,
+            selectedSuggestions: affiliationsState,
+            searchQuery: null,
+            error: false,
+            open: false,
+          },
+      );
+    })
+  }
 
   render() {
     const initialCreatibutor = this.props.initialCreatibutor;
@@ -318,82 +394,46 @@ export class CreatibutorsModal extends Component {
                         placeholder="Name, identifier or affiliation name..."
                         noQueryMessage={i18next.t('Search for names...')}
                         required={false}
+                        // Disable UI-side filtering of search results
+                        search={options => options}
                         suggestionAPIUrl="/api/names"
                         serializeSuggestions={this.serializeSuggestions}
-                        onValueChange={(
-                          { event, data, formikProps },
-                          selectedSuggestions
-                        ) => {
-                          const identifiers =
-                            selectedSuggestions[0].extra.identifiers.map(
-                              (identifier) => {
-                                return identifier.identifier;
-                              }
-                            );
-                          const affiliations =
-                            selectedSuggestions[0].extra.affiliations.map(
-                              (affiliation) => {
-                                return affiliation;
-                              }
-                            );
-                          let chosen = {
-                            [givenNameFieldPath]: selectedSuggestions[0].extra.given_name,
-                            [familyNameFieldPath]: selectedSuggestions[0].extra.family_name,
-                            [identifiersFieldPath]: identifiers,
-                            [affiliationsFieldPath]: affiliations,
-                          };
-                          Object.entries(chosen).forEach(([path, value]) => {
-                            formikProps.form.setFieldValue(path, value);
-                          });
-                          // Update identifiers render
-                          this.identifiersRef.current.setState({
-                            selectedOptions: this.identifiersRef.current.valuesToOptions(identifiers)
-                          })
-                          // Update affiliations render
-                          const affiliationsState = affiliations.map(({ name }) => ({
-                            text: name, value: name, key: name, name
-                          }))
-                          this.affiliationsRef.current.setState(
-                            {
-                              suggestions: affiliationsState,
-                              selectedSuggestions: affiliationsState,
-                              searchQuery: null,
-                              error: false,
-                              open: false,
-                            },
-                          );
-                        }}
+                        onValueChange={this.onPersonSearchChange }
                       />
-                      <Form.Group widths="equal">
-                        <TextField
-                          label={i18next.t('Family name')}
-                          placeholder={i18next.t('Family name')}
-                          fieldPath={familyNameFieldPath}
-                          required={this.isCreator()}
-                          // forward ref to Input component because Form.Input
-                          // doesn't handle it
-                          input={{ ref: this.inputRef }}
-                        />
-                        <TextField
-                          label={i18next.t('Given name(s)')}
-                          placeholder={i18next.t('Given name')}
-                          fieldPath={givenNameFieldPath}
-                        />
-                      </Form.Group>
-                      <Form.Group widths="equal">
-                        <CreatibutorsIdentifiers
-                          initialOptions={_map(
-                            _get(values, identifiersFieldPath, []),
-                            (identifier) => ({
-                              text: identifier,
-                              value: identifier,
-                              key: identifier,
-                            })
-                          )}
-                          fieldPath={identifiersFieldPath}
-                          ref={this.identifiersRef}
-                        />
-                      </Form.Group>
+                      {this.state.showPersonForm &&
+                        <div>
+                          <Form.Group widths="equal">
+                            <TextField
+                              label={i18next.t('Family name')}
+                              placeholder={i18next.t('Family name')}
+                              fieldPath={familyNameFieldPath}
+                              required={this.isCreator()}
+                              // forward ref to Input component because Form.Input
+                              // doesn't handle it
+                              input={{ref: this.inputRef}}
+                            />
+                            <TextField
+                              label={i18next.t('Given name(s)')}
+                              placeholder={i18next.t('Given name')}
+                              fieldPath={givenNameFieldPath}
+                            />
+                          </Form.Group>
+                          <Form.Group widths="equal">
+                            <CreatibutorsIdentifiers
+                              initialOptions={_map(
+                                _get(values, identifiersFieldPath, []),
+                                (identifier) => ({
+                                  text: identifier,
+                                  value: identifier,
+                                  key: identifier,
+                                })
+                              )}
+                              fieldPath={identifiersFieldPath}
+                              ref={this.identifiersRef}
+                            />
+                          </Form.Group>
+                        </div>
+                      }
                     </div>
                   ) : (
                     <>
@@ -420,19 +460,24 @@ export class CreatibutorsModal extends Component {
                       />
                     </>
                   )}
-                  <AffiliationsField
-                    fieldPath={affiliationsFieldPath}
-                    selectRef={this.affiliationsRef}
-                  />
-                  <SelectField
-                    fieldPath={roleFieldPath}
-                    label={i18next.t('Role')}
-                    options={this.props.roleOptions}
-                    placeholder={i18next.t('Select role')}
-                    {...(this.isCreator() && { clearable: true })}
-                    required={!this.isCreator()}
-                    optimized
-                  />
+                  {(_get(values, typeFieldPath) === CREATIBUTOR_TYPE.ORGANIZATION ||
+                      (this.state.showPersonForm &&  _get(values, typeFieldPath) === CREATIBUTOR_TYPE.PERSON)) &&
+                  <div>
+                    <AffiliationsField
+                        fieldPath={affiliationsFieldPath}
+                        selectRef={this.affiliationsRef}
+                    />
+                    <SelectField
+                      fieldPath={roleFieldPath}
+                      label={i18next.t('Role')}
+                      options={this.props.roleOptions}
+                      placeholder={i18next.t('Select role')}
+                    {...(this.isCreator() && {clearable: true})}
+                      required={!this.isCreator()}
+                      optimized
+                    />
+                  </div>
+                  }
                 </Form>
               </Modal.Content>
               <Modal.Actions>
@@ -450,7 +495,10 @@ export class CreatibutorsModal extends Component {
                   <ActionButton
                     name="submit"
                     onClick={(event, formik) => {
-                      this.setState({ action: 'saveAndContinue' }, () => {
+                      this.setState({
+                        action: 'saveAndContinue',
+                        showPersonForm: false
+                      }, () => {
                         formik.handleSubmit();
                         this.focusInput();
                       });
@@ -463,7 +511,10 @@ export class CreatibutorsModal extends Component {
                 <ActionButton
                   name="submit"
                   onClick={(event, formik) => {
-                    this.setState({ action: 'saveAndClose' }, () =>
+                    this.setState({
+                      action: 'saveAndClose',
+                      showPersonForm: false,
+                    }, () =>
                       formik.handleSubmit()
                     );
                   }}
