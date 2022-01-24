@@ -1,11 +1,12 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
-// Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2020-2022 Northwestern University.
 // Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import _find from 'lodash/find';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getIn, FieldArray } from 'formik';
@@ -17,6 +18,43 @@ import { Button, Form, Icon, List } from 'semantic-ui-react';
 import { LicenseModal } from './LicenseModal';
 import { LicenseFieldItem } from './LicenseFieldItem';
 import { i18next } from '@translations/i18next';
+
+
+/**
+ * The user-facing license.
+ *
+ */
+class VisibleLicense {
+
+  /**
+   * Constructor.
+   *
+  * @param {array} uiRights
+  * @param {object} right
+  * @param {int} index
+  */
+  constructor(uiRights, right, index) {
+    this.index = index;
+    this.type = right.id ? 'standard' : 'custom';
+    this.key = right.id || right.title;
+    this.initial = this.type === 'custom' ? right : null;
+
+    let uiRight = _find(
+      uiRights,
+      right.id ? (o) => o.id === right.id : (o) => o.title === right.title
+    ) || {};
+
+    this.description = uiRight.description_l10n || right.description || "";
+    this.title = uiRight.title_l10n || right.title || "";
+    this.link = (
+      uiRight.props && uiRight.props.url ||
+      uiRight.link ||
+      right.props && right.props.url ||
+      right.link || ""
+    );
+  }
+}
+
 
 class LicenseFieldForm extends Component {
   render() {
@@ -33,30 +71,7 @@ class LicenseFieldForm extends Component {
       required,
     } = this.props;
 
-    /**
-     * Removes license from UI object
-     * @param {number} index
-     */
-    const removeUILicense = (index) => {
-      const uiValues = getIn(values, `${uiFieldPath}`, '');
-      uiValues.splice(index, 1);
-    };
-
-    /**
-     * Replaces license in UI object
-     * @param {number} index
-     * @param {Object} selectedLicense
-     */
-    const replaceUILicense = (index, selectedLicense) => {
-      const uiValues = getIn(values, `${uiFieldPath}`, '');
-      const UIserialize = (selectedLicense) => ({
-        id: selectedLicense.id,
-        description_l10n: selectedLicense.description,
-        title_l10n: selectedLicense.title,
-        link: selectedLicense.link,
-      });
-      uiValues.splice(index, 1, UIserialize(selectedLicense));
-    };
+    const uiRights = getIn(values, uiFieldPath, []);
 
     return (
       <DndProvider backend={HTML5Backend}>
@@ -67,52 +82,17 @@ class LicenseFieldForm extends Component {
             label={label}
           ></FieldLabel>
           <List>
-            {getIn(values, fieldPath, []).map((value, index, array) => {
-              const arrayPath = fieldPath;
-              const indexPath = index;
-              const key = `${arrayPath}.${indexPath}`;
-              const uiKey = `${uiFieldPath}.${indexPath}`;
-              const licenseType = value.id ? 'standard' : 'custom';
-              const description = getIn(
-                values,
-                `${uiKey}.description_l10n`,
-                getIn(values, `${key}.description`)
-              );
-              const link = value.id
-                ? getIn(
-                    values,
-                    `${uiKey}.props.url`,
-                    getIn(values, `${key}.props.url`, '')
-                  )
-                : getIn(
-                    values,
-                    `${uiKey}.link`,
-                    getIn(values, `${key}.link`, '')
-                  );
-              const title = getIn(
-                values,
-                `${uiKey}.title_l10n`,
-                getIn(values, `${key}.title`, '')
-              );
+            {getIn(values, fieldPath, []).map((value, index) => {
+              const license = new VisibleLicense(uiRights, value, index);
               return (
                 <LicenseFieldItem
-                  key={key}
-                  {...{
-                    index,
-                    licenseType,
-                    compKey: key,
-                    initialLicense: licenseType === 'custom' ? value : null,
-                    licenseDescription: description,
-                    licenseTitle: title,
-                    moveLicense: formikArrayMove,
-                    replaceLicense: formikArrayReplace,
-                    replaceUILicense: replaceUILicense,
-                    removeLicense: formikArrayRemove,
-                    removeUILicense: removeUILicense,
-                    searchConfig: this.props.searchConfig,
-                    serializeLicenses: this.props.serializeLicenses,
-                    link: link,
-                  }}
+                  key={license.key}
+                  license={license}
+                  moveLicense={formikArrayMove}
+                  replaceLicense={formikArrayReplace}
+                  removeLicense={formikArrayRemove}
+                  searchConfig={this.props.searchConfig}
+                  serializeLicenses={this.props.serializeLicenses}
                 />
               );
             })}

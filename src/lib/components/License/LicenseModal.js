@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2022 Northwestern University.
 // Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
@@ -61,10 +61,11 @@ export class LicenseModal extends Component {
   };
 
   onSubmit = (values, formikBag) => {
-    this.props.onLicenseChange(values.selectedLicense);
-    formikBag.setSubmitting(false);
-    formikBag.resetForm();
+    // We have to close the modal first because onLicenseChange and passing
+    // license as an object makes React get rid of this component. Otherwise
+    // we get a memory leak warning.
     this.closeModal();
+    this.props.onLicenseChange(values.selectedLicense);
   };
 
   render() {
