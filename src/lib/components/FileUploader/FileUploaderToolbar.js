@@ -40,7 +40,7 @@ export const FileUploaderToolbar = ({
                 trigger={
                   <Icon name="question circle outline" color="grey"></Icon>
                 }
-                content="Disable files for this record"
+                content={i18next.t('Disable files for this record')}
                 position="top center"
               />
             </List.Item>

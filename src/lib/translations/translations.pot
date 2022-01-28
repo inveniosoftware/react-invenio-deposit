@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2021-07-22T07:29:08.285Z\n"
-"PO-Revision-Date: 2021-07-22T07:29:08.285Z\n"
+"POT-Creation-Date: 2022-01-28T10:42:04.340Z\n"
+"PO-Revision-Date: 2022-01-28T10:42:04.340Z\n"
 "Language: en\n"
 
 msgid "Embargo until"
@@ -69,13 +69,6 @@ msgstr "The record and files are publicly accessible."
 
 msgid "The record is publicly accessible."
 msgstr "The record is publicly accessible."
-
-msgid ""
-"The record and files can <1>only</1> be accessed by <3>users specified</3> "
-"in the permissions."
-msgstr ""
-"The record and files can <1>only</1> be accessed by <3>users specified</3> "
-"in the permissions."
 
 msgid "Public with restricted files"
 msgstr "Public with restricted files"
@@ -516,9 +509,6 @@ msgstr "Save draft"
 msgid "Suggest from"
 msgstr "Suggest from"
 
-msgid "Search or create subjects.."
-msgstr "Search or create subjects.."
-
 msgid "Subjects"
 msgstr "Subjects"
 
@@ -540,3 +530,40 @@ msgstr "Yes"
 
 msgid "No"
 msgstr "No"
+
+msgid ""
+"The record and files can <1>only</1> be accessed by<3> users specified</3> "
+"in the permissions."
+msgstr ""
+"The record and files can <1>only</1> be accessed by<3> users specified</3> "
+"in the permissions."
+
+msgid "e.g. ROR, ISNI or GND."
+msgstr "e.g. ROR, ISNI or GND."
+
+msgid "The following files already exist"
+msgstr "The following files already exist"
+
+msgid "Disable files for this record"
+msgstr "Disable files for this record"
+
+msgid "DOI"
+msgstr "DOI"
+
+msgid "PIDS"
+msgstr "PIDS"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Search or create subjects..."
+msgstr "Search or create subjects..."
+
+msgid "Edit creator"
+msgstr "Edit creator"
+
+msgid "Add {{mode}} license"
+msgstr "Add {{mode}} license"
+
+msgid "Change {{mode}} license"
+msgstr "Change {{mode}} license"
