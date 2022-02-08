@@ -1,17 +1,17 @@
-#
+# 
 # Translators:
-# Chriz Uniba <christina.zeller@uni-bamberg.de>, 2021
 # Alizee Pace <alizee.pace@gmail.com>, 2021
-# Alexander Gruber <alexander.gruber@tugraz.at>, 2021
 # Tibor Simko <tibor.simko@cern.ch>, 2021
-# Mojib Wali <mojib.wali@tugraz.at>, 2021
-#
+# chriz_uniba <christina.zeller@uni-bamberg.de>, 2021
+# Mojib Wali <mojib.wali@tugraz.at>, 2022
+# Alexander Gruber <alexander.gruber@tugraz.at>, 2022
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2021-07-22T07:29:08.285Z\n"
+"POT-Creation-Date: 2022-01-28T10:42:04.340Z\n"
 "PO-Revision-Date: 2021-06-29 13:20+0000\n"
-"Last-Translator: Mojib Wali <mojib.wali@tugraz.at>, 2021\n"
+"Last-Translator: Alexander Gruber <alexander.gruber@tugraz.at>, 2022\n"
 "Language-Team: German (https://www.transifex.com/inveniosoftware/teams/23537/de/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -79,13 +79,6 @@ msgstr "Der Eintrag und die Dateien sind öffentlich zugänglich."
 
 msgid "The record is publicly accessible."
 msgstr "Der Eintrag ist öffentlich zugänglich."
-
-msgid ""
-"The record and files can <1>only</1> be accessed by <3>users specified</3> in"
-" the permissions."
-msgstr ""
-"Auf den Eintrag und die Dateien können <1>nur</1> die in den Berechtigungen "
-"<3>angegebenen Benutzer</3> zugreifen."
 
 msgid "Public with restricted files"
 msgstr "Öffentlich mit eingeschränkten Dateien"
@@ -541,9 +534,6 @@ msgstr "Entwurf speichern"
 msgid "Suggest from"
 msgstr "Vorschlagen von"
 
-msgid "Search or create subjects.."
-msgstr "Themen suchen oder erstellen..."
-
 msgid "Subjects"
 msgstr "Themen"
 
@@ -566,3 +556,40 @@ msgstr "Ja"
 
 msgid "No"
 msgstr "Nein"
+
+msgid ""
+"The record and files can <1>only</1> be accessed by<3> users specified</3> "
+"in the permissions."
+msgstr ""
+"Auf den Eintrag und die Dateien können <1>nur</1> die in den Berechtigungen "
+"<3>angegebenen Benutzer</3> zugreifen."
+
+msgid "e.g. ROR, ISNI or GND."
+msgstr "z.B. ROR, ISNI oder GND."
+
+msgid "The following files already exist"
+msgstr "Die folgenden Dateien sind bereits vorhanden"
+
+msgid "Disable files for this record"
+msgstr "Dateien für diesen Datensatz deaktivieren"
+
+msgid "DOI"
+msgstr "DOI"
+
+msgid "PIDS"
+msgstr "PIDS"
+
+msgid "Search"
+msgstr "Suchen"
+
+msgid "Search or create subjects..."
+msgstr "Themen suchen oder erstellen..."
+
+msgid "Edit creator"
+msgstr "Ersteller bearbeiten"
+
+msgid "Add {{mode}} license"
+msgstr "Lizenz {{mode}} hinzufügen"
+
+msgid "Change {{mode}} license"
+msgstr "Lizenz {{mode}} ändern"
