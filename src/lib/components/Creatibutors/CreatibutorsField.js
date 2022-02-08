@@ -179,8 +179,8 @@ CreatibutorsField.propTypes = {
 
 CreatibutorsField.defaultProps = {
   modal: {
-    addLabel: 'Add creator',
-    editLabel: 'Edit creator',
+    addLabel: i18next.t('Add creator'),
+    editLabel: i18next.t('Edit creator'),
   },
   addButtonLabel: i18next.t('Add creator'),
 };

@@ -98,8 +98,8 @@ export class LicenseModal extends Component {
               <Grid.Column floated="left">
                 <Header as="h2">
                   {this.props.action === ModalActions.ADD
-                    ? `Add ${this.props.mode} license`
-                    : `Change ${this.props.mode} license`}
+                    ? i18next.t(`Add {{mode}} license`, {mode: this.props.mode})
+                    : i18next.t(`Change {{mode}} license`, {mode: this.props.mode})}
                 </Header>
               </Grid.Column>
             </Grid>
