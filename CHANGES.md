@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.17.5 (released 2022-02-11)
+* upgrades semantic-ui-react
+* relax dependencies requirements patch versions
+
 Version 0.15.8 (released 2021-07-20)
 * improve deposit form error display
 
