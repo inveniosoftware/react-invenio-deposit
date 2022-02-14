@@ -45,9 +45,11 @@ const preloadFiles = (files) => {
 };
 
 export function configureStore(appConfig) {
-  const { record, files, config, permissions, ...extra } = appConfig;
+  const { record, community, files, config, permissions, ...extra } = appConfig;
   const initialDepositState = {
     record,
+    // TODO: move this if community is stored independently in redux
+    community,
     config,
     permissions,
     ...INITIAL_STORE_STATE,
