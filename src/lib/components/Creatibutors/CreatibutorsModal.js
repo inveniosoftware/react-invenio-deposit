@@ -20,6 +20,7 @@ import {
 import * as Yup from 'yup';
 import _get from 'lodash/get';
 import _find from 'lodash/find';
+import _isEmpty from 'lodash/isEmpty';
 import _map from 'lodash/map';
 import { AffiliationsField } from './../AffiliationsField';
 import { CreatibutorsIdentifiers } from './CreatibutorsIdentifiers';
@@ -38,7 +39,7 @@ export class CreatibutorsModal extends Component {
       open: false,
       saveAndContinueLabel: i18next.t('Save and add another'),
       action: null,
-      showPersonForm: false,
+      showPersonForm: !_isEmpty(props.initialCreatibutor),
     };
     this.inputRef = createRef();
     this.identifiersRef = createRef();
@@ -66,11 +67,10 @@ export class CreatibutorsModal extends Component {
     }),
   });
 
-  focusInput = () => {};
+  focusInput = () => this.inputRef.current.focus();
 
   openModal = () => {
     this.setState({ open: true, action: null }, () => {
-      this.focusInput();
     });
   };
 
@@ -236,11 +236,11 @@ export class CreatibutorsModal extends Component {
       extra: 'Manual entry',
       key: 'manual-entry',
       content: (
-          <Header>
-            <Header.Content>
-              <p>Couldn't find your person? You can <a>create a new entry</a></p>
-            </Header.Content>
-          </Header>
+        <Header textAlign='center'>
+          <Header.Content>
+            <p>Couldn't find your person? You can <a>create a new entry</a></p>
+          </Header.Content>
+        </Header>
       ),
     });
     return results;
@@ -294,13 +294,13 @@ export class CreatibutorsModal extends Component {
         text: name, value: name, key: name, name
       }))
       this.affiliationsRef.current.setState(
-          {
-            suggestions: affiliationsState,
-            selectedSuggestions: affiliationsState,
-            searchQuery: null,
-            error: false,
-            open: false,
-          },
+        {
+          suggestions: affiliationsState,
+          selectedSuggestions: affiliationsState,
+          searchQuery: null,
+          error: false,
+          open: false,
+        },
       );
     })
   }
@@ -328,6 +328,7 @@ export class CreatibutorsModal extends Component {
           const roleFieldPath = 'role';
           return (
             <Modal
+              centered={false}
               onOpen={() => this.openModal()}
               open={this.state.open}
               trigger={this.props.trigger}
@@ -361,7 +362,6 @@ export class CreatibutorsModal extends Component {
                           typeFieldPath,
                           CREATIBUTOR_TYPE.PERSON
                         );
-                        this.focusInput();
                       }}
                       optimized
                     />
@@ -387,18 +387,20 @@ export class CreatibutorsModal extends Component {
                     CREATIBUTOR_TYPE.PERSON ? (
                     <div>
                       <RemoteSelectField
+                        selectOnBlur={false}
+                        searchInput={{ autoFocus: _isEmpty(initialCreatibutor) }}
                         fieldPath={'creators'}
                         clearable={true}
                         multiple={false}
                         allowAdditions={false}
-                        placeholder="Name, identifier or affiliation name..."
-                        noQueryMessage={i18next.t('Search for names...')}
+                        placeholder={i18next.t('Search for persons by name, identifier, or affiliation...')}
+                        noQueryMessage={i18next.t('Search for persons by name, identifier, or affiliation...')}
                         required={false}
                         // Disable UI-side filtering of search results
                         search={options => options}
                         suggestionAPIUrl="/api/names"
                         serializeSuggestions={this.serializeSuggestions}
-                        onValueChange={this.onPersonSearchChange }
+                        onValueChange={this.onPersonSearchChange}
                       />
                       {this.state.showPersonForm &&
                         <div>
@@ -408,9 +410,6 @@ export class CreatibutorsModal extends Component {
                               placeholder={i18next.t('Family name')}
                               fieldPath={familyNameFieldPath}
                               required={this.isCreator()}
-                              // forward ref to Input component because Form.Input
-                              // doesn't handle it
-                              input={{ref: this.inputRef}}
                             />
                             <TextField
                               label={i18next.t('Given name(s)')}
@@ -461,22 +460,22 @@ export class CreatibutorsModal extends Component {
                     </>
                   )}
                   {(_get(values, typeFieldPath) === CREATIBUTOR_TYPE.ORGANIZATION ||
-                      (this.state.showPersonForm &&  _get(values, typeFieldPath) === CREATIBUTOR_TYPE.PERSON)) &&
-                  <div>
-                    <AffiliationsField
+                    (this.state.showPersonForm && _get(values, typeFieldPath) === CREATIBUTOR_TYPE.PERSON)) &&
+                    <div>
+                      <AffiliationsField
                         fieldPath={affiliationsFieldPath}
                         selectRef={this.affiliationsRef}
-                    />
-                    <SelectField
-                      fieldPath={roleFieldPath}
-                      label={i18next.t('Role')}
-                      options={this.props.roleOptions}
-                      placeholder={i18next.t('Select role')}
-                    {...(this.isCreator() && {clearable: true})}
-                      required={!this.isCreator()}
-                      optimized
-                    />
-                  </div>
+                      />
+                      <SelectField
+                        fieldPath={roleFieldPath}
+                        label={i18next.t('Role')}
+                        options={this.props.roleOptions}
+                        placeholder={i18next.t('Select role')}
+                        {...(this.isCreator() && { clearable: true })}
+                        required={!this.isCreator()}
+                        optimized
+                      />
+                    </div>
                   }
                 </Form>
               </Modal.Content>
@@ -500,7 +499,6 @@ export class CreatibutorsModal extends Component {
                         showPersonForm: false
                       }, () => {
                         formik.handleSubmit();
-                        this.focusInput();
                       });
                     }}
                     primary
