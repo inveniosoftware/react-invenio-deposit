@@ -28,7 +28,7 @@ import {
   RESERVE_PID_SUCCESS,
 } from '../types';
 
-export default (state = {}, action) => {
+const depositReducer = (state = {}, action) => {
   switch (action.type) {
     case ACTION_CREATE_SUCCEEDED:
       return {
@@ -103,3 +103,5 @@ export default (state = {}, action) => {
       return state;
   }
 };
+
+export default depositReducer;

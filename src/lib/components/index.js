@@ -31,3 +31,4 @@ export { SaveButton } from './SaveButton';
 export { SubjectsField } from './SubjectsField';
 export { TitlesField } from './TitlesField';
 export { VersionField } from './VersionField';
+export { CommunityHeader } from './Communities';

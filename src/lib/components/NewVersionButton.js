@@ -32,7 +32,7 @@ export const NewVersionButton = (props) => {
         handleError(error.response.data.message);
       });
   };
-
+  
   return (
     <Popup
       content={i18next.t("You don't have permissions to create a new version.")}
@@ -40,6 +40,7 @@ export const NewVersionButton = (props) => {
       trigger={
         <div style={{ display: 'inline-block', ...props.style }}>
           <Button
+            fluid={props.fluid}
             disabled={props.disabled}
             type="button"
             color="green"
