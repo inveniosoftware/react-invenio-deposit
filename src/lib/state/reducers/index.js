@@ -9,8 +9,10 @@ import { combineReducers } from 'redux';
 
 import depositReducer from './deposit';
 import fileReducer from './files';
+import communitiesReducer from './communities';
 
 export default combineReducers({
   deposit: depositReducer,
   files: fileReducer,
+  communities: communitiesReducer,
 });

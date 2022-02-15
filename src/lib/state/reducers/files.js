@@ -30,7 +30,7 @@ export const UploadState = {
 
 const initialState = {};
 
-export default (state = initialState, action) => {
+const fileReducer = (state = initialState, action) => {
   let newState;
   switch (action.type) {
     case FILE_UPLOAD_INITIATE:
@@ -178,3 +178,5 @@ export default (state = initialState, action) => {
       return state;
   }
 };
+
+export default fileReducer;
