@@ -8,6 +8,7 @@ import {
   DISCARD_PID_STARTED,
   FORM_ACTION_EVENT_EMITTED,
   FORM_PUBLISHING,
+  FORM_REQUESTING_FOR_REVIEW,
   FORM_SAVING,
   RESERVE_PID_STARTED,
 } from '../types';
@@ -16,6 +17,16 @@ export const publish = (record, formik) => {
   return (dispatch, getState, config) => {
     const controller = config.controller;
     return controller.publishDraft(record, {
+      formik,
+      store: { dispatch, getState, config },
+    });
+  };
+};
+
+export const requestReview = (record, formik) => {
+  return (dispatch, getState, config) => {
+    const controller = config.controller;
+    return controller.requestDraftForReview(record, {
       formik,
       store: { dispatch, getState, config },
     });
@@ -50,6 +61,8 @@ export const submitFormData = (record, formik) => {
         return dispatch(save(record, formik));
       case FORM_PUBLISHING:
         return dispatch(publish(record, formik));
+      case FORM_REQUESTING_FOR_REVIEW:
+        return dispatch(requestReview(record, formik));
       default:
         console.log(`onSubmit triggered with unknown action ${formState}`);
     }

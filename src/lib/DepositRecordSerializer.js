@@ -262,6 +262,7 @@ export class DepositRecordSerializer {
     // NOTE: cloning nows allows us to manipulate the copy with impunity
     //       without affecting the original
     const originalRecord = _pick(_cloneDeep(record), [
+      'parent',
       'access',
       'metadata',
       'id',

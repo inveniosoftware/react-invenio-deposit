@@ -7,7 +7,8 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import React from 'react';
-import { Container, Image, Button } from 'semantic-ui-react';
+import { Container, Button } from 'semantic-ui-react';
+import { Image } from 'react-invenio-forms';
 import PropTypes from 'prop-types';
 
 class CommunityHeaderButton extends React.Component {
@@ -32,7 +33,12 @@ class CommunityHeaderInfo extends React.Component {
     const logoLink = community ? community?.links?.logo : imagePlaceholderLink;
     return (
       <Container className="community-header">
-        <Image size="mini" src={logoLink} /> {community?.metadata?.title}
+        <Image
+          className="ui tiny image"
+          src={logoLink}
+          fallbackSrc={imagePlaceholderLink}
+        />{' '}
+        {community?.metadata?.title || community}
         <CommunityHeaderButton />
       </Container>
     );
@@ -60,18 +66,13 @@ class EmptyCommunity extends React.Component {
 }
 
 export class CommunityHeaderComponent extends React.Component {
-  componentDidMount() {
-    const { community, setCommunity } = this.props;
-    setCommunity(community);
-  }
-
   render() {
-    const { communityRedux, imagePlaceholderLink } = this.props;
+    const { userSelectedCommunity, imagePlaceholderLink } = this.props;
     return (
       <Container className="deposits-community-header" fluid>
-        {communityRedux ? (
+        {userSelectedCommunity ? (
           <CommunityHeaderInfo
-            community={communityRedux}
+            community={userSelectedCommunity}
             imagePlaceholderLink={imagePlaceholderLink}
           />
         ) : (
@@ -86,9 +87,9 @@ CommunityHeaderComponent.propTypes = {
   imagePlaceholderLink: PropTypes.string.isRequired,
   community: PropTypes.object.isRequired,
   setCommunity: PropTypes.func.isRequired,
-  communityRedux: PropTypes.object,
+  userSelectedCommunity: PropTypes.object,
 };
 
 CommunityHeaderComponent.defaultProps = {
-  communityRedux: undefined,
+  userSelectedCommunity: undefined,
 };

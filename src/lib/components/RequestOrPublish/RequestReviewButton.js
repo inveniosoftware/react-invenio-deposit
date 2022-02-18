@@ -12,12 +12,12 @@ import { connect } from 'react-redux';
 import { Icon, Button, Modal } from 'semantic-ui-react';
 import { ActionButton } from 'react-invenio-forms';
 
-import { submitAction } from '../state/actions';
-import { FORM_PUBLISHING } from '../state/types';
-import { toCapitalCase } from '../utils';
+import { submitAction } from '../../state/actions';
+import { FORM_REQUESTING_FOR_REVIEW } from '../../state/types';
+import { toCapitalCase } from '../../utils';
 import { i18next } from '@translations/i18next';
 
-export class PublishButtonComponent extends Component {
+export class RequestReviewButtonComponent extends Component {
   state = { confirmOpen: false };
 
   handleOpen = () => this.setState({ confirmOpen: true });
@@ -25,28 +25,37 @@ export class PublishButtonComponent extends Component {
   handleClose = () => this.setState({ confirmOpen: false });
 
   render() {
-    const { formState, publishClick, numberOfFiles, errors, ...uiProps } =
-      this.props;
+    const {
+      formState,
+      requestReviewClick,
+      numberOfFiles,
+      errors,
+      userSelectedCommunity,
+      ...uiProps
+    } = this.props;
 
-    const handlePublish = (event, formik) => {
-      publishClick(event, formik);
+    const handleRequestReview = (event, formik) => {
+      requestReviewClick(event, formik);
       this.handleClose();
     };
 
     const isDisabled = (formik) => {
-      const filesEnabled = _get(formik.values, 'files.enabled', false);
-      const filesMissing = filesEnabled && !numberOfFiles;
+      const hasReview = _get(
+        formik.values,
+        'parent.review.receiver.community',
+        false
+      );
       const hasErrors = !_isEmpty(errors);
-      return formik.isSubmitting || hasErrors || filesMissing;
+      return formik.isSubmitting || hasErrors || !hasReview;
     };
 
-    const action = i18next.t('publish');
+    const action = i18next.t('request for review');
     const capitalizedAction = toCapitalCase(action);
     return (
       <>
         <ActionButton
           isDisabled={isDisabled}
-          name="publish"
+          name="requestReview"
           onClick={this.handleOpen}
           positive
           icon
@@ -55,7 +64,8 @@ export class PublishButtonComponent extends Component {
         >
           {(formik) => (
             <>
-              {formik.isSubmitting && formState === FORM_PUBLISHING ? (
+              {formik.isSubmitting &&
+              formState === FORM_REQUESTING_FOR_REVIEW ? (
                 <Icon size="large" loading name="spinner" />
               ) : (
                 <Icon name="upload" />
@@ -82,8 +92,8 @@ export class PublishButtonComponent extends Component {
                 Cancel
               </Button>
               <ActionButton
-                name="publish"
-                onClick={handlePublish}
+                name="requestReview"
+                onClick={handleRequestReview}
                 positive
                 content={capitalizedAction}
               />
@@ -103,11 +113,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  publishClick: (event, formik) =>
-    dispatch(submitAction(FORM_PUBLISHING, event, formik)),
+  requestReviewClick: (event, formik) =>
+    dispatch(submitAction(FORM_REQUESTING_FOR_REVIEW, event, formik)),
 });
 
-export const PublishButton = connect(
+export const RequestReviewButton = connect(
   mapStateToProps,
   mapDispatchToProps
-)(PublishButtonComponent);
+)(RequestReviewButtonComponent);

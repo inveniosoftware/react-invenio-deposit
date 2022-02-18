@@ -108,6 +108,64 @@ export class DepositApiClient {
   }
 
   /**
+   * Creates a review request in initial state for draft by calling its
+   * review link.
+   *
+   * @param {object} draft - the payload from create()
+   */
+  async createReview(draft, communityUUId) {
+    return this.createResponse(() =>
+      axiosWithconfig.put(
+        draft.links.review,
+        {
+          receiver: {
+            community: communityUUId,
+          },
+          type: 'community-submission',
+        },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    );
+  }
+
+  /**
+   * Creates a review request in initial state for draft by calling its
+   * review link.
+   *
+   * @param {object} draft - the payload from create()
+   */
+  async deleteReview(draft) {
+    return this.createResponse(() =>
+      axiosWithconfig.delete(
+        draft.links.review,
+        {},
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    );
+  }
+
+  /**
+   * Submits the draft for review by calling its submit_review link.
+   *
+   * @param {object} draft - the payload from create()
+   */
+  async submitReview(draft) {
+    return this.createResponse(() =>
+      axiosWithconfig.post(
+        draft.links['submit-review'],
+        {},
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    );
+  }
+
+  /**
    * Deletes the draft by calling DELETE on its self link.
    *
    * @param {object} draft - the payload from create()/save()

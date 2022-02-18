@@ -6,7 +6,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import React from 'react';
-import { Item, Header, Radio, Image } from 'semantic-ui-react';
+import { Item, Header, Radio, Image as SUImage } from 'semantic-ui-react';
 import { withState } from 'react-searchkit';
 import _get from 'lodash/get';
 import { FastField } from 'formik';
@@ -38,7 +38,7 @@ export const LicenseResults = withState(
                   }
                   className="license-item"
                 >
-                  <Image ui={false} className="license-radiobox" centered>
+                  <SUImage ui={false} className="license-radiobox" centered>
                     <Radio
                       checked={_get(values, 'selectedLicense.title') === title}
                       onChange={() =>
@@ -48,7 +48,7 @@ export const LicenseResults = withState(
                         )
                       }
                     />
-                  </Image>
+                  </SUImage>
                   <Item.Content className="license-item-content">
                     <Header size="small">{title}</Header>
                     <Item.Description className="license-item-description">

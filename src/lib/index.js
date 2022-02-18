@@ -6,6 +6,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import './i18next';
 export { DepositApiClient } from './DepositApiClient';
 export { DepositController } from './DepositController';
 export { DepositFormApp } from './DepositFormApp';
@@ -14,4 +15,3 @@ export { DepositRecordSerializer } from './DepositRecordSerializer';
 export { connect } from './connect';
 export * from './dom';
 export * from './components';
-import './i18next';

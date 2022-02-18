@@ -13,6 +13,8 @@ import { Grid, Message } from 'semantic-ui-react';
 import {
   FORM_DELETE_FAILED,
   FORM_PUBLISH_FAILED,
+  FORM_REQUEST_FOR_REVIEW_FAILED,
+  FORM_REQUEST_FOR_REVIEW_SUCCEEDED,
   FORM_SAVE_FAILED,
   FORM_SAVE_PARTIALLY_SUCCEEDED,
   FORM_SAVE_SUCCEEDED,
@@ -154,6 +156,7 @@ class DisconnectedFormFeedback extends Component {
       FORM_SAVE_FAILED,
       FORM_PUBLISH_FAILED,
       FORM_DELETE_FAILED,
+      FORM_REQUEST_FOR_REVIEW_FAILED,
     ];
     const formState = this.props.formState;
 
@@ -162,7 +165,7 @@ class DisconnectedFormFeedback extends Component {
     let message = null;
 
     switch (formState) {
-      case FORM_SAVE_SUCCEEDED:
+      case FORM_SAVE_SUCCEEDED || FORM_REQUEST_FOR_REVIEW_SUCCEEDED:
         feedback = 'positive';
         message = i18next.t('Record successfully saved.');
         break;
@@ -171,7 +174,7 @@ class DisconnectedFormFeedback extends Component {
         message = i18next.t('Record saved with validation errors:');
         break;
       case FORM_SAVE_FAILED:
-      case FORM_PUBLISH_FAILED:
+      case FORM_PUBLISH_FAILED || FORM_REQUEST_FOR_REVIEW_FAILED:
         feedback = 'negative';
         // TODO: use the backend error message
         message = i18next.t(

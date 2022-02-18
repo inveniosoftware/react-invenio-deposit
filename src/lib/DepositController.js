@@ -15,6 +15,8 @@ import {
   ACTION_DELETE_FAILED,
   ACTION_PUBLISH_FAILED,
   ACTION_PUBLISH_SUCCEEDED,
+  ACTION_REQUEST_REVIEW_FAILED,
+  ACTION_REQUEST_REVIEW_SUCCEEDED,
   ACTION_SAVE_FAILED,
   ACTION_SAVE_PARTIALLY_SUCCEEDED,
   ACTION_SAVE_SUCCEEDED,
@@ -42,7 +44,15 @@ export class DepositController {
    */
   async createDraft(draft, { store }) {
     const recordSerializer = store.config.recordSerializer;
-    const payload = recordSerializer.serialize(draft);
+    let payload = recordSerializer.serialize(draft);
+    const userSelectedCommunityUUId =
+      store.getState().communities.defaultCommunity;
+    if (userSelectedCommunityUUId) {
+      payload = _set(payload, 'parent.review', {
+        type: 'community-submission',
+        receiver: { community: userSelectedCommunityUUId },
+      });
+    }
     const response = await this.apiClient.create(payload);
 
     // TODO: Deal with case when create fails using formik.setErrors(errors);
@@ -81,21 +91,55 @@ export class DepositController {
       response = await this.apiClient.save(payload);
     }
 
-    let data = recordSerializer.deserialize(response.data || {});
-    let errors = recordSerializer.deserializeErrors(response.errors || []);
+    let savedDraftData = recordSerializer.deserialize(response.data || {});
+
+    // check if a review already exists
+    const reviewAlreadyExists =
+      savedDraftData?.parent?.review?.receiver?.community;
+    const userSelectedCommunityUUId =
+      store.getState().communities.defaultCommunity;
+    if (!reviewAlreadyExists) {
+      // check if user has selected one
+      if (!_isEmpty(userSelectedCommunityUUId)) {
+        // create review request in initial state
+        await this.apiClient.createReview(
+          savedDraftData,
+          userSelectedCommunityUUId
+        );
+      }
+    } else {
+      // Check if we need to update community
+      const backendCommunity = savedDraftData.parent.review.receiver.community;
+      if (userSelectedCommunityUUId !== backendCommunity) {
+        // delete old review
+        await this.apiClient.deleteReview(savedDraftData);
+        // create new review
+        await this.apiClient.createReview(
+          savedDraftData,
+          userSelectedCommunityUUId
+        );
+      }
+    }
+    let errors = recordSerializer.deserializeErrors(
+      savedDraftData.errors || []
+    );
 
     // response 100% successful
-    if (200 <= response.code && response.code < 300 && _isEmpty(errors)) {
+    if (
+      200 <= savedDraftData.code &&
+      savedDraftData.code < 300 &&
+      _isEmpty(errors)
+    ) {
       store.dispatch({
         type: ACTION_SAVE_SUCCEEDED,
-        payload: { data },
+        payload: { savedDraftData },
       });
     }
     // response partially successful
     else if (200 <= response.code && response.code < 300) {
       store.dispatch({
         type: ACTION_SAVE_PARTIALLY_SUCCEEDED,
-        payload: { data, errors },
+        payload: { savedDraftData, errors },
       });
       formik.setErrors(errors);
     }
@@ -153,6 +197,49 @@ export class DepositController {
   }
 
   /**
+   * Submits the current draft (backend) for review and redirects to the
+   * request's view URL.
+   *
+   * @param {object} draft - current draft
+   * @param {object} formik - the Formik object
+   * @param {object} store - redux store
+   */
+  async requestDraftForReview(draft, { formik, store }) {
+    const recordSerializer = store.config.recordSerializer;
+    let response = {};
+
+    if (!this.draftAlreadyCreated(draft)) {
+      response = await this.createDraft(draft, { store });
+    }
+
+    let payload = recordSerializer.serialize(draft);
+    response = await this.apiClient.submitReview(payload);
+    let data = recordSerializer.deserialize(response.data || {});
+    let errors = recordSerializer.deserializeErrors(response.errors || []);
+
+    // response 100% successful
+    if (200 <= response.code && response.code < 300 && _isEmpty(errors)) {
+      store.dispatch({
+        type: ACTION_REQUEST_REVIEW_SUCCEEDED,
+        payload: { data },
+      });
+      // FIXME: replace with request's self_html link
+      const requestURL = `/requests/${data.id}`;
+      window.location.replace(requestURL);
+    }
+    // "succeed or not, there is no partial"
+    else {
+      store.dispatch({
+        type: ACTION_REQUEST_REVIEW_FAILED,
+        payload: { data, errors },
+      });
+      formik.setErrors(errors);
+    }
+
+    formik.setSubmitting(false);
+  }
+
+  /**
    * Deletes the current draft and redirects to uploads page.
    *
    * The current draft may not have been saved yet. We only delete the draft
@@ -172,7 +259,7 @@ export class DepositController {
       }
     }
 
-    const uploadsURL = '/uploads';
+    const uploadsURL = '/me/uploads';
     window.location.replace(uploadsURL);
   }
 

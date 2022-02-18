@@ -12,9 +12,9 @@ import { connect } from 'react-redux';
 import { Icon, Button, Modal } from 'semantic-ui-react';
 import { ActionButton } from 'react-invenio-forms';
 
-import { submitAction } from '../state/actions';
-import { FORM_PUBLISHING } from '../state/types';
-import { toCapitalCase } from '../utils';
+import { submitAction } from '../../state/actions';
+import { FORM_PUBLISHING } from '../../state/types';
+import { toCapitalCase } from '../../utils';
 import { i18next } from '@translations/i18next';
 
 export class PublishButtonComponent extends Component {

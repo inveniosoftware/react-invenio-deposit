@@ -10,6 +10,8 @@ import {
   ACTION_DELETE_FAILED,
   ACTION_PUBLISH_FAILED,
   ACTION_PUBLISH_SUCCEEDED,
+  ACTION_REQUEST_REVIEW_FAILED,
+  ACTION_REQUEST_REVIEW_SUCCEEDED,
   ACTION_SAVE_FAILED,
   ACTION_SAVE_PARTIALLY_SUCCEEDED,
   ACTION_SAVE_SUCCEEDED,
@@ -20,6 +22,8 @@ import {
   FORM_DELETE_FAILED,
   FORM_PUBLISH_FAILED,
   FORM_PUBLISH_SUCCEEDED,
+  FORM_REQUEST_FOR_REVIEW_FAILED,
+  FORM_REQUEST_FOR_REVIEW_SUCCEEDED,
   FORM_SAVE_FAILED,
   FORM_SAVE_PARTIALLY_SUCCEEDED,
   FORM_SAVE_SUCCEEDED,
@@ -77,6 +81,18 @@ const depositReducer = (state = {}, action) => {
         ...state,
         errors: { ...action.payload.errors },
         formState: FORM_PUBLISH_FAILED,
+      };
+    case ACTION_REQUEST_REVIEW_SUCCEEDED:
+      return {
+        ...state,
+        record: { ...state.record, ...action.payload.data },
+        formState: FORM_REQUEST_FOR_REVIEW_SUCCEEDED,
+      };
+    case ACTION_REQUEST_REVIEW_FAILED:
+      return {
+        ...state,
+        errors: { ...action.payload.errors },
+        formState: FORM_REQUEST_FOR_REVIEW_FAILED,
       };
     case RESERVE_PID_STARTED:
     case DISCARD_PID_STARTED:
