@@ -1,5 +1,11 @@
 # Changes
 
+Version 0.17.6 (released 2022-02-21)
+* upgrades docs dependencies
+* stores community prop in redux
+* adds community header
+* auto-complete prefill from names in creatibutors modal
+
 Version 0.17.5 (released 2022-02-11)
 * upgrades semantic-ui-react
 * relax dependencies requirements patch versions
