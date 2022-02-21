@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { setCommunity } from '../../state/actions/communities';
 
 const mapStateToProps = (state) => ({
-  communityRedux: state.communities.community,
+  community: state.communities.defaultCommunity,
 });
 
 const mapDispatchToProps = (dispatch) => ({

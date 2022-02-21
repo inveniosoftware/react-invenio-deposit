@@ -11,101 +11,58 @@ import { Container, Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { i18next } from '@translations/i18next';
 import { Image } from 'react-invenio-forms';
+import { CommunitySelectionModal } from '../CommunitySelectionModal';
 
-class CommunityHeaderButton extends React.Component {
-  render() {
-    return (
-      <Button
-        size="mini"
-        className="community-header-button ml-5"
-        color="blue"
-        onClick={() => console.log('TODO: Open community modal')}
-        name="setting"
-      >
-        {i18next.t('Edit')}
-      </Button>
-    );
-  }
-}
+export const CommunityHeaderComponent = ({
+  community,
+  imagePlaceholderLink,
+  setCommunity,
+}) => {
+  const communityLogo = community?.links?.logo
+    ? community.links.logo
+    : imagePlaceholderLink;
+  const communityTitle = community?.metadata?.title
+    ? community.metadata.title
+    : community;
 
-class CommunityHeaderInfo extends React.Component {
-  render() {
-    const { community, imagePlaceholderLink } = this.props;
-    // TODO: Remove checks below once community is resolved in the backend
-    const communityLogo = community?.links?.logo
-      ? community.links.logo
-      : imagePlaceholderLink;
-    const communityTitle = community?.metadata?.title
-      ? community.metadata.title
-      : community;
-    return (
+  return (
+    <Container className="deposits-community-header" fluid>
       <Container className="community-header">
-        <Image
-          className="community-logo-header"
-          src={communityLogo}
-          fallbackSrc={imagePlaceholderLink}
-        />
-        <div className="community-header-info">
-          {communityTitle}
-          <CommunityHeaderButton />
-        </div>
-      </Container>
-    );
-  }
-}
-
-CommunityHeaderInfo.propTypes = {
-  imagePlaceholderLink: PropTypes.string.isRequired,
-  community: PropTypes.object,
-};
-
-CommunityHeaderInfo.defaultProps = {
-  community: undefined,
-};
-
-class EmptyCommunity extends React.Component {
-  render() {
-    return (
-      <Container className="community-header">
-        <div className="community-header-info">
-          <span>{i18next.t('No community selected.')}</span>
-          <CommunityHeaderButton />
-        </div>
-      </Container>
-    );
-  }
-}
-
-export class CommunityHeaderComponent extends React.Component {
-  componentDidMount() {
-    const { community, setCommunity } = this.props;
-    setCommunity(community);
-  }
-
-  render() {
-    const { communityRedux, imagePlaceholderLink } = this.props;
-    return (
-      <Container className="deposits-community-header" fluid>
-        {communityRedux ? (
-          <CommunityHeaderInfo
-            community={communityRedux}
-            imagePlaceholderLink={imagePlaceholderLink}
+        {community ? (
+          <Image
+            className="community-logo-header"
+            src={communityLogo}
+            fallbackSrc={imagePlaceholderLink}
           />
         ) : (
-          <EmptyCommunity />
+          <span>{i18next.t('No community selected.')}</span>
         )}
+
+        <div className="community-header-info">
+          {communityTitle}
+          <CommunitySelectionModal
+            onCommunityChange={setCommunity}
+            chosenCommunity={community}
+            trigger={
+              <Button
+                size="mini"
+                className="community-header-button ml-5"
+                color="blue"
+                name="setting"
+                type="button"
+              >
+                {i18next.t('Edit')}
+              </Button>
+            }
+          />
+        </div>
       </Container>
-    );
-  }
-}
+    </Container>
+  );
+};
 
 CommunityHeaderComponent.propTypes = {
   imagePlaceholderLink: PropTypes.string.isRequired,
   community: PropTypes.object.isRequired,
   setCommunity: PropTypes.func.isRequired,
-  communityRedux: PropTypes.object,
-};
-
-CommunityHeaderComponent.defaultProps = {
-  communityRedux: undefined,
 };
