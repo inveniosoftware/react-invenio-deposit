@@ -32,3 +32,4 @@ export { SubjectsField } from './SubjectsField';
 export { TitlesField } from './TitlesField';
 export { VersionField } from './VersionField';
 export { CommunityHeader } from './Communities';
+export { CommunitySelectionModal } from './CommunitySelectionModal'
