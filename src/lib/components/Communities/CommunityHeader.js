@@ -7,15 +7,17 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import React from 'react';
-import { Container, Image, Button } from 'semantic-ui-react';
+import { Container, Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import { i18next } from '@translations/i18next';
+import { Image } from 'react-invenio-forms';
 
 class CommunityHeaderButton extends React.Component {
   render() {
     return (
       <Button
         size="mini"
-        className="ml-5"
+        className="community-header-button ml-5"
         color="blue"
         onClick={() => console.log('TODO: Open community modal')}
         name="setting"
@@ -29,11 +31,17 @@ class CommunityHeaderButton extends React.Component {
 class CommunityHeaderInfo extends React.Component {
   render() {
     const { community, imagePlaceholderLink } = this.props;
-    const logoLink = community ? community?.links?.logo : imagePlaceholderLink;
     return (
       <Container className="community-header">
-        <Image size="mini" src={logoLink} /> {community?.metadata?.title}
-        <CommunityHeaderButton />
+        <Image
+          className="community-logo-header"
+          src={community.links.logo}
+          fallbackSrc={imagePlaceholderLink}
+        />
+        <div className="community-header-info">
+          {community.metadata.title}
+          <CommunityHeaderButton />
+        </div>
       </Container>
     );
   }
@@ -51,9 +59,11 @@ CommunityHeaderInfo.defaultProps = {
 class EmptyCommunity extends React.Component {
   render() {
     return (
-      <Container className="community-header empty">
-        <span>{i18next.t('No community selected.')}</span>
-        <CommunityHeaderButton />
+      <Container className="community-header">
+        <div className="community-header-info">
+          <span>{i18next.t('No community selected.')}</span>
+          <CommunityHeaderButton />
+        </div>
       </Container>
     );
   }
