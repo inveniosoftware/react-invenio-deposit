@@ -163,5 +163,6 @@
   "Mostly relevant for software and dataset uploads. A semantic version string is preferred see<1> semver.org</1>, but any version string is accepted.": "",
   "Edit creator": "",
   "Add {{mode}} license": "",
-  "Change {{mode}} license": ""
+  "Change {{mode}} license": "",
+  "No community selected.": ""
 }
