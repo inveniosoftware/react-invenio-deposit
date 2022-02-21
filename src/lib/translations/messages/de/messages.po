@@ -2,16 +2,17 @@
 # Translators:
 # Alizee Pace <alizee.pace@gmail.com>, 2021
 # Tibor Simko <tibor.simko@cern.ch>, 2021
-# chriz_uniba <christina.zeller@uni-bamberg.de>, 2021
-# Mojib Wali <mojib.wali@tugraz.at>, 2022
 # Alexander Gruber <alexander.gruber@tugraz.at>, 2022
+# chriz_uniba <christina.zeller@uni-bamberg.de>, 2022
+# Hermann Schranzhofer <hermann.schranzhofer@tugraz.at>, 2022
+# Mojib Wali <mojib.wali@tugraz.at>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2022-01-28T10:42:04.340Z\n"
+"POT-Creation-Date: 2022-02-21T08:41:21.198Z\n"
 "PO-Revision-Date: 2021-06-29 13:20+0000\n"
-"Last-Translator: Alexander Gruber <alexander.gruber@tugraz.at>, 2022\n"
+"Last-Translator: Mojib Wali <mojib.wali@tugraz.at>, 2022\n"
 "Language-Team: German (https://www.transifex.com/inveniosoftware/teams/23537/de/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,7 +30,7 @@ msgid "The full record is restricted."
 msgstr "Der vollständige Eintrag ist eingeschränkt."
 
 msgid "Embargoed (full record)"
-msgstr "Embargoed (vollständiger Datensatz)"
+msgstr "Gesperrt (vollständiger Eintrag)"
 
 msgid ""
 "On <bold>{{ date }}</bold> the record and the files will automatically be "
@@ -37,9 +38,9 @@ msgid ""
 "<bold>only</bold> be accessed by <bold>users specified</bold> in the "
 "permissions."
 msgstr ""
-"Am <bold>{{ date }}</bold> werden der Datensatz und die Dateien automatisch "
+"Am <bold>{{ date }}</bold> wird der Eintrag und die Dateien automatisch "
 "öffentlich zugänglich gemacht. Bis dahin können <bold>nur</bold> die in den "
-"Berechtigungen <bold>angegebenen Benutzer</bold> auf den Datensatz und die "
+"Berechtigungen <bold>angegebenen Benutzer</bold> auf den Eintrag und die "
 "Dateien zugreifen."
 
 msgid "Embargoed (files-only)"
@@ -51,10 +52,10 @@ msgid ""
 "<bold>only</bold> be accessed by <bold>users specified</bold> in the "
 "permissions."
 msgstr ""
-"Der Datensatz ist öffentlich zugänglich. Am <bold>{{ date }}</bold> werden "
-"die Dateien automatisch öffentlich zugänglich gemacht. Bis dahin können die "
-"Dateien <bold>nur</bold> von den in den <bold>Berechtigungen angegebenen "
-"Benutzern</bold> aufgerufen werden."
+"Der Eintrag ist öffentlich zugänglich. Am <bold>{{ date }}</bold> werden die"
+" Dateien automatisch öffentlich zugänglich gemacht. Bis dahin können "
+"<bold>nur</bold>die  in den <bold>Berechtigungen angegebenen "
+"Benutzern</bold> auf die Dateien zugreifen."
 
 msgid "The record has no files."
 msgstr "Der Eintrag hat keine Dateien."
@@ -64,9 +65,9 @@ msgid ""
 "accessible. Until then, the record can <bold>only</bold> be accessed by "
 "<bold>users specified</bold> in the permissions."
 msgstr ""
-"Am <bold>{{ date }}</bold>the record will automatically be made publicly "
-"accessible. Until then, the record can <bold>nur</bold>von den in den "
-"Berechtigungen <bold>angegebenen Benutzern</bold> aufgerufen werden."
+"Am <bold>{{ date }}</bold>wird der Eintrag automatisch öffentlich zugänglich"
+" gemacht. Bis dahin können <bold>nur</bold>die in den Berechtigungen "
+"<bold>angegebenen Benutzer</bold> auf den Eintrag zugreifen."
 
 msgid "Public"
 msgstr "Öffentlich"
@@ -121,8 +122,8 @@ msgstr "Grund"
 msgid ""
 "Record or files protection must be <1>restricted</1> to apply an embargo."
 msgstr ""
-"Der Schutz von Einträgen oder Dateien muss <1>eingeschränkt</1> werden, um "
-"ein Embargo anzuwenden."
+"Der Schutz für Eintrag oder Dateien muss <1>eingeschränkt</1> werden, um "
+"eine Sperre anzuwenden."
 
 msgid "Options"
 msgstr "Optionen"
@@ -146,7 +147,7 @@ msgid "Add titles"
 msgstr "Titel hinzufügen"
 
 msgid "Search or create affiliation'"
-msgstr "Zugehörigkeit suchen oder erstellen'"
+msgstr "Zugehörigkeit suchen oder erstellen"
 
 msgid "Affiliations"
 msgstr "Zugehörigkeiten"
@@ -164,7 +165,7 @@ msgid "Remove"
 msgstr "Löschen"
 
 msgid "Name identifiers"
-msgstr "Kennungen benennen"
+msgstr "Kennungen"
 
 msgid "e.g. ORCID, ISNI or GND."
 msgstr "z.B. ORCID, ISNI oder GND."
@@ -173,7 +174,7 @@ msgid "Type the value of an identifier..."
 msgstr "Geben Sie den Wert einer Kennung ein..."
 
 msgid "Save and add another"
-msgstr "Speichern und ein weiteres hinzufügen"
+msgstr "Speichern und weitere hinzufügen"
 
 msgid "Family name is a required field."
 msgstr "Der Familienname ist ein Pflichtfeld."
@@ -281,8 +282,8 @@ msgid ""
 "File addition, removal or modification are not allowed after you have "
 "published your upload."
 msgstr ""
-"Das Hinzufügen, Entfernen oder Ändern von Dateien ist nicht erlaubt, nachdem"
-" Sie Ihren Upload veröffentlicht haben."
+"Nach der Veröffentlichung des Eintrags ist das Hinzufügen, Entfernen oder "
+"Ändern von Dateien nicht mehr möglich."
 
 msgid "You must create a new version to add, modify or delete files."
 msgstr ""
@@ -333,7 +334,7 @@ msgid "Storage available"
 msgstr "Verfügbarer Speicherplatz"
 
 msgid "{{length}} out of {{maxfiles}} files"
-msgstr "{{length}} aus {{maxfiles}} Dateien"
+msgstr "{{length}} von {{maxfiles}} Dateien"
 
 msgid "out of"
 msgstr "aus"
@@ -354,7 +355,7 @@ msgid "Publication date"
 msgstr "Veröffentlichungsdatum"
 
 msgid "Creators"
-msgstr "Erstellerinnen"
+msgstr "Erstellende"
 
 msgid "Contributors"
 msgstr "Mitwirkende"
@@ -375,7 +376,7 @@ msgid "Publisher"
 msgstr "Herausgeber"
 
 msgid "Related works"
-msgstr "Verwandte Werke"
+msgstr "damit verbundene Arbeiten"
 
 msgid "Alternate identifiers"
 msgstr "Alternative Kennungen"
@@ -416,27 +417,27 @@ msgid "Add identifier"
 msgstr "Kennung hinzufügen"
 
 msgid "Identifier"
-msgstr "Bezeichner"
+msgstr "Kennung"
 
 msgid "Scheme"
 msgstr "Schema"
 
 msgid "Identifier(s)"
-msgstr "Bezeichner(n)"
+msgstr "Kennung(en)"
 
 msgid "Search for languages..."
 msgstr "Suche nach Sprachen..."
 
 msgid "Search for a language by name (e.g \"eng\", \"fr\" or \"Polish\")"
 msgstr ""
-"Suche nach einer Sprache anhand des Namens (z. B. \"eng\", \"fr\" oder "
+"Suche nach einer Sprache anhand des Namens (z.B. \"eng\", \"fr\" oder "
 "\"polnisch\")"
 
 msgid "Add standard"
 msgstr "Standard hinzufügen"
 
 msgid "Add custom"
-msgstr "Benutzerdefiniertes hinzufügen"
+msgstr "Regel hinzufügen"
 
 msgid "Read more"
 msgstr "Mehr lesen"
@@ -482,9 +483,9 @@ msgid ""
 "the first publication. Format: YYYY-MM-DD, YYYY-MM, or YYYY. For intervals "
 "use DATE/DATE, e.g. 1939/1945."
 msgstr ""
-"Falls Ihr Upload bereits an anderer Stelle veröffentlicht wurde, verwenden "
+"Falls Ihr Eintrag bereits an anderer Stelle veröffentlicht wurde, verwenden "
 "Sie bitte das Datum der Erstveröffentlichung. Format: JJJJ-MM-TT, JJJJ-MM, "
-"oder JJJJ. Für Intervalle verwenden Sie DATE/DATE, z. B. 1939/1945."
+"oder JJJJ. Für Intervalle verwenden Sie DATUM/DATUM, z. B. 1939/1945."
 
 msgid ""
 "YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD for intervals. MM and DD are optional."
@@ -502,7 +503,7 @@ msgid ""
 "The publisher is used to formulate the citation, so consider the prominence "
 "of the role."
 msgstr ""
-"Der Herausgeber wird zur Formulierung des Zitats verwendet, beachten Sie "
+"Der Herausgeber wird zur Formulierung der Zitierung verwendet, beachten Sie "
 "also die Bedeutsamkeit der Rolle."
 
 msgid "Enter publisher name"
@@ -514,13 +515,13 @@ msgid ""
 "Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, "
 "URNs, and URLs."
 msgstr ""
-"Geben Sie Bezeichner von verwandten Werken an. Unterstützte Bezeichner sind "
+"Geben Sie Kennungen von verknüpften Werken an. Unterstützte Kennungen sind "
 "DOI, Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS "
 "Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, "
 "URNs und URLs."
 
 msgid "Add related work"
-msgstr "Verwandte Arbeiten hinzufügen"
+msgstr "Weitere Verknüpfungen hinzufügen"
 
 msgid "Relation"
 msgstr "Relation"
@@ -593,3 +594,6 @@ msgstr "Lizenz {{mode}} hinzufügen"
 
 msgid "Change {{mode}} license"
 msgstr "Lizenz {{mode}} ändern"
+
+msgid "No community selected."
+msgstr "Keine Community ausgewählt."

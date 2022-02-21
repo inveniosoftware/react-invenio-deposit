@@ -20,7 +20,7 @@ class CommunityHeaderButton extends React.Component {
         onClick={() => console.log('TODO: Open community modal')}
         name="setting"
       >
-        Edit
+        {i18next.t('Edit')}
       </Button>
     );
   }
@@ -52,7 +52,7 @@ class EmptyCommunity extends React.Component {
   render() {
     return (
       <Container className="community-header empty">
-        <span>No community selected.</span>
+        <span>{i18next.t('No community selected.')}</span>
         <CommunityHeaderButton />
       </Container>
     );
