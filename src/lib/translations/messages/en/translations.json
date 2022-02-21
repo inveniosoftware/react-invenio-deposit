@@ -165,5 +165,14 @@
   "Add {{mode}} license": "Add {{mode}} license",
   "Change {{mode}} license": "Change {{mode}} license",
   "No community selected.": "No community selected.",
+  "Did not find a community that fits you? Upload without a community or <2>create your own.</2>": "Did not find a community that fits you? Upload without a community or <2>create your own.</2>",
+  "My communities": "My communities",
+  "Selected community": "Selected community",
+  "Currently selected": "Currently selected",
+  "Search in all communities": "Search in all communities",
+  "Search in my communities": "Search in my communities" ,
+  "Close": "Close",
+  "selected": "selected",
+  "select": "select",
   "Search for persons by name, identifier, or affiliation...": "Search for persons by name, identifier, or affiliation..."
 }
