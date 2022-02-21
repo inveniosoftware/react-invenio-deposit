@@ -48,15 +48,19 @@ export function configureStore(appConfig) {
   const { record, community, files, config, permissions, ...extra } = appConfig;
   const initialDepositState = {
     record,
-    // TODO: move this if community is stored independently in redux
-    community,
     config,
     permissions,
     ...INITIAL_STORE_STATE,
   };
+
+  const initialCommunitiesState = {
+    defaultCommunity: community,
+  };
+
   const preloadedState = {
     deposit: initialDepositState,
     files: preloadFiles(files || {}),
+    communities: initialCommunitiesState,
   };
 
   const composeEnhancers =

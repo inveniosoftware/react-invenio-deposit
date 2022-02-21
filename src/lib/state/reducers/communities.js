@@ -13,7 +13,7 @@ const communityReducer = (state = {}, action) => {
     case SET_COMMUNITY:
       return {
         ...state,
-        community: action.payload,
+        defaultCommunity: action.payload,
       };
     default:
       return state;
