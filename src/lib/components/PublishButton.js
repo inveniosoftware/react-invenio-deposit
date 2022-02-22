@@ -5,17 +5,16 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import { i18next } from '@translations/i18next';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Icon, Button, Modal } from 'semantic-ui-react';
 import { ActionButton } from 'react-invenio-forms';
-
+import { connect } from 'react-redux';
+import { Button, Icon, Modal } from 'semantic-ui-react';
 import { submitAction } from '../state/actions';
 import { FORM_PUBLISHING } from '../state/types';
 import { toCapitalCase } from '../utils';
-import { i18next } from '@translations/i18next';
 
 export class PublishButtonComponent extends Component {
   state = { confirmOpen: false };
@@ -37,7 +36,7 @@ export class PublishButtonComponent extends Component {
       const filesEnabled = _get(formik.values, 'files.enabled', false);
       const filesMissing = filesEnabled && !numberOfFiles;
       const hasErrors = !_isEmpty(errors);
-      return formik.isSubmitting || hasErrors || filesMissing;
+      return formik.dirty || formik.isSubmitting || hasErrors || filesMissing;
     };
 
     const action = i18next.t('publish');
