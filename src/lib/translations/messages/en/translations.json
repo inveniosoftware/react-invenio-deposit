@@ -164,5 +164,6 @@
   "Edit creator": "Edit creator",
   "Add {{mode}} license": "Add {{mode}} license",
   "Change {{mode}} license": "Change {{mode}} license",
-  "No community selected.": "No community selected."
+  "No community selected.": "No community selected.",
+  "Search for persons by name, identifier, or affiliation...": "Search for persons by name, identifier, or affiliation..."
 }

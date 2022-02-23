@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-02-21T08:41:21.198Z\n"
-"PO-Revision-Date: 2022-02-21T08:41:21.198Z\n"
+"POT-Creation-Date: 2022-02-23T10:09:02.029Z\n"
+"PO-Revision-Date: 2022-02-23T10:09:02.029Z\n"
 "Language: en\n"
 
 msgid "Embargo until"
@@ -570,3 +570,6 @@ msgstr "Change {{mode}} license"
 
 msgid "No community selected."
 msgstr "No community selected."
+
+msgid "Search for persons by name, identifier, or affiliation..."
+msgstr "Search for persons by name, identifier, or affiliation..."
