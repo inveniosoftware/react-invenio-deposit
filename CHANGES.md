@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.17.7 (released 2022-02-23)
+* add temporal solution for non-resolved communities
+
 Version 0.17.6 (released 2022-02-21)
 * upgrades docs dependencies
 * stores community prop in redux
