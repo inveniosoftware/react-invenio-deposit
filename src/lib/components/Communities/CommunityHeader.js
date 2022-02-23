@@ -31,15 +31,22 @@ class CommunityHeaderButton extends React.Component {
 class CommunityHeaderInfo extends React.Component {
   render() {
     const { community, imagePlaceholderLink } = this.props;
+    // TODO: Remove checks below once community is resolved in the backend
+    const communityLogo = community?.links?.logo
+      ? community.links.logo
+      : imagePlaceholderLink;
+    const communityTitle = community?.metadata?.title
+      ? community.metadata.title
+      : community;
     return (
       <Container className="community-header">
         <Image
           className="community-logo-header"
-          src={community.links.logo}
+          src={communityLogo}
           fallbackSrc={imagePlaceholderLink}
         />
         <div className="community-header-info">
-          {community.metadata.title}
+          {communityTitle}
           <CommunityHeaderButton />
         </div>
       </Container>
