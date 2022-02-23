@@ -2,17 +2,17 @@
 # Translators:
 # Alizee Pace <alizee.pace@gmail.com>, 2021
 # Tibor Simko <tibor.simko@cern.ch>, 2021
-# Alexander Gruber <alexander.gruber@tugraz.at>, 2022
 # chriz_uniba <christina.zeller@uni-bamberg.de>, 2022
 # Hermann Schranzhofer <hermann.schranzhofer@tugraz.at>, 2022
 # Mojib Wali <mojib.wali@tugraz.at>, 2022
+# Alexander Gruber <alexander.gruber@tugraz.at>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2022-02-21T08:41:21.198Z\n"
+"POT-Creation-Date: 2022-02-23T10:09:02.029Z\n"
 "PO-Revision-Date: 2021-06-29 13:20+0000\n"
-"Last-Translator: Mojib Wali <mojib.wali@tugraz.at>, 2022\n"
+"Last-Translator: Alexander Gruber <alexander.gruber@tugraz.at>, 2022\n"
 "Language-Team: German (https://www.transifex.com/inveniosoftware/teams/23537/de/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -30,7 +30,7 @@ msgid "The full record is restricted."
 msgstr "Der vollständige Eintrag ist eingeschränkt."
 
 msgid "Embargoed (full record)"
-msgstr "Gesperrt (vollständiger Eintrag)"
+msgstr "Embargo (vollständiger Eintrag)"
 
 msgid ""
 "On <bold>{{ date }}</bold> the record and the files will automatically be "
@@ -123,7 +123,7 @@ msgid ""
 "Record or files protection must be <1>restricted</1> to apply an embargo."
 msgstr ""
 "Der Schutz für Eintrag oder Dateien muss <1>eingeschränkt</1> werden, um "
-"eine Sperre anzuwenden."
+"eine Embargo anzuwenden."
 
 msgid "Options"
 msgstr "Optionen"
@@ -597,3 +597,6 @@ msgstr "Lizenz {{mode}} ändern"
 
 msgid "No community selected."
 msgstr "Keine Community ausgewählt."
+
+msgid "Search for persons by name, identifier, or affiliation..."
+msgstr ""
