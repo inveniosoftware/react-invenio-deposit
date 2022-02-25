@@ -1,28 +1,28 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
-// Copyright (C) 2021 Graz University of Technology.
+// Copyright (C) 2020-2022 CERN.
+// Copyright (C) 2020-2022 Northwestern University.
+// Copyright (C) 2021-2022 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
+
+import { i18next } from '@translations/i18next';
 import { useFormikContext } from 'formik';
 import _get from 'lodash/get';
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component, useState } from 'react';
 import Dropzone from 'react-dropzone';
 import {
   Button,
+  Checkbox,
   Grid,
   Header,
-  Segment,
   Icon,
-  Progress,
-  Table,
   Popup,
-  Checkbox,
+  Progress,
+  Segment,
+  Table,
 } from 'semantic-ui-react';
-import { i18next } from '@translations/i18next';
-
 import { humanReadableBytes } from './utils';
 
 const FileTableHeader = ({ isDraftRecord }) => (
@@ -54,18 +54,27 @@ const FileTableHeader = ({ isDraftRecord }) => (
 const FileTableRow = ({
   isDraftRecord,
   file,
-  deleteFileFromRecord,
+  deleteFile,
   defaultPreview,
   setDefaultPreview,
 }) => {
+  const [isCancelling, setIsCancelling] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const isDefaultPreview = defaultPreview === file.name;
 
-  const handleDelete = (file) => {
-    deleteFileFromRecord(file).then(() => {
+  const handleDelete = async (file) => {
+    setIsDeleting(true);
+    try {
+      await deleteFile(file);
       if (isDefaultPreview) {
         setDefaultPreview('');
       }
-    });
+    } catch (error) {}
+  };
+
+  const handleCancelUpload = (file) => {
+    setIsCancelling(true);
+    file.cancelUploadFn();
   };
 
   return (
@@ -79,7 +88,7 @@ const FileTableRow = ({
         />
       </Table.Cell>
       <Table.Cell className="file-table-cell" width={10}>
-        {file.upload.pending ? (
+        {file.uploadState.isPending ? (
           file.name
         ) : (
           <a
@@ -109,42 +118,50 @@ const FileTableRow = ({
       </Table.Cell>
       {isDraftRecord && (
         <Table.Cell className="file-table-cell file-upload-pending" width={2}>
-          {!file.upload?.pending && (
+          {!file.uploadState?.isPending && (
             <Progress
               className="file-upload-progress"
-              percent={file.upload.progress}
-              error={file.upload.failed}
+              percent={file.progressPercentage}
+              error={file.uploadState.isFailed}
               size="medium"
               color="blue"
               progress
               autoSuccess
-              active={!file.upload.initial}
-              disabled={file.upload.initial}
+              active
             />
           )}
-          {file.upload?.pending && <span>{i18next.t('Pending')}</span>}
+          {file.uploadState?.isPending && <span>{i18next.t('Pending')}</span>}
         </Table.Cell>
       )}
       {isDraftRecord && (
         <Table.Cell textAlign="right" width={2} className="file-table-cell">
-          {file.upload && !(file.upload.ongoing || file.upload.initial) && (
-            <Icon
-              link
-              className="action"
-              name="trash alternate outline"
-              color="blue"
-              onClick={() => handleDelete(file)}
-            />
-          )}
-          {file.upload && file.upload.ongoing && (
+          {!file.uploadState?.isUploading &&
+            (isDeleting ? (
+              <Icon loading name="spinner" />
+            ) : (
+              <Icon
+                link
+                className="action"
+                name="trash alternate outline"
+                color="blue"
+                disabled={isDeleting}
+                onClick={() => handleDelete(file)}
+              />
+            ))}
+          {file.uploadState?.isUploading && (
             <Button
               compact
               type="button"
               negative
               size="tiny"
-              onClick={() => file.upload.cancel()}
+              disabled={isCancelling}
+              onClick={() => handleCancelUpload(file)}
             >
-              {i18next.t('Cancel')}
+              {isCancelling ? (
+                <Icon loading name="spinner" />
+              ) : (
+                i18next.t('Cancel')
+              )}
             </Button>
           )}
         </Table.Cell>
@@ -190,7 +207,7 @@ const FileUploadBox = ({
     </Segment>
   );
 
-const FilesListTable = ({ isDraftRecord, filesList, deleteFileFromRecord }) => {
+const FilesListTable = ({ isDraftRecord, filesList, deleteFile }) => {
   const { setFieldValue, values: formikDraft } = useFormikContext();
   const defaultPreview = _get(formikDraft, 'files.default_preview', '');
   return (
@@ -203,7 +220,7 @@ const FilesListTable = ({ isDraftRecord, filesList, deleteFileFromRecord }) => {
               key={file.name}
               isDraftRecord={isDraftRecord}
               file={file}
-              deleteFileFromRecord={deleteFileFromRecord}
+              deleteFile={deleteFile}
               defaultPreview={defaultPreview}
               setDefaultPreview={(filename) =>
                 setFieldValue('files.default_preview', filename)
@@ -254,8 +271,7 @@ export class FileUploaderArea extends Component {
 }
 
 FileUploaderArea.propTypes = {
-  defaultFilePreview: PropTypes.string,
-  deleteFileFromRecord: PropTypes.func,
+  deleteFile: PropTypes.func,
   dragText: PropTypes.string,
   dropzoneParams: PropTypes.object,
   filesEnabled: PropTypes.bool,

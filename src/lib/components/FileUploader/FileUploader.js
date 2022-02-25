@@ -1,13 +1,14 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020-2021 CERN.
-// Copyright (C) 2020-2021 Northwestern University.
-// Copyright (C) 2021 Graz University of Technology.
+// Copyright (C) 2020-2022 CERN.
+// Copyright (C) 2020-2022 Northwestern University.
+// Copyright (C) 2022 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
+import { i18next } from '@translations/i18next';
 import { useFormikContext } from 'formik';
-import _isEmpty from 'lodash/isEmpty';
 import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import _map from 'lodash/map';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
@@ -17,7 +18,6 @@ import { NewVersionButton } from '../NewVersionButton';
 import { FileUploaderArea } from './FileUploaderArea';
 import { FileUploaderToolbar } from './FileUploaderToolbar';
 import { humanReadableBytes } from './utils';
-import { i18next } from '@translations/i18next';
 
 // NOTE: This component has to be a function component to allow
 //       the `useFormikContext` hook.
@@ -29,8 +29,9 @@ export const FileUploaderComponent = ({
   quota,
   permissions,
   record,
-  uploadFilesToDraft,
-  importRecordFilesToDraft,
+  uploadFiles,
+  deleteFile,
+  importParentFiles,
   importButtonIcon,
   importButtonText,
   isFileImportInProgress,
@@ -41,29 +42,30 @@ export const FileUploaderComponent = ({
   const filesEnabled = _get(formikDraft, 'files.enabled', false);
   const [warningMsg, setWarningMsg] = useState();
 
-  let filesList = Object.values(files).map((fileState) => {
+  const filesList = Object.values(files).map((fileState) => {
     return {
       name: fileState.name,
       size: fileState.size,
       checksum: fileState.checksum,
       links: fileState.links,
-      upload: {
-        initial: fileState.status === UploadState.initial,
-        failed: fileState.status === UploadState.error,
-        ongoing: fileState.status === UploadState.uploading,
-        finished: fileState.status === UploadState.finished,
-        pending: fileState.status === UploadState.pending,
-        progress: fileState.progress,
-        cancel: fileState.cancel,
+      uploadState: {
+        // initial: fileState.status === UploadState.initial,
+        isFailed: fileState.status === UploadState.error,
+        isUploading: fileState.status === UploadState.uploading,
+        isFinished: fileState.status === UploadState.finished,
+        isPending: fileState.status === UploadState.pending,
       },
+      progressPercentage: fileState.progressPercentage,
+      cancelUploadFn: fileState.cancelUploadFn,
     };
   });
+
   const filesSize = filesList.reduce(
     (totalSize, file) => (totalSize += file.size),
     0
   );
 
-  let dropzoneParams = {
+  const dropzoneParams = {
     preventDropOnDocument: true,
     onDropAccepted: (acceptedFiles) => {
       const maxFileNumberReached =
@@ -123,7 +125,7 @@ export const FileUploaderComponent = ({
           </div>
         );
       } else {
-        uploadFilesToDraft(formikDraft, acceptedFiles);
+        uploadFiles(formikDraft, acceptedFiles);
       }
     },
     multiple: true,
@@ -167,7 +169,7 @@ export const FileUploaderComponent = ({
                     primary={true}
                     icon={importButtonIcon}
                     content={importButtonText}
-                    onClick={() => importRecordFilesToDraft()}
+                    onClick={() => importParentFiles()}
                     disabled={isFileImportInProgress}
                     loading={isFileImportInProgress}
                   />
@@ -188,6 +190,7 @@ export const FileUploaderComponent = ({
               dropzoneParams={dropzoneParams}
               isDraftRecord={isDraftRecord}
               filesEnabled={filesEnabled}
+              deleteFile={deleteFile}
             />
           </Grid.Row>
         )}
@@ -241,10 +244,10 @@ const fileDetailsShape = PropTypes.objectOf(
   PropTypes.shape({
     name: PropTypes.string,
     size: PropTypes.number,
-    progress: PropTypes.number,
+    progressPercentage: PropTypes.number,
     checksum: PropTypes.string,
     links: PropTypes.object,
-    cancel: PropTypes.func,
+    cancelUploadFn: PropTypes.func,
     state: PropTypes.oneOf(Object.values(UploadState)),
     enabled: PropTypes.bool,
   })
@@ -266,8 +269,9 @@ FileUploaderComponent.propTypes = {
   importButtonIcon: PropTypes.string,
   importButtonText: PropTypes.string,
   isFileImportInProgress: PropTypes.bool,
-  importRecordFilesToDraft: PropTypes.func,
-  uploadFilesToDraft: PropTypes.func,
+  importParentFiles: PropTypes.func,
+  uploadFiles: PropTypes.func,
+  deleteFile: PropTypes.func,
 };
 
 FileUploaderComponent.defaultProps = {

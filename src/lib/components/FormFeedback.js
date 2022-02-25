@@ -6,19 +6,27 @@
 // Invenio App RDM is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import { i18next } from '@translations/i18next';
+import _get from 'lodash/get';
 import _isObject from 'lodash/isObject';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Message } from 'semantic-ui-react';
 import {
-  FORM_DELETE_FAILED,
-  FORM_PUBLISH_FAILED,
-  FORM_SAVE_FAILED,
-  FORM_SAVE_PARTIALLY_SUCCEEDED,
-  FORM_SAVE_SUCCEEDED,
+  DISCARD_PID_FAILED,
+  DRAFT_DELETE_FAILED,
+  DRAFT_PREVIEW_FAILED,
+  DRAFT_PREVIEW_PARTIALLY_SUCCEEDED,
+  DRAFT_PUBLISH_FAILED,
+  DRAFT_PUBLISH_PARTIALLY_SUCCEEDED,
+  DRAFT_SAVE_FAILED,
+  DRAFT_SAVE_PARTIALLY_SUCCEEDED,
+  DRAFT_SAVE_SUCCEEDED,
+  FILE_IMPORT_FAILED,
+  FILE_UPLOAD_SAVE_DRAFT_FAILED,
+  RESERVE_PID_FAILED,
 } from '../state/types';
 import { leafTraverse } from '../utils';
-import { i18next } from '@translations/i18next';
 
 const defaultLabels = {
   'files.enabled': i18next.t('Files'),
@@ -40,6 +48,73 @@ const defaultLabels = {
   'access.embargo.until': i18next.t('Embargo until'),
   'pids.doi': i18next.t('DOI'),
   pids: i18next.t('PIDS'),
+};
+
+const ACTIONS = {
+  [DRAFT_SAVE_SUCCEEDED]: {
+    feedback: 'positive',
+    message: i18next.t('Record successfully saved.'),
+  },
+  [DRAFT_SAVE_PARTIALLY_SUCCEEDED]: {
+    feedback: 'warning',
+    message: i18next.t('Record saved with validation errors:'),
+  },
+  [DRAFT_PUBLISH_PARTIALLY_SUCCEEDED]: {
+    feedback: 'warning',
+    message: i18next.t('Record not published due to validation errors:'),
+  },
+  [DRAFT_PREVIEW_PARTIALLY_SUCCEEDED]: {
+    feedback: 'warning',
+    message: i18next.t('Record cannot be previewed due to validation errors:'),
+  },
+  [DRAFT_SAVE_FAILED]: {
+    feedback: 'negative',
+    message: i18next.t(
+      'Oops, something went wrong! The draft was not saved. Please try again. If the problem persists, contact user support.'
+    ),
+  },
+  [DRAFT_PUBLISH_FAILED]: {
+    feedback: 'negative',
+    message: i18next.t(
+      'Oops, something went wrong! The draft was not published. Please try again. If the problem persists, contact user support.'
+    ),
+  },
+  [DRAFT_DELETE_FAILED]: {
+    feedback: 'negative',
+    message: i18next.t(
+      'Oops, something went wrong! The draft was not deleted. Please try again. If the problem persists, contact user support.'
+    ),
+  },
+  [DRAFT_PREVIEW_FAILED]: {
+    feedback: 'negative',
+    message: i18next.t(
+      'Oops, something went wrong! The draft cannot be previewed. Please try again. If the problem persists, contact user support.'
+    ),
+  },
+  [RESERVE_PID_FAILED]: {
+    feedback: 'negative',
+    message: i18next.t(
+      'Oops, something went wrong! The identifier was not reserved. Please try again. If the problem persists, contact user support.'
+    ),
+  },
+  [DISCARD_PID_FAILED]: {
+    feedback: 'negative',
+    message: i18next.t(
+      'Oops, something went wrong! The identifier was not discarded. Please try again. If the problem persists, contact user support.'
+    ),
+  },
+  [FILE_UPLOAD_SAVE_DRAFT_FAILED]: {
+    feedback: 'negative',
+    message: i18next.t(
+      'Oops, something went wrong! The draft could not be saved before uploading the file. Please try again. If the problem persists, contact user support.'
+    ),
+  },
+  [FILE_IMPORT_FAILED]: {
+    feedback: 'negative',
+    message: i18next.t(
+      'Oops, something went wrong! Importing files from the previous draft version failed. Please try again. If the problem persists, contact user support.'
+    ),
+  },
 };
 
 class DisconnectedFormFeedback extends Component {
@@ -148,42 +223,17 @@ class DisconnectedFormFeedback extends Component {
     return labelledErrorMessages;
   }
   render() {
-    const visibleStates = [
-      FORM_SAVE_SUCCEEDED,
-      FORM_SAVE_PARTIALLY_SUCCEEDED,
-      FORM_SAVE_FAILED,
-      FORM_PUBLISH_FAILED,
-      FORM_DELETE_FAILED,
-    ];
-    const formState = this.props.formState;
+    const actionState = this.props.actionState;
 
     const errors = this.props.errors || {};
-    let feedback;
-    let message = null;
+    const { feedback, message } = _get(ACTIONS, actionState, {
+      feedback: undefined,
+      message: undefined,
+    });
 
-    switch (formState) {
-      case FORM_SAVE_SUCCEEDED:
-        feedback = 'positive';
-        message = i18next.t('Record successfully saved.');
-        break;
-      case FORM_SAVE_PARTIALLY_SUCCEEDED:
-        feedback = 'warning';
-        message = i18next.t('Record saved with validation errors:');
-        break;
-      case FORM_SAVE_FAILED:
-      case FORM_PUBLISH_FAILED:
-        feedback = 'negative';
-        // TODO: use the backend error message
-        message = i18next.t(
-          'There was an internal error (and the record was not saved).'
-        );
-        break;
-      case FORM_DELETE_FAILED:
-        feedback = 'negative';
-        message = i18next.t(
-          'There was an internal error (and the record was not deleted).'
-        );
-      default:
+    if (!message) {
+      // if no message to display, simply return null
+      return null;
     }
 
     const labelledMessages = this.toLabelledErrorMessages(errors);
@@ -195,7 +245,7 @@ class DisconnectedFormFeedback extends Component {
       )
     );
 
-    return visibleStates.includes(formState) ? (
+    return (
       <Message
         visible
         positive={feedback === 'positive'}
@@ -210,12 +260,12 @@ class DisconnectedFormFeedback extends Component {
           </Grid.Column>
         </Grid>
       </Message>
-    ) : null;
+    );
   }
 }
 
 const mapStateToProps = (state) => ({
-  formState: state.deposit.formState,
+  actionState: state.deposit.actionState,
   errors: state.deposit.errors,
 });
 

@@ -5,19 +5,17 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { createStore, applyMiddleware, compose } from 'redux';
+import _cloneDeep from 'lodash/cloneDeep';
+import _get from 'lodash/get';
+import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
-
 import rootReducer from './state/reducers';
 import { UploadState } from './state/reducers/files';
 import { INITIAL_STORE_STATE } from './storeConfig';
-import _cloneDeep from 'lodash/cloneDeep';
-import _get from 'lodash/get';
 
 const preloadFiles = (files) => {
   const _files = _cloneDeep(files);
   return {
-    defaultFilePreview: files.default_preview || null,
     links: files.links || {},
     entries: _get(_files, 'entries', [])
       .map((file) => {
@@ -32,7 +30,7 @@ const preloadFiles = (files) => {
         return hasSize
           ? {
               status: UploadState.finished,
-              progress: 100,
+              progressPercentage: 100,
               ...fileState,
             }
           : { status: UploadState.pending, ...fileState };

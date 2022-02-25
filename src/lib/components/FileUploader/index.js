@@ -7,9 +7,9 @@
 
 import { connect } from 'react-redux';
 import {
-  deleteDraftFile,
-  uploadDraftFiles,
-  importParentRecordFiles,
+  deleteFile,
+  importParentFiles,
+  uploadFiles,
 } from '../../state/actions';
 import { FileUploaderComponent } from './FileUploader';
 
@@ -30,10 +30,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  uploadFilesToDraft: (draft, files) =>
-    dispatch(uploadDraftFiles(draft, files)),
-  importRecordFilesToDraft: () => dispatch(importParentRecordFiles()),
-  deleteFileFromRecord: (file) => dispatch(deleteDraftFile(file)),
+  uploadFiles: (draft, files) => dispatch(uploadFiles(draft, files)),
+  importParentFiles: () => dispatch(importParentFiles()),
+  deleteFile: (file) => dispatch(deleteFile(file)),
 });
 
 export const FileUploader = connect(
