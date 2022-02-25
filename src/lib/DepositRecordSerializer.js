@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020-2021 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2022 CERN.
+// Copyright (C) 2020-2022 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -17,8 +17,6 @@ import _mapValues from 'lodash/mapValues';
 import _pick from 'lodash/pick';
 import _pickBy from 'lodash/pickBy';
 import _set from 'lodash/set';
-import _get from 'lodash/get';
-
 import {
   AllowAdditionsVocabularyField,
   Field,
@@ -35,6 +33,25 @@ import {
 
 export class DepositRecordSerializer {
   constructor(defaultLocale) {
+    if (this.constructor === DepositRecordSerializer) {
+      throw new Error('Abstract');
+    }
+  }
+
+  deserialize(record) {
+    throw new Error('Not implemented.');
+  }
+  deserializeErrors(errors) {
+    throw new Error('Not implemented.');
+  }
+  serialize(record) {
+    throw new Error('Not implemented.');
+  }
+}
+
+export class RDMDepositRecordSerializer extends DepositRecordSerializer {
+  constructor(defaultLocale) {
+    super();
     this.defaultLocale = defaultLocale;
   }
   depositRecordSchema = {
@@ -227,9 +244,9 @@ export class DepositRecordSerializer {
    * @param {object} obj - potentially empty object
    * @returns {object} record - without empty fields
    */
-  removeEmptyValues(obj) {
+  _removeEmptyValues(obj) {
     if (_isArray(obj)) {
-      let mappedValues = obj.map((value) => this.removeEmptyValues(value));
+      let mappedValues = obj.map((value) => this._removeEmptyValues(value));
       let filterValues = mappedValues.filter((value) => {
         if (_isBoolean(value) || _isNumber(value)) {
           return value;
@@ -239,7 +256,7 @@ export class DepositRecordSerializer {
       return filterValues;
     } else if (_isObject(obj)) {
       let mappedValues = _mapValues(obj, (value) =>
-        this.removeEmptyValues(value)
+        this._removeEmptyValues(value)
       );
       let pickedValues = _pickBy(mappedValues, (value) => {
         if (_isArray(value) || _isObject(value)) {
@@ -275,14 +292,14 @@ export class DepositRecordSerializer {
 
     // FIXME: move logic in a more sophisticated PIDField that allows empty values
     // to be sent in the backend
-    let savedPidsFieldValue = originalRecord.pids || {};
+    const savedPidsFieldValue = originalRecord.pids || {};
 
     // Remove empty null values from record. This happens when we create a new
     // draft and the backend produces an empty record filled in with null
     // values, array of null values etc.
     // TODO: Backend should not attempt to provide empty values. It should just
     //       return existing record in case of edit or {} in case of new.
-    let deserializedRecord = this.removeEmptyValues(originalRecord);
+    let deserializedRecord = this._removeEmptyValues(originalRecord);
 
     // FIXME: Add back pids field in case it was removed
     deserializedRecord = {
@@ -290,7 +307,7 @@ export class DepositRecordSerializer {
       ...(!_isEmpty(savedPidsFieldValue) ? { pids: savedPidsFieldValue } : {}),
     };
 
-    for (let key in this.depositRecordSchema) {
+    for (const key in this.depositRecordSchema) {
       deserializedRecord = this.depositRecordSchema[key].deserialize(
         deserializedRecord,
         this.defaultLocale
@@ -313,7 +330,7 @@ export class DepositRecordSerializer {
     //                 (re-using deserialize has some caveats)
     //                 Form/Error UX is tackled in next sprint and this is good
     //                 enough for now.
-    for (let e of errors) {
+    for (const e of errors) {
       _set(deserializedErrors, e.field, e.messages.join(' '));
     }
 
@@ -335,7 +352,6 @@ export class DepositRecordSerializer {
       'metadata',
       'id',
       'links',
-      'defaultFilePreview',
       'files',
       'pids',
     ]);
@@ -344,7 +360,7 @@ export class DepositRecordSerializer {
     // to be sent in the backend
     let savedPidsFieldValue = originalRecord.pids || {};
 
-    let serializedRecord = this.removeEmptyValues(originalRecord);
+    let serializedRecord = this._removeEmptyValues(originalRecord);
 
     for (let key in this.depositRecordSchema) {
       serializedRecord = this.depositRecordSchema[key].serialize(
@@ -354,7 +370,7 @@ export class DepositRecordSerializer {
     }
 
     // Remove empty values again because serialization may add some back
-    serializedRecord = this.removeEmptyValues(serializedRecord);
+    serializedRecord = this._removeEmptyValues(serializedRecord);
 
     // FIXME: Add back pids field in case it was removed
     serializedRecord = {

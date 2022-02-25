@@ -6,11 +6,11 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import { i18next } from '@translations/i18next';
+import _get from 'lodash/get';
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { Button, Label, List, Ref } from 'semantic-ui-react';
-import _get from 'lodash/get';
-import { i18next } from '@translations/i18next';
 import { CreatibutorsModal } from './CreatibutorsModal';
 
 export const CreatibutorsFieldItem = ({
@@ -110,13 +110,20 @@ export const CreatibutorsFieldItem = ({
         <Ref innerRef={preview}>
           <List.Content>
             <List.Description>
-              <span class="creatibutor">
-              {_get(initialCreatibutor, 'person_or_org.identifiers', []).some(
-                (identifier) => identifier.scheme === 'orcid'
-              ) && (
-                <img alt="ORCID logo" className="inline-id-icon" src="/static/images/orcid.svg" width="16" height="16" />
-              )}
-              {displayName} {renderRole(initialCreatibutor?.role, roleOptions)}
+              <span className="creatibutor">
+                {_get(initialCreatibutor, 'person_or_org.identifiers', []).some(
+                  (identifier) => identifier.scheme === 'orcid'
+                ) && (
+                  <img
+                    alt="ORCID logo"
+                    className="inline-id-icon"
+                    src="/static/images/orcid.svg"
+                    width="16"
+                    height="16"
+                  />
+                )}
+                {displayName}{' '}
+                {renderRole(initialCreatibutor?.role, roleOptions)}
               </span>
             </List.Description>
             {firstError && (

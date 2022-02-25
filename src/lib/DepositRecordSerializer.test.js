@@ -1,11 +1,11 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020-2021 CERN.
-// Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2020-2022 CERN.
+// Copyright (C) 2020-2022 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { DepositRecordSerializer } from './DepositRecordSerializer';
+import { RDMDepositRecordSerializer } from './DepositRecordSerializer';
 import {
   emptyDate,
   emptyFunding,
@@ -13,9 +13,9 @@ import {
   emptyRelatedWork,
 } from './record';
 
-describe('DepositRecordSerializer', () => {
+describe('RDMDepositRecordSerializer tests', () => {
   const defaultLocale = 'en';
-  const serializer = new DepositRecordSerializer(defaultLocale);
+  const serializer = new RDMDepositRecordSerializer(defaultLocale);
 
   describe('removeEmptyValues', () => {
     const record = {
@@ -26,7 +26,7 @@ describe('DepositRecordSerializer', () => {
       description: '',
     };
 
-    const cleanedRecord = serializer.removeEmptyValues(record);
+    const cleanedRecord = serializer._removeEmptyValues(record);
 
     expect(cleanedRecord).toEqual({ cool: false, version: 0 });
   });
@@ -161,10 +161,10 @@ describe('DepositRecordSerializer', () => {
           contributors: [],
           resource_type: '',
           publication_date: '',
-          dates: [{...emptyDate, __key: 0}],
+          dates: [{ ...emptyDate, __key: 0 }],
           languages: [],
-          identifiers: [{...emptyIdentifier, __key: 0}],
-          related_identifiers: [{...emptyRelatedWork, __key: 0}],
+          identifiers: [{ ...emptyIdentifier, __key: 0 }],
+          related_identifiers: [{ ...emptyRelatedWork, __key: 0 }],
           subjects: [],
           rights: [],
           funding: [emptyFunding],
@@ -379,9 +379,21 @@ describe('DepositRecordSerializer', () => {
             { title: 'Another title', type: 'abstract', lang: 'dan', __key: 0 },
           ],
           additional_descriptions: [
-            { description: 'Another description', type: 'other', lang: 'dan', __key: 0 },
+            {
+              description: 'Another description',
+              type: 'other',
+              lang: 'dan',
+              __key: 0,
+            },
           ],
-          dates: [{ date: '1920/2020', type: 'collected', description: 'foo', __key: 0 }],
+          dates: [
+            {
+              date: '1920/2020',
+              type: 'collected',
+              description: 'foo',
+              __key: 0,
+            },
+          ],
           languages: ['en_id', 'fr_id'],
           identifiers: [
             { scheme: 'doi', identifier: '10.5281/zenodo.9999999', __key: 0 },

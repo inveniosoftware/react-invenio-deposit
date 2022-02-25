@@ -1,19 +1,23 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2021 CERN.
-// Copyright (C) 2021 Northwestern University.
+// Copyright (C) 2021-2022 CERN.
+// Copyright (C) 2021-2022 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { FastField, getIn } from 'formik';
+import { i18next } from '@translations/i18next';
+import { FastField, Field, getIn } from 'formik';
 import _debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { FieldLabel } from 'react-invenio-forms';
 import { connect } from 'react-redux';
 import { Form, Popup, Radio } from 'semantic-ui-react';
-import { discardPID, reservePID } from '../../state/actions';
-import { i18next } from '@translations/i18next';
+import {
+  DepositFormSubmitActions,
+  DepositFormSubmitContext,
+} from '../../DepositFormSubmitContext';
+import { DISCARD_PID_STARTED, RESERVE_PID_STARTED } from '../../state/types';
 
 const PROVIDER_EXTERNAL = 'external';
 const UPDATE_PID_DEBOUNCE_MS = 200;
@@ -25,14 +29,18 @@ class ReservePIDBtn extends Component {
   render() {
     const { disabled, handleReservePID, label, loading } = this.props;
     return (
-      <Form.Button
-        color="green"
-        size="mini"
-        loading={loading}
-        disabled={disabled || loading}
-        onClick={handleReservePID}
-        content={label}
-      />
+      <Field>
+        {({ form: formik }) => (
+          <Form.Button
+            color="green"
+            size="mini"
+            loading={loading}
+            disabled={disabled || loading}
+            onClick={(e) => handleReservePID(e, formik)}
+            content={label}
+          />
+        )}
+      </Field>
     );
   }
 }
@@ -59,13 +67,17 @@ class UnreservePIDBtn extends Component {
       <Popup
         content={label}
         trigger={
-          <Form.Button
-            disabled={disabled || loading}
-            loading={loading}
-            icon="close"
-            onClick={handleDiscardPID}
-            size="mini"
-          />
+          <Field>
+            {({ form: formik }) => (
+              <Form.Button
+                disabled={disabled || loading}
+                loading={loading}
+                icon="close"
+                onClick={(e) => handleDiscardPID(e, formik)}
+                size="mini"
+              />
+            )}
+          </Field>
         }
       />
     );
@@ -144,25 +156,35 @@ ManagedUnmanagedSwitch.defaultProps = {
  * button components for managed PID.
  */
 class ManagedIdentifierComponent extends Component {
-  handleReservePID = () => {
-    const { actionReservePID, form, pidType } = this.props;
-    actionReservePID(pidType, form);
+  static contextType = DepositFormSubmitContext;
+
+  handleReservePID = (event, formik) => {
+    const { pidType } = this.props;
+    this.context.setSubmitContext(DepositFormSubmitActions.RESERVE_PID, {
+      pidType: pidType,
+    });
+    formik.handleSubmit(event);
   };
 
-  handleDiscardPID = () => {
-    const { actionDiscardPID, form, pidType } = this.props;
-    actionDiscardPID(pidType, form);
+  handleDiscardPID = (event, formik) => {
+    const { pidType } = this.props;
+    this.context.setSubmitContext(DepositFormSubmitActions.DISCARD_PID, {
+      pidType: pidType,
+    });
+    formik.handleSubmit(event);
   };
 
   render() {
     const {
+      actionState,
+      actionStateExtra,
       btnLabelDiscardPID,
       btnLabelGetPID,
       disabled,
       helpText,
       identifier,
       pidPlaceholder,
-      reservePIDsLoading,
+      pidType,
     } = this.props;
     const hasIdentifier = identifier !== '';
 
@@ -170,7 +192,10 @@ class ManagedIdentifierComponent extends Component {
       <ReservePIDBtn
         disabled={disabled || hasIdentifier}
         label={btnLabelGetPID}
-        loading={reservePIDsLoading}
+        loading={
+          actionState === RESERVE_PID_STARTED &&
+          actionStateExtra.pidType === pidType
+        }
         handleReservePID={this.handleReservePID}
       />
     );
@@ -180,7 +205,10 @@ class ManagedIdentifierComponent extends Component {
         disabled={disabled}
         label={btnLabelDiscardPID}
         handleDiscardPID={this.handleDiscardPID}
-        loading={reservePIDsLoading}
+        loading={
+          actionState === DISCARD_PID_STARTED &&
+          actionStateExtra.pidType === pidType
+        }
         pidType={this.props.pidType}
       />
     );
@@ -221,29 +249,26 @@ ManagedIdentifierComponent.propTypes = {
   pidPlaceholder: PropTypes.string.isRequired,
   pidType: PropTypes.string.isRequired,
   /* from Redux */
-  reservePIDsLoading: PropTypes.bool,
-  actionReservePID: PropTypes.func.isRequired,
-  actionDiscardPID: PropTypes.func.isRequired,
+  actionState: PropTypes.string,
+  actionStateExtra: PropTypes.object,
 };
 
 ManagedIdentifierComponent.defaultProps = {
   disabled: false,
   helpText: null,
-  reservePIDsLoading: false,
+  /* from Redux */
+  actionState: '',
+  actionStateExtra: {},
 };
 
 const mapStateToProps = (state) => ({
-  reservePIDsLoading: state.deposit.reservePIDsLoading,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  actionReservePID: (pidType, formik) => dispatch(reservePID(pidType, formik)),
-  actionDiscardPID: (pidType, formik) => dispatch(discardPID(pidType, formik)),
+  actionState: state.deposit.actionState,
+  actionStateExtra: state.deposit.actionStateExtra,
 });
 
 const ManagedIdentifierCmp = connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(ManagedIdentifierComponent);
 
 /**

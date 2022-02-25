@@ -1,48 +1,71 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2022 CERN.
+// Copyright (C) 2020-2022 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import { Provider } from 'react-redux';
-import { I18nextProvider } from 'react-i18next';
-import { DepositApiClient } from './DepositApiClient';
-import { DepositBootstrap } from './DepositBootstrap';
-import { DepositController } from './DepositController';
-import { DepositFileUploader } from './DepositFileUploader';
-import { DepositRecordSerializer } from './DepositRecordSerializer';
-import { configureStore } from './store';
 import { i18next } from '@translations/i18next';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { I18nextProvider } from 'react-i18next';
+import { Provider } from 'react-redux';
+import {
+  DepositApiClient,
+  DepositFileApiClient,
+  RDMDepositApiClient,
+  RDMDepositFileApiClient,
+} from './DepositApiClient';
+import { DepositBootstrap } from './DepositBootstrap';
+import {
+  DepositDraftsService,
+  RDMDepositDraftsService,
+} from './DepositDraftsService';
+import {
+  DepositFilesService,
+  RDMDepositFilesService,
+} from './DepositFilesService';
+import {
+  DepositRecordSerializer,
+  RDMDepositRecordSerializer,
+} from './DepositRecordSerializer';
+import { DepositService } from './DepositService';
+import { configureStore } from './store';
 
 export class DepositFormApp extends Component {
   constructor(props) {
-    super();
-    const apiClient = props.apiClient
-      ? props.apiClient
-      : new DepositApiClient(props.config.createUrl);
-
-    const fileUploader = props.fileUploader
-      ? props.fileUploader
-      : new DepositFileUploader(apiClient, props.config);
-
-    const controller = props.controller
-      ? props.controller
-      : new DepositController(apiClient, fileUploader);
+    super(props);
 
     const recordSerializer = props.recordSerializer
       ? props.recordSerializer
-      : new DepositRecordSerializer(props.config.default_locale);
+      : new RDMDepositRecordSerializer(props.config.default_locale);
+
+    const apiClient = props.apiClient
+      ? props.apiClient
+      : new RDMDepositApiClient(props.config.createUrl, recordSerializer);
+
+    const fileApiClient = props.fileApiClient
+      ? props.fileApiClient
+      : new RDMDepositFileApiClient();
+
+    const draftsService = props.draftsService
+      ? props.draftsService
+      : new RDMDepositDraftsService(apiClient);
+
+    const filesService = props.filesService
+      ? props.filesService
+      : new RDMDepositFilesService(fileApiClient, props.config);
+
+    const service = new DepositService(draftsService, filesService);
 
     const appConfig = {
       config: props.config,
       record: recordSerializer.deserialize(props.record),
       community: props.community,
       files: props.files,
-      controller: controller,
       apiClient: apiClient,
-      fileUploader: fileUploader,
+      fileApiClient: fileApiClient,
+      service: service,
       permissions: props.permissions,
       recordSerializer: recordSerializer,
     };
@@ -61,4 +84,15 @@ export class DepositFormApp extends Component {
   }
 }
 
-DepositFormApp.propTypes = {};
+DepositFormApp.propTypes = {
+  config: PropTypes.object,
+  record: PropTypes.object,
+  community: PropTypes.object,
+  files: PropTypes.object,
+  permissions: PropTypes.object,
+  apiClient: PropTypes.instanceOf(DepositApiClient),
+  fileApiClient: PropTypes.instanceOf(DepositFileApiClient),
+  draftsService: PropTypes.instanceOf(DepositDraftsService),
+  filesService: PropTypes.instanceOf(DepositFilesService),
+  recordSerializer: PropTypes.instanceOf(DepositRecordSerializer),
+};
