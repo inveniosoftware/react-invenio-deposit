@@ -172,7 +172,7 @@ export class DepositController {
       }
     }
 
-    const uploadsURL = '/uploads';
+    const uploadsURL = '/me/uploads';
     window.location.replace(uploadsURL);
   }
 
