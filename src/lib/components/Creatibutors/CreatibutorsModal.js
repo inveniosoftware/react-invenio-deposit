@@ -39,7 +39,7 @@ export class CreatibutorsModal extends Component {
       open: false,
       saveAndContinueLabel: i18next.t('Save and add another'),
       action: null,
-      showPersonForm: !_isEmpty(props.initialCreatibutor),
+      showPersonForm: !props.autocompleteNames || !_isEmpty(props.initialCreatibutor),
     };
     this.inputRef = createRef();
     this.identifiersRef = createRef();
@@ -212,7 +212,7 @@ export class CreatibutorsModal extends Component {
               {creatibutor.name} (
               <Image
                 src="/static/images/orcid.svg"
-                className="small-icon"
+                className="inline-id-icon"
                 verticalAlign="middle"
               />
               {orcid.identifier})
@@ -386,22 +386,24 @@ export class CreatibutorsModal extends Component {
                   {_get(values, typeFieldPath, '') ===
                     CREATIBUTOR_TYPE.PERSON ? (
                     <div>
-                      <RemoteSelectField
-                        selectOnBlur={false}
-                        searchInput={{ autoFocus: _isEmpty(initialCreatibutor) }}
-                        fieldPath={'creators'}
-                        clearable={true}
-                        multiple={false}
-                        allowAdditions={false}
-                        placeholder={i18next.t('Search for persons by name, identifier, or affiliation...')}
-                        noQueryMessage={i18next.t('Search for persons by name, identifier, or affiliation...')}
-                        required={false}
-                        // Disable UI-side filtering of search results
-                        search={options => options}
-                        suggestionAPIUrl="/api/names"
-                        serializeSuggestions={this.serializeSuggestions}
-                        onValueChange={this.onPersonSearchChange}
-                      />
+                      {this.props.autocompleteNames &&
+                        <RemoteSelectField
+                          selectOnBlur={false}
+                          searchInput={{ autoFocus: _isEmpty(initialCreatibutor) }}
+                          fieldPath={'creators'}
+                          clearable={true}
+                          multiple={false}
+                          allowAdditions={false}
+                          placeholder={i18next.t('Search for persons by name, identifier, or affiliation...')}
+                          noQueryMessage={i18next.t('Search for persons by name, identifier, or affiliation...')}
+                          required={false}
+                          // Disable UI-side filtering of search results
+                          search={options => options}
+                          suggestionAPIUrl="/api/names"
+                          serializeSuggestions={this.serializeSuggestions}
+                          onValueChange={this.onPersonSearchChange}
+                        />
+                      }
                       {this.state.showPersonForm &&
                         <div>
                           <Form.Group widths="equal">
@@ -496,7 +498,7 @@ export class CreatibutorsModal extends Component {
                     onClick={(event, formik) => {
                       this.setState({
                         action: 'saveAndContinue',
-                        showPersonForm: false
+                        showPersonForm: !this.props.autocompleteNames
                       }, () => {
                         formik.handleSubmit();
                       });
@@ -511,7 +513,7 @@ export class CreatibutorsModal extends Component {
                   onClick={(event, formik) => {
                     this.setState({
                       action: 'saveAndClose',
-                      showPersonForm: false,
+                      showPersonForm: !this.props.autocompleteNames,
                     }, () =>
                       formik.handleSubmit()
                     );
@@ -533,6 +535,7 @@ CreatibutorsModal.propTypes = {
   schema: PropTypes.oneOf(['creators', 'contributors']).isRequired,
   action: PropTypes.oneOf(['add', 'edit']).isRequired,
   addLabel: PropTypes.string.isRequired,
+  autocompleteNames: PropTypes.bool,
   editLabel: PropTypes.string.isRequired,
   initialCreatibutor: PropTypes.shape({
     id: PropTypes.string,
@@ -558,4 +561,5 @@ CreatibutorsModal.propTypes = {
 CreatibutorsModal.defaultProps = {
   roleOptions: [],
   initialCreatibutor: {},
+  autocompleteNames: false,
 };
