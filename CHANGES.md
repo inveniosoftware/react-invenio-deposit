@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.17.8 (released 2022-03-01)
+* change URL redirection after discarding a draft
+
 Version 0.17.7 (released 2022-02-23)
 * add temporal solution for non-resolved communities
 
