@@ -26,6 +26,7 @@ export const CreatibutorsFieldItem = ({
   displayName,
   roleOptions,
   schema,
+  autocompleteNames,
 }) => {
   const dropRef = React.useRef(null);
   const [_, drag, preview] = useDrag({
@@ -87,6 +88,7 @@ export const CreatibutorsFieldItem = ({
             initialCreatibutor={initialCreatibutor}
             roleOptions={roleOptions}
             schema={schema}
+            autocompleteNames={autocompleteNames}
             action="edit"
             trigger={
               <Button size="mini" primary type="button">

@@ -119,6 +119,7 @@ class CreatibutorsFieldForm extends Component {
                     moveCreatibutor: formikArrayMove,
                     addLabel: this.props.modal.addLabel,
                     editLabel: this.props.modal.editLabel,
+                    autocompleteNames: this.props.autocompleteNames,
                   }}
                 />
               );
@@ -132,6 +133,7 @@ class CreatibutorsFieldForm extends Component {
               editLabel={this.props.modal.editLabel}
               roleOptions={sortOptions(roleOptions)}
               schema={schema}
+              autocompleteNames={this.props.autocompleteNames}
               trigger={
                 <Button type="button">
                   <Icon name="add" />
@@ -172,6 +174,7 @@ CreatibutorsField.propTypes = {
     editLabel: PropTypes.string.isRequired,
   }).isRequired,
   schema: PropTypes.oneOf(['creators', 'contributors']).isRequired,
+  autocompleteNames: PropTypes.bool,
   label: PropTypes.string,
   labelIcon: PropTypes.string,
   roleOptions: PropTypes.array,
@@ -182,5 +185,6 @@ CreatibutorsField.defaultProps = {
     addLabel: i18next.t('Add creator'),
     editLabel: i18next.t('Edit creator'),
   },
+  autocompleteNames: false,
   addButtonLabel: i18next.t('Add creator'),
 };
