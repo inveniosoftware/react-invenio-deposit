@@ -82,10 +82,9 @@ class CreatibutorsFieldForm extends Component {
                 ? displayCreatibutorName({
                     familyName: _get(
                       value,
-                      familyNameFieldPath,
-                      'No family name'
+                      familyNameFieldPath
                     ),
-                    givenName: _get(value, givenNameFieldPath, 'No given name'),
+                    givenName: _get(value, givenNameFieldPath),
                     affiliationName: _get(
                       value,
                       `${affiliationsFieldPath}[0].name`
@@ -93,9 +92,8 @@ class CreatibutorsFieldForm extends Component {
                   })
                 : displayCreatibutorName({
                     familyName: _get(
-                      value,
-                      nameFieldPath,
-                      'No organization name'
+                      value, 
+                      nameFieldPath
                     ),
                     affiliationName: _get(
                       value,
