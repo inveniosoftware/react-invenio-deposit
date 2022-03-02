@@ -410,6 +410,7 @@ export class CreatibutorsModal extends Component {
                       {this.props.autocompleteNames !== NamesAutocompleteOptions.OFF &&
                         <RemoteSelectField
                           selectOnBlur={false}
+                          selectOnNavigation={false}
                           searchInput={{ autoFocus: _isEmpty(initialCreatibutor) }}
                           fieldPath={'creators'}
                           clearable={true}
