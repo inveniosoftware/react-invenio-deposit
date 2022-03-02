@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.17.9 (released 2022-03-02)
+* add flag for toggling creatibutors names autocomplete
+
 Version 0.17.8 (released 2022-03-01)
 * change URL redirection after discarding a draft
 
