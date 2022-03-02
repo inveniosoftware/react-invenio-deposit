@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.17.10 (released 2022-03-02)
+* add more options for creatibutors names autocomplete behavior
+
 Version 0.17.9 (released 2022-03-02)
 * add flag for toggling creatibutors names autocomplete
 
