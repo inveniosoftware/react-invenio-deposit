@@ -174,7 +174,7 @@ CreatibutorsField.propTypes = {
     editLabel: PropTypes.string.isRequired,
   }).isRequired,
   schema: PropTypes.oneOf(['creators', 'contributors']).isRequired,
-  autocompleteNames: PropTypes.bool,
+  autocompleteNames: PropTypes.oneOf(['search', 'search_only', 'off']),
   label: PropTypes.string,
   labelIcon: PropTypes.string,
   roleOptions: PropTypes.array,
@@ -185,6 +185,6 @@ CreatibutorsField.defaultProps = {
     addLabel: i18next.t('Add creator'),
     editLabel: i18next.t('Edit creator'),
   },
-  autocompleteNames: false,
+  autocompleteNames: 'search',
   addButtonLabel: i18next.t('Add creator'),
 };

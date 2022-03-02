@@ -32,6 +32,12 @@ const ModalActions = {
   EDIT: 'edit',
 };
 
+const NamesAutocompleteOptions = {
+  SEARCH: 'search',
+  SEARCH_ONLY: 'search_only',
+  OFF: 'off',
+};
+
 export class CreatibutorsModal extends Component {
   constructor(props) {
     super(props);
@@ -39,11 +45,15 @@ export class CreatibutorsModal extends Component {
       open: false,
       saveAndContinueLabel: i18next.t('Save and add another'),
       action: null,
-      showPersonForm: !props.autocompleteNames || !_isEmpty(props.initialCreatibutor),
+      showPersonForm: (
+        props.autocompleteNames !== NamesAutocompleteOptions.SEARCH_ONLY ||
+        !_isEmpty(props.initialCreatibutor)
+      ),
     };
     this.inputRef = createRef();
     this.identifiersRef = createRef();
     this.affiliationsRef = createRef();
+    this.namesAutocompleteRef = createRef();
   }
 
   CreatorSchema = Yup.object({
@@ -230,24 +240,35 @@ export class CreatibutorsModal extends Component {
       };
     });
 
-    results.push({
-      text: 'Manual entry',
-      value: 'Manual entry',
-      extra: 'Manual entry',
-      key: 'manual-entry',
-      content: (
-        <Header textAlign='center'>
-          <Header.Content>
-            <p>Couldn't find your person? You can <a>create a new entry</a></p>
-          </Header.Content>
-        </Header>
-      ),
-    });
+    const showManualEntry = (
+      this.props.autocompleteNames === NamesAutocompleteOptions.SEARCH_ONLY &&
+      !this.state.showPersonForm
+    );
+    if (showManualEntry) {
+      results.push({
+        text: 'Manual entry',
+        value: 'Manual entry',
+        extra: 'Manual entry',
+        key: 'manual-entry',
+        content: (
+          <Header textAlign='center'>
+            <Header.Content>
+              <p>Couldn't find your person? You can <a>create a new entry</a></p>
+            </Header.Content>
+          </Header>
+        ),
+      });
+    }
     return results;
   }
 
   onPersonSearchChange = ({ event, data, formikProps }, selectedSuggestions) => {
     if (selectedSuggestions[0].key === 'manual-entry') {
+      // Empty the autocomplete's selected values
+      this.namesAutocompleteRef.current.setState({
+        suggestions: [],
+        selectedSuggestions: [],
+      });
       this.setState({
         showPersonForm: true
       })
@@ -386,7 +407,7 @@ export class CreatibutorsModal extends Component {
                   {_get(values, typeFieldPath, '') ===
                     CREATIBUTOR_TYPE.PERSON ? (
                     <div>
-                      {this.props.autocompleteNames &&
+                      {this.props.autocompleteNames !== NamesAutocompleteOptions.OFF &&
                         <RemoteSelectField
                           selectOnBlur={false}
                           searchInput={{ autoFocus: _isEmpty(initialCreatibutor) }}
@@ -402,6 +423,7 @@ export class CreatibutorsModal extends Component {
                           suggestionAPIUrl="/api/names"
                           serializeSuggestions={this.serializeSuggestions}
                           onValueChange={this.onPersonSearchChange}
+                          ref={this.namesAutocompleteRef}
                         />
                       }
                       {this.state.showPersonForm &&
@@ -498,7 +520,7 @@ export class CreatibutorsModal extends Component {
                     onClick={(event, formik) => {
                       this.setState({
                         action: 'saveAndContinue',
-                        showPersonForm: !this.props.autocompleteNames
+                        showPersonForm: this.props.autocompleteNames !== NamesAutocompleteOptions.SEARCH_ONLY
                       }, () => {
                         formik.handleSubmit();
                       });
@@ -513,7 +535,7 @@ export class CreatibutorsModal extends Component {
                   onClick={(event, formik) => {
                     this.setState({
                       action: 'saveAndClose',
-                      showPersonForm: !this.props.autocompleteNames,
+                      showPersonForm: this.props.autocompleteNames !== NamesAutocompleteOptions.SEARCH_ONLY,
                     }, () =>
                       formik.handleSubmit()
                     );
@@ -535,7 +557,7 @@ CreatibutorsModal.propTypes = {
   schema: PropTypes.oneOf(['creators', 'contributors']).isRequired,
   action: PropTypes.oneOf(['add', 'edit']).isRequired,
   addLabel: PropTypes.string.isRequired,
-  autocompleteNames: PropTypes.bool,
+  autocompleteNames: PropTypes.oneOf(['search', 'search_only', 'off']),
   editLabel: PropTypes.string.isRequired,
   initialCreatibutor: PropTypes.shape({
     id: PropTypes.string,
@@ -561,5 +583,5 @@ CreatibutorsModal.propTypes = {
 CreatibutorsModal.defaultProps = {
   roleOptions: [],
   initialCreatibutor: {},
-  autocompleteNames: false,
+  autocompleteNames: 'search',
 };
