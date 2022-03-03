@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.17.11 (released 2022-03-03)
+* fix arrow navigation issues for names autocomplete search field
+* remove default value for given name in creatibutors form
+
 Version 0.17.10 (released 2022-03-02)
 * add more options for creatibutors names autocomplete behavior
 
