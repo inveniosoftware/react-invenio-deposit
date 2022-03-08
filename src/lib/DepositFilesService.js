@@ -45,23 +45,45 @@ class UploaderQueue {
 }
 
 export class UploadProgressNotifier {
-  setDispatcher(dispatcher) {
+  constructor(dispatcher) {
     this.dispatcher = dispatcher;
   }
-  onUploadAdded(filename) {}
-  onUploadStarted(filename, cancelFunc) {}
-  onUploadProgress(filename, percent) {}
-  onUploadCompleted(filename, size, checksum, links) {}
-  onUploadCancelled(filename) {}
-  onUploadFailed(filename) {}
+  onUploadAdded(filename) {
+    throw new Error('Not implemented.');
+  }
+  onUploadStarted(filename, cancelFunc) {
+    throw new Error('Not implemented.');
+  }
+  onUploadProgress(filename, percent) {
+    throw new Error('Not implemented.');
+  }
+  onUploadCompleted(filename, size, checksum, links) {
+    throw new Error('Not implemented.');
+  }
+  onUploadCancelled(filename) {
+    throw new Error('Not implemented.');
+  }
+  onUploadFailed(filename) {
+    throw new Error('Not implemented.');
+  }
 }
 
 export class DepositFilesService {
-  constructor(fileApiClient, { fileUploadConcurrency } = {}) {
+  constructor(fileApiClient, fileUploadConcurrency) {
     if (this.constructor === DepositFilesService) {
       throw new Error('Abstract');
     }
   }
+
+  setProgressNotifier(progressNotifier) {
+    if (!(progressNotifier instanceof UploadProgressNotifier)) {
+      throw new Error(
+        'Progress notifier must be an instance of `UploadProgressNotifier`'
+      );
+    }
+    this.progressNotifier = progressNotifier;
+  }
+
   async upload(initializeUploadURL, file, progressNotifier) {
     throw new Error('Not implemented.');
   }
@@ -76,7 +98,7 @@ export class DepositFilesService {
 }
 
 export class RDMDepositFilesService extends DepositFilesService {
-  constructor(fileApiClient, { fileUploadConcurrency } = {}) {
+  constructor(fileApiClient, fileUploadConcurrency) {
     super();
     this.fileApiClient = fileApiClient;
     this.maxConcurrentUploads = fileUploadConcurrency || 3;
@@ -168,9 +190,7 @@ export class RDMDepositFilesService extends DepositFilesService {
     }
   };
 
-  upload = async (initializeUploadURL, file, progressNotifier) => {
-    this.progressNotifier = progressNotifier;
-
+  upload = async (initializeUploadURL, file) => {
     this.uploaderQueue.put(initializeUploadURL, file);
     this.progressNotifier.onUploadAdded(file.name);
 

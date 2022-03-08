@@ -135,7 +135,7 @@ const FileTableRow = ({
       )}
       {isDraftRecord && (
         <Table.Cell textAlign="right" width={2} className="file-table-cell">
-          {!file.uploadState?.isUploading &&
+          {(file.uploadState?.isFinished || file.uploadState?.isFailed) &&
             (isDeleting ? (
               <Icon loading name="spinner" />
             ) : (

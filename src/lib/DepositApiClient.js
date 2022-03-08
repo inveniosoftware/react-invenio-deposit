@@ -60,7 +60,7 @@ export class DepositApiClient {
 /**
  * API Client for deposits.
  */
-export class RDMDepositApiClient extends DepositApiClientResponse {
+export class RDMDepositApiClient extends DepositApiClient {
   constructor(createDraftURL, recordSerializer) {
     super();
     this.createDraftURL = createDraftURL;
