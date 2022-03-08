@@ -31,6 +31,7 @@ import {
 } from './DepositRecordSerializer';
 import { DepositService } from './DepositService';
 import { configureStore } from './store';
+import { RDMUploadProgressNotifier } from './UploadProgressNotifier';
 
 export class DepositFormApp extends Component {
   constructor(props) {
@@ -54,7 +55,10 @@ export class DepositFormApp extends Component {
 
     const filesService = props.filesService
       ? props.filesService
-      : new RDMDepositFilesService(fileApiClient, props.config);
+      : new RDMDepositFilesService(
+          fileApiClient,
+          props.config.fileUploadConcurrency
+        );
 
     const service = new DepositService(draftsService, filesService);
 
@@ -71,6 +75,9 @@ export class DepositFormApp extends Component {
     };
 
     this.store = configureStore(appConfig);
+
+    const progressNotifier = new RDMUploadProgressNotifier(this.store.dispatch);
+    filesService.setProgressNotifier(progressNotifier);
   }
 
   render() {
