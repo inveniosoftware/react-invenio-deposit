@@ -49,6 +49,7 @@ export class CreatibutorsModal extends Component {
         props.autocompleteNames !== NamesAutocompleteOptions.SEARCH_ONLY ||
         !_isEmpty(props.initialCreatibutor)
       ),
+      attemptedSumbit: false
     };
     this.inputRef = createRef();
     this.identifiersRef = createRef();
@@ -60,18 +61,18 @@ export class CreatibutorsModal extends Component {
     person_or_org: Yup.object({
       type: Yup.string(),
       family_name: Yup.string().when('type', (type, schema) => {
-        if (type === CREATIBUTOR_TYPE.PERSON && this.isCreator()) {
+        if (this.state.attemptedSumbit && type === CREATIBUTOR_TYPE.PERSON) {
           return schema.required(i18next.t('Family name is a required field.'));
         }
       }),
       name: Yup.string().when('type', (type, schema) => {
-        if (type === CREATIBUTOR_TYPE.ORGANIZATION && this.isCreator()) {
+        if (this.state.attemptedSumbit && type === CREATIBUTOR_TYPE.ORGANIZATION) {
           return schema.required(i18next.t('Name is a required field.'));
         }
       }),
     }),
     role: Yup.string().when('_', (_, schema) => {
-      if (!this.isCreator()) {
+      if (this.state.attemptedSumbit && !this.isCreator()) {
         return schema.required(i18next.t('Role is a required field.'));
       }
     }),
@@ -178,6 +179,7 @@ export class CreatibutorsModal extends Component {
   isCreator = () => this.props.schema === 'creators';
 
   onSubmit = (values, formikBag) => {
+    this.setState({ attemptedSumbit: false });
     this.props.onCreatibutorChange(this.serializeCreatibutor(values));
     formikBag.setSubmitting(false);
     formikBag.resetForm();
@@ -335,7 +337,7 @@ export class CreatibutorsModal extends Component {
         onSubmit={this.onSubmit}
         enableReinitialize
         validationSchema={this.CreatorSchema}
-        validateOnChange={false}
+        validateOnChange={true}
         validateOnBlur={false}
       >
         {({ values, setFieldValue, resetForm }) => {
@@ -434,7 +436,7 @@ export class CreatibutorsModal extends Component {
                               label={i18next.t('Family name')}
                               placeholder={i18next.t('Family name')}
                               fieldPath={familyNameFieldPath}
-                              required={this.isCreator()}
+                              required
                             />
                             <TextField
                               label={i18next.t('Given name(s)')}
@@ -465,7 +467,7 @@ export class CreatibutorsModal extends Component {
                         label={i18next.t('Name')}
                         placeholder={i18next.t('Organization name')}
                         fieldPath={nameFieldPath}
-                        required={this.isCreator()}
+                        required
                         // forward ref to Input component because Form.Input
                         // doesn't handle it
                         input={{ ref: this.inputRef }}
@@ -521,6 +523,7 @@ export class CreatibutorsModal extends Component {
                     onClick={(event, formik) => {
                       this.setState({
                         action: 'saveAndContinue',
+                        attemptedSumbit: true,
                         showPersonForm: this.props.autocompleteNames !== NamesAutocompleteOptions.SEARCH_ONLY
                       }, () => {
                         formik.handleSubmit();
@@ -536,6 +539,7 @@ export class CreatibutorsModal extends Component {
                   onClick={(event, formik) => {
                     this.setState({
                       action: 'saveAndClose',
+                      attemptedSumbit: true,
                       showPersonForm: this.props.autocompleteNames !== NamesAutocompleteOptions.SEARCH_ONLY,
                     }, () =>
                       formik.handleSubmit()
