@@ -119,14 +119,13 @@ export class RDMDepositFilesService extends DepositFilesService {
     return initializedFile;
   };
 
-  _doUpload = async (uploadUrl, file) => {
-    return await this.fileApiClient.uploadFile(
+  _doUpload = async (uploadUrl, file) =>
+    await this.fileApiClient.uploadFile(
       uploadUrl,
       file,
       (percent) => this.progressNotifier.onUploadProgress(file.name, percent),
       (cancelFn) => this.progressNotifier.onUploadStarted(file.name, cancelFn)
     );
-  };
 
   _finalizeUpload = async (commitFileURL, file) => {
     // Regardless of what is the status of the finalize step we start
