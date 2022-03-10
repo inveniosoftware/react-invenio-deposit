@@ -14,6 +14,7 @@ export const DepositFormSubmitActions = {
   DELETE: 'DELETE',
   RESERVE_PID: 'RESERVE_PID',
   DISCARD_PID: 'DISCARD_PID',
+  SUBMIT_REVIEW: 'SUBMIT_REVIEW',
 };
 
 /**

@@ -15,13 +15,12 @@ import { Grid, Message } from 'semantic-ui-react';
 import {
   DISCARD_PID_FAILED,
   DRAFT_DELETE_FAILED,
+  DRAFT_HAS_VALIDATION_ERRORS,
   DRAFT_PREVIEW_FAILED,
-  DRAFT_PREVIEW_PARTIALLY_SUCCEEDED,
   DRAFT_PUBLISH_FAILED,
-  DRAFT_PUBLISH_PARTIALLY_SUCCEEDED,
   DRAFT_SAVE_FAILED,
-  DRAFT_SAVE_PARTIALLY_SUCCEEDED,
   DRAFT_SAVE_SUCCEEDED,
+  DRAFT_SUBMIT_REVIEW_FAILED,
   FILE_IMPORT_FAILED,
   FILE_UPLOAD_SAVE_DRAFT_FAILED,
   RESERVE_PID_FAILED,
@@ -55,17 +54,9 @@ const ACTIONS = {
     feedback: 'positive',
     message: i18next.t('Record successfully saved.'),
   },
-  [DRAFT_SAVE_PARTIALLY_SUCCEEDED]: {
+  [DRAFT_HAS_VALIDATION_ERRORS]: {
     feedback: 'warning',
     message: i18next.t('Record saved with validation errors:'),
-  },
-  [DRAFT_PUBLISH_PARTIALLY_SUCCEEDED]: {
-    feedback: 'warning',
-    message: i18next.t('Record not published due to validation errors:'),
-  },
-  [DRAFT_PREVIEW_PARTIALLY_SUCCEEDED]: {
-    feedback: 'warning',
-    message: i18next.t('Record cannot be previewed due to validation errors:'),
   },
   [DRAFT_SAVE_FAILED]: {
     feedback: 'negative',
@@ -77,6 +68,12 @@ const ACTIONS = {
     feedback: 'negative',
     message: i18next.t(
       'Oops, something went wrong! The draft was not published. Please try again. If the problem persists, contact user support.'
+    ),
+  },
+  [DRAFT_SUBMIT_REVIEW_FAILED]: {
+    feedback: 'negative',
+    message: i18next.t(
+      'Oops, something went wrong! The draft was not submitted for review. Please try again. If the problem persists, contact user support.'
     ),
   },
   [DRAFT_DELETE_FAILED]: {

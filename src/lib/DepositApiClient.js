@@ -55,6 +55,18 @@ export class DepositApiClient {
   async discardPID(draftLinks, pidType) {
     throw new Error('Not implemented.');
   }
+
+  async createOrUpdateReview(draftLinks, communityUUID) {
+    throw new Error('Not implemented.');
+  }
+
+  async deleteReview(draftLinks) {
+    throw new Error('Not implemented.');
+  }
+
+  async submitReview(draftLinks) {
+    throw new Error('Not implemented.');
+  }
 }
 
 /**
@@ -94,6 +106,22 @@ export class RDMDepositApiClient extends DepositApiClient {
     const payload = this.recordSerializer.serialize(draft);
     return this._createResponse(() =>
       axiosWithConfig.post(this.createDraftURL, payload, {
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/vnd.inveniordm.v1+json',
+        },
+      })
+    );
+  }
+
+  /**
+   * Calls the API to read a pre-existing draft.
+   *
+   * @param {object} draftLinks - the draft links object
+   */
+  async readDraft(draftLinks) {
+    return this._createResponse(() =>
+      axiosWithConfig.get(draftLinks.self, {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/vnd.inveniordm.v1+json',
@@ -187,6 +215,63 @@ export class RDMDepositApiClient extends DepositApiClient {
         }
       );
     });
+  }
+
+  /**
+   * Creates a review request in initial state for draft by calling its
+   * review link.
+   *
+   * @param {object} draftLinks - the draft links object
+   */
+  async createOrUpdateReview(draftLinks, communityUUID) {
+    return this._createResponse(() =>
+      axiosWithConfig.put(
+        draftLinks.review,
+        {
+          receiver: {
+            community: communityUUID,
+          },
+          type: 'community-submission',
+        },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    );
+  }
+
+  /**
+   * Deletes a review request associated with the draft using its review link.
+   *
+   * @param {object} draftLinks - the draft links object
+   */
+  async deleteReview(draftLinks) {
+    return this._createResponse(() =>
+      axiosWithConfig.delete(
+        draftLinks.review,
+        {},
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    );
+  }
+
+  /**
+   * Submits the draft for review by calling its submit-review link.
+   *
+   * @param {object} draftLinks - the draft links object
+   */
+  async submitReview(draftLinks) {
+    return this._createResponse(() =>
+      axiosWithConfig.post(
+        draftLinks['submit-review'],
+        {},
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    );
   }
 }
 

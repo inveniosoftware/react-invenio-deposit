@@ -11,7 +11,6 @@ import _pick from 'lodash/pick';
 import _set from 'lodash/set';
 import { Field } from './Field';
 
-
 export class SchemaField extends Field {
   /**
    * IMPORTANT: This component is so far only for list subfields, since
@@ -23,10 +22,10 @@ export class SchemaField extends Field {
     deserializedDefault = [],
     serializedDefault = [],
   }) {
-    super({fieldpath, deserializedDefault, serializedDefault})
-    this.schema = schema
-    this.schemaKeys = Object.keys(this.schema)
-  };
+    super({ fieldpath, deserializedDefault, serializedDefault });
+    this.schema = schema;
+    this.schemaKeys = Object.keys(this.schema);
+  }
 
   /**
    * Deserialize backend field given by `this.fieldPath` from `serialized`
@@ -37,14 +36,14 @@ export class SchemaField extends Field {
    */
   deserialize(serialized) {
     const fieldValues = _get(
-      serialized, this.fieldpath, this.deserializedDefault
+      serialized,
+      this.fieldpath,
+      this.deserializedDefault
     );
     const deserializedElements = fieldValues.map((value, i) => {
       let deserializedElement = _pick(value, this.schemaKeys);
       this.schemaKeys.forEach((key) => {
-        deserializedElement = this.schema[key].deserialize(
-          deserializedElement
-        );
+        deserializedElement = this.schema[key].deserialize(deserializedElement);
       });
       // Add __key
       deserializedElement.__key = i;
@@ -64,22 +63,20 @@ export class SchemaField extends Field {
    */
   serialize(deserialized) {
     const fieldValues = _get(
-      deserialized, this.fieldpath, this.serializedDefault
+      deserialized,
+      this.fieldpath,
+      this.serializedDefault
     );
     const serializedElements = fieldValues.map((value) => {
       let serializedElement = _pick(value, this.schemaKeys);
       this.schemaKeys.forEach((key) => {
-        serializedElement = this.schema[key].serialize(
-          serializedElement
-        );
+        serializedElement = this.schema[key].serialize(serializedElement);
       });
-      return serializedElement
+      return serializedElement;
     });
     if (serializedElements !== null) {
-      return _set(
-        _cloneDeep(deserialized), this.fieldpath, serializedElements
-      );
+      return _set(_cloneDeep(deserialized), this.fieldpath, serializedElements);
     }
-    return elements;
+    return serializedElements;
   }
 }

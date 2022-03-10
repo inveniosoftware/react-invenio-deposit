@@ -65,7 +65,7 @@ export class DepositFormApp extends Component {
     const appConfig = {
       config: props.config,
       record: recordSerializer.deserialize(props.record),
-      community: props.community,
+      preselectedCommunity: props.preselectedCommunity,
       files: props.files,
       apiClient: apiClient,
       fileApiClient: fileApiClient,
@@ -92,9 +92,9 @@ export class DepositFormApp extends Component {
 }
 
 DepositFormApp.propTypes = {
-  config: PropTypes.object,
-  record: PropTypes.object,
-  community: PropTypes.object,
+  config: PropTypes.object.isRequired,
+  record: PropTypes.object.isRequired,
+  preselectedCommunity: PropTypes.object,
   files: PropTypes.object,
   permissions: PropTypes.object,
   apiClient: PropTypes.instanceOf(DepositApiClient),
@@ -102,4 +102,14 @@ DepositFormApp.propTypes = {
   draftsService: PropTypes.instanceOf(DepositDraftsService),
   filesService: PropTypes.instanceOf(DepositFilesService),
   recordSerializer: PropTypes.instanceOf(DepositRecordSerializer),
+};
+
+DepositFormApp.defaultProps = {
+  preselectedCommunity: undefined,
+  permissions: null,
+  apiClient: null,
+  fileApiClient: null,
+  draftsService: null,
+  filesService: null,
+  recordSerializer: null,
 };

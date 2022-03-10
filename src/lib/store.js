@@ -10,8 +10,8 @@ import _get from 'lodash/get';
 import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './state/reducers';
+import { computeCommunityState } from './state/reducers/deposit';
 import { UploadState } from './state/reducers/files';
-import { INITIAL_STORE_STATE } from './storeConfig';
 
 const preloadFiles = (files) => {
   const _files = _cloneDeep(files);
@@ -43,22 +43,22 @@ const preloadFiles = (files) => {
 };
 
 export function configureStore(appConfig) {
-  const { record, community, files, config, permissions, ...extra } = appConfig;
+  const { record, preselectedCommunity, files, config, permissions, ...extra } =
+    appConfig;
+
+  // when not passed, make sure that the value is `undefined` and not `null`
+  const _preselectedCommunity = preselectedCommunity || undefined;
+
   const initialDepositState = {
     record,
+    community: computeCommunityState(record, _preselectedCommunity),
     config,
     permissions,
-    ...INITIAL_STORE_STATE,
-  };
-
-  const initialCommunitiesState = {
-    defaultCommunity: community,
   };
 
   const preloadedState = {
     deposit: initialDepositState,
     files: preloadFiles(files || {}),
-    communities: initialCommunitiesState,
   };
 
   const composeEnhancers =

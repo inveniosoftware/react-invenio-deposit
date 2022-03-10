@@ -5,7 +5,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { i18next } from '@translations/i18next';
+import { i18next, Trans } from '@translations/i18next';
 import _get from 'lodash/get';
 import React, { Component } from 'react';
 import { ActionButton } from 'react-invenio-forms';
@@ -14,11 +14,9 @@ import { Button, Icon, Modal } from 'semantic-ui-react';
 import {
   DepositFormSubmitActions,
   DepositFormSubmitContext,
-} from '../DepositFormSubmitContext';
-import { DRAFT_PUBLISH_STARTED } from '../state/types';
-import { toCapitalCase } from '../utils';
+} from '../../DepositFormSubmitContext';
 
-export class PublishButtonComponent extends Component {
+class SubmitReviewButtonComponent extends Component {
   static contextType = DepositFormSubmitContext;
   state = { isConfirmModalOpen: false };
 
@@ -26,8 +24,8 @@ export class PublishButtonComponent extends Component {
 
   closeConfirmModal = () => this.setState({ isConfirmModalOpen: false });
 
-  handlePublish = (event, formik) => {
-    this.context.setSubmitContext(DepositFormSubmitActions.PUBLISH);
+  handleSubmitReview = (event, formik) => {
+    this.context.setSubmitContext(DepositFormSubmitActions.SUBMIT_REVIEW);
     formik.handleSubmit(event);
     this.closeConfirmModal();
   };
@@ -39,17 +37,17 @@ export class PublishButtonComponent extends Component {
   };
 
   render() {
-    const { actionState, publishClick, numberOfFiles, ...uiProps } = this.props;
+    const { actionState, communityState, numberOfFiles, ...uiProps } =
+      this.props;
 
+    const communityTitle = communityState.selected.metadata.title;
     const { isConfirmModalOpen } = this.state;
 
-    const action = i18next.t('publish');
-    const capitalizedAction = toCapitalCase(action);
     return (
       <>
         <ActionButton
           isDisabled={(formik) => this.isDisabled(formik, numberOfFiles)}
-          name="publish"
+          name="SubmitReview"
           onClick={this.openConfirmModal}
           positive
           icon
@@ -58,12 +56,13 @@ export class PublishButtonComponent extends Component {
         >
           {(formik) => (
             <>
-              {formik.isSubmitting && actionState === DRAFT_PUBLISH_STARTED ? (
+              {formik.isSubmitting &&
+              actionState === 'DRAFT_SUBMIT_REVIEW_STARTED' ? (
                 <Icon size="large" loading name="spinner" />
               ) : (
                 <Icon name="upload" />
               )}
-              {capitalizedAction}
+              {i18next.t('Submit review')}
             </>
           )}
         </ActionButton>
@@ -74,21 +73,20 @@ export class PublishButtonComponent extends Component {
             size="small"
           >
             <Modal.Content>
-              <h3>
-                {i18next.t(`Are you sure you want to {{action}} this record?`, {
-                  action: action,
-                })}
-              </h3>
+              <Trans>
+                Are you sure you want submit this record for review to be
+                included in the community <b>{{ communityTitle }}</b>?
+              </Trans>
             </Modal.Content>
             <Modal.Actions>
               <Button onClick={this.closeConfirmModal} floated="left">
-                Cancel
+                {i18next.t('Cancel')}
               </Button>
               <ActionButton
-                name="publish"
-                onClick={this.handlePublish}
+                name="submitReview"
+                onClick={this.handleSubmitReview}
                 positive
-                content={capitalizedAction}
+                content={i18next.t('Submit review')}
               />
             </Modal.Actions>
           </Modal>
@@ -100,10 +98,11 @@ export class PublishButtonComponent extends Component {
 
 const mapStateToProps = (state) => ({
   actionState: state.deposit.actionState,
+  communityState: state.deposit.community,
   numberOfFiles: Object.values(state.files.entries).length,
 });
 
-export const PublishButton = connect(
+export const SubmitReviewButton = connect(
   mapStateToProps,
   null
-)(PublishButtonComponent);
+)(SubmitReviewButtonComponent);

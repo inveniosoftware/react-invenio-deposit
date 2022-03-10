@@ -286,6 +286,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
       'files',
       'is_published',
       'versions',
+      'parent',
       'pids',
       'ui',
     ]);
@@ -354,6 +355,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
       'links',
       'files',
       'pids',
+      'parent',
     ]);
 
     // FIXME: move logic in a more sophisticated PIDField that allows empty values
