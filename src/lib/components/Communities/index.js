@@ -7,7 +7,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setCommunity: (community) => dispatch(setCommunity(community)),
+  setCommunity: (community, draft) => dispatch(setCommunity(community, draft)),
 });
 
 export const CommunityHeader = connect(

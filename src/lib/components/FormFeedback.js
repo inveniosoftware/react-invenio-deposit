@@ -59,9 +59,11 @@ const ACTIONS = {
     feedback: 'warning',
     message: i18next.t('Record saved with validation errors:'),
   },
-  [DRAFT_PUBLISH_PARTIALLY_SUCCEEDED]: {
+  DRAFT_SUBMIT_REVIEW_PARTIALLY_SUCCEEDED: {
     feedback: 'warning',
-    message: i18next.t('Record not published due to validation errors:'),
+    message: i18next.t(
+      'Record not submitted for review due to validation errors:'
+    ),
   },
   [DRAFT_PREVIEW_PARTIALLY_SUCCEEDED]: {
     feedback: 'warning',
@@ -77,6 +79,12 @@ const ACTIONS = {
     feedback: 'negative',
     message: i18next.t(
       'Oops, something went wrong! The draft was not published. Please try again. If the problem persists, contact user support.'
+    ),
+  },
+  DRAFT_SUBMIT_REVIEW_FAILED: {
+    feedback: 'negative',
+    message: i18next.t(
+      'Oops, something went wrong! The draft was not submitted for review. Please try again. If the problem persists, contact user support.'
     ),
   },
   [DRAFT_DELETE_FAILED]: {

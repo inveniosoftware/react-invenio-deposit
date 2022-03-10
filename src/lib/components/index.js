@@ -25,6 +25,7 @@ export { PreviewButton } from './PreviewButton';
 export { PublicationDateField } from './PublicationDateField';
 export { PublishButton } from './PublishButton';
 export { PublisherField } from './PublisherField';
+export { RequestOrPublish } from './RequestOrPublishButton';
 export { RelatedWorksField } from './RelatedWorksField';
 export { ResourceTypeField } from './ResourceTypeField';
 export { SaveButton } from './SaveButton';
@@ -32,4 +33,4 @@ export { SubjectsField } from './SubjectsField';
 export { TitlesField } from './TitlesField';
 export { VersionField } from './VersionField';
 export { CommunityHeader } from './Communities';
-export { CommunitySelectionModal } from './CommunitySelectionModal'
+export { CommunitySelectionModal } from './CommunitySelectionModal';

@@ -71,13 +71,53 @@ async function _saveDraft(
   return response;
 }
 
+export async function saveReview(
+  newCommunityUUID,
+  draft,
+  draftsService,
+  { dispatchFn, failType }
+) {
+  let response;
+  try {
+    response = await draftsService.saveReview(newCommunityUUID, draft.links);
+  } catch (error) {
+    dispatchFn({
+      type: failType,
+      payload: { errors: error.errors },
+    });
+    throw error;
+  }
+
+  return response;
+}
+
+export async function readDraft(
+  draft,
+  draftsService,
+  { dispatchFn, failType }
+) {
+  let response;
+  try {
+    response = await draftsService.readDraft(draft);
+  } catch (error) {
+    dispatchFn({
+      type: failType,
+      payload: { errors: error.errors },
+    });
+    throw error;
+  }
+
+  return response;
+}
+
 export const save = (draft) => {
   return async (dispatch, getState, config) => {
     dispatch({
       type: DRAFT_SAVE_STARTED,
     });
+    let response;
 
-    const response = await _saveDraft(draft, config.service.drafts, {
+    response = await _saveDraft(draft, config.service.drafts, {
       dispatchFn: dispatch,
       failType: DRAFT_SAVE_FAILED,
       partialSuccessType: DRAFT_SAVE_PARTIALLY_SUCCEEDED,
@@ -112,6 +152,39 @@ export const publish = (draft) => {
     } catch (error) {
       dispatch({
         type: DRAFT_PUBLISH_FAILED,
+        payload: { errors: error.errors },
+      });
+      throw error;
+    }
+  };
+};
+
+export const submitReview = (draft) => {
+  return async (dispatch, getState, config) => {
+    dispatch({
+      type: 'DRAFT_SUBMIT_REVIEW_STARTED',
+    });
+
+    await _saveDraft(draft, config.service.drafts, {
+      dispatchFn: dispatch,
+      failType: 'DRAFT_SUBMIT_REVIEW_FAILED',
+      partialSuccessType: 'DRAFT_SUBMIT_REVIEW_PARTIALLY_SUCCEEDED',
+    });
+
+    // if everything good, publish
+    const savedDraft = getState().deposit.record;
+    try {
+      const response = await config.service.drafts.submitReview(
+        savedDraft.links,
+        savedDraft
+      );
+      // after submitting for review, redirect to the review record
+      // FIXME: add response.data.links.self_html
+      const requestURL = `/requests/${response.data.id}`;
+      window.location.replace(requestURL);
+    } catch (error) {
+      dispatch({
+        type: 'DRAFT_SUBMIT_REVIEW_FAILED',
         payload: { errors: error.errors },
       });
       throw error;

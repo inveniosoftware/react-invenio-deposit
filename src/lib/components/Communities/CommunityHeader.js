@@ -7,6 +7,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import React from 'react';
+import { useFormikContext } from 'formik';
 import { Container, Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { i18next } from '@translations/i18next';
@@ -25,6 +26,8 @@ export const CommunityHeaderComponent = ({
     ? community.metadata.title
     : community;
 
+  const { values: formikDraft } = useFormikContext();
+
   return (
     <Container className="deposits-community-header" fluid>
       <Container className="community-header">
@@ -41,7 +44,9 @@ export const CommunityHeaderComponent = ({
         <div className="community-header-info">
           {communityTitle}
           <CommunitySelectionModal
-            onCommunityChange={setCommunity}
+            onCommunityChange={(community) => {
+              setCommunity(community, formikDraft);
+            }}
             chosenCommunity={community}
             trigger={
               <Button

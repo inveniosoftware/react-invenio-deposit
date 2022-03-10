@@ -7,11 +7,11 @@
 
 import _cloneDeep from 'lodash/cloneDeep';
 import _get from 'lodash/get';
+import _set from 'lodash/set';
 import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './state/reducers';
 import { UploadState } from './state/reducers/files';
-import { INITIAL_STORE_STATE } from './storeConfig';
 
 const preloadFiles = (files) => {
   const _files = _cloneDeep(files);
@@ -44,15 +44,43 @@ const preloadFiles = (files) => {
 
 export function configureStore(appConfig) {
   const { record, community, files, config, permissions, ...extra } = appConfig;
+
+  const initialCommunitiesState = {
+    defaultCommunity: community
+      ? community?.id
+        ? community
+        : {
+            id: community,
+            uuid: community,
+            metadata: {
+              title: community,
+              description: community,
+              type: 'Type',
+            },
+            links: {
+              self_html: '/',
+            },
+          }
+      : null,
+  };
+
+  // set parent.review if community passed via url when creating a new draft
+  // This will create the review along with the draft creation
+  if (community) {
+    const hasDraftReview = _get(record, 'parent.review.id', null);
+    if (!hasDraftReview) {
+      _set(record, 'parent.review', {
+        type: 'community-submission',
+        receiver: {
+          community: community?.id ? community.uuid : community,
+        },
+      });
+    }
+  }
   const initialDepositState = {
     record,
     config,
     permissions,
-    ...INITIAL_STORE_STATE,
-  };
-
-  const initialCommunitiesState = {
-    defaultCommunity: community,
   };
 
   const preloadedState = {

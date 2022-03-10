@@ -32,6 +32,7 @@ const depositReducer = (state = {}, action) => {
     case DRAFT_PUBLISH_STARTED:
     case DRAFT_DELETE_STARTED:
     case DRAFT_PREVIEW_STARTED:
+    case 'DRAFT_SUBMIT_REVIEW_STARTED':
       return {
         ...state,
         actionState: action.type,
@@ -47,6 +48,7 @@ const depositReducer = (state = {}, action) => {
     case DRAFT_SAVE_SUCCEEDED:
     case RESERVE_PID_SUCCEEDED:
     case DISCARD_PID_SUCCEEDED:
+    case 'SAVE_REVIEW_READ_DRAFT_SUCCEEDED':
       return {
         ...state,
         record: { ...state.record, ...action.payload.data },
@@ -54,9 +56,11 @@ const depositReducer = (state = {}, action) => {
         actionState: action.type,
         actionStateExtra: {},
       };
+
     case DRAFT_SAVE_PARTIALLY_SUCCEEDED:
     case DRAFT_PUBLISH_PARTIALLY_SUCCEEDED:
     case DRAFT_PREVIEW_PARTIALLY_SUCCEEDED:
+    case 'DRAFT_SUBMIT_REVIEW_PARTIALLY_SUCCEEDED':
       return {
         ...state,
         record: { ...state.record, ...action.payload.data },
@@ -70,6 +74,7 @@ const depositReducer = (state = {}, action) => {
     case DRAFT_PREVIEW_FAILED:
     case RESERVE_PID_FAILED:
     case DISCARD_PID_FAILED:
+    case 'DRAFT_SUBMIT_REVIEW_FAILED':
       return {
         ...state,
         errors: { ...action.payload.errors },

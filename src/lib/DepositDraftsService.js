@@ -5,6 +5,8 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import _isEmpty from 'lodash/isEmpty';
+
 export class DepositDraftsService {
   constructor(apiClient) {
     if (this.constructor === DepositDraftsService) {
@@ -29,6 +31,15 @@ export class DepositDraftsService {
   async discardPID(draft, pidType) {
     throw new Error('Not implemented.');
   }
+  async saveReview(newCommunityUUID, draftLinks) {
+    throw new Error('Not implemented.');
+  }
+  async deleteReview(draft) {
+    throw new Error('Not implemented.');
+  }
+  async submitReview(draft) {
+    throw new Error('Not implemented.');
+  }
 }
 
 export class RDMDepositDraftsService extends DepositDraftsService {
@@ -46,6 +57,13 @@ export class RDMDepositDraftsService extends DepositDraftsService {
    */
   async create(draft) {
     return this.apiClient.createDraft(draft);
+  }
+
+  /**
+   * Read the current draft (backend).
+   */
+  async read(draft) {
+    return this.apiClient.readDraft(draft.links);
   }
 
   /**
@@ -83,5 +101,26 @@ export class RDMDepositDraftsService extends DepositDraftsService {
    */
   async discardPID(draftLinks, pidType) {
     return this.apiClient.discardPID(draftLinks, pidType);
+  }
+
+  /**
+   * Creates a review request in initial state for draft.
+   */
+  async saveReview(newCommunityUUID, draftLinks) {
+    return this.apiClient.saveReview(newCommunityUUID, draftLinks);
+  }
+
+  /**
+   * Deletes a review request associated with the draft.
+   */
+  async deleteReview(draft) {
+    return this.apiClient.deleteReview(draft);
+  }
+
+  /**
+   * Submits the draft for review.
+   */
+  async submitReview(draftLinks, draft) {
+    return this.apiClient.submitReview(draftLinks, draft);
   }
 }
