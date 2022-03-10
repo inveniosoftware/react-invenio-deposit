@@ -13,7 +13,8 @@ import { i18next } from '@translations/i18next';
 import { CommunityContext } from './CommunityContext';
 
 export const CommunityListItem = ({ result, standAlone }) => {
-  const { setLocalCommunity, getChosenCommunity } = useContext(CommunityContext);
+  const { setLocalCommunity, getChosenCommunity } =
+    useContext(CommunityContext);
 
   const metadata = result.metadata;
   const linkToCommunityPage = result.links.self_html;

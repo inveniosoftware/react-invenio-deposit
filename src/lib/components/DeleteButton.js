@@ -107,13 +107,11 @@ export class DeleteButtonComponent extends Component {
           size="tiny"
         >
           <Modal.Content>
-            <h3>
-              <DialogText actionLbl={actionLbl} />
-            </h3>
+            <DialogText actionLbl={actionLbl} />
           </Modal.Content>
           <Modal.Actions>
             <Button onClick={this.closeConfirmModal} floated="left">
-              Cancel
+              {i18next.t('Cancel')}
             </Button>
             <ActionButton {...color} name="delete" onClick={this.handleDelete}>
               {(formik) => (

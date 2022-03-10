@@ -19,6 +19,7 @@ import {
   publish,
   reservePID,
   save,
+  submitReview,
 } from './state/actions';
 import { scrollTop } from './utils';
 
@@ -50,6 +51,7 @@ class DepositBootstrapComponent extends Component {
     const {
       saveAction,
       publishAction,
+      submitReview,
       previewAction,
       deleteAction,
       reservePIDAction,
@@ -65,6 +67,9 @@ class DepositBootstrapComponent extends Component {
         break;
       case DepositFormSubmitActions.PUBLISH:
         actionFunc = publishAction;
+        break;
+      case DepositFormSubmitActions.SUBMIT_REVIEW:
+        actionFunc = submitReview;
         break;
       case DepositFormSubmitActions.PREVIEW:
         actionFunc = previewAction;
@@ -134,6 +139,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   publishAction: (values) => dispatch(publish(values)),
+  submitReview: (values) => dispatch(submitReview(values)),
   saveAction: (values) => dispatch(save(values)),
   previewAction: (values) => dispatch(preview(values)),
   deleteAction: (values, { isDiscardingVersion }) =>

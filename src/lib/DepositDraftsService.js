@@ -11,6 +11,9 @@ export class DepositDraftsService {
       throw new Error('Abstract');
     }
   }
+  async read(draftLinks) {
+    throw new Error('Not implemented.');
+  }
   async create(draft) {
     throw new Error('Not implemented.');
   }
@@ -20,13 +23,22 @@ export class DepositDraftsService {
   async publish(draftLinks) {
     throw new Error('Not implemented.');
   }
-  async delete(draft) {
+  async delete(draftLinks) {
     throw new Error('Not implemented.');
   }
-  async reservePID(draft, pidType) {
+  async reservePID(draftLinks, pidType) {
     throw new Error('Not implemented.');
   }
-  async discardPID(draft, pidType) {
+  async discardPID(draftLinks, pidType) {
+    throw new Error('Not implemented.');
+  }
+  async createOrUpdateReview(draftLinks, newCommunityUUID) {
+    throw new Error('Not implemented.');
+  }
+  async deleteReview(draftLinks) {
+    throw new Error('Not implemented.');
+  }
+  async submitReview(draftLinks) {
     throw new Error('Not implemented.');
   }
 }
@@ -46,6 +58,13 @@ export class RDMDepositDraftsService extends DepositDraftsService {
    */
   async create(draft) {
     return this.apiClient.createDraft(draft);
+  }
+
+  /**
+   * Read the current draft (backend).
+   */
+  async read(draftLinks) {
+    return this.apiClient.readDraft(draftLinks);
   }
 
   /**
@@ -83,5 +102,26 @@ export class RDMDepositDraftsService extends DepositDraftsService {
    */
   async discardPID(draftLinks, pidType) {
     return this.apiClient.discardPID(draftLinks, pidType);
+  }
+
+  /**
+   * Creates or updates a review request.
+   */
+  async createOrUpdateReview(draftLinks, newCommunityUUID) {
+    return this.apiClient.createOrUpdateReview(draftLinks, newCommunityUUID);
+  }
+
+  /**
+   * Deletes a review request associated with the draft.
+   */
+  async deleteReview(draftLinks) {
+    return this.apiClient.deleteReview(draftLinks);
+  }
+
+  /**
+   * Submits the draft for review.
+   */
+  async submitReview(draftLinks) {
+    return this.apiClient.submitReview(draftLinks);
   }
 }
