@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.18.1 (released 2022-03-14)
+* add review request workflow
+
 Version 0.17.11 (released 2022-03-03)
 * fix arrow navigation issues for names autocomplete search field
 * remove default value for given name in creatibutors form
