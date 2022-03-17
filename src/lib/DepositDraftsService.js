@@ -121,7 +121,7 @@ export class RDMDepositDraftsService extends DepositDraftsService {
   /**
    * Submits the draft for review.
    */
-  async submitReview(draftLinks) {
-    return this.apiClient.submitReview(draftLinks);
+  async submitReview(draftLinks, reviewComment) {
+    return this.apiClient.submitReview(draftLinks, reviewComment);
   }
 }

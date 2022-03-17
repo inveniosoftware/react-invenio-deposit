@@ -5,16 +5,18 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { i18next, Trans } from '@translations/i18next';
+import { i18next } from '@translations/i18next';
 import _get from 'lodash/get';
 import React, { Component } from 'react';
-import { ActionButton } from 'react-invenio-forms';
 import { connect } from 'react-redux';
-import { Button, Icon, Modal } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
+import { connect as connectFormik } from 'formik';
 import {
   DepositFormSubmitActions,
   DepositFormSubmitContext,
 } from '../../DepositFormSubmitContext';
+import { ActionButton } from 'react-invenio-forms';
+import { SubmitReviewModal } from './SubmitReviewModal';
 
 class SubmitReviewButtonComponent extends Component {
   static contextType = DepositFormSubmitContext;
@@ -24,9 +26,11 @@ class SubmitReviewButtonComponent extends Component {
 
   closeConfirmModal = () => this.setState({ isConfirmModalOpen: false });
 
-  handleSubmitReview = (event, formik) => {
-    this.context.setSubmitContext(DepositFormSubmitActions.SUBMIT_REVIEW);
-    formik.handleSubmit(event);
+  handleSubmitReview = ({ reviewComment }) => {
+    this.context.setSubmitContext(DepositFormSubmitActions.SUBMIT_REVIEW, {
+      reviewComment,
+    });
+    this.props.formik.handleSubmit();
     this.closeConfirmModal();
   };
 
@@ -37,8 +41,13 @@ class SubmitReviewButtonComponent extends Component {
   };
 
   render() {
-    const { actionState, communityState, numberOfFiles, ...uiProps } =
-      this.props;
+    const {
+      actionState,
+      actionStateExtra,
+      communityState,
+      numberOfFiles,
+      ...uiProps
+    } = this.props;
 
     const communityTitle = communityState.selected.metadata.title;
     const { isConfirmModalOpen } = this.state;
@@ -67,29 +76,13 @@ class SubmitReviewButtonComponent extends Component {
           )}
         </ActionButton>
         {isConfirmModalOpen && (
-          <Modal
-            open={isConfirmModalOpen}
+          <SubmitReviewModal
+            isConfirmModalOpen={isConfirmModalOpen}
+            initialReviewComment={actionStateExtra.reviewComment}
+            onSubmit={this.handleSubmitReview}
+            communityTitle={communityTitle}
             onClose={this.closeConfirmModal}
-            size="small"
-          >
-            <Modal.Content>
-              <Trans>
-                Are you sure you want submit this record for review to be
-                included in the community <b>{{ communityTitle }}</b>?
-              </Trans>
-            </Modal.Content>
-            <Modal.Actions>
-              <Button onClick={this.closeConfirmModal} floated="left">
-                {i18next.t('Cancel')}
-              </Button>
-              <ActionButton
-                name="submitReview"
-                onClick={this.handleSubmitReview}
-                positive
-                content={i18next.t('Submit review')}
-              />
-            </Modal.Actions>
-          </Modal>
+          />
         )}
       </>
     );
@@ -98,6 +91,7 @@ class SubmitReviewButtonComponent extends Component {
 
 const mapStateToProps = (state) => ({
   actionState: state.deposit.actionState,
+  actionStateExtra: state.deposit.actionStateExtra,
   communityState: state.deposit.community,
   numberOfFiles: Object.values(state.files.entries).length,
 });
@@ -105,4 +99,4 @@ const mapStateToProps = (state) => ({
 export const SubmitReviewButton = connect(
   mapStateToProps,
   null
-)(SubmitReviewButtonComponent);
+)(connectFormik(SubmitReviewButtonComponent));

@@ -262,16 +262,23 @@ export class RDMDepositApiClient extends DepositApiClient {
    *
    * @param {object} draftLinks - the draft links object
    */
-  async submitReview(draftLinks) {
-    return this._createResponse(() =>
-      axiosWithConfig.post(
+  async submitReview(draftLinks, reviewComment) {
+    return this._createResponse(() => {
+      return axiosWithConfig.post(
         draftLinks['submit-review'],
-        {},
+        reviewComment
+          ? {
+              payload: {
+                content: reviewComment,
+                format: 'html',
+              },
+            }
+          : {},
         {
           headers: { 'Content-Type': 'application/json' },
         }
-      )
-    );
+      );
+    });
   }
 }
 

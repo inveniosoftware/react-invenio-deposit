@@ -39,7 +39,6 @@ class PublishButtonComponent extends Component {
 
   render() {
     const { actionState, publishClick, numberOfFiles, ...uiProps } = this.props;
-
     const { isConfirmModalOpen } = this.state;
 
     return (
@@ -69,6 +68,8 @@ class PublishButtonComponent extends Component {
             open={isConfirmModalOpen}
             onClose={this.closeConfirmModal}
             size="small"
+            closeIcon={true}
+            closeOnDimmerClick={false}
           >
             <Modal.Content>
               {i18next.t('Are you sure you want to publish this record?')}
