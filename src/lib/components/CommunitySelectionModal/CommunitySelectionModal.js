@@ -45,6 +45,7 @@ export class CommunitySelectionModal extends Component {
       <CommunityContext.Provider value={this.contextValue}>
         <Modal
           id="community-selection-modal"
+          closeIcon={true}
           closeOnDimmerClick={false}
           open={modalOpen}
           onClose={() => this.setState({ modalOpen: false })}

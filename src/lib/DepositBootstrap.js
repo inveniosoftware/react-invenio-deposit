@@ -70,6 +70,7 @@ class DepositBootstrapComponent extends Component {
         break;
       case DepositFormSubmitActions.SUBMIT_REVIEW:
         actionFunc = submitReview;
+        params['reviewComment'] = extra['reviewComment'];
         break;
       case DepositFormSubmitActions.PREVIEW:
         actionFunc = previewAction;
@@ -139,7 +140,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   publishAction: (values) => dispatch(publish(values)),
-  submitReview: (values) => dispatch(submitReview(values)),
+  submitReview: (values, { reviewComment }) =>
+    dispatch(submitReview(values, { reviewComment })),
   saveAction: (values) => dispatch(save(values)),
   previewAction: (values) => dispatch(preview(values)),
   deleteAction: (values, { isDiscardingVersion }) =>

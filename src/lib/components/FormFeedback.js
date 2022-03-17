@@ -18,9 +18,11 @@ import {
   DRAFT_HAS_VALIDATION_ERRORS,
   DRAFT_PREVIEW_FAILED,
   DRAFT_PUBLISH_FAILED,
+  DRAFT_PUBLISH_FAILED_WITH_VALIDATION_ERRORS,
   DRAFT_SAVE_FAILED,
   DRAFT_SAVE_SUCCEEDED,
   DRAFT_SUBMIT_REVIEW_FAILED,
+  DRAFT_SUBMIT_REVIEW_FAILED_WITH_VALIDATION_ERRORS,
   FILE_IMPORT_FAILED,
   FILE_UPLOAD_SAVE_DRAFT_FAILED,
   RESERVE_PID_FAILED,
@@ -70,10 +72,22 @@ const ACTIONS = {
       'Oops, something went wrong! The draft was not published. Please try again. If the problem persists, contact user support.'
     ),
   },
+  [DRAFT_PUBLISH_FAILED_WITH_VALIDATION_ERRORS]: {
+    feedback: 'negative',
+    message: i18next.t(
+      'The draft was not published. Record saved with validation errors:'
+    ),
+  },
   [DRAFT_SUBMIT_REVIEW_FAILED]: {
     feedback: 'negative',
     message: i18next.t(
       'Oops, something went wrong! The draft was not submitted for review. Please try again. If the problem persists, contact user support.'
+    ),
+  },
+  [DRAFT_SUBMIT_REVIEW_FAILED_WITH_VALIDATION_ERRORS]: {
+    feedback: 'negative',
+    message: i18next.t(
+      'The draft was not submitted for review. Record saved with validation errors:'
     ),
   },
   [DRAFT_DELETE_FAILED]: {

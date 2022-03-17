@@ -17,11 +17,13 @@ import {
   DRAFT_PREVIEW_FAILED,
   DRAFT_PREVIEW_STARTED,
   DRAFT_PUBLISH_FAILED,
+  DRAFT_PUBLISH_FAILED_WITH_VALIDATION_ERRORS,
   DRAFT_PUBLISH_STARTED,
   DRAFT_SAVE_FAILED,
   DRAFT_SAVE_STARTED,
   DRAFT_SAVE_SUCCEEDED,
   DRAFT_SUBMIT_REVIEW_FAILED,
+  DRAFT_SUBMIT_REVIEW_FAILED_WITH_VALIDATION_ERRORS,
   DRAFT_SUBMIT_REVIEW_STARTED,
   RESERVE_PID_FAILED,
   RESERVE_PID_STARTED,
@@ -48,7 +50,7 @@ export const saveDraftWithUrlUpdate = async (draft, draftsService) => {
 async function _saveDraft(
   draft,
   draftsService,
-  { depositState, dispatchFn, failType }
+  { depositState, dispatchFn, failType, partialValidationActionType }
 ) {
   let response;
   try {
@@ -60,15 +62,8 @@ async function _saveDraft(
     });
     throw error;
   }
-
   const draftHasValidationErrors = !_isEmpty(response.errors);
-  if (draftHasValidationErrors) {
-    dispatchFn({
-      type: DRAFT_HAS_VALIDATION_ERRORS,
-      payload: { data: response.data, errors: response.errors },
-    });
-    throw response;
-  }
+  const draftValidationErrorResponse = draftHasValidationErrors ? response : {};
 
   const communityState = depositState.community;
   // update review when needed
@@ -98,6 +93,25 @@ async function _saveDraft(
       type: DRAFT_FETCHED,
       payload: { data: response.data },
     });
+
+    // previously saved data should be overriden by the latest read draft
+    // Otherwise when the draft is partially saved, the community state will
+    // not be taken into account
+    draftValidationErrorResponse.data = {
+      ...draftValidationErrorResponse.data,
+      ...response.data,
+    };
+  }
+  // Throw validation errors from the partially saved draft
+  if (draftHasValidationErrors) {
+    dispatchFn({
+      type: partialValidationActionType,
+      payload: {
+        data: draftValidationErrorResponse.data,
+        errors: draftValidationErrorResponse.errors,
+      },
+    });
+    throw draftValidationErrorResponse;
   }
 
   return response;
@@ -114,6 +128,7 @@ export const save = (draft) => {
       depositState: getState().deposit,
       dispatchFn: dispatch,
       failType: DRAFT_SAVE_FAILED,
+      partialValidationActionType: DRAFT_HAS_VALIDATION_ERRORS,
     });
 
     dispatch({
@@ -133,6 +148,7 @@ export const publish = (draft) => {
       depositState: getState().deposit,
       dispatchFn: dispatch,
       failType: DRAFT_PUBLISH_FAILED,
+      partialValidationActionType: DRAFT_PUBLISH_FAILED_WITH_VALIDATION_ERRORS,
     });
 
     const draftWithLinks = response.data;
@@ -153,22 +169,28 @@ export const publish = (draft) => {
   };
 };
 
-export const submitReview = (draft) => {
+export const submitReview = (draft, { reviewComment }) => {
   return async (dispatch, getState, config) => {
     dispatch({
       type: DRAFT_SUBMIT_REVIEW_STARTED,
+      payload: {
+        reviewComment,
+      },
     });
 
     const response = await _saveDraft(draft, config.service.drafts, {
       depositState: getState().deposit,
       dispatchFn: dispatch,
       failType: DRAFT_SUBMIT_REVIEW_FAILED,
+      partialValidationActionType:
+        DRAFT_SUBMIT_REVIEW_FAILED_WITH_VALIDATION_ERRORS,
     });
 
     const draftWithLinks = response.data;
     try {
       const response = await config.service.drafts.submitReview(
-        draftWithLinks.links
+        draftWithLinks.links,
+        reviewComment
       );
       // after submitting for review, redirect to the review record
       // FIXME: add response.data.links.self_html
@@ -194,6 +216,7 @@ export const preview = (draft) => {
       depositState: getState().deposit,
       dispatchFn: dispatch,
       failType: DRAFT_PREVIEW_FAILED,
+      partialValidationActionType: DRAFT_HAS_VALIDATION_ERRORS,
     });
     // redirect to the preview page
     window.location = `/records/${draft.id}?preview=1`;

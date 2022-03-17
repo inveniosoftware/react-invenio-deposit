@@ -45,10 +45,9 @@ export class CreatibutorsModal extends Component {
       open: false,
       saveAndContinueLabel: i18next.t('Save and add another'),
       action: null,
-      showPersonForm: (
+      showPersonForm:
         props.autocompleteNames !== NamesAutocompleteOptions.SEARCH_ONLY ||
-        !_isEmpty(props.initialCreatibutor)
-      ),
+        !_isEmpty(props.initialCreatibutor),
     };
     this.inputRef = createRef();
     this.identifiersRef = createRef();
@@ -80,8 +79,7 @@ export class CreatibutorsModal extends Component {
   focusInput = () => this.inputRef.current.focus();
 
   openModal = () => {
-    this.setState({ open: true, action: null }, () => {
-    });
+    this.setState({ open: true, action: null }, () => {});
   };
 
   closeModal = () => {
@@ -240,10 +238,9 @@ export class CreatibutorsModal extends Component {
       };
     });
 
-    const showManualEntry = (
+    const showManualEntry =
       this.props.autocompleteNames === NamesAutocompleteOptions.SEARCH_ONLY &&
-      !this.state.showPersonForm
-    );
+      !this.state.showPersonForm;
     if (showManualEntry) {
       results.push({
         text: 'Manual entry',
@@ -251,18 +248,25 @@ export class CreatibutorsModal extends Component {
         extra: 'Manual entry',
         key: 'manual-entry',
         content: (
-          <Header textAlign='center'>
+          <Header textAlign="center">
             <Header.Content>
-              <p>Couldn't find your person? You can <a>create a new entry</a></p>
+              <p>
+                <Trans>
+                  Couldn't find your person? You can <a>create a new entry</a>.
+                </Trans>
+              </p>
             </Header.Content>
           </Header>
         ),
       });
     }
     return results;
-  }
+  };
 
-  onPersonSearchChange = ({ event, data, formikProps }, selectedSuggestions) => {
+  onPersonSearchChange = (
+    { event, data, formikProps },
+    selectedSuggestions
+  ) => {
     if (selectedSuggestions[0].key === 'manual-entry') {
       // Empty the autocomplete's selected values
       this.namesAutocompleteRef.current.setState({
@@ -270,61 +274,64 @@ export class CreatibutorsModal extends Component {
         selectedSuggestions: [],
       });
       this.setState({
-        showPersonForm: true
-      })
-      return
+        showPersonForm: true,
+      });
+      return;
     }
 
-    this.setState({
-      showPersonForm: true
-    }, () => {
-      const identifiers =
-        selectedSuggestions[0].extra.identifiers.map(
+    this.setState(
+      {
+        showPersonForm: true,
+      },
+      () => {
+        const identifiers = selectedSuggestions[0].extra.identifiers.map(
           (identifier) => {
             return identifier.identifier;
           }
         );
-      const affiliations =
-        selectedSuggestions[0].extra.affiliations.map(
+        const affiliations = selectedSuggestions[0].extra.affiliations.map(
           (affiliation) => {
             return affiliation;
           }
         );
 
-      const personOrOrgPath = `person_or_org`;
-      const familyNameFieldPath = `${personOrOrgPath}.family_name`;
-      const givenNameFieldPath = `${personOrOrgPath}.given_name`;
-      const identifiersFieldPath = `${personOrOrgPath}.identifiers`;
-      const affiliationsFieldPath = 'affiliations';
+        const personOrOrgPath = `person_or_org`;
+        const familyNameFieldPath = `${personOrOrgPath}.family_name`;
+        const givenNameFieldPath = `${personOrOrgPath}.given_name`;
+        const identifiersFieldPath = `${personOrOrgPath}.identifiers`;
+        const affiliationsFieldPath = 'affiliations';
 
-      let chosen = {
-        [givenNameFieldPath]: selectedSuggestions[0].extra.given_name,
-        [familyNameFieldPath]: selectedSuggestions[0].extra.family_name,
-        [identifiersFieldPath]: identifiers,
-        [affiliationsFieldPath]: affiliations,
-      };
-      Object.entries(chosen).forEach(([path, value]) => {
-        formikProps.form.setFieldValue(path, value);
-      });
-      // Update identifiers render
-      this.identifiersRef.current.setState({
-        selectedOptions: this.identifiersRef.current.valuesToOptions(identifiers)
-      })
-      // Update affiliations render
-      const affiliationsState = affiliations.map(({ name }) => ({
-        text: name, value: name, key: name, name
-      }))
-      this.affiliationsRef.current.setState(
-        {
+        let chosen = {
+          [givenNameFieldPath]: selectedSuggestions[0].extra.given_name,
+          [familyNameFieldPath]: selectedSuggestions[0].extra.family_name,
+          [identifiersFieldPath]: identifiers,
+          [affiliationsFieldPath]: affiliations,
+        };
+        Object.entries(chosen).forEach(([path, value]) => {
+          formikProps.form.setFieldValue(path, value);
+        });
+        // Update identifiers render
+        this.identifiersRef.current.setState({
+          selectedOptions:
+            this.identifiersRef.current.valuesToOptions(identifiers),
+        });
+        // Update affiliations render
+        const affiliationsState = affiliations.map(({ name }) => ({
+          text: name,
+          value: name,
+          key: name,
+          name,
+        }));
+        this.affiliationsRef.current.setState({
           suggestions: affiliationsState,
           selectedSuggestions: affiliationsState,
           searchQuery: null,
           error: false,
           open: false,
-        },
-      );
-    })
-  }
+        });
+      }
+    );
+  };
 
   render() {
     const initialCreatibutor = this.props.initialCreatibutor;
@@ -338,7 +345,7 @@ export class CreatibutorsModal extends Component {
         validateOnChange={false}
         validateOnBlur={false}
       >
-        {({ values, setFieldValue, resetForm }) => {
+        {({ values, resetForm }) => {
           const personOrOrgPath = `person_or_org`;
           const typeFieldPath = `${personOrOrgPath}.type`;
           const familyNameFieldPath = `${personOrOrgPath}.family_name`;
@@ -357,7 +364,8 @@ export class CreatibutorsModal extends Component {
                 this.closeModal();
                 resetForm();
               }}
-              closeIcon
+              closeIcon={true}
+              closeOnDimmerClick={false}
             >
               <Modal.Header as="h6" className="deposit-modal-header">
                 <Grid>
@@ -405,29 +413,36 @@ export class CreatibutorsModal extends Component {
                     />
                   </Form.Group>
                   {_get(values, typeFieldPath, '') ===
-                    CREATIBUTOR_TYPE.PERSON ? (
+                  CREATIBUTOR_TYPE.PERSON ? (
                     <div>
-                      {this.props.autocompleteNames !== NamesAutocompleteOptions.OFF &&
+                      {this.props.autocompleteNames !==
+                        NamesAutocompleteOptions.OFF && (
                         <RemoteSelectField
                           selectOnBlur={false}
                           selectOnNavigation={false}
-                          searchInput={{ autoFocus: _isEmpty(initialCreatibutor) }}
+                          searchInput={{
+                            autoFocus: _isEmpty(initialCreatibutor),
+                          }}
                           fieldPath={'creators'}
                           clearable={true}
                           multiple={false}
                           allowAdditions={false}
-                          placeholder={i18next.t('Search for persons by name, identifier, or affiliation...')}
-                          noQueryMessage={i18next.t('Search for persons by name, identifier, or affiliation...')}
+                          placeholder={i18next.t(
+                            'Search for persons by name, identifier, or affiliation...'
+                          )}
+                          noQueryMessage={i18next.t(
+                            'Search for persons by name, identifier, or affiliation...'
+                          )}
                           required={false}
                           // Disable UI-side filtering of search results
-                          search={options => options}
+                          search={(options) => options}
                           suggestionAPIUrl="/api/names"
                           serializeSuggestions={this.serializeSuggestions}
                           onValueChange={this.onPersonSearchChange}
                           ref={this.namesAutocompleteRef}
                         />
-                      }
-                      {this.state.showPersonForm &&
+                      )}
+                      {this.state.showPersonForm && (
                         <div>
                           <Form.Group widths="equal">
                             <TextField
@@ -457,7 +472,7 @@ export class CreatibutorsModal extends Component {
                             />
                           </Form.Group>
                         </div>
-                      }
+                      )}
                     </div>
                   ) : (
                     <>
@@ -484,8 +499,11 @@ export class CreatibutorsModal extends Component {
                       />
                     </>
                   )}
-                  {(_get(values, typeFieldPath) === CREATIBUTOR_TYPE.ORGANIZATION ||
-                    (this.state.showPersonForm && _get(values, typeFieldPath) === CREATIBUTOR_TYPE.PERSON)) &&
+                  {(_get(values, typeFieldPath) ===
+                    CREATIBUTOR_TYPE.ORGANIZATION ||
+                    (this.state.showPersonForm &&
+                      _get(values, typeFieldPath) ===
+                        CREATIBUTOR_TYPE.PERSON)) && (
                     <div>
                       <AffiliationsField
                         fieldPath={affiliationsFieldPath}
@@ -501,7 +519,7 @@ export class CreatibutorsModal extends Component {
                         optimized
                       />
                     </div>
-                  }
+                  )}
                 </Form>
               </Modal.Content>
               <Modal.Actions>
@@ -519,12 +537,17 @@ export class CreatibutorsModal extends Component {
                   <ActionButton
                     name="submit"
                     onClick={(event, formik) => {
-                      this.setState({
-                        action: 'saveAndContinue',
-                        showPersonForm: this.props.autocompleteNames !== NamesAutocompleteOptions.SEARCH_ONLY
-                      }, () => {
-                        formik.handleSubmit();
-                      });
+                      this.setState(
+                        {
+                          action: 'saveAndContinue',
+                          showPersonForm:
+                            this.props.autocompleteNames !==
+                            NamesAutocompleteOptions.SEARCH_ONLY,
+                        },
+                        () => {
+                          formik.handleSubmit();
+                        }
+                      );
                     }}
                     primary
                     icon="checkmark"
@@ -534,11 +557,14 @@ export class CreatibutorsModal extends Component {
                 <ActionButton
                   name="submit"
                   onClick={(event, formik) => {
-                    this.setState({
-                      action: 'saveAndClose',
-                      showPersonForm: this.props.autocompleteNames !== NamesAutocompleteOptions.SEARCH_ONLY,
-                    }, () =>
-                      formik.handleSubmit()
+                    this.setState(
+                      {
+                        action: 'saveAndClose',
+                        showPersonForm:
+                          this.props.autocompleteNames !==
+                          NamesAutocompleteOptions.SEARCH_ONLY,
+                      },
+                      () => formik.handleSubmit()
                     );
                   }}
                   primary

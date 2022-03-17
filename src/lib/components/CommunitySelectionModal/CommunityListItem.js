@@ -19,7 +19,7 @@ export const CommunityListItem = ({ result, standAlone }) => {
   const metadata = result.metadata;
   const linkToCommunityPage = result.links.self_html;
 
-  const itemSelected = getChosenCommunity()?.id === result.id;
+  const itemSelected = getChosenCommunity()?.uuid === result.uuid;
 
   return (
     <Item key={result.id} className="community-list-result-item">

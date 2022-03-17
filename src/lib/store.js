@@ -54,6 +54,8 @@ export function configureStore(appConfig) {
     community: computeCommunityState(record, _preselectedCommunity),
     config,
     permissions,
+    actionState: null,
+    actionStateExtra: {},
   };
 
   const preloadedState = {

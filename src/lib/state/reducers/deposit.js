@@ -16,11 +16,13 @@ import {
   DRAFT_PREVIEW_FAILED,
   DRAFT_PREVIEW_STARTED,
   DRAFT_PUBLISH_FAILED,
+  DRAFT_PUBLISH_FAILED_WITH_VALIDATION_ERRORS,
   DRAFT_PUBLISH_STARTED,
   DRAFT_SAVE_FAILED,
   DRAFT_SAVE_STARTED,
   DRAFT_SAVE_SUCCEEDED,
   DRAFT_SUBMIT_REVIEW_FAILED,
+  DRAFT_SUBMIT_REVIEW_FAILED_WITH_VALIDATION_ERRORS,
   DRAFT_SUBMIT_REVIEW_STARTED,
   RESERVE_PID_FAILED,
   RESERVE_PID_STARTED,
@@ -62,9 +64,9 @@ export function computeCommunityState(record, selectedCommunity = undefined) {
       id: _selectedCommunity.id || _selectedCommunity,
       uuid: _selectedCommunity.uuid || _selectedCommunity,
       metadata: {
-        title: _selectedCommunity.metadata.title || _selectedCommunity,
+        title: _selectedCommunity?.metadata?.title || _selectedCommunity,
         description:
-          _selectedCommunity.metadata.description || _selectedCommunity,
+          _selectedCommunity?.metadata?.description || _selectedCommunity,
         type: 'Type',
       },
       links: {
@@ -95,11 +97,15 @@ const depositReducer = (state = {}, action) => {
     case DRAFT_PUBLISH_STARTED:
     case DRAFT_DELETE_STARTED:
     case DRAFT_PREVIEW_STARTED:
+      return {
+        ...state,
+        actionState: action.type,
+      };
     case DRAFT_SUBMIT_REVIEW_STARTED:
       return {
         ...state,
         actionState: action.type,
-        actionStateExtra: {},
+        actionStateExtra: { reviewComment: action.payload.reviewComment },
       };
     case RESERVE_PID_STARTED:
     case DISCARD_PID_STARTED:
@@ -115,12 +121,17 @@ const depositReducer = (state = {}, action) => {
       return {
         ...state,
         record: { ...state.record, ...action.payload.data },
-        community: computeCommunityState(action.payload.data),
+        community: computeCommunityState(
+          action.payload.data,
+          state.community.selected
+        ),
         errors: {},
         actionState: action.type,
         actionStateExtra: {},
       };
     case DRAFT_HAS_VALIDATION_ERRORS:
+    case DRAFT_PUBLISH_FAILED_WITH_VALIDATION_ERRORS:
+    case DRAFT_SUBMIT_REVIEW_FAILED_WITH_VALIDATION_ERRORS:
       return {
         ...state,
         record: { ...state.record, ...action.payload.data },
@@ -130,7 +141,6 @@ const depositReducer = (state = {}, action) => {
         ),
         errors: { ...action.payload.errors },
         actionState: action.type,
-        actionStateExtra: {},
       };
     case DRAFT_SAVE_FAILED:
     case DRAFT_PUBLISH_FAILED:

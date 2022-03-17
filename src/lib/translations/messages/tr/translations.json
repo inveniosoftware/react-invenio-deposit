@@ -183,6 +183,12 @@
   "Submit review": "",
   "Publish": "",
   "Are you sure you want to publish this record?": "",
-  "Are you sure you want submit this record for review to be included in the community?": "",
-  "Are you sure you want submit this record for review to be included in the community <1>{{communityTitle}}</1>?": "Are you sure you want submit this record for review to be included in the community <1>{{communityTitle}}</1>?"
+  "Couldn't find your person? You can <1>create a new entry</1>.": "Couldn't find your person? You can <1>create a new entry</1>.",
+  "The draft was not published. Record saved with validation errors:": "",
+  "The draft was not submitted for review. Record saved with validation errors:": "",
+  "You must click and accept this.": "",
+  "Before requesting review please read and check the following.": "",
+  "Request for review": "Request for review",
+  "The '{{communityTitle}}' curators will have access to\n                 <bold>view</bold> and <bold>edit</bold> your\n                 upload's metadata and files.": "The '{{communityTitle}}' curators will have access to\n                 <bold>view</bold> and <bold>edit</bold> your\n                 upload's metadata and files.",
+  "If your upload is accepted by the community curators, it will be <bold> immediately published.</bold> Before that, you will still be able to modify metadata and files of this uploads.": "If your upload is accepted by the community curators, it will be <bold> immediately published.</bold> Before that, you will still be able to modify metadata and files of this uploads."
 }
