@@ -367,7 +367,7 @@ export class CreatibutorsModal extends Component {
               closeIcon={true}
               closeOnDimmerClick={false}
             >
-              <Modal.Header as="h6" className="deposit-modal-header">
+              <Modal.Header as="h6" className="pt-10 pb-10">
                 <Grid>
                   <Grid.Column floated="left" width={4}>
                     <Header as="h2">

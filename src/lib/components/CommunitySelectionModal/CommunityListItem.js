@@ -5,7 +5,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import React, { useContext } from 'react';
-import { Item, Button, Container } from 'semantic-ui-react';
+import { Item, Button } from 'semantic-ui-react';
 import _truncate from 'lodash/truncate';
 import { Image } from 'react-invenio-forms';
 import PropTypes from 'prop-types';
@@ -16,17 +16,17 @@ export const CommunityListItem = ({ result, standAlone }) => {
   const { setLocalCommunity, getChosenCommunity } =
     useContext(CommunityContext);
 
-  const metadata = result.metadata;
+  const { metadata } = result;
   const linkToCommunityPage = result.links.self_html;
 
   const itemSelected = getChosenCommunity()?.uuid === result.uuid;
 
   return (
-    <Item key={result.id} className="community-list-result-item">
+    <Item key={result.id} className="pr-20">
       <Item.Image
         as={Image}
         size="tiny"
-        src="/static/images/square-placeholder.png"
+        fallbackSrc="/static/images/square-placeholder.png"
       />
 
       <Item.Content verticalAlign="top">
@@ -43,18 +43,28 @@ export const CommunityListItem = ({ result, standAlone }) => {
         </Item.Description>
         <Item.Extra>{metadata.type}</Item.Extra>
       </Item.Content>
-
-      <Container className="community-list-result-item-button-container" fluid>
-        <SelectButton
-          selected={itemSelected}
-          standAlone={standAlone}
-          onSelect={() => setLocalCommunity(itemSelected ? null : result)}
-        />
+      <div className="flex">
+        {!standAlone && (
+          <Button
+            content={itemSelected ? i18next.t('selected') : i18next.t('select')}
+            className="align-self-center"
+            floated="right"
+            size="small"
+            positive={itemSelected}
+            onClick={() => setLocalCommunity(itemSelected ? null : result)}
+          />
+        )}
 
         {standAlone && (
-          <DeselectButton onDeselect={() => setLocalCommunity(null)} />
+          <Button
+            icon="delete"
+            floated="right"
+            size="small"
+            className="align-self-center"
+            onClick={() => setLocalCommunity(null)}
+          />
         )}
-      </Container>
+      </div>
     </Item>
   );
 };
@@ -66,31 +76,4 @@ CommunityListItem.propTypes = {
 
 CommunityListItem.defaultProps = {
   standAlone: false,
-};
-
-const SelectButton = ({ selected, standAlone, onSelect }) => {
-  if (standAlone) return null;
-
-  return (
-    <Button
-      content={selected ? i18next.t('selected') : i18next.t('select')}
-      floated="right"
-      positive={selected}
-      onClick={() => onSelect()}
-    />
-  );
-};
-
-SelectButton.propTypes = {
-  selected: PropTypes.bool.isRequired,
-  standAlone: PropTypes.bool.isRequired,
-  onSelect: PropTypes.func.isRequired,
-};
-
-const DeselectButton = ({ onDeselect }) => (
-  <Button icon="delete" floated="right" onClick={() => onDeselect()} />
-);
-
-DeselectButton.propTypes = {
-  onDeselect: PropTypes.func.isRequired,
 };
