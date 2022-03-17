@@ -93,7 +93,7 @@ export class LicenseModal extends Component {
           onClose={this.closeModal}
           closeIcon
         >
-          <Modal.Header as="h6" className="deposit-modal-header">
+          <Modal.Header as="h6" className="pt-10 pb-10">
             <Grid>
               <Grid.Column floated="left">
                 <Header as="h2">

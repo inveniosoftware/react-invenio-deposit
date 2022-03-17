@@ -33,7 +33,7 @@ export class PreviewButtonComponent extends Component {
         isDisabled={(formik) => formik.isSubmitting}
         onClick={this.handlePreview}
         icon
-        labelPosition="center"
+        labelPosition="left"
         {...uiProps}
       >
         {(formik) => (

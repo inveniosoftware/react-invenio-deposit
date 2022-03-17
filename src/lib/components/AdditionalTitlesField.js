@@ -71,9 +71,9 @@ export class AdditionalTitlesField extends Component {
                 selectOnBlur={false}
                 width={5}
               />
-              <Form.Field width={1}>
-                <label>&nbsp;</label>
-                <Button icon onClick={() => arrayHelpers.remove(indexPath)}>
+              <Form.Field width={1} className="align-self-end">
+                <Button icon
+                        onClick={() => arrayHelpers.remove(indexPath)}>
                   <Icon name="close" />
                 </Button>
               </Form.Field>

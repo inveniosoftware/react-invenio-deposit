@@ -80,7 +80,7 @@ class LicenseFieldForm extends Component {
             htmlFor={fieldPath}
             icon={labelIcon}
             label={label}
-          ></FieldLabel>
+          />
           <List>
             {getIn(values, fieldPath, []).map((value, index) => {
               const license = new VisibleLicense(uiRights, value, index);
@@ -99,7 +99,7 @@ class LicenseFieldForm extends Component {
             <LicenseModal
               searchConfig={this.props.searchConfig}
               trigger={
-                <Button type="button" key="standard">
+                <Button type="button" key="standard" icon labelPosition="left">
                   <Icon name="add" />
                   {i18next.t('Add standard')}
                 </Button>
@@ -114,7 +114,7 @@ class LicenseFieldForm extends Component {
             <LicenseModal
               searchConfig={this.props.searchConfig}
               trigger={
-                <Button type="button" key="custom">
+                <Button type="button" key="custom" icon labelPosition="left">
                   <Icon name="add" />
                   {i18next.t('Add custom')}
                 </Button>

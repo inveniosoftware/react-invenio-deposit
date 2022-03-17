@@ -62,7 +62,7 @@ class CreatibutorsFieldForm extends Component {
             htmlFor={fieldPath}
             icon={labelIcon}
             label={label}
-          ></FieldLabel>
+          />
           <List>
             {getIn(values, fieldPath, []).map((value, index, array) => {
               const key = `${fieldPath}.${index}`;
@@ -133,7 +133,7 @@ class CreatibutorsFieldForm extends Component {
               schema={schema}
               autocompleteNames={this.props.autocompleteNames}
               trigger={
-                <Button type="button">
+                <Button type="button" icon labelPosition="left">
                   <Icon name="add" />
                   {this.props.addButtonLabel}
                 </Button>
