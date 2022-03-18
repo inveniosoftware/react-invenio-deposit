@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.18.2 (released 2022-03-18)
+* add submit review confirmation modal
+* forms: refactor buttons style
+
 Version 0.18.1 (released 2022-03-14)
 * add review request workflow
 
