@@ -18,6 +18,7 @@ export const CommunityListItem = ({ result, standAlone }) => {
 
   const { metadata } = result;
   const linkToCommunityPage = result.links.self_html;
+  const linkToLogo = result.links.logo;
 
   const itemSelected = getChosenCommunity()?.uuid === result.uuid;
 
@@ -26,6 +27,7 @@ export const CommunityListItem = ({ result, standAlone }) => {
       <Item.Image
         as={Image}
         size="tiny"
+        src={linkToLogo}
         fallbackSrc="/static/images/square-placeholder.png"
       />
 

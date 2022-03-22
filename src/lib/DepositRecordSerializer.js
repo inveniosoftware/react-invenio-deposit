@@ -287,6 +287,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
       'is_published',
       'versions',
       'parent',
+      'status',
       'pids',
       'ui',
     ]);

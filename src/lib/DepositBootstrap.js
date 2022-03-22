@@ -68,6 +68,10 @@ class DepositBootstrapComponent extends Component {
       case DepositFormSubmitActions.PUBLISH:
         actionFunc = publishAction;
         break;
+      case DepositFormSubmitActions.PUBLISH_WITHOUT_COMMUNITY:
+        actionFunc = publishAction;
+        params['withoutCommunity'] = true;
+        break;
       case DepositFormSubmitActions.SUBMIT_REVIEW:
         actionFunc = submitReview;
         params['reviewComment'] = extra['reviewComment'];
@@ -139,7 +143,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  publishAction: (values) => dispatch(publish(values)),
+  publishAction: (values, { withoutCommunity = false }) =>
+    dispatch(publish(values, { withoutCommunity })),
   submitReview: (values, { reviewComment }) =>
     dispatch(submitReview(values, { reviewComment })),
   saveAction: (values) => dispatch(save(values)),

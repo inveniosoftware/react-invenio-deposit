@@ -41,10 +41,11 @@ export class SubmitReviewModal extends Component {
     const {
       initialReviewComment,
       isConfirmModalOpen,
-      communityTitle,
+      community,
       onClose,
       onSubmit,
     } = this.props;
+    const communityTitle = community.metadata.title;
     return (
       <Formik
         initialValues={{
@@ -79,7 +80,7 @@ export class SubmitReviewModal extends Component {
                   </p>
                 </Message>
                 <Form>
-                  <Form.Field className="mb-5">
+                  <Form.Field>
                     <RadioField
                       control={Checkbox}
                       fieldPath="acceptAccessToRecord"
@@ -100,14 +101,17 @@ export class SubmitReviewModal extends Component {
                       onChange={({ event, data, formikProps }) => {
                         formikProps.form.setFieldValue(
                           'acceptAccessToRecord',
-                          'checked'
+                          data.checked ? 'checked' : ''
                         );
                       }}
                       optimized
                     />
-                    <ErrorLabel fieldPath="acceptAccessToRecord" />
+                    <ErrorLabel
+                      fieldPath="acceptAccessToRecord"
+                      className="mt-0 mb-5"
+                    />
                   </Form.Field>
-                  <Form.Field className="mb-5">
+                  <Form.Field>
                     <RadioField
                       control={Checkbox}
                       fieldPath="acceptAfterPublishRecord"
@@ -115,7 +119,7 @@ export class SubmitReviewModal extends Component {
                         <Trans
                           defaults="If your upload is accepted by the community curators, it will be <bold> immediately published.</bold> Before that, you will still be able to modify metadata and files of this uploads."
                           values={{
-                            communityTitle: this.props.communityTitle,
+                            communityTitle: communityTitle,
                           }}
                           components={{ bold: <b /> }}
                         />
@@ -126,12 +130,15 @@ export class SubmitReviewModal extends Component {
                       onChange={({ event, data, formikProps }) => {
                         formikProps.form.setFieldValue(
                           'acceptAfterPublishRecord',
-                          'checked'
+                          data.checked ? 'checked' : ''
                         );
                       }}
                       optimized
                     />
-                    <ErrorLabel fieldPath="acceptAfterPublishRecord" />
+                    <ErrorLabel
+                      fieldPath="acceptAfterPublishRecord"
+                      className="mt-0 mb-5"
+                    />
                   </Form.Field>
                   <TextAreaField
                     fieldPath="reviewComment"
@@ -161,9 +168,9 @@ export class SubmitReviewModal extends Component {
 }
 
 SubmitReviewModal.propTypes = {
-  initialReviewComment: PropTypes.string.isRequired,
   isConfirmModalOpen: PropTypes.bool.isRequired,
-  communityTitle: PropTypes.string.isRequired,
+  community: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  initialReviewComment: PropTypes.string,
 };

@@ -29,6 +29,7 @@ export { PublishButton } from './PublishButton';
 export { PublisherField } from './PublisherField';
 export { RelatedWorksField } from './RelatedWorksField';
 export { ResourceTypeField } from './ResourceTypeField';
+export { DepositStatusBox } from './DepositStatus';
 export { SaveButton } from './SaveButton';
 export { SubjectsField } from './SubjectsField';
 export { TitlesField } from './TitlesField';

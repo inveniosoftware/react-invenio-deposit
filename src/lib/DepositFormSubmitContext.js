@@ -10,6 +10,7 @@ import React from 'react';
 export const DepositFormSubmitActions = {
   SAVE: 'SAVE',
   PUBLISH: 'PUBLISH',
+  PUBLISH_WITHOUT_COMMUNITY: 'PUBLISH_WITHOUT_COMMUNITY',
   PREVIEW: 'PREVIEW',
   DELETE: 'DELETE',
   RESERVE_PID: 'RESERVE_PID',

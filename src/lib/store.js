@@ -10,7 +10,7 @@ import _get from 'lodash/get';
 import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './state/reducers';
-import { computeCommunityState } from './state/reducers/deposit';
+import { computeDepositState } from './state/reducers/deposit';
 import { UploadState } from './state/reducers/files';
 
 const preloadFiles = (files) => {
@@ -51,7 +51,7 @@ export function configureStore(appConfig) {
 
   const initialDepositState = {
     record,
-    community: computeCommunityState(record, _preselectedCommunity),
+    editorState: computeDepositState(record, _preselectedCommunity),
     config,
     permissions,
     actionState: null,

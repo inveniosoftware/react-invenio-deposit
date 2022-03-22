@@ -5,9 +5,9 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import React, { Component } from 'react';
 import { i18next } from '@translations/i18next';
 import _get from 'lodash/get';
-import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Icon } from 'semantic-ui-react';
 import { connect as connectFormik } from 'formik';
@@ -17,6 +17,7 @@ import {
 } from '../../DepositFormSubmitContext';
 import { ActionButton } from 'react-invenio-forms';
 import { SubmitReviewModal } from './SubmitReviewModal';
+import { DepositStatus } from '../../state/reducers/deposit';
 
 class SubmitReviewButtonComponent extends Component {
   static contextType = DepositFormSubmitContext;
@@ -34,28 +35,31 @@ class SubmitReviewButtonComponent extends Component {
     this.closeConfirmModal();
   };
 
-  isDisabled = (formik, numberOfFiles) => {
+  isDisabled = (formik, numberOfFiles, disableSubmitForReviewButton) => {
     const filesEnabled = _get(formik.values, 'files.enabled', false);
     const filesMissing = filesEnabled && !numberOfFiles;
-    return formik.isSubmitting || filesMissing;
+    return formik.isSubmitting || filesMissing || disableSubmitForReviewButton;
   };
 
   render() {
     const {
       actionState,
       actionStateExtra,
-      communityState,
+      community,
       numberOfFiles,
+      disableSubmitForReviewButton,
+      isRecordSubmittedForReview,
       ...uiProps
     } = this.props;
 
-    const communityTitle = communityState.selected.metadata.title;
     const { isConfirmModalOpen } = this.state;
 
     return (
       <>
         <ActionButton
-          isDisabled={(formik) => this.isDisabled(formik, numberOfFiles)}
+          isDisabled={(formik) =>
+            this.isDisabled(formik, numberOfFiles, disableSubmitForReviewButton)
+          }
           name="SubmitReview"
           onClick={this.openConfirmModal}
           positive
@@ -71,7 +75,9 @@ class SubmitReviewButtonComponent extends Component {
               ) : (
                 <Icon name="upload" />
               )}
-              {i18next.t('Submit review')}
+              {isRecordSubmittedForReview
+                ? i18next.t('Submitted for review')
+                : i18next.t('Submit review')}
             </>
           )}
         </ActionButton>
@@ -80,7 +86,7 @@ class SubmitReviewButtonComponent extends Component {
             isConfirmModalOpen={isConfirmModalOpen}
             initialReviewComment={actionStateExtra.reviewComment}
             onSubmit={this.handleSubmitReview}
-            communityTitle={communityTitle}
+            community={community}
             onClose={this.closeConfirmModal}
           />
         )}
@@ -92,7 +98,11 @@ class SubmitReviewButtonComponent extends Component {
 const mapStateToProps = (state) => ({
   actionState: state.deposit.actionState,
   actionStateExtra: state.deposit.actionStateExtra,
-  communityState: state.deposit.community,
+  community: state.deposit.editorState.selectedCommunity,
+  isRecordSubmittedForReview:
+    state.deposit.record.status === DepositStatus.IN_REVIEW,
+  disableSubmitForReviewButton:
+    state.deposit.editorState.ui.disableSubmitForReviewButton,
   numberOfFiles: Object.values(state.files.entries).length,
 });
 
