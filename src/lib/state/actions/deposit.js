@@ -43,7 +43,6 @@ export const saveDraftWithUrlUpdate = async (draft, draftsService) => {
     const draftURL = response.data.links.self_html;
     changeURLAfterCreation(draftURL);
   }
-
   return response;
 };
 
@@ -53,6 +52,7 @@ async function _saveDraft(
   { depositState, dispatchFn, failType, partialValidationActionType }
 ) {
   let response;
+
   try {
     response = await saveDraftWithUrlUpdate(draft, draftsService, failType);
   } catch (error) {
@@ -62,27 +62,31 @@ async function _saveDraft(
     });
     throw error;
   }
+
   const draftHasValidationErrors = !_isEmpty(response.errors);
   const draftValidationErrorResponse = draftHasValidationErrors ? response : {};
 
-  const communityState = depositState.community;
-  // update review when needed
-  const shouldDeleteReview =
-    communityState.recordHasInclusionRequest && !communityState.selected;
-  const shouldUpdateReview =
-    communityState.selected && !communityState.isReviewForSelectedCommunity;
+  const {
+    actions: {
+      communityStateMustBeChecked,
+      shouldDeleteReview,
+      shouldUpdateReview,
+    },
+    selectedCommunity,
+  } = depositState.editorState;
 
-  if (shouldUpdateReview || shouldDeleteReview) {
+  if (communityStateMustBeChecked) {
     const draftWithLinks = response.data;
 
     if (shouldDeleteReview) {
       // TODO handle global error here
       await draftsService.deleteReview(draftWithLinks.links);
-    } else if (shouldUpdateReview) {
+    }
+    if (shouldUpdateReview) {
       // TODO handle global error here
       await draftsService.createOrUpdateReview(
         draftWithLinks.links,
-        communityState.selected.uuid
+        selectedCommunity.uuid
       );
     }
 
@@ -138,11 +142,17 @@ export const save = (draft) => {
   };
 };
 
-export const publish = (draft) => {
+export const publish = (draft, { withoutCommunity = false }) => {
   return async (dispatch, getState, config) => {
     dispatch({
       type: DRAFT_PUBLISH_STARTED,
     });
+
+    if (withoutCommunity) {
+      // we set the community to null so we delete the associated review when
+      // saving the draft
+      await dispatch(changeSelectedCommunity(null));
+    }
 
     const response = await _saveDraft(draft, config.service.drafts, {
       depositState: getState().deposit,
@@ -193,8 +203,7 @@ export const submitReview = (draft, { reviewComment }) => {
         reviewComment
       );
       // after submitting for review, redirect to the review record
-      // FIXME: add response.data.links.self_html
-      const requestURL = `/me/requests/${response.data.id}`;
+      const requestURL = response.data.links.self_html;
       window.location.replace(requestURL);
     } catch (error) {
       dispatch({

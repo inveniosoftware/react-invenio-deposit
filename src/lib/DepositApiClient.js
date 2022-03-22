@@ -8,10 +8,19 @@
 import axios from 'axios';
 
 const CancelToken = axios.CancelToken;
+const BASE_HEADERS = {
+  json: { 'Content-Type': 'application/json' },
+  'vnd+json': {
+    'Content-Type': 'application/json',
+    Accept: 'application/vnd.inveniordm.v1+json',
+  },
+  'octet-stream': { 'Content-Type': 'application/octet-stream' },
+};
 const apiConfig = {
   withCredentials: true,
   xsrfCookieName: 'csrftoken',
   xsrfHeaderName: 'X-CSRFToken',
+  headers: BASE_HEADERS.json,
 };
 const axiosWithConfig = axios.create(apiConfig);
 
@@ -106,10 +115,7 @@ export class RDMDepositApiClient extends DepositApiClient {
     const payload = this.recordSerializer.serialize(draft);
     return this._createResponse(() =>
       axiosWithConfig.post(this.createDraftURL, payload, {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/vnd.inveniordm.v1+json',
-        },
+        headers: BASE_HEADERS['vnd+json'],
       })
     );
   }
@@ -122,10 +128,7 @@ export class RDMDepositApiClient extends DepositApiClient {
   async readDraft(draftLinks) {
     return this._createResponse(() =>
       axiosWithConfig.get(draftLinks.self, {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/vnd.inveniordm.v1+json',
-        },
+        headers: BASE_HEADERS['vnd+json'],
       })
     );
   }
@@ -139,10 +142,7 @@ export class RDMDepositApiClient extends DepositApiClient {
     const payload = this.recordSerializer.serialize(draft);
     return this._createResponse(() =>
       axiosWithConfig.put(draftLinks.self, payload, {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/vnd.inveniordm.v1+json',
-        },
+        headers: BASE_HEADERS['vnd+json'],
       })
     );
   }
@@ -154,13 +154,7 @@ export class RDMDepositApiClient extends DepositApiClient {
    */
   async publishDraft(draftLinks) {
     return this._createResponse(() =>
-      axiosWithConfig.post(
-        draftLinks.publish,
-        {},
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
+      axiosWithConfig.post(draftLinks.publish, {})
     );
   }
 
@@ -171,13 +165,7 @@ export class RDMDepositApiClient extends DepositApiClient {
    */
   async deleteDraft(draftLinks) {
     return this._createResponse(() =>
-      axiosWithConfig.delete(
-        draftLinks.self,
-        {},
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
+      axiosWithConfig.delete(draftLinks.self, {})
     );
   }
 
@@ -189,13 +177,7 @@ export class RDMDepositApiClient extends DepositApiClient {
     return this._createResponse(() => {
       const linkName = `reserve_${pidType}`;
       const link = draftLinks[linkName];
-      return axiosWithConfig.post(
-        link,
-        {},
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      return axiosWithConfig.post(link, {});
     });
   }
 
@@ -207,13 +189,7 @@ export class RDMDepositApiClient extends DepositApiClient {
     return this._createResponse(() => {
       const linkName = `reserve_${pidType}`;
       const link = draftLinks[linkName];
-      return axiosWithConfig.delete(
-        link,
-        {},
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      return axiosWithConfig.delete(link, {});
     });
   }
 
@@ -225,18 +201,12 @@ export class RDMDepositApiClient extends DepositApiClient {
    */
   async createOrUpdateReview(draftLinks, communityUUID) {
     return this._createResponse(() =>
-      axiosWithConfig.put(
-        draftLinks.review,
-        {
-          receiver: {
-            community: communityUUID,
-          },
-          type: 'community-submission',
+      axiosWithConfig.put(draftLinks.review, {
+        receiver: {
+          community: communityUUID,
         },
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
+        type: 'community-submission',
+      })
     );
   }
 
@@ -247,13 +217,7 @@ export class RDMDepositApiClient extends DepositApiClient {
    */
   async deleteReview(draftLinks) {
     return this._createResponse(() =>
-      axiosWithConfig.delete(
-        draftLinks.review,
-        {},
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
+      axiosWithConfig.delete(draftLinks.review, {})
     );
   }
 
@@ -273,12 +237,28 @@ export class RDMDepositApiClient extends DepositApiClient {
                 format: 'html',
               },
             }
-          : {},
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
+          : {}
       );
     });
+  }
+
+  /**
+   * Cancels the review for the draft by calling its cancel link.
+   *
+   * @param {object} draftLinks - the draft links object
+   */
+  async cancelReview(reviewLinks, reviewComment) {
+    return axiosWithConfig.post(
+      reviewLinks.actions.cancel,
+      reviewComment
+        ? {
+            payload: {
+              content: reviewComment,
+              format: 'html',
+            },
+          }
+        : {}
+    );
   }
 }
 
@@ -324,18 +304,12 @@ export class RDMDepositFileApiClient extends DepositFileApiClient {
         key: filename,
       },
     ];
-    return axiosWithConfig.post(initializeUploadUrl, payload, {
-      headers: {
-        'content-type': 'application/json',
-      },
-    });
+    return axiosWithConfig.post(initializeUploadUrl, payload, {});
   }
 
   uploadFile(uploadUrl, file, onUploadProgressFn, cancelFn) {
     return axiosWithConfig.put(uploadUrl, file, {
-      headers: {
-        'content-type': 'application/octet-stream',
-      },
+      headers: BASE_HEADERS['octet-stream'],
       onUploadProgress: (event) => {
         const percent = Math.floor((event.loaded / event.total) * 100);
         onUploadProgressFn && onUploadProgressFn(percent);
@@ -345,28 +319,12 @@ export class RDMDepositFileApiClient extends DepositFileApiClient {
   }
 
   finalizeFileUpload(finalizeUploadUrl) {
-    return axiosWithConfig.post(
-      finalizeUploadUrl,
-      {},
-      {
-        headers: {
-          'content-type': 'application/json',
-        },
-      }
-    );
+    return axiosWithConfig.post(finalizeUploadUrl, {});
   }
 
   importParentRecordFiles(draftLinks) {
     const link = `${draftLinks.self}/actions/files-import`;
-    return axiosWithConfig.post(
-      link,
-      {},
-      {
-        headers: {
-          'content-type': 'application/json',
-        },
-      }
-    );
+    return axiosWithConfig.post(link, {});
   }
 
   deleteFile(fileLinks) {

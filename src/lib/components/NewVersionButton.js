@@ -26,7 +26,6 @@ export const NewVersionButton = ({ onError, record, disabled, ...uiProps }) => {
     try {
       const response = await axiosWithconfig.post(record.links.versions);
       window.location = response.data.links.self_html;
-      console.log(response);
     } catch (error) {
       console.log(error);
       setLoading(false);

@@ -8,6 +8,7 @@
 import { i18next } from '@translations/i18next';
 import _get from 'lodash/get';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { ActionButton } from 'react-invenio-forms';
 import { connect } from 'react-redux';
 import { Button, Icon, Modal } from 'semantic-ui-react';
@@ -25,8 +26,12 @@ class PublishButtonComponent extends Component {
 
   closeConfirmModal = () => this.setState({ isConfirmModalOpen: false });
 
-  handlePublish = (event, formik) => {
-    this.context.setSubmitContext(DepositFormSubmitActions.PUBLISH);
+  handlePublish = (event, formik, publishWithoutCommunity) => {
+    this.context.setSubmitContext(
+      publishWithoutCommunity
+        ? DepositFormSubmitActions.PUBLISH_WITHOUT_COMMUNITY
+        : DepositFormSubmitActions.PUBLISH
+    );
     formik.handleSubmit(event);
     this.closeConfirmModal();
   };
@@ -38,7 +43,14 @@ class PublishButtonComponent extends Component {
   };
 
   render() {
-    const { actionState, publishClick, numberOfFiles, ...uiProps } = this.props;
+    const {
+      actionState,
+      publishClick,
+      numberOfFiles,
+      buttonLabel,
+      publishWithoutCommunity,
+      ...uiProps
+    } = this.props;
     const { isConfirmModalOpen } = this.state;
 
     return (
@@ -59,7 +71,7 @@ class PublishButtonComponent extends Component {
               ) : (
                 <Icon name="upload" />
               )}
-              {i18next.t('Publish')}
+              {buttonLabel}
             </>
           )}
         </ActionButton>
@@ -80,9 +92,11 @@ class PublishButtonComponent extends Component {
               </Button>
               <ActionButton
                 name="publish"
-                onClick={this.handlePublish}
+                onClick={(event, formik) =>
+                  this.handlePublish(event, formik, publishWithoutCommunity)
+                }
                 positive
-                content={i18next.t('Publish')}
+                content={buttonLabel}
               />
             </Modal.Actions>
           </Modal>
@@ -91,6 +105,16 @@ class PublishButtonComponent extends Component {
     );
   }
 }
+
+PublishButtonComponent.propTypes = {
+  buttonLabel: PropTypes.string,
+  publishWithoutCommunity: PropTypes.bool,
+};
+
+PublishButtonComponent.defaultProps = {
+  buttonLabel: i18next.t('Publish'),
+  publishWithoutCommunity: false,
+};
 
 const mapStateToProps = (state) => ({
   actionState: state.deposit.actionState,

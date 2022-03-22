@@ -17,66 +17,81 @@ import { CommunitySelectionModal } from '../CommunitySelectionModal';
 
 class CommunityHeaderComponent extends Component {
   render() {
-    const { changeSelectedCommunity, community, imagePlaceholderLink } =
-      this.props;
+    const {
+      changeSelectedCommunity,
+      community,
+      imagePlaceholderLink,
+      showCommunitySelectionButton,
+      disableCommunitySelectionButton,
+      hideCommunityHeader,
+    } = this.props;
 
     return (
-      <Container className="page-subheader-outer compact" fluid>
-        <Container className="page-subheader">
-          {community ? (
-            <>
+      !hideCommunityHeader && (
+        <Container className="page-subheader-outer compact" fluid>
+          <Container className="page-subheader">
+            {community ? (
+              <>
+                <div className="page-subheader-element">
+                  <Image
+                    className="community-logo-header"
+                    src={community.logo || imagePlaceholderLink}
+                    fallbackSrc={imagePlaceholderLink}
+                  />
+                </div>
+                <div className="page-subheader-element">
+                  {community.metadata.title || community.uuid}
+                </div>
+              </>
+            ) : (
               <div className="page-subheader-element">
-                <Image
-                  className="community-logo-header"
-                  src={community.logo || imagePlaceholderLink}
-                  fallbackSrc={imagePlaceholderLink}
+                {i18next.t('No community selected.')}
+              </div>
+            )}
+            <div className="community-header-element">
+              {showCommunitySelectionButton && (
+                <CommunitySelectionModal
+                  onCommunityChange={(community) => {
+                    changeSelectedCommunity(community);
+                  }}
+                  chosenCommunity={community}
+                  trigger={
+                    <Button
+                      primary
+                      size="mini"
+                      className="community-header-button ml-5"
+                      name="setting"
+                      type="button"
+                      disabled={disableCommunitySelectionButton}
+                    >
+                      {i18next.t('Edit')}
+                    </Button>
+                  }
                 />
-              </div>
-              <div className="page-subheader-element">
-                {community.title || community.uuid}
-              </div>
-            </>
-          ) : (
-            <div className="page-subheader-element">
-              {i18next.t('No community selected.')}
+              )}
             </div>
-          )}
-          <div className="page-subheader-element">
-            <CommunitySelectionModal
-              onCommunityChange={(community) => {
-                changeSelectedCommunity(community);
-              }}
-              chosenCommunity={community}
-              trigger={
-                <Button
-                  primary
-                  size="mini"
-                  className="community-header-button ml-5"
-                  name="setting"
-                  type="button"
-                >
-                  {i18next.t('Edit')}
-                </Button>
-              }
-            />
-          </div>
+          </Container>
         </Container>
-      </Container>
+      )
     );
   }
 }
 
 CommunityHeaderComponent.propTypes = {
   imagePlaceholderLink: PropTypes.string.isRequired,
-  community: PropTypes.shape({
-    uuid: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    logo: PropTypes.string.isRequired,
-  }),
+  community: PropTypes.oneOf([PropTypes.object, null]).isRequired,
+  disableCommunitySelectionButton: PropTypes.bool.isRequired,
+  showCommunitySelectionButton: PropTypes.bool.isRequired,
+  hideCommunityHeader: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  community: state.deposit.community.selected,
+  community: state.deposit.editorState.selectedCommunity,
+  disableCommunitySelectionButton:
+    state.deposit.editorState.ui.disableCommunitySelectionButton,
+  showCommunitySelectionButton:
+    state.deposit.editorState.ui.showCommunitySelectionButton,
+  hideCommunityHeader: state.deposit.editorState.ui.hideCommunityHeader,
 });
 
 const mapDispatchToProps = (dispatch) => ({
