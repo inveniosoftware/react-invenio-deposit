@@ -1,18 +1,16 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FastField } from 'formik';
 import _get from 'lodash/get';
-import { Form } from 'semantic-ui-react';
-
-import { FieldLabel } from 'react-invenio-forms';
-
+import { FieldLabel, SelectField } from 'react-invenio-forms';
+import { i18next } from '@translations/i18next';
 
 export class ResourceTypeField extends Component {
   groupErrors = (errors, fieldPath) => {
@@ -23,110 +21,54 @@ export class ResourceTypeField extends Component {
     return null;
   };
 
-  createOptions = (propsOptions) => {
-    let options = [];
-    for (const type of propsOptions.type) {
-      const subtypes = propsOptions.subtype.filter(
-        (e) => e['parent-value'] === type.value
-      );
-
-      if (subtypes.length > 0) {
-        // Push options corresponding to each subtype
-        options.push(
-          ...subtypes.map((subtype) => ({
-            // NOTE: In this version of semantic-ui-react (0.88.2),
-            // using icon key doesn't show icon in selected text. This does:
-            text: <><i className={type.icon + " icon"}></i><span className="text">{subtype["parent-text"] + " / " + subtype.text}</span></>,
-            value: subtype["parent-value"] + "/" + subtype.value,
-            values: {type: type.value, subtype: subtype.value}
-          }))
-        );
-      } else {
-        // Push an option corresponding to the type only
-        options.push({
-            icon: type.icon,
-            text: type.text,
-            value: type.value,
-            values: {type: type.value}
-        })
-      }
-    }
-    return options;
-  }
-
-  loadValue(values, fieldPath) {
-    const resourceType = _get(values, fieldPath);
-    let value;
-    if (resourceType && resourceType.type) {
-      value = resourceType.type + (resourceType.subtype ? "/" + resourceType.subtype : "");
-    } else {
-      value = "";
-    }
-    return value;
-  }
-
-  renderResourceTypeField = ({ field, form }) => {
-    const {
-      fieldPath,
-      label,
-      labelIcon,
-      options,
-      required,
-      labelClassName,
-      ...uiProps
-    } = this.props;
-
-    // 1- create the master list of options from
-    const optionsList = this.createOptions(options);
-
-    // 2- handlechange grabs the values of the selected option and sticks those
-    //    in form.values
-    const handleChange = ( event, data ) => {
-      // NOTE: Clicking on "x" to clear sends data.value = "", so we need
-      //       to account for this selection
-      const option = data.options.find((e) => e.value === data.value);
-      const fieldValue = option ? option.values : "";
-      form.setFieldValue(fieldPath, fieldValue);
-    }
-
-    // 3- loads/displays the correct value from the dropdown
-    //    If no initial value, value must be set to "" for placeholder to display.
-    let value = this.loadValue(form.values, fieldPath);
-
+  /**
+   * Generate label value
+   *
+   * @param {object} option - back-end option
+   * @returns {string} label
+   */
+  _label = (option) => {
     return (
-      // NOTE: we are using a semantic-ui Form.Dropdown directly because
-      //       - we need more control
-      //       - this field is just for show - the formik logic is done behind
-      //         the scenes
-      <Form.Dropdown
-        fluid
-        selection
-        error={this.groupErrors(form.errors, fieldPath)}
-        id={fieldPath}
-        label={
-          <FieldLabel
-            htmlFor={fieldPath}
-            icon={labelIcon}
-            label={label}
-            className={labelClassName}
-          />
-        }
-        name={fieldPath}
-        onChange={handleChange}
-        options={optionsList}
-        placeholder={"Select resource type"}
-        required={required}
-        value={value}
-        {...uiProps}
-      />
+      option.type_name +
+      (option.subtype_name ? ' / ' + option.subtype_name : '')
     );
   };
 
+  /**
+   * Convert back-end options to front-end options.
+   *
+   * @param {array} propsOptions - back-end options
+   * @returns {array} front-end options
+   */
+  createOptions = (propsOptions) => {
+    return propsOptions
+      .map((o) => ({ ...o, label: this._label(o) }))
+      .sort((o1, o2) => o1.label.localeCompare(o2.label))
+      .map((o) => {
+        return {
+          text: (
+            <>
+              <i className={o.icon + ' icon'}></i>
+              <span className="text">{o.label}</span>
+            </>
+          ),
+          value: o.id,
+        };
+      });
+  };
+
   render() {
+    const { fieldPath, label, labelIcon, options, ...restProps } = this.props;
+    const frontEndOptions = this.createOptions(options);
     return (
-      <FastField
-        name={this.props.fieldPath}
-        component={this.renderResourceTypeField}
+      <SelectField
+        fieldPath={fieldPath}
+        label={
+          <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+        }
+        optimized={true}
+        options={frontEndOptions}
+        {...restProps}
       />
     );
   }
@@ -136,30 +78,21 @@ ResourceTypeField.propTypes = {
   fieldPath: PropTypes.string,
   label: PropTypes.string,
   labelIcon: PropTypes.string,
-  labelClassName: PropTypes.string,
-  options: PropTypes.shape({
-    type: PropTypes.arrayOf(
-      PropTypes.shape({
-        icon: PropTypes.string,
-        text: PropTypes.string,
-        value: PropTypes.string,
-      })
-    ),
-    subtype: PropTypes.arrayOf(
-      PropTypes.shape({
-        'parent-text': PropTypes.string,
-        'parent-value': PropTypes.string,
-        text: PropTypes.string,
-        value: PropTypes.string,
-      })
-    ),
-  }).isRequired,
+  labelclassname: PropTypes.string,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      icon: PropTypes.string,
+      type_name: PropTypes.string,
+      subtype_name: PropTypes.string,
+      id: PropTypes.string,
+    })
+  ).isRequired,
   required: PropTypes.bool,
 };
 
 ResourceTypeField.defaultProps = {
   fieldPath: 'metadata.resource_type',
-  label: 'Resource type',
+  label: i18next.t('Resource type'),
   labelIcon: 'tag',
-  labelClassName: 'field-label-class',
+  labelclassname: 'field-label-class',
 };

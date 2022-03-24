@@ -1,28 +1,51 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020-2021 CERN.
-// Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2020-2022 CERN.
+// Copyright (C) 2020-2022 Northwestern University.
+// Copyright (C) 2021-2022 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import { i18next } from '@translations/i18next';
 import React, { Component } from 'react';
 import { ActionButton } from 'react-invenio-forms';
 import { connect } from 'react-redux';
 import { Button, Icon, Modal } from 'semantic-ui-react';
-import { discard } from '../state/actions';
+import {
+  DepositFormSubmitActions,
+  DepositFormSubmitContext,
+} from '../DepositFormSubmitContext';
+import { DRAFT_DELETE_STARTED } from '../state/types';
 import { toCapitalCase } from '../utils';
 
-const DialogText = ({ action }) => {
+// action
+const DISCARD_CHANGES_LBL = i18next.t('discard changes');
+const DISCARD_VERSION_LBL = i18next.t('discard version');
+const DELETE_LBL = i18next.t('delete');
+
+// action messages
+const DISCARD_CHANGES_DLG = i18next.t(
+  'Are you sure you want to discard the changes to this draft?'
+);
+
+const DISCARD_VERSION_DLG = i18next.t(
+  'Are you sure you want to delete this new version?'
+);
+const DISCARD_DELETE_DLG = i18next.t(
+  'Are you sure you want to delete this draft?'
+);
+
+const DialogText = ({ actionLbl }) => {
   let text = '';
-  switch (action) {
-    case 'discard changes':
-      text = 'Are you sure you want to discard the changes to this draft?';
+  switch (actionLbl) {
+    case DISCARD_CHANGES_LBL:
+      text = DISCARD_CHANGES_DLG;
       break;
-    case 'discard version':
-      text = 'Are you sure you want to delete this new version?';
+    case DISCARD_VERSION_LBL:
+      text = DISCARD_VERSION_DLG;
       break;
-    case 'delete':
-      text = 'Are you sure you want to delete this draft?';
+    case DELETE_LBL:
+      text = DISCARD_DELETE_DLG;
       break;
     default:
       break;
@@ -31,81 +54,78 @@ const DialogText = ({ action }) => {
 };
 
 export class DeleteButtonComponent extends Component {
-  state = { modalOpen: false, isDeleting: false };
+  static contextType = DepositFormSubmitContext;
+  state = { modalOpen: false };
 
-  handleOpen = () => this.setState({ modalOpen: true });
+  openConfirmModal = () => this.setState({ modalOpen: true });
 
-  handleClose = () => this.setState({ modalOpen: false });
+  closeConfirmModal = () => this.setState({ modalOpen: false });
 
-  isDisabled = (formik) => {
-    const { isDeleting } = this.state;
-    return !this.props.isSaved || formik.isSubmitting || isDeleting;
+  handleDelete = async (event, formik) => {
+    const { isPublished, isVersion } = this.props;
+    this.context.setSubmitContext(DepositFormSubmitActions.DELETE, {
+      isDiscardingVersion: isPublished || isVersion,
+    });
+    formik.handleSubmit(event);
+    this.closeConfirmModal();
   };
 
   render() {
     const {
-      isSaved,
+      draftExists,
       isPublished,
-      deleteClick,
       isVersion,
+      actionState,
       ...uiProps // only has ActionButton props
     } = this.props;
-    const { isDeleting } = this.state;
-    const handleDelete = (event, formik) => {
-      deleteClick(event, formik);
-      this.handleClose();
-      this.setState({ isDeleting: true });
-    };
 
-    let action = '';
-    if (!this.props.isPublished) {
-      action = this.props.isVersion ? 'discard version' : 'delete';
+    let actionLbl = '';
+    if (!isPublished) {
+      actionLbl = isVersion ? DISCARD_VERSION_LBL : DELETE_LBL;
     } else {
-      action = 'discard changes';
+      actionLbl = DISCARD_CHANGES_LBL;
     }
     const color = { color: isPublished ? 'yellow' : 'red' };
-    const capitalizedAction = toCapitalCase(action);
+    const capitalizedActionLbl = toCapitalCase(actionLbl);
 
     return (
       <>
         <ActionButton
-          isDisabled={this.isDisabled}
+          isDisabled={(formik) => !draftExists || formik.isSubmitting}
           name="delete"
-          onClick={this.handleOpen}
+          onClick={this.openConfirmModal}
           {...color}
           icon
           labelPosition="left"
           {...uiProps}
-        >
-          {(formik) => (
-            <>
-              {formik.isSubmitting && isDeleting ? (
-                <Icon size="large" loading name="spinner" />
-              ) : (
-                <Icon name="trash alternate outline" />
-              )}
-              {capitalizedAction}
-            </>
-          )}
-        </ActionButton>
+          content={capitalizedActionLbl}
+        />
 
         <Modal
           open={this.state.modalOpen}
-          onClose={this.handleClose}
+          onClose={this.closeConfirmModal}
           size="tiny"
         >
           <Modal.Content>
-            <h3>
-              <DialogText action={action} />
-            </h3>
+            <DialogText actionLbl={actionLbl} />
           </Modal.Content>
           <Modal.Actions>
-            <Button onClick={this.handleClose} floated="left">
-              Cancel
+            <Button onClick={this.closeConfirmModal} floated="left">
+              {i18next.t('Cancel')}
             </Button>
-            <Button {...color} onClick={handleDelete}>
-              {capitalizedAction}
-            </Button>
+            <ActionButton {...color} name="delete" onClick={this.handleDelete}>
+              {(formik) => (
+                <>
+                  {formik.isSubmitting &&
+                  actionState === DRAFT_DELETE_STARTED ? (
+                    <Icon size="large" loading name="spinner" />
+                  ) : (
+                    <Icon name="trash alternate outline" />
+                  )}
+                  {capitalizedActionLbl}
+                </>
+              )}
+            </ActionButton>
           </Modal.Actions>
         </Modal>
       </>
@@ -114,16 +134,13 @@ export class DeleteButtonComponent extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  isSaved: Boolean(state.deposit.record.id),
+  draftExists: Boolean(state.deposit.record.id),
   isPublished: state.deposit.record.is_published,
   isVersion: state.deposit.record.versions?.index > 1,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  deleteClick: (event, formik) => dispatch(discard(event, formik)),
+  actionState: state.deposit.actionState,
 });
 
 export const DeleteButton = connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(DeleteButtonComponent);

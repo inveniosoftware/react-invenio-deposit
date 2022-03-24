@@ -1,0 +1,31 @@
+# 
+# Translators:
+# Zacharias Zacharodimos <zacharias.zacharodimos@cern.ch>, 2021
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"POT-Creation-Date: 2021-07-06T09:15:01.736Z\n"
+"PO-Revision-Date: 2021-06-29 13:20+0000\n"
+"Last-Translator: Zacharias Zacharodimos <zacharias.zacharodimos@cern.ch>, 2021\n"
+"Language-Team: Greek (https://www.transifex.com/inveniosoftware/teams/23537/el/)\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: el\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"mime-version: 1.0\n"
+
+msgid "New version"
+msgstr "Νέα εκδοχή"
+
+msgid "New upload"
+msgstr "Νέα μεταφόρτωση"
+
+msgid "Storage available"
+msgstr "Διαθέσιμη χωρητικότητα"
+
+msgid "Add identifier"
+msgstr "Προσθήκη identifier"
+
+msgid "Edit upload"
+msgstr "Τροποποίηση μεταφόρτωσης"

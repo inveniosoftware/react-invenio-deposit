@@ -10,16 +10,22 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { FieldLabel, TextField } from 'react-invenio-forms';
-
+import { i18next } from '@translations/i18next';
+import { Trans } from '@translations/i18next';
 export class VersionField extends Component {
   render() {
     const { fieldPath, label, labelIcon, placeholder } = this.props;
     const helpText = (
       <span>
-        Mostly relevant for software and dataset uploads.
-        A semantic version string is preferred see
-        <a href='https://semver.org/' target="_blank"> semver.org</a>
-        , but any version string is accepted.
+        <Trans>
+          Mostly relevant for software and dataset uploads. A semantic version
+          string is preferred see
+          <a href="https://semver.org/" target="_blank">
+            {' '}
+            semver.org
+          </a>
+          , but any version string is accepted.
+        </Trans>
       </span>
     );
 
@@ -45,7 +51,7 @@ VersionField.propTypes = {
 
 VersionField.defaultProps = {
   fieldPath: 'metadata.version',
-  label: 'Version',
+  label: i18next.t('Version'),
   labelIcon: 'code branch',
   placeholder: '',
 };

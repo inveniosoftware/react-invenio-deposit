@@ -1,34 +1,29 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2021 CERN.
-// Copyright (C) 2021 Northwestern University.
+// Copyright (C) 2021-2022 Northwestern University.
 // Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
+import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { Button, List, Ref } from 'semantic-ui-react';
 import _truncate from 'lodash/truncate';
 import { LicenseModal } from './LicenseModal';
+import { i18next } from '@translations/i18next';
 
 export const LicenseFieldItem = ({
-  compKey,
-  index,
-  initialLicense,
-  licenseDescription,
-  licenseTitle,
-  licenseType,
+  license,
   moveLicense,
   replaceLicense,
   removeLicense,
   searchConfig,
   serializeLicenses,
-  link,
 }) => {
   const dropRef = React.useRef(null);
   const [_, drag, preview] = useDrag({
-    item: { index, type: 'license' },
+    item: { index: license.index, type: 'license' },
   });
   const [{ hidden }, drop] = useDrop({
     accept: 'license',
@@ -37,7 +32,7 @@ export const LicenseFieldItem = ({
         return;
       }
       const dragIndex = item.index;
-      const hoverIndex = index;
+      const hoverIndex = license.index;
 
       // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
@@ -57,9 +52,9 @@ export const LicenseFieldItem = ({
   // Initialize the ref explicitely
   drop(dropRef);
   return (
-    <Ref innerRef={dropRef} key={compKey}>
+    <Ref innerRef={dropRef} key={license.key}>
       <List.Item
-        key={compKey}
+        key={license.key}
         className={
           hidden ? 'deposit-drag-listitem hidden' : 'deposit-drag-listitem'
         }
@@ -68,14 +63,14 @@ export const LicenseFieldItem = ({
           <LicenseModal
             searchConfig={searchConfig}
             onLicenseChange={(selectedLicense) => {
-              replaceLicense(index, selectedLicense);
+              replaceLicense(license.index, selectedLicense);
             }}
-            mode={licenseType}
-            initialLicense={initialLicense}
+            mode={license.type}
+            initialLicense={license.initial}
             action="edit"
             trigger={
               <Button size="mini" primary type="button">
-                Edit
+                {i18next.t('Edit')}
               </Button>
             }
             serializeLicenses={serializeLicenses}
@@ -83,9 +78,11 @@ export const LicenseFieldItem = ({
           <Button
             size="mini"
             type="button"
-            onClick={() => removeLicense(index)}
+            onClick={() => {
+              removeLicense(license.index);
+            }}
           >
-            Remove
+            {i18next.t('Remove')}
           </Button>
         </List.Content>
         <Ref innerRef={drag}>
@@ -93,17 +90,17 @@ export const LicenseFieldItem = ({
         </Ref>
         <Ref innerRef={preview}>
           <List.Content>
-            <List.Header>{licenseTitle}</List.Header>
-            {licenseDescription && (
+            <List.Header>{license.title}</List.Header>
+            {license.description && (
               <List.Description>
-                {_truncate(licenseDescription, { length: 300 })}
+                {_truncate(license.description, { length: 300 })}
               </List.Description>
             )}
-            {link && (
+            {license.link && (
               <span>
-                <a href={link} target="_blank" rel="noopener noreferrer">
-                {licenseDescription && (<span>&nbsp;</span>)}
-                Read more
+                <a href={license.link} target="_blank" rel="noopener noreferrer">
+                  {license.description && <span>&nbsp;</span>}
+                  {i18next.t('Read more')}
                 </a>
               </span>
             )}

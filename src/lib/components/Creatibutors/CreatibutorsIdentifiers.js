@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2021 CERN.
 // Copyright (C) 2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -9,6 +10,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { SelectField } from 'react-invenio-forms';
 import _unickBy from 'lodash/unionBy';
+import { i18next } from '@translations/i18next';
 
 export class CreatibutorsIdentifiers extends Component {
   static propTypes = {
@@ -26,8 +28,8 @@ export class CreatibutorsIdentifiers extends Component {
 
   static defaultProps = {
     fieldPath: 'person_or_org.identifiers',
-    label: 'Name identifiers',
-    placeholder: 'e.g. ORCID, ISNI or GND.',
+    label: i18next.t('Name identifiers'),
+    placeholder: i18next.t('e.g. ORCID, ISNI or GND.'),
   };
 
   constructor(props) {
@@ -74,7 +76,7 @@ export class CreatibutorsIdentifiers extends Component {
         label={this.props.label}
         options={this.state.selectedOptions}
         placeholder={this.props.placeholder}
-        noResultsMessage="Type the value of an identifier..."
+        noResultsMessage={i18next.t('Type the value of an identifier...')}
         search
         multiple
         selection
@@ -83,6 +85,7 @@ export class CreatibutorsIdentifiers extends Component {
         // `icon` is set to `null` in order to hide the dropdown default icon
         icon={null}
         onAddItem={this.handleIdentifierAddition}
+        optimized
       />
     );
   }

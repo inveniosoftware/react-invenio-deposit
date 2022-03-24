@@ -1,22 +1,17 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FieldLabel, RemoteSelectField } from 'react-invenio-forms';
+import { FieldLabel, GroupField, RemoteSelectField } from 'react-invenio-forms';
 import { Form } from 'semantic-ui-react';
-import _get from 'lodash/get';
-
-//TODO: remove after backend will be implemented
-const fetchedOptions = [
-  { title: 'Deep Learning', id: 'dl', scheme: 'user' },
-  { title: 'MeSH: Cognitive Neuroscience', id: 'cn', scheme: 'mesh' },
-  { title: 'FAST: Glucagonoma', id: 'gl', scheme: 'fast' },
-];
+import { Field, getIn } from 'formik';
+import { i18next } from '@translations/i18next';
 
 export class SubjectsField extends Component {
   state = {
@@ -24,11 +19,22 @@ export class SubjectsField extends Component {
   };
 
   serializeSubjects = (subjects) =>
-    subjects.map((subject) => ({
-      text: subject.title,
-      value: _get(subject, 'id', subject.title),
-      key: _get(subject, 'id', subject.title),
-    }));
+    subjects.map((subject) => {
+      const scheme = subject.scheme ? `(${subject.scheme}) ` : '';
+      return {
+        text: scheme + subject.subject,
+        value: subject.subject,
+        key: subject.subject,
+        ...(subject.id ? { id: subject.id } : {}),
+        subject: subject.subject,
+      };
+    });
+
+  prepareSuggest = (searchQuery) => {
+    const limitTo = this.state.limitTo;
+    const prefix = limitTo === 'all' ? '' : `${limitTo}:`;
+    return `${prefix}${searchQuery}`;
+  };
 
   render() {
     const {
@@ -40,40 +46,65 @@ export class SubjectsField extends Component {
       placeholder,
       clearable,
       limitToOptions,
-      initialOptions,
     } = this.props;
-    const { limitTo } = this.state;
     return (
-      <>
-        <RemoteSelectField
-          allowAdditions
-          initialSuggestions={initialOptions}
-          fieldPath={fieldPath}
-          suggestionAPIUrl="/api/vocabularies/subjects"
-          suggestionAPIQueryParams={{ limit_to: limitTo }}
-          suggestionAPIHeaders={{
-            Accept: 'application/vnd.inveniordm.v1+json',
+      <GroupField>
+        <Form.Field width={5}>
+          <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+          <GroupField>
+            <Form.Field
+              width={7}
+              style={{ marginBottom: 'auto', marginTop: 'auto' }}
+            >
+              {i18next.t('Suggest from')}
+            </Form.Field>
+            <Form.Dropdown
+              defaultValue={limitToOptions[0].value}
+              fluid
+              onChange={(event, data) => this.setState({ limitTo: data.value })}
+              options={limitToOptions}
+              selection
+              width={8}
+            />
+          </GroupField>
+        </Form.Field>
+        <Field name={this.props.fieldPath}>
+          {({ form: { values } }) => {
+            return (
+              <RemoteSelectField
+                clearable={clearable}
+                fieldPath={fieldPath}
+                initialSuggestions={getIn(values, fieldPath, [])}
+                multiple={multiple}
+                noQueryMessage={i18next.t('Search or create subjects...')}
+                placeholder={placeholder}
+                preSearchChange={this.prepareSuggest}
+                required={required}
+                serializeSuggestions={this.serializeSubjects}
+                serializeAddedValue={(value) => ({
+                  text: value,
+                  value: value,
+                  key: value,
+                  subject: value,
+                })}
+                suggestionAPIUrl="/api/subjects"
+                onValueChange={({ formikProps }, selectedSuggestions) => {
+                  formikProps.form.setFieldValue(
+                    fieldPath,
+                    // save the suggestion objects so we can extract information
+                    // about which value added by the user
+                    selectedSuggestions
+                  );
+                }}
+                value={getIn(values, fieldPath, []).map((val) => val.subject)}
+                label={<label>&nbsp;</label>} /** For alignment purposes */
+                allowAdditions
+                width={11}
+              />
+            );
           }}
-          serializeSuggestions={this.serializeSubjects}
-          placeholder={placeholder}
-          required={required}
-          clearable={clearable}
-          multiple={multiple}
-          label={
-            <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
-          }
-          noQueryMessage="Search for subjects.."
-          fetchedOptions={fetchedOptions}
-        />
-        <Form.Dropdown
-          inline
-          selection
-          onChange={(event, data) => this.setState({ limitTo: data.value })}
-          options={limitToOptions}
-          value={limitTo}
-          label={'Limit To'}
-        />
-      </>
+        </Field>
+      </GroupField>
     );
   }
 }
@@ -97,9 +128,9 @@ SubjectsField.propTypes = {
 
 SubjectsField.defaultProps = {
   fieldPath: 'metadata.subjects',
-  label: 'Subjects',
+  label: i18next.t('Subjects'),
   labelIcon: 'tag',
   multiple: true,
   clearable: true,
-  placeholder: 'Search or create subjects',
+  placeholder: i18next.t('Search for a subject by name'),
 };

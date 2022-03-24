@@ -1,14 +1,18 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020-2021 CERN.
-// Copyright (C) 2020-2021 Northwestern University.
-// Copyright (C) 2021 Graz University of Technology.
+// Copyright (C) 2020-2022 CERN.
+// Copyright (C) 2020-2022 Northwestern University.
+// Copyright (C) 2022 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
+import { i18next } from '@translations/i18next';
 import { useFormikContext } from 'formik';
+import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
+import _map from 'lodash/map';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { Grid, Icon, Message, Modal } from 'semantic-ui-react';
+import { Button, Grid, Icon, Message, Modal } from 'semantic-ui-react';
 import { UploadState } from '../../state/reducers/files';
 import { NewVersionButton } from '../NewVersionButton';
 import { FileUploaderArea } from './FileUploaderArea';
@@ -19,44 +23,49 @@ import { humanReadableBytes } from './utils';
 //       the `useFormikContext` hook.
 export const FileUploaderComponent = ({
   config,
-  defaultFilePreview,
   files,
-  filesEnabled,
   isDraftRecord,
+  hasParentRecord,
   quota,
   permissions,
   record,
-  toggleFilesEnabled,
-  uploadFilesToDraft,
+  uploadFiles,
+  deleteFile,
+  importParentFiles,
+  importButtonIcon,
+  importButtonText,
+  isFileImportInProgress,
   ...uiProps
 }) => {
   // We extract the working copy of the draft stored as `values` in formik
   const { values: formikDraft } = useFormikContext();
+  const filesEnabled = _get(formikDraft, 'files.enabled', false);
   const [warningMsg, setWarningMsg] = useState();
 
-  let filesList = Object.values(files).map((fileState) => {
+  const filesList = Object.values(files).map((fileState) => {
     return {
       name: fileState.name,
       size: fileState.size,
       checksum: fileState.checksum,
       links: fileState.links,
-      upload: {
-        initial: fileState.status === UploadState.initial,
-        failed: fileState.status === UploadState.error,
-        ongoing: fileState.status === UploadState.uploading,
-        finished: fileState.status === UploadState.finished,
-        pending: fileState.status === UploadState.pending,
-        progress: fileState.progress,
-        cancel: fileState.cancel,
+      uploadState: {
+        // initial: fileState.status === UploadState.initial,
+        isFailed: fileState.status === UploadState.error,
+        isUploading: fileState.status === UploadState.uploading,
+        isFinished: fileState.status === UploadState.finished,
+        isPending: fileState.status === UploadState.pending,
       },
+      progressPercentage: fileState.progressPercentage,
+      cancelUploadFn: fileState.cancelUploadFn,
     };
   });
+
   const filesSize = filesList.reduce(
     (totalSize, file) => (totalSize += file.size),
     0
   );
 
-  let dropzoneParams = {
+  const dropzoneParams = {
     preventDropOnDocument: true,
     onDropAccepted: (acceptedFiles) => {
       const maxFileNumberReached =
@@ -67,6 +76,11 @@ export const FileUploaderComponent = ({
       );
       const maxFileStorageReached =
         filesSize + acceptedFilesSize > quota.maxStorage;
+
+      const filesNames = _map(filesList, 'name');
+      const duplicateFiles = acceptedFiles.filter((acceptedFile) =>
+        filesNames.includes(acceptedFile.name)
+      );
 
       if (maxFileNumberReached) {
         setWarningMsg(
@@ -90,16 +104,28 @@ export const FileUploaderComponent = ({
               header="Could not upload file(s)."
               content={
                 <>
-                  Uploading the selected files would result in{' '}
-                  {humanReadableBytes(filesSize + acceptedFilesSize)} but the
-                  limit is {humanReadableBytes(quota.maxStorage)}.
+                  {i18next.t('Uploading the selected files would result in')}{' '}
+                  {humanReadableBytes(filesSize + acceptedFilesSize)}
+                  {i18next.t('but the limit is')}
+                  {humanReadableBytes(quota.maxStorage)}.
                 </>
               }
             />
           </div>
         );
+      } else if (!_isEmpty(duplicateFiles)) {
+        setWarningMsg(
+          <div className="content">
+            <Message
+              warning
+              icon="warning circle"
+              header={i18next.t(`The following files already exist`)}
+              list={_map(duplicateFiles, 'name')}
+            />
+          </div>
+        );
       } else {
-        uploadFilesToDraft(formikDraft, acceptedFiles);
+        uploadFiles(formikDraft, acceptedFiles);
       }
     },
     multiple: true,
@@ -112,6 +138,9 @@ export const FileUploaderComponent = ({
   if (!filesLeft) {
     dropzoneParams['disabled'] = true;
   }
+
+  const displayImportBtn =
+    filesEnabled && isDraftRecord && hasParentRecord && !filesList.length;
 
   return (
     <>
@@ -126,19 +155,42 @@ export const FileUploaderComponent = ({
               filesSize={filesSize}
               isDraftRecord={isDraftRecord}
               quota={quota}
-              toggleFilesEnabled={toggleFilesEnabled}
             />
           )}
         </Grid.Row>
+        {displayImportBtn && (
+          <Grid.Row className="file-import-note-row">
+            <Grid.Column width={16}>
+              <Message visible info>
+                <div style={{ display: 'inline-block', float: 'right' }}>
+                  <Button
+                    type="button"
+                    size="mini"
+                    primary={true}
+                    icon={importButtonIcon}
+                    content={importButtonText}
+                    onClick={() => importParentFiles()}
+                    disabled={isFileImportInProgress}
+                    loading={isFileImportInProgress}
+                  />
+                </div>
+                <p style={{ marginTop: '5px', display: 'inline-block' }}>
+                  <Icon name="info circle" />
+                  {i18next.t('You can import files from the previous version.')}
+                </p>
+              </Message>
+            </Grid.Column>
+          </Grid.Row>
+        )}
         {filesEnabled && (
           <Grid.Row className="file-upload-area-row">
             <FileUploaderArea
               {...uiProps}
-              filesEnabled={filesEnabled}
               filesList={filesList}
               dropzoneParams={dropzoneParams}
               isDraftRecord={isDraftRecord}
-              defaultFilePreview={defaultFilePreview}
+              filesEnabled={filesEnabled}
+              deleteFile={deleteFile}
             />
           </Grid.Row>
         )}
@@ -148,8 +200,9 @@ export const FileUploaderComponent = ({
               <Message visible warning>
                 <p>
                   <Icon name="warning sign" />
-                  File addition, removal or modification are not allowed after
-                  you have published your upload.
+                  {i18next.t(
+                    'File addition, removal or modification are not allowed after you have published your upload.'
+                  )}
                 </p>
               </Message>
             </Grid.Column>
@@ -167,7 +220,9 @@ export const FileUploaderComponent = ({
                 />
                 <p style={{ marginTop: '5px', display: 'inline-block' }}>
                   <Icon name="info circle" size="large" />
-                  You must create a new version to add, modify or delete files.
+                  {i18next.t(
+                    'You must create a new version to add, modify or delete files.'
+                  )}
                 </p>
               </Message>
             </Grid.Column>
@@ -189,10 +244,10 @@ const fileDetailsShape = PropTypes.objectOf(
   PropTypes.shape({
     name: PropTypes.string,
     size: PropTypes.number,
-    progress: PropTypes.number,
+    progressPercentage: PropTypes.number,
     checksum: PropTypes.string,
     links: PropTypes.object,
-    cancel: PropTypes.func,
+    cancelUploadFn: PropTypes.func,
     state: PropTypes.oneOf(Object.values(UploadState)),
     enabled: PropTypes.bool,
   })
@@ -200,29 +255,35 @@ const fileDetailsShape = PropTypes.objectOf(
 
 FileUploaderComponent.propTypes = {
   config: PropTypes.object,
-  defaultFilePreview: PropTypes.string,
   dragText: PropTypes.string,
   files: fileDetailsShape,
-  filesEnabled: PropTypes.bool,
   isDraftRecord: PropTypes.bool,
+  hasParentRecord: PropTypes.bool,
   quota: PropTypes.shape({
     maxStorage: PropTypes.number,
     maxFiles: PropTypes.number,
   }),
   record: PropTypes.object,
-  toggleFilesEnabled: PropTypes.func,
   uploadButtonIcon: PropTypes.string,
   uploadButtonText: PropTypes.string,
-  uploadFilesToDraft: PropTypes.func,
+  importButtonIcon: PropTypes.string,
+  importButtonText: PropTypes.string,
+  isFileImportInProgress: PropTypes.bool,
+  importParentFiles: PropTypes.func,
+  uploadFiles: PropTypes.func,
+  deleteFile: PropTypes.func,
 };
 
 FileUploaderComponent.defaultProps = {
-  dragText: 'Drag and drop file(s)',
+  dragText: i18next.t('Drag and drop file(s)'),
   isDraftRecord: true,
+  hasParentRecord: false,
   quota: {
     maxFiles: 5,
     maxStorage: 10 ** 10,
   },
   uploadButtonIcon: 'upload',
-  uploadButtonText: 'Upload files',
+  uploadButtonText: i18next.t('Upload files'),
+  importButtonIcon: 'sync',
+  importButtonText: i18next.t('Import files'),
 };

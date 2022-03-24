@@ -1,102 +1,74 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
+// Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import _get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { ArrayField, FieldLabel, RemoteSelectField } from 'react-invenio-forms';
-import { Button, Form, Icon } from 'semantic-ui-react';
-import { IdentifiersField } from './Identifiers/IdentifiersField';
-
-//TODO: remove after backend will be implemented
-const fetchedOptions = [
-  { title: 'CERN', id: 'cern', scheme: 'cern' },
-  { title: 'Fermilab', id: 'fermilab', scheme: 'fermilab' },
-  { title: 'Northwestern University', id: 'nu', scheme: 'nu' },
-];
-
-//TODO: remove after backend will be implemented
-const affiliationSchemes = [
-  { text: 'ISNI', value: 'isni' },
-  { text: 'ROR', value: 'ror' },
-];
+import { FieldLabel, RemoteSelectField } from 'react-invenio-forms';
+import { Field, getIn } from 'formik';
+import { i18next } from '@translations/i18next';
 
 /**Affiliation input component */
 export class AffiliationsField extends Component {
   serializeAffiliations = (affiliations) =>
     affiliations.map((affiliation) => ({
-      text: _get(affiliation, 'title', affiliation.name),
-      value: affiliation.id || _get(affiliation, 'title', affiliation.name),
-      key: affiliation.id || _get(affiliation, 'title', affiliation.name),
+      text: affiliation.acronym
+        ? `${affiliation.name} (${affiliation.acronym})`
+        : affiliation.name,
+      value: affiliation.name,
+      key: affiliation.name,
+      ...(affiliation.id ? { id: affiliation.id } : {}),
+      name: affiliation.name,
     }));
 
   render() {
-    const { fieldPath } = this.props; //TODO: take affiliationSchemes from props
+    const { fieldPath, selectRef } = this.props;
     return (
-      <>
-        <ArrayField
-          addButtonLabel={'Add affiliation'}
-          defaultNewValue={{}}
-          fieldPath={fieldPath}
-          label={'Affiliations'}
-        >
-          {({ array, arrayHelpers, indexPath, key, form: { values } }) => {
-            // Get the full affiliation object that includes also the id of
-            // the selected value
-            const initialAffiliations = _get(values, key, {});
-            return (
-              <>
-                <RemoteSelectField
-                  required
-                  selection
-                  allowAdditions
-                  fieldPath={`${key}.name`}
-                  suggestionAPIUrl="/api/vocabularies/affiliations"
-                  suggestionAPIHeaders={{
-                    Accept: 'application/vnd.inveniordm.v1+json',
-                  }}
-                  initialSuggestions={[initialAffiliations]}
-                  serializeSuggestions={this.serializeAffiliations}
-                  placeholder="Search or create affiliation'"
-                  label={
-                    <FieldLabel htmlFor={`${fieldPath}.name`} label={'Name'} />
-                  }
-                  noQueryMessage="Search for affiliations.."
-                  fetchedOptions={fetchedOptions}
-                  clearable
+      <Field name={this.props.fieldPath}>
+        {({ form: { values } }) => {
+          return (
+            <RemoteSelectField
+              fieldPath={fieldPath}
+              suggestionAPIUrl="/api/affiliations"
+              suggestionAPIHeaders={{
+                Accept: 'application/json',
+              }}
+              initialSuggestions={getIn(values, fieldPath, [])}
+              serializeSuggestions={this.serializeAffiliations}
+              placeholder={i18next.t("Search or create affiliation'")}
+              label={
+                <FieldLabel
+                  htmlFor={`${fieldPath}.name`}
+                  label={i18next.t('Affiliations')}
                 />
-
-                <IdentifiersField
-                  fieldPath={`${key}.identifiers`}
-                  labelIcon=""
-                  schemeOptions={affiliationSchemes}
-                />
-                {array.length === 1 ? null : (
-                  <Form.Field>
-                    <Form.Field>
-                      <label>&nbsp;</label>
-                      <Button
-                        icon
-                        onClick={() => arrayHelpers.remove(indexPath)}
-                      >
-                        <Icon name="close" size="large" />
-                      </Button>
-                    </Form.Field>
-                  </Form.Field>
-                )}
-              </>
-            );
-          }}
-        </ArrayField>
-      </>
+              }
+              noQueryMessage={i18next.t('Search for affiliations..')}
+              allowAdditions
+              clearable
+              multiple
+              onValueChange={({ formikProps }, selectedSuggestions) => {
+                formikProps.form.setFieldValue(
+                  fieldPath,
+                  // save the suggestion objects so we can extract information
+                  // about which value added by the user
+                  selectedSuggestions
+                );
+              }}
+              value={getIn(values, fieldPath, []).map((val) => val.name)}
+              ref={selectRef}
+            />
+          );
+        }}
+      </Field>
     );
   }
 }
 
 AffiliationsField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
+  selectRef: PropTypes.object,
 };

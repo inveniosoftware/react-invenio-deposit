@@ -8,20 +8,20 @@
 import {
   FILE_DELETED_SUCCESS,
   FILE_DELETE_FAILED,
+  FILE_IMPORT_FAILED,
+  FILE_IMPORT_STARTED,
+  FILE_IMPORT_SUCCESS,
+  FILE_UPLOAD_ADDED,
   FILE_UPLOAD_CANCELLED,
   FILE_UPLOAD_FAILED,
   FILE_UPLOAD_FINISHED,
-  FILE_UPLOAD_INITIATE,
   FILE_UPLOAD_IN_PROGRESS,
+  FILE_UPLOAD_SAVE_DRAFT_FAILED,
   FILE_UPLOAD_SET_CANCEL_FUNCTION,
-  FILE_UPLOAD_START,
-  SET_DEFAULT_PREVIEW_FILE,
-  SET_DEFAULT_PREVIEW_FILE_FAILED,
-  TOGGLE_FILES_ENABLED,
 } from '../types';
 
 export const UploadState = {
-  initial: 'initial', // no file or the initial file selected
+  // initial: 'initial', // no file or the initial file selected
   uploading: 'uploading', // currently uploading a file from the UI
   error: 'error', // upload failed
   finished: 'finished', // upload finished (uploaded file is the field's current file)
@@ -30,41 +30,25 @@ export const UploadState = {
 
 const initialState = {};
 
-export default (state = initialState, action) => {
+const fileReducer = (state = initialState, action) => {
   let newState;
   switch (action.type) {
-    case FILE_UPLOAD_INITIATE:
+    case FILE_UPLOAD_ADDED:
       return {
         ...state,
         entries: {
           ...state.entries,
           [action.payload.filename]: {
-            progress: 0,
+            progressPercentage: 0,
             name: action.payload.filename,
-            size: action.payload.size,
-            status: UploadState.initial,
+            size: 0,
+            status: UploadState.pending,
             checksum: null,
             links: null,
-            cancel: null,
+            cancelUploadFn: null,
           },
         },
-      };
-    case FILE_UPLOAD_START:
-      return {
-        ...state,
-        entries: {
-          ...state.entries,
-          [action.payload.filename]: {
-            progress: 0,
-            name: action.payload.filename,
-            size: action.payload.size,
-            status: UploadState.uploading,
-            checksum: null,
-            links: null,
-            cancel: null,
-          },
-        },
-        isFileUploadInProgress: true,
+        actionState: action.type,
       };
     case FILE_UPLOAD_IN_PROGRESS:
       return {
@@ -73,10 +57,12 @@ export default (state = initialState, action) => {
           ...state.entries,
           [action.payload.filename]: {
             ...state.entries[action.payload.filename],
-            progress: action.payload.percent,
+            progressPercentage: action.payload.percent,
             status: UploadState.uploading,
           },
         },
+        isFileUploadInProgress: true,
+        actionState: action.type,
       };
     case FILE_UPLOAD_FINISHED:
       newState = {
@@ -87,10 +73,10 @@ export default (state = initialState, action) => {
             ...state.entries[action.payload.filename],
             status: UploadState.finished,
             size: action.payload.size,
-            progress: 100,
+            progressPercentage: 100,
             checksum: action.payload.checksum,
             links: action.payload.links,
-            cancel: null,
+            cancelUploadFn: null,
           },
         },
       };
@@ -99,6 +85,13 @@ export default (state = initialState, action) => {
         isFileUploadInProgress: Object.values(newState.entries).some(
           (value) => value.status === UploadState.uploading
         ),
+        actionState: action.type,
+      };
+    case FILE_UPLOAD_SAVE_DRAFT_FAILED:
+      return {
+        ...state,
+        errors: { ...action.payload.errors },
+        actionState: action.type,
       };
     case FILE_UPLOAD_FAILED:
       newState = {
@@ -108,7 +101,7 @@ export default (state = initialState, action) => {
           [action.payload.filename]: {
             ...state.entries[action.payload.filename],
             status: UploadState.error,
-            cancel: null,
+            cancelUploadFn: null,
           },
         },
       };
@@ -117,6 +110,7 @@ export default (state = initialState, action) => {
         isFileUploadInProgress: Object.values(newState.entries).some(
           (value) => value.status === UploadState.uploading
         ),
+        actionState: action.type,
       };
     case FILE_UPLOAD_SET_CANCEL_FUNCTION:
       return {
@@ -125,9 +119,10 @@ export default (state = initialState, action) => {
           ...state.entries,
           [action.payload.filename]: {
             ...state.entries[action.payload.filename],
-            cancel: action.payload.cancel,
+            cancelUploadFn: action.payload.cancelUploadFn,
           },
         },
+        actionState: action.type,
       };
     case FILE_UPLOAD_CANCELLED:
       const {
@@ -142,6 +137,7 @@ export default (state = initialState, action) => {
         isFileUploadInProgress: Object.values(
           afterCancellationEntriesState
         ).some((value) => value.status === UploadState.uploading),
+        actionState: action.type,
       };
     case FILE_DELETED_SUCCESS:
       const {
@@ -154,24 +150,35 @@ export default (state = initialState, action) => {
         isFileUploadInProgress: Object.values(afterDeletionEntriesState).some(
           (value) => value.status === UploadState.uploading
         ),
+        actionState: action.type,
       };
     case FILE_DELETE_FAILED:
-      // TODO: handle
-      return state;
-    case SET_DEFAULT_PREVIEW_FILE:
       return {
         ...state,
-        defaultFilePreview: action.payload.filename,
+        actionState: action.type,
       };
-    case SET_DEFAULT_PREVIEW_FILE_FAILED:
-      // TODO: handle
-      return state;
-    case TOGGLE_FILES_ENABLED:
+    case FILE_IMPORT_STARTED:
       return {
         ...state,
-        enabled: action.payload.filesEnabled,
+        isFileImportInProgress: true,
+        actionState: action.type,
+      };
+    case FILE_IMPORT_SUCCESS:
+      return {
+        ...state,
+        entries: { ...action.payload.files },
+        isFileImportInProgress: false,
+        actionState: action.type,
+      };
+    case FILE_IMPORT_FAILED:
+      return {
+        ...state,
+        isFileImportInProgress: false,
+        actionState: action.type,
       };
     default:
       return state;
   }
 };
+
+export default fileReducer;

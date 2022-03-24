@@ -1,6 +1,7 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2022 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -23,6 +24,7 @@ import { LicenseResults } from './LicenseResults';
 import { Formik } from 'formik';
 import { TextAreaField, TextField, ActionButton } from 'react-invenio-forms';
 import * as Yup from 'yup';
+import { i18next } from '@translations/i18next';
 
 const overriddenComponents = {
   'SearchFilters.ToggleComponent': LicenseFilter,
@@ -40,8 +42,8 @@ const ModalActions = {
 
 const LicenseSchema = Yup.object().shape({
   selectedLicense: Yup.object().shape({
-    title: Yup.string().required('Title is a required field.'),
-    link: Yup.string().url('Link must be a valid URL'),
+    title: Yup.string().required(i18next.t('Title is a required field.')),
+    link: Yup.string().url(i18next.t('Link must be a valid URL')),
   }),
 });
 
@@ -59,10 +61,11 @@ export class LicenseModal extends Component {
   };
 
   onSubmit = (values, formikBag) => {
-    this.props.onLicenseChange(values.selectedLicense);
-    formikBag.setSubmitting(false);
-    formikBag.resetForm();
+    // We have to close the modal first because onLicenseChange and passing
+    // license as an object makes React get rid of this component. Otherwise
+    // we get a memory leak warning.
     this.closeModal();
+    this.props.onLicenseChange(values.selectedLicense);
   };
 
   render() {
@@ -80,21 +83,28 @@ export class LicenseModal extends Component {
         }}
         onSubmit={this.onSubmit}
         validationSchema={LicenseSchema}
+        validateOnChange={false}
+        validateOnBlur={false}
       >
         <Modal
           onOpen={() => this.openModal()}
           open={this.state.open}
           trigger={this.props.trigger}
           onClose={this.closeModal}
-          closeIcon
+          closeIcon={true}
+          closeOnDimmerClick={false}
         >
-          <Modal.Header as="h6" className="deposit-modal-header">
+          <Modal.Header as="h6" className="pt-10 pb-10">
             <Grid>
               <Grid.Column floated="left">
                 <Header as="h2">
                   {this.props.action === ModalActions.ADD
-                    ? `Add ${this.props.mode} license`
-                    : `Change ${this.props.mode} license`}
+                    ? i18next.t(`Add {{mode}} license`, {
+                        mode: this.props.mode,
+                      })
+                    : i18next.t(`Change {{mode}} license`, {
+                        mode: this.props.mode,
+                      })}
                 </Header>
               </Grid.Column>
             </Grid>
@@ -116,6 +126,7 @@ export class LicenseModal extends Component {
                         verticalAlign="middle"
                       >
                         <SearchBar
+                          placeholder={i18next.t('Search')}
                           autofocus
                           actionProps={{
                             icon: 'search',
@@ -127,22 +138,22 @@ export class LicenseModal extends Component {
                       <Grid.Column width={8} textAlign="right" floated="right">
                         <Menu compact>
                           <Toggle
-                            title="Recommended"
+                            title={i18next.t('Recommended')}
                             label="recommended"
                             filterValue={['tags', 'recommended']}
                           ></Toggle>
                           <Toggle
-                            title="All"
+                            title={i18next.t('All')}
                             label="all"
                             filterValue={['tags', 'all']}
                           ></Toggle>
                           <Toggle
-                            title="Data"
+                            title={i18next.t('Data')}
                             label="data"
                             filterValue={['tags', 'data']}
                           ></Toggle>
                           <Toggle
-                            title="Software"
+                            title={i18next.t('Software')}
                             label="software"
                             filterValue={['tags', 'software']}
                           ></Toggle>
@@ -169,18 +180,18 @@ export class LicenseModal extends Component {
             {this.props.mode === ModalTypes.CUSTOM && (
               <Form>
                 <TextField
-                  label="Title"
-                  placeholder="License title"
+                  label={i18next.t('Title')}
+                  placeholder={i18next.t('License title')}
                   fieldPath="selectedLicense.title"
                   required
                 ></TextField>
                 <TextAreaField
                   fieldPath={'selectedLicense.description'}
-                  label={'Description'}
+                  label={i18next.t('Description')}
                 />
                 <TextField
-                  label="Link"
-                  placeholder="License link"
+                  label={i18next.t('Link')}
+                  placeholder={i18next.t('License link')}
                   fieldPath="selectedLicense.link"
                 ></TextField>
               </Form>
@@ -194,7 +205,7 @@ export class LicenseModal extends Component {
                 this.closeModal();
               }}
               icon="remove"
-              content="Cancel"
+              content={i18next.t('Cancel')}
               floated="left"
             />
             <ActionButton
@@ -204,8 +215,8 @@ export class LicenseModal extends Component {
               icon="checkmark"
               content={
                 this.props.action === ModalActions.ADD
-                  ? 'Add license'
-                  : 'Change license'
+                  ? i18next.t('Add license')
+                  : i18next.t('Change license')
               }
             />
           </Modal.Actions>

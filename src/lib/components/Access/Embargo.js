@@ -4,32 +4,19 @@
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
-import { DateTime } from "luxon";
 
 export class EmbargoState {
-  static DISABLED = "disabled";
-  static ENABLED = "enabled";
-  static APPLIED = "applied";
-  static LIFTED = "lifted";
-
-  static isLifted(access) {
-    return (
-      access.embargo &&
-      !access.embargo.active &&
-      access.embargo.until &&
-      DateTime.local() >= DateTime.fromISO(access.embargo.until)
-    );
-  }
+  static DISABLED = 'disabled';
+  static ENABLED = 'enabled';
+  static APPLIED = 'applied';
 
   static isEnabled(access) {
-    return access.record === "restricted" || access.files === "restricted";
+    return access.record === 'restricted' || access.files === 'restricted';
   }
 
   static from(access) {
     if (access.embargo && access.embargo.active) {
       return EmbargoState.APPLIED;
-    } else if (EmbargoState.isLifted(access)) {
-      return EmbargoState.LIFTED;
     } else if (EmbargoState.isEnabled(access)) {
       return EmbargoState.ENABLED;
     } else {
@@ -38,16 +25,14 @@ export class EmbargoState {
   }
 }
 
-
 export class Embargo {
-  constructor({state, date, reason}) {
+  constructor({ state, date, reason }) {
     this.state = state || EmbargoState.DISABLED;
-    this.date = date || "";
-    this.reason = reason || "";
+    this.date = date || '';
+    this.reason = reason || '';
   }
 
   is(state) {
     return this.state === state;
   }
-
 }

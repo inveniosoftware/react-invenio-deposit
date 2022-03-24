@@ -1,19 +1,21 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2021 CERN.
 // Copyright (C) 2021 Northwestern University.
+// Copyright (C) 2021 New York University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import { i18next } from '@translations/i18next';
+import _get from 'lodash/get';
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { Button, Label, List, Ref } from 'semantic-ui-react';
-import _get from 'lodash/get';
-
 import { CreatibutorsModal } from './CreatibutorsModal';
 
 export const CreatibutorsFieldItem = ({
   compKey,
+  identifiersError,
   index,
   replaceCreatibutor,
   removeCreatibutor,
@@ -24,6 +26,7 @@ export const CreatibutorsFieldItem = ({
   displayName,
   roleOptions,
   schema,
+  autocompleteNames,
 }) => {
   const dropRef = React.useRef(null);
   const [_, drag, preview] = useDrag({
@@ -61,6 +64,9 @@ export const CreatibutorsFieldItem = ({
       return <Label size="tiny">{friendlyRole}</Label>;
     }
   };
+  const firstError =
+    identifiersError &&
+    identifiersError.find((elem) => ![undefined, null].includes(elem));
 
   // Initialize the ref explicitely
   drop(dropRef);
@@ -82,10 +88,11 @@ export const CreatibutorsFieldItem = ({
             initialCreatibutor={initialCreatibutor}
             roleOptions={roleOptions}
             schema={schema}
+            autocompleteNames={autocompleteNames}
             action="edit"
             trigger={
               <Button size="mini" primary type="button">
-                Edit
+                {i18next.t('Edit')}
               </Button>
             }
           />
@@ -94,7 +101,7 @@ export const CreatibutorsFieldItem = ({
             type="button"
             onClick={() => removeCreatibutor(index)}
           >
-            Remove
+            {i18next.t('Remove')}
           </Button>
         </List.Content>
         <Ref innerRef={drag}>
@@ -103,13 +110,27 @@ export const CreatibutorsFieldItem = ({
         <Ref innerRef={preview}>
           <List.Content>
             <List.Description>
-              {_get(initialCreatibutor, 'person_or_org.identifiers', []).some(
-                (identifier) => identifier.scheme === 'orcid'
-              ) && (
-                <img className="inline-orcid" src="/static/images/orcid.svg" />
-              )}
-              {displayName} {renderRole(initialCreatibutor?.role, roleOptions)}
+              <span className="creatibutor">
+                {_get(initialCreatibutor, 'person_or_org.identifiers', []).some(
+                  (identifier) => identifier.scheme === 'orcid'
+                ) && (
+                  <img
+                    alt="ORCID logo"
+                    className="inline-id-icon"
+                    src="/static/images/orcid.svg"
+                    width="16"
+                    height="16"
+                  />
+                )}
+                {displayName}{' '}
+                {renderRole(initialCreatibutor?.role, roleOptions)}
+              </span>
             </List.Description>
+            {firstError && (
+              <Label pointing="left" prompt>
+                {firstError.scheme ? firstError.scheme : 'Invalid identifiers'}
+              </Label>
+            )}
           </List.Content>
         </Ref>
       </List.Item>

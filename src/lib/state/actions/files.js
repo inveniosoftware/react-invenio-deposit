@@ -1,47 +1,78 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020-2021 CERN.
-// Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2020-2022 CERN.
+// Copyright (C) 2020-2022 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { TOGGLE_FILES_ENABLED } from '../types';
+import {
+  FILE_DELETED_SUCCESS,
+  FILE_DELETE_FAILED,
+  FILE_IMPORT_FAILED,
+  FILE_IMPORT_STARTED,
+  FILE_IMPORT_SUCCESS,
+  FILE_UPLOAD_SAVE_DRAFT_FAILED,
+} from '../types';
+import { saveDraftWithUrlUpdate } from './deposit';
 
-export const uploadDraftFiles = (draft, files) => {
-  return (dispatch, getState, config) => {
-    const controller = config.controller;
-    return controller.uploadDraftFiles(draft, files, {
-      store: { dispatch, getState, config },
-    });
+export const uploadFiles = (draft, files) => {
+  return async (dispatch, _, config) => {
+    let response;
+    try {
+      response = await saveDraftWithUrlUpdate(draft, config.service.drafts);
+    } catch (error) {
+      dispatch({
+        type: FILE_UPLOAD_SAVE_DRAFT_FAILED,
+        payload: { errors: error.errors },
+      });
+      throw error;
+    }
+
+    const uploadFileUrl = response.data.links.files;
+    for (const file of files) {
+      config.service.files.upload(uploadFileUrl, file);
+    }
   };
 };
 
-export const deleteDraftFile = (file) => {
-  return (dispatch, getState, config) => {
-    const controller = config.controller;
-    return controller.deleteDraftFile(file, {
-      store: { dispatch, getState, config },
-    });
+export const deleteFile = (file) => {
+  return async (dispatch, _, config) => {
+    try {
+      const fileLinks = file.links;
+      await config.service.files.delete(fileLinks);
+
+      dispatch({
+        type: FILE_DELETED_SUCCESS,
+        payload: {
+          filename: file.name,
+        },
+      });
+    } catch (error) {
+      dispatch({ type: FILE_DELETE_FAILED });
+      throw error;
+    }
   };
 };
 
-export const setDefaultPreview = (filename) => {
-  return (dispatch, getState, config) => {
-    const controller = config.controller;
-    const defaultPreviewUrl = getState().files.links.self;
-    return controller.setDefaultPreviewFile(defaultPreviewUrl, filename, {
-      store: { dispatch, getState, config },
-    });
-  };
-};
+export const importParentFiles = () => {
+  return async (dispatch, getState, config) => {
+    const draft = getState().deposit.record;
+    if (!draft.id) return;
 
-export const toggleFilesEnabled = (filesEnabled) => {
-  return (dispatch) => {
-    return dispatch({
-      type: TOGGLE_FILES_ENABLED,
-      payload: {
-        filesEnabled: filesEnabled,
-      },
-    });
+    dispatch({ type: FILE_IMPORT_STARTED });
+
+    try {
+      const draftLinks = draft.links;
+      const files = await config.service.files.importParentRecordFiles(
+        draftLinks
+      );
+      dispatch({
+        type: FILE_IMPORT_SUCCESS,
+        payload: { files: files },
+      });
+    } catch (error) {
+      dispatch({ type: FILE_IMPORT_FAILED });
+      throw error;
+    }
   };
 };

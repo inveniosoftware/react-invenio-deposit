@@ -1,17 +1,23 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2021 CERN.
-// Copyright (C) 2021 Northwestern University.
+// Copyright (C) 2021-2022 CERN.
+// Copyright (C) 2021-2022 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { FastField } from 'formik';
+import { i18next } from '@translations/i18next';
+import { FastField, Field, getIn } from 'formik';
 import _debounce from 'lodash/debounce';
-import _get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { FieldLabel } from 'react-invenio-forms';
-import { Form, Radio } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { Form, Popup, Radio } from 'semantic-ui-react';
+import {
+  DepositFormSubmitActions,
+  DepositFormSubmitContext,
+} from '../../DepositFormSubmitContext';
+import { DISCARD_PID_STARTED, RESERVE_PID_STARTED } from '../../state/types';
 
 const PROVIDER_EXTERNAL = 'external';
 const UPDATE_PID_DEBOUNCE_MS = 200;
@@ -20,60 +26,73 @@ const UPDATE_PID_DEBOUNCE_MS = 200;
  * Button component to reserve a PID.
  */
 class ReservePIDBtn extends Component {
-  handleClickReservePID = () => {
-    const { onPIDReserved } = this.props;
-    //PIDS-FIXME
-    console.log('TODO implement reserve PID');
-    const value = '10.1234/as7r3-234f3';
-    onPIDReserved(value);
-  };
-
   render() {
-    const { disabled, label } = this.props;
+    const { disabled, handleReservePID, label, loading } = this.props;
     return (
-      <Form.Button
-        color="green"
-        size="mini"
-        disabled={disabled}
-        onClick={this.handleClickReservePID}
-        content={label}
-      />
+      <Field>
+        {({ form: formik }) => (
+          <Form.Button
+            color="green"
+            size="mini"
+            loading={loading}
+            disabled={disabled || loading}
+            onClick={(e) => handleReservePID(e, formik)}
+            content={label}
+          />
+        )}
+      </Field>
     );
   }
 }
 
 ReservePIDBtn.propTypes = {
   disabled: PropTypes.bool,
+  handleReservePID: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
-  onPIDReserved: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
 };
 
 ReservePIDBtn.defaultProps = {
   disabled: false,
+  loading: false,
 };
 
 /**
  * Button component to unreserve a PID.
  */
 class UnreservePIDBtn extends Component {
-  unreserve = (identifier) => {
-    const { onPIDUnreserved } = this.props;
-    //PIDS-FIXME
-    console.log('TODO implement unreserve PID', identifier);
-    onPIDUnreserved();
-  };
-
   render() {
-    const { identifier } = this.props;
+    const { disabled, handleDiscardPID, label, loading } = this.props;
     return (
-      <Form.Button icon="close" onClick={() => this.unreserve(identifier)} />
+      <Popup
+        content={label}
+        trigger={
+          <Field>
+            {({ form: formik }) => (
+              <Form.Button
+                disabled={disabled || loading}
+                loading={loading}
+                icon="close"
+                onClick={(e) => handleDiscardPID(e, formik)}
+                size="mini"
+              />
+            )}
+          </Field>
+        }
+      />
     );
   }
 }
 
 UnreservePIDBtn.propTypes = {
-  identifier: PropTypes.string.isRequired,
-  onPIDUnreserved: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
+  handleDiscardPID: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+};
+
+UnreservePIDBtn.defaultProps = {
+  disabled: false,
+  loading: false,
 };
 
 /**
@@ -81,44 +100,38 @@ UnreservePIDBtn.propTypes = {
  * and unmanaged PID.
  */
 class ManagedUnmanagedSwitch extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isManagedSelected: false,
-    };
-  }
-
   handleChange = (e, { value }) => {
     const { onManagedUnmanagedChange } = this.props;
     const isManagedSelected = value === 'managed' ? true : false;
-    this.setState({ isManagedSelected: isManagedSelected });
     onManagedUnmanagedChange(isManagedSelected);
   };
 
   render() {
-    const { isManagedSelected } = this.state;
-    const { pidLabel } = this.props;
+    const { disabled, isManagedSelected, pidLabel } = this.props;
 
     return (
       <Form.Group inline>
         <Form.Field>
-          Do you already have a {pidLabel} for this document?
+          {i18next.t('Do you already have a {{pidLabel}} for this upload?', {
+            pidLabel: pidLabel,
+          })}
         </Form.Field>
         <Form.Field width={2}>
           <Radio
-            label="Yes"
+            label={i18next.t('Yes')}
             name="radioGroup"
             value="unmanaged"
+            disabled={disabled}
             checked={!isManagedSelected}
             onChange={this.handleChange}
           />
         </Form.Field>
         <Form.Field width={2}>
           <Radio
-            label="No"
+            label={i18next.t('No')}
             name="radioGroup"
             value="managed"
+            disabled={disabled}
             checked={isManagedSelected}
             onChange={this.handleChange}
           />
@@ -129,56 +142,95 @@ class ManagedUnmanagedSwitch extends Component {
 }
 
 ManagedUnmanagedSwitch.propTypes = {
+  disabled: PropTypes.bool,
+  isManagedSelected: PropTypes.bool.isRequired,
   onManagedUnmanagedChange: PropTypes.func.isRequired,
+};
+
+ManagedUnmanagedSwitch.defaultProps = {
+  disabled: false,
 };
 
 /**
  * Render identifier field and reserve/unreserve
  * button components for managed PID.
  */
-class ManagedIdentifierCmp extends Component {
+class ManagedIdentifierComponent extends Component {
+  static contextType = DepositFormSubmitContext;
+
+  handleReservePID = (event, formik) => {
+    const { pidType } = this.props;
+    this.context.setSubmitContext(DepositFormSubmitActions.RESERVE_PID, {
+      pidType: pidType,
+    });
+    formik.handleSubmit(event);
+  };
+
+  handleDiscardPID = (event, formik) => {
+    const { pidType } = this.props;
+    this.context.setSubmitContext(DepositFormSubmitActions.DISCARD_PID, {
+      pidType: pidType,
+    });
+    formik.handleSubmit(event);
+  };
+
   render() {
     const {
+      actionState,
+      actionStateExtra,
+      btnLabelDiscardPID,
       btnLabelGetPID,
+      disabled,
       helpText,
       identifier,
-      onIdentifierChanged,
       pidPlaceholder,
+      pidType,
     } = this.props;
     const hasIdentifier = identifier !== '';
 
     const ReserveBtn = (
       <ReservePIDBtn
-        disabled={hasIdentifier}
+        disabled={disabled || hasIdentifier}
         label={btnLabelGetPID}
-        onPIDReserved={(value) => onIdentifierChanged(value)}
+        loading={
+          actionState === RESERVE_PID_STARTED &&
+          actionStateExtra.pidType === pidType
+        }
+        handleReservePID={this.handleReservePID}
       />
     );
 
     const UnreserveBtn = (
       <UnreservePIDBtn
-        identifier={identifier}
-        onPIDUnreserved={() => onIdentifierChanged('')}
+        disabled={disabled}
+        label={btnLabelDiscardPID}
+        handleDiscardPID={this.handleDiscardPID}
+        loading={
+          actionState === DISCARD_PID_STARTED &&
+          actionStateExtra.pidType === pidType
+        }
+        pidType={this.props.pidType}
       />
     );
 
     return (
       <>
         <Form.Group inline>
-          <Form.Field width={8}>
-            {hasIdentifier ? (
+          {hasIdentifier ? (
+            <Form.Field>
               <label>{identifier}</label>
-            ) : (
-              <>
-                <Form.Input
-                  disabled
-                  value=""
-                  placeholder={pidPlaceholder}
-                  width={16}
-                />
-              </>
-            )}
-          </Form.Field>
+            </Form.Field>
+          ) : (
+            <Form.Field width={4}>
+              <Form.Input
+                disabled
+                value=""
+                placeholder={pidPlaceholder}
+                width={16}
+              />
+            </Form.Field>
+          )}
+
           <Form.Field>{identifier ? UnreserveBtn : ReserveBtn}</Form.Field>
         </Form.Group>
         {helpText && <label className="helptext">{helpText}</label>}
@@ -187,39 +239,87 @@ class ManagedIdentifierCmp extends Component {
   }
 }
 
-ManagedIdentifierCmp.propTypes = {
+ManagedIdentifierComponent.propTypes = {
   btnLabelGetPID: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
+  form: PropTypes.object.isRequired,
   helpText: PropTypes.string,
   identifier: PropTypes.string.isRequired,
-  onIdentifierChanged: PropTypes.func.isRequired,
+  pidLabel: PropTypes.string.isRequired,
   pidPlaceholder: PropTypes.string.isRequired,
+  pidType: PropTypes.string.isRequired,
+  /* from Redux */
+  actionState: PropTypes.string,
+  actionStateExtra: PropTypes.object,
 };
 
-ManagedIdentifierCmp.defaultProps = {
+ManagedIdentifierComponent.defaultProps = {
+  disabled: false,
   helpText: null,
+  /* from Redux */
+  actionState: '',
+  actionStateExtra: {},
 };
+
+const mapStateToProps = (state) => ({
+  actionState: state.deposit.actionState,
+  actionStateExtra: state.deposit.actionStateExtra,
+});
+
+const ManagedIdentifierCmp = connect(
+  mapStateToProps,
+  null
+)(ManagedIdentifierComponent);
 
 /**
  * Render identifier field to allow user to input
  * the unmanaged PID.
  */
 class UnmanagedIdentifierCmp extends Component {
+  constructor(props) {
+    super(props);
+
+    const { identifier } = props;
+
+    this.state = {
+      localIdentifier: identifier,
+    };
+  }
+
+  onChange = (value) => {
+    const { onIdentifierChanged } = this.props;
+    this.setState({ localIdentifier: value }, () => onIdentifierChanged(value));
+  };
+
+  componentDidUpdate(prevProps) {
+    // called after the form field is updated and therefore re-rendered.
+    if (this.props.identifier !== prevProps.identifier) {
+      this.setState({ localIdentifier: this.props.identifier });
+    }
+  }
+
   render() {
-    const {
-      helpText,
-      identifier,
-      onIdentifierChanged,
-      pidPlaceholder,
-    } = this.props;
+    const { localIdentifier } = this.state;
+    const { form, fieldPath, helpText, pidPlaceholder } = this.props;
 
     return (
       <>
-        <Form.Field width={8}>
+        <Form.Field
+          width={8}
+          error={
+            getIn(form.errors, fieldPath, null) ||
+            getIn(form.errors, 'pids', null)
+          }
+        >
           <Form.Input
-            onChange={(e, { value }) => onIdentifierChanged(value)}
-            value={identifier}
+            onChange={(e, { value }) => this.onChange(value)}
+            value={localIdentifier}
             placeholder={pidPlaceholder}
             width={16}
+            error={
+              getIn(form.errors, fieldPath, null) ||
+              getIn(form.errors, 'pids', null)
+            }
           />
         </Form.Field>
         {helpText && <label className="helptext">{helpText}</label>}
@@ -249,133 +349,121 @@ class CustomPIDField extends Component {
   constructor(props) {
     super(props);
 
-    const { canBeManaged, canBeUnmanaged, field } = this.props;
+    const { canBeManaged, canBeUnmanaged } = this.props;
     this.canBeManagedAndUnmanaged = canBeManaged && canBeUnmanaged;
 
-    // init state
-    const canBeOnlyManaged = canBeManaged && !canBeUnmanaged;
-
-    const currentIdentifier = _get(field.value, 'identifier', '');
-    let managedIdentifier = '',
-      unmanagedIdentifier = '';
-    if (currentIdentifier !== '') {
-      const currentProvider = _get(field.value, 'provider', '');
-      const isProviderExternal = currentProvider === PROVIDER_EXTERNAL;
-      managedIdentifier = !isProviderExternal ? currentIdentifier : '';
-      unmanagedIdentifier = isProviderExternal ? currentIdentifier : '';
-    }
-
     this.state = {
-      isManagedSelected: canBeOnlyManaged || false,
-      managedIdentifier: managedIdentifier,
-      unmanagedIdentifier: unmanagedIdentifier,
+      isManagedSelected: undefined,
     };
   }
 
-  updateIdentifer = (form, fieldPath, pid) => {
+  onExternalIdentifierChanged = (identifier) => {
+    const { form, fieldPath } = this.props;
+
+    const pid = {
+      identifier: identifier,
+      provider: PROVIDER_EXTERNAL,
+    };
+
     this.debounced && this.debounced.cancel();
     this.debounced = _debounce(() => {
-      //PIDS-FIXME
-      console.log('TODO implement onIdentifierChange', pid);
       form.setFieldValue(fieldPath, pid);
     }, UPDATE_PID_DEBOUNCE_MS);
     this.debounced();
   };
 
-  buildUnmanagedPid = (identifier) => {
-    return { identifier: identifier, provider: PROVIDER_EXTERNAL };
-  };
-
-  buildManagedPid = (identifier, provider) => {
-    const { pidClient } = this.props;
-    const pidValue = {
-      identifier: identifier,
-    };
-
-    if (identifier) {
-      pidValue.provider = provider;
-      pidValue.client = pidClient;
-    }
-    return pidValue;
-  };
-
-  buildPid = (isManagedSelected, managedIdentifier, unmanagedIdentifier) => {
-    const { pidProvider } = this.props;
-    return isManagedSelected
-      ? this.buildManagedPid(managedIdentifier, pidProvider)
-      : this.buildUnmanagedPid(unmanagedIdentifier);
-  };
-
   render() {
+    const { isManagedSelected } = this.state;
     const {
-      isManagedSelected,
-      managedIdentifier,
-      unmanagedIdentifier,
-    } = this.state;
-    const {
+      btnLabelDiscardPID,
       btnLabelGetPID,
+      canBeManaged,
+      canBeUnmanaged,
       form,
       fieldPath,
+      fieldLabel,
+      isEditingPublishedRecord,
       managedHelpText,
       pidLabel,
       pidIcon,
       pidPlaceholder,
       required,
       unmanagedHelpText,
+      pidType,
+      field,
     } = this.props;
+
+    const value = field.value || {};
+    const currentIdentifier = value.identifier || '';
+    const currentProvider = value.provider || '';
+
+    let managedIdentifier = '',
+      unmanagedIdentifier = '';
+    if (currentIdentifier !== '') {
+      const isProviderExternal = currentProvider === PROVIDER_EXTERNAL;
+      managedIdentifier = !isProviderExternal ? currentIdentifier : '';
+      unmanagedIdentifier = isProviderExternal ? currentIdentifier : '';
+    }
+
+    const hasManagedIdentifier = managedIdentifier !== '';
+
+    const _isManagedSelected =
+      isManagedSelected === undefined
+        ? hasManagedIdentifier || currentProvider === '' // i.e pids: {}
+        : isManagedSelected;
+
     return (
       <>
-        <Form.Field required={required}>
-          <FieldLabel htmlFor={fieldPath} icon={pidIcon} label={pidLabel} />
+        <Form.Field
+          required={required}
+          error={
+            getIn(form.errors, fieldPath, null) ||
+            getIn(form.errors, 'pids', null)
+          }
+        >
+          <FieldLabel htmlFor={fieldPath} icon={pidIcon} label={fieldLabel} />
         </Form.Field>
 
         {this.canBeManagedAndUnmanaged && (
           <ManagedUnmanagedSwitch
-            onManagedUnmanagedChange={(isManagedSelected) => {
+            disabled={isEditingPublishedRecord || hasManagedIdentifier}
+            isManagedSelected={_isManagedSelected}
+            onManagedUnmanagedChange={(userSelectedManaged) => {
+              if (userSelectedManaged) {
+                form.setFieldValue('pids', {});
+              } else {
+                this.onExternalIdentifierChanged('');
+              }
               this.setState({
-                isManagedSelected: isManagedSelected,
+                isManagedSelected: userSelectedManaged,
               });
-              const pid = this.buildPid(
-                isManagedSelected,
-                managedIdentifier,
-                unmanagedIdentifier
-              );
-              this.updateIdentifer(form, fieldPath, pid);
             }}
             pidLabel={pidLabel}
           />
         )}
 
-        {isManagedSelected && (
+        {canBeManaged && _isManagedSelected && (
           <ManagedIdentifierCmp
+            disabled={isEditingPublishedRecord}
+            btnLabelDiscardPID={btnLabelDiscardPID}
             btnLabelGetPID={btnLabelGetPID}
+            form={form}
             identifier={managedIdentifier}
             helpText={managedHelpText}
-            onIdentifierChanged={(value) => {
-              this.setState({ managedIdentifier: value });
-              const pid = this.buildPid(
-                isManagedSelected,
-                value,
-                unmanagedIdentifier
-              );
-              this.updateIdentifer(form, fieldPath, pid);
-            }}
             pidPlaceholder={pidPlaceholder}
+            pidType={pidType}
+            pidLabel={pidLabel}
           />
         )}
 
-        {!isManagedSelected && (
+        {canBeUnmanaged && !_isManagedSelected && (
           <UnmanagedIdentifierCmp
             identifier={unmanagedIdentifier}
-            onIdentifierChanged={(value) => {
-              this.setState({ unmanagedIdentifier: value });
-              const pid = this.buildPid(
-                isManagedSelected,
-                managedIdentifier,
-                value
-              );
-              this.updateIdentifer(form, fieldPath, pid);
+            onIdentifierChanged={(identifier) => {
+              this.onExternalIdentifierChanged(identifier);
             }}
+            form={form}
+            fieldPath={fieldPath}
             pidPlaceholder={pidPlaceholder}
             helpText={unmanagedHelpText}
           />
@@ -386,16 +474,18 @@ class CustomPIDField extends Component {
 }
 
 CustomPIDField.propTypes = {
+  btnLabelDiscardPID: PropTypes.string.isRequired,
   btnLabelGetPID: PropTypes.string.isRequired,
   canBeManaged: PropTypes.bool.isRequired,
   canBeUnmanaged: PropTypes.bool.isRequired,
   fieldPath: PropTypes.string.isRequired,
+  fieldLabel: PropTypes.string.isRequired,
+  isEditingPublishedRecord: PropTypes.bool.isRequired,
   managedHelpText: PropTypes.string,
-  pidClient: PropTypes.string.isRequired,
   pidIcon: PropTypes.string.isRequired,
   pidLabel: PropTypes.string.isRequired,
   pidPlaceholder: PropTypes.string.isRequired,
-  pidProvider: PropTypes.string.isRequired,
+  pidType: PropTypes.string.isRequired,
   required: PropTypes.bool.isRequired,
   unmanagedHelpText: PropTypes.string,
 };
@@ -420,89 +510,47 @@ export class PIDField extends Component {
   }
 
   validatePropValues = () => {
-    const {
-      canBeManaged,
-      canBeUnmanaged,
-      fieldPath,
-      pidClient,
-      pidProvider,
-    } = this.props;
+    const { canBeManaged, canBeUnmanaged, fieldPath } = this.props;
 
     if (!canBeManaged && !canBeUnmanaged) {
       throw Error(`${fieldPath} must be managed, unmanaged or both.`);
     }
-
-    const isProviderExternal = pidProvider === PROVIDER_EXTERNAL;
-    if (isProviderExternal && pidClient) {
-      throw Error('client prop cannot be defined when provider is external.');
-    }
-    if (!isProviderExternal && !pidClient) {
-      throw Error('client prop must be defined.');
-    }
   };
 
   render() {
-    const {
-      btnLabelGetPID,
-      canBeManaged,
-      canBeUnmanaged,
-      managedHelpText,
-      fieldPath,
-      pidClient,
-      pidIcon,
-      pidLabel,
-      pidPlaceholder,
-      pidProvider,
-      required,
-      unmanagedHelpText,
-    } = this.props;
+    const { fieldPath } = this.props;
 
     return (
-      <FastField
-        name={fieldPath}
-        component={CustomPIDField}
-        /* cmp props */
-        btnLabelGetPID={btnLabelGetPID}
-        canBeManaged={canBeManaged}
-        canBeUnmanaged={canBeUnmanaged}
-        managedHelpText={managedHelpText}
-        fieldPath={fieldPath}
-        pidClient={pidClient}
-        pidIcon={pidIcon}
-        pidLabel={pidLabel}
-        pidPlaceholder={pidPlaceholder}
-        pidProvider={pidProvider}
-        required={required}
-        unmanagedHelpText={unmanagedHelpText}
-      />
+      <FastField name={fieldPath} component={CustomPIDField} {...this.props} />
     );
   }
 }
 
 PIDField.propTypes = {
+  btnLabelDiscardPID: PropTypes.string,
   btnLabelGetPID: PropTypes.string,
   canBeManaged: PropTypes.bool,
   canBeUnmanaged: PropTypes.bool,
   fieldPath: PropTypes.string.isRequired,
+  fieldLabel: PropTypes.string.isRequired,
+  isEditingPublishedRecord: PropTypes.bool.isRequired,
   managedHelpText: PropTypes.string,
-  pidClient: PropTypes.string,
   pidIcon: PropTypes.string,
   pidLabel: PropTypes.string.isRequired,
   pidPlaceholder: PropTypes.string,
-  pidProvider: PropTypes.string,
+  pidType: PropTypes.string.isRequired,
   required: PropTypes.bool,
   unmanagedHelpText: PropTypes.string,
 };
 
 PIDField.defaultProps = {
+  btnLabelDiscardPID: 'Discard',
   btnLabelGetPID: 'Reserve',
   canBeManaged: true,
   canBeUnmanaged: true,
   managedHelpText: null,
-  pidClient: null,
   pidIcon: 'barcode',
   pidPlaceholder: '',
-  pidProvider: PROVIDER_EXTERNAL, // when unmanaged
   required: false,
   unmanagedHelpText: null,
 };

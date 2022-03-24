@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2022 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -15,6 +15,7 @@ import {
   TextField,
 } from 'react-invenio-forms';
 import { Button, Form } from 'semantic-ui-react';
+import { i18next } from '@translations/i18next';
 import { emptyIdentifier } from '../../record';
 
 /** Identifiers array component */
@@ -24,7 +25,7 @@ export class IdentifiersField extends Component {
     return (
       <>
         <ArrayField
-          addButtonLabel={'Add identifier'}
+          addButtonLabel={i18next.t('Add identifier')}
           defaultNewValue={emptyIdentifier}
           fieldPath={fieldPath}
           label={
@@ -32,30 +33,46 @@ export class IdentifiersField extends Component {
           }
           required={required}
         >
-          {({ array, arrayHelpers, indexPath, key }) => (
-            <GroupField widths="equal">
-              {schemeOptions && (
-                <SelectField
-                  fieldPath={`${key}.scheme`}
-                  label={'Scheme'}
-                  options={schemeOptions}
+          {({ arrayHelpers, indexPath }) => {
+            const fieldPathPrefix = `${fieldPath}.${indexPath}`;
+            return (
+              <GroupField>
+                <TextField
+                  fieldPath={`${fieldPathPrefix}.identifier`}
+                  label={i18next.t('Identifier')}
+                  required
+                  width={11}
                 />
-              )}
-              {!schemeOptions && (
-                <TextField fieldPath={`${key}.scheme`} label={'Scheme'} />
-              )}
-              <TextField fieldPath={`${key}.identifier`} label={'Identifier'} />
-              <Form.Field>
-                <Form.Field>
-                  <label>&nbsp;</label>
-                  <Button
-                    icon="close"
-                    onClick={() => arrayHelpers.remove(indexPath)}
+                {schemeOptions && (
+                  <SelectField
+                    fieldPath={`${fieldPathPrefix}.scheme`}
+                    label={i18next.t('Scheme')}
+                    options={schemeOptions}
+                    optimized
+                    required
+                    width={5}
                   />
+                )}
+                {!schemeOptions && (
+                  <TextField
+                    fieldPath={`${fieldPathPrefix}.scheme`}
+                    label={i18next.t('Scheme')}
+                    required
+                    width={5}
+                  />
+                )}
+                <Form.Field>
+                  <Form.Field>
+                    <label>&nbsp;</label>
+                    <Button
+                      icon="close"
+                      onClick={() => arrayHelpers.remove(indexPath)}
+                    />
+                  </Form.Field>
                 </Form.Field>
-              </Form.Field>
-            </GroupField>
-          )}
+              </GroupField>
+            );
+          }}
         </ArrayField>
       </>
     );
@@ -77,6 +94,6 @@ IdentifiersField.propTypes = {
 
 IdentifiersField.defaultProps = {
   fieldPath: 'metadata.identifiers',
-  label: 'Identifier(s)',
+  label: i18next.t('Identifier(s)'),
   labelIcon: 'barcode',
 };

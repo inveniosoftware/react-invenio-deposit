@@ -7,28 +7,20 @@ import { ResourceTypeField } from './ResourceTypeField';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  const options = {
-    type: [
-      {
-        icon: '',
-        text: 'type Text 1',
-        value: 'typeValue1',
-      },
-      {
-        icon: 'frown outline',
-        text: 'type Text 2',
-        value: 'typeValue2',
-      },
-    ],
-    subtype: [
-      {
-        'parent-text': 'type Text 2',
-        'parent-value': 'typeValue2',
-        text: 'subtype Text',
-        value: 'subtypeValue',
-      },
-    ],
-  };
+  const options = [
+    {
+      icon: '',
+      id: 'resource-type-id-A',
+      type_name: 'Type A',
+      subtype_name: 'Subtype A',
+    },
+    {
+      icon: 'frown outline',
+      id: 'resource-type-id-B',
+      type_name: 'Type B',
+      subtype_name: 'Subtype B',
+    },
+  ];
 
   ReactDOM.render(
     <Formik>

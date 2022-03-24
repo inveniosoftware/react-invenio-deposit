@@ -1,5 +1,70 @@
 # Changes
 
+Version 0.18.2 (released 2022-03-18)
+* add submit review confirmation modal
+* forms: refactor buttons style
+
+Version 0.18.1 (released 2022-03-14)
+* add review request workflow
+
+Version 0.17.11 (released 2022-03-03)
+* fix arrow navigation issues for names autocomplete search field
+* remove default value for given name in creatibutors form
+
+Version 0.17.10 (released 2022-03-02)
+* add more options for creatibutors names autocomplete behavior
+
+Version 0.17.9 (released 2022-03-02)
+* add flag for toggling creatibutors names autocomplete
+
+Version 0.17.8 (released 2022-03-01)
+* change URL redirection after discarding a draft
+
+Version 0.17.7 (released 2022-02-23)
+* add temporal solution for non-resolved communities
+
+Version 0.17.6 (released 2022-02-21)
+* upgrades docs dependencies
+* stores community prop in redux
+* adds community header
+* auto-complete prefill from names in creatibutors modal
+
+Version 0.17.5 (released 2022-02-11)
+* upgrades semantic-ui-react
+* relax dependencies requirements patch versions
+
+Version 0.15.8 (released 2021-07-20)
+* improve deposit form error display
+
+Version 0.15.6 (released 2021-07-14)
+* improvements to subjects vocabulary integration
+* fix subjects label bug
+
+Version 0.15.5 (released 2021-07-09)
+* subjects vocabulary integration
+
+Version 0.15.4 (released 2021-07-09)
+* affiliations vocabulary integration
+
+Version 0.15.3 (released 2021-07-06)
+* subjects is now a vocabulary field
+* some translation support
+
+Version 0.15.2 (released 2021-07-01)
+* type and language vocabularies
+
+Version 0.14.0 (released 2021-05-19)
+
+* resource_type is now a vocabulary field (i.e. of the shape `{id: <id>}`),
+  so changes are made to accomodate this
+* Mark May release
+
+Version 0.13.5 (released 2021-04-16)
+
+* Pass files.enabled in the draft API payload
+* Disable Publish button if errors
+* Use backend error message to indicate missing files
+
 Version 0.13.4 (released 2021-04-13)
 
 Version 0.13.3 (released 2021-04-07)

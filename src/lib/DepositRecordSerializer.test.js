@@ -1,11 +1,11 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020-2021 CERN.
-// Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2020-2022 CERN.
+// Copyright (C) 2020-2022 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { DepositRecordSerializer } from './DepositRecordSerializer';
+import { RDMDepositRecordSerializer } from './DepositRecordSerializer';
 import {
   emptyDate,
   emptyFunding,
@@ -13,8 +13,9 @@ import {
   emptyRelatedWork,
 } from './record';
 
-describe('DepositRecordSerializer', () => {
-  const serializer = new DepositRecordSerializer();
+describe('RDMDepositRecordSerializer tests', () => {
+  const defaultLocale = 'en';
+  const serializer = new RDMDepositRecordSerializer(defaultLocale);
 
   describe('removeEmptyValues', () => {
     const record = {
@@ -25,7 +26,7 @@ describe('DepositRecordSerializer', () => {
       description: '',
     };
 
-    const cleanedRecord = serializer.removeEmptyValues(record);
+    const cleanedRecord = serializer._removeEmptyValues(record);
 
     expect(cleanedRecord).toEqual({ cool: false, version: 0 });
   });
@@ -50,7 +51,7 @@ describe('DepositRecordSerializer', () => {
         expect(serializedRecord.metadata.dates).toEqual([
           {
             date: '2020/08',
-            type: 'accepted',
+            type: { id: 'accepted' },
             description: 'bar',
           },
         ]);
@@ -110,7 +111,7 @@ describe('DepositRecordSerializer', () => {
               {
                 scheme: 'doi',
                 identifier: '10.5281/zenodo.9999988',
-                resource_type: { type: 'image', subtype: 'image-photo' },
+                resource_type: 'image-photo',
                 relation_type: 'requires',
               },
             ],
@@ -123,8 +124,8 @@ describe('DepositRecordSerializer', () => {
           {
             scheme: 'doi',
             identifier: '10.5281/zenodo.9999988',
-            resource_type: { type: 'image', subtype: 'image-photo' },
-            relation_type: 'requires',
+            resource_type: { id: 'image-photo' },
+            relation_type: { id: 'requires' },
           },
         ]);
       });
@@ -155,15 +156,17 @@ describe('DepositRecordSerializer', () => {
         metadata: {
           title: '',
           additional_titles: [],
+          additional_descriptions: [],
           creators: [],
           contributors: [],
           resource_type: '',
           publication_date: '',
-          dates: [emptyDate],
+          dates: [{ ...emptyDate, __key: 0 }],
           languages: [],
-          identifiers: [emptyIdentifier],
-          related_identifiers: [emptyRelatedWork],
+          identifiers: [{ ...emptyIdentifier, __key: 0 }],
+          related_identifiers: [{ ...emptyRelatedWork, __key: 0 }],
           subjects: [],
+          rights: [],
           funding: [emptyFunding],
           version: '',
         },
@@ -171,6 +174,7 @@ describe('DepositRecordSerializer', () => {
           record: 'public',
           files: 'public',
         },
+        pids: {},
       };
 
       const deserializedRecord = serializer.deserialize(record);
@@ -195,6 +199,13 @@ describe('DepositRecordSerializer', () => {
           self: 'https://127.0.0.1:5000/api/records/wk205-00878/draft',
           self_html: 'https://127.0.0.1:5000/uploads/wk205-00878',
         },
+        pids: {
+          doi: {
+            identifier: '10.1234/rec.nz13t-me993',
+            provider: 'datacite',
+            client: 'rdm',
+          },
+        },
         metadata: {
           contributors: [
             {
@@ -208,7 +219,7 @@ describe('DepositRecordSerializer', () => {
                   },
                 ],
               },
-              role: 'datacurator',
+              role: { id: 'datacurator' },
             },
           ],
           creators: [
@@ -216,24 +227,36 @@ describe('DepositRecordSerializer', () => {
               person_or_org: { name: 'John Doe', type: 'personal' },
               affiliations: [
                 {
+                  id: '01ggx4157',
                   name: 'CERN',
-                  identifiers: [
-                    {
-                      identifier: '01ggx4157',
-                      scheme: 'ror',
-                    },
-                  ],
                 },
               ],
             },
           ],
           publication_date: '2020-09-28',
-          resource_type: { type: 'lesson' },
+          resource_type: { id: 'lesson' },
           title: 'Test 2020-1028 13:34',
           additional_titles: [
-            { title: 'Another title', type: 'abstract', lang: 'dan' },
+            {
+              title: 'Another title',
+              type: { title: 'Abstract', id: 'abstract' },
+              lang: { title: 'Danish', id: 'dan' },
+            },
           ],
-          dates: [{ date: '1920/2020', type: 'collected', description: 'foo' }],
+          additional_descriptions: [
+            {
+              description: 'Another description',
+              type: { title: 'Other', id: 'other' },
+              lang: { title: 'Danish', id: 'dan' },
+            },
+          ],
+          dates: [
+            {
+              date: '1920/2020',
+              type: { id: 'collected' },
+              description: 'foo',
+            },
+          ],
           languages: [
             { title: 'en', id: 'en_id' },
             { title: 'fr', id: 'fr_id' },
@@ -241,17 +264,31 @@ describe('DepositRecordSerializer', () => {
           identifiers: [
             { scheme: 'doi', identifier: '10.5281/zenodo.9999999' },
           ],
+          rights: [
+            {
+              id: 'id_cc_4.0',
+            },
+            {
+              title: {
+                en: 'A custom license',
+              },
+              description: {
+                en: 'A custom description',
+              },
+              link: 'https://customlicense.com',
+            },
+          ],
           related_identifiers: [
             {
               scheme: 'doi',
               identifier: '10.5281/zenodo.9999988',
-              resource_type: { type: 'image', subtype: 'image-photo' },
+              resource_type: { id: 'image-photo' },
               relation_type: 'requires',
             },
           ],
           subjects: [
             {
-              title: 'MeSH: Cognitive Neuroscience',
+              subject: 'MeSH: Cognitive Neuroscience',
               id: 'mesh_1',
             },
           ],
@@ -294,9 +331,17 @@ describe('DepositRecordSerializer', () => {
           self: 'https://127.0.0.1:5000/api/records/wk205-00878/draft',
           self_html: 'https://127.0.0.1:5000/uploads/wk205-00878',
         },
+        pids: {
+          doi: {
+            identifier: '10.1234/rec.nz13t-me993',
+            provider: 'datacite',
+            client: 'rdm',
+          },
+        },
         metadata: {
           contributors: [
             {
+              affiliations: [],
               person_or_org: {
                 name: 'Jane Smith',
                 type: 'personal',
@@ -308,47 +353,76 @@ describe('DepositRecordSerializer', () => {
                 ],
               },
               role: 'datacurator',
+              __key: 0,
             },
           ],
           creators: [
             {
               affiliations: [
                 {
+                  id: '01ggx4157',
                   name: 'CERN',
-                  identifiers: [
-                    {
-                      scheme: 'ror',
-                      identifier: '01ggx4157',
-                    },
-                  ],
                 },
               ],
               person_or_org: {
                 name: 'John Doe',
                 type: 'personal',
               },
+              role: '',
+              __key: 0,
             },
           ],
           publication_date: '2020-09-28',
-          resource_type: { type: 'lesson' },
+          resource_type: 'lesson',
           title: 'Test 2020-1028 13:34',
           additional_titles: [
-            { title: 'Another title', type: 'abstract', lang: 'dan' },
+            { title: 'Another title', type: 'abstract', lang: 'dan', __key: 0 },
           ],
-          dates: [{ date: '1920/2020', type: 'collected', description: 'foo' }],
+          additional_descriptions: [
+            {
+              description: 'Another description',
+              type: 'other',
+              lang: 'dan',
+              __key: 0,
+            },
+          ],
+          dates: [
+            {
+              date: '1920/2020',
+              type: 'collected',
+              description: 'foo',
+              __key: 0,
+            },
+          ],
           languages: ['en_id', 'fr_id'],
           identifiers: [
-            { scheme: 'doi', identifier: '10.5281/zenodo.9999999' },
+            { scheme: 'doi', identifier: '10.5281/zenodo.9999999', __key: 0 },
           ],
           related_identifiers: [
             {
               scheme: 'doi',
               identifier: '10.5281/zenodo.9999988',
-              resource_type: { type: 'image', subtype: 'image-photo' },
+              resource_type: 'image-photo',
               relation_type: 'requires',
+              __key: 0,
             },
           ],
-          subjects: ['mesh_1'],
+          subjects: [
+            {
+              id: 'mesh_1',
+              subject: 'MeSH: Cognitive Neuroscience',
+            },
+          ],
+          rights: [
+            {
+              id: 'id_cc_4.0',
+            },
+            {
+              title: 'A custom license',
+              description: 'A custom description',
+              link: 'https://customlicense.com',
+            },
+          ],
           funding: [
             {
               funder: {
@@ -365,6 +439,9 @@ describe('DepositRecordSerializer', () => {
             },
           ],
           version: 'v2.0.0',
+        },
+        ui: {
+          publication_date_l10n: 'Sep 28, 2020',
         },
       };
       expect(deserializedRecord).toEqual(expectedRecord);

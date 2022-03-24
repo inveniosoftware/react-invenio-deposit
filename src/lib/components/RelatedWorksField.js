@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
-// Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2020-2022 Northwestern University.
 // Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
@@ -20,6 +20,7 @@ import { Button, Form, Icon } from 'semantic-ui-react';
 
 import { emptyRelatedWork } from '../record';
 import { ResourceTypeField } from './ResourceTypeField';
+import { i18next } from '@translations/i18next';
 
 export class RelatedWorksField extends Component {
   render() {
@@ -27,11 +28,13 @@ export class RelatedWorksField extends Component {
 
     return (
       <>
-        <label className="helptext" style={{marginBottom: "10px"}}>
-          Specify identifiers of related works. Supported identifiers include DOI, Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, URNs, and URLs.
+        <label className="helptext" style={{ marginBottom: '10px' }}>
+          {i18next.t(
+            'Specify identifiers of related works. Supported identifiers include DOI, Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, URNs, and URLs.'
+          )}
         </label>
         <ArrayField
-          addButtonLabel={'Add related work'}
+          addButtonLabel={i18next.t('Add related work')}
           defaultNewValue={emptyRelatedWork}
           fieldPath={fieldPath}
           label={
@@ -39,49 +42,57 @@ export class RelatedWorksField extends Component {
           }
           required={required}
         >
-          {({ array, arrayHelpers, indexPath, key }) => (
-            <GroupField>
-              <SelectField
-                clearable
-                fieldPath={`${key}.relation_type`}
-                label="Relation"
-                options={options.relations}
-                placeholder={'Select relation...'}
-                width={3}
-              />
-              <SelectField
-                clearable
-                fieldPath={`${key}.scheme`}
-                label="Scheme"
-                options={options.scheme}
-                width={2}
-              />
-              <TextField
-                fieldPath={`${key}.identifier`}
-                label="Identifier"
-                width={4}
-              />
+          {({ arrayHelpers, indexPath }) => {
+            const fieldPathPrefix = `${fieldPath}.${indexPath}`;
 
-            <ResourceTypeField
-              clearable
-              fieldPath={`${key}.resource_type`}
-              labelIcon={''}  // Otherwise breaks alignment
-              options={options.resource_type}
-              width={6}
-              labelClassName="small field-label-class"
-            />
+            return (
+              <GroupField optimized>
+                <SelectField
+                  clearable
+                  fieldPath={`${fieldPathPrefix}.relation_type`}
+                  label={i18next.t('Relation')}
+                  optimized
+                  options={options.relations}
+                  placeholder={i18next.t('Select relation...')}
+                  required
+                  width={3}
+                />
 
-            <Form.Field width={1}>
-              <label>&nbsp;</label>
-              <Button
-                icon
-                onClick={() => arrayHelpers.remove(indexPath)}
-                >
-                <Icon name="close" />
-              </Button>
-            </Form.Field>
-          </GroupField>
-          )}
+                <TextField
+                  fieldPath={`${fieldPathPrefix}.identifier`}
+                  label={i18next.t('Identifier')}
+                  required
+                  width={4}
+                />
+
+                <SelectField
+                  clearable
+                  fieldPath={`${fieldPathPrefix}.scheme`}
+                  label={i18next.t('Scheme')}
+                  optimized
+                  options={options.scheme}
+                  required
+                  width={2}
+                />
+
+                <ResourceTypeField
+                  clearable
+                  fieldPath={`${fieldPathPrefix}.resource_type`}
+                  labelIcon={''} // Otherwise breaks alignment
+                  options={options.resource_type}
+                  width={6}
+                  labelclassname="small field-label-class"
+                />
+
+                <Form.Field width={1}>
+                  <label>&nbsp;</label>
+                  <Button icon onClick={() => arrayHelpers.remove(indexPath)}>
+                    <Icon name="close" />
+                  </Button>
+                </Form.Field>
+              </GroupField>
+            );
+          }}
         </ArrayField>
       </>
     );
@@ -97,6 +108,6 @@ RelatedWorksField.propTypes = {
 
 RelatedWorksField.defaultProps = {
   fieldPath: 'metadata.related_identifiers',
-  label: 'Related works',
+  label: i18next.t('Related works'),
   labelIcon: 'barcode',
 };

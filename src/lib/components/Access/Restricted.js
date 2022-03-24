@@ -1,13 +1,20 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 import React from 'react';
 
-import { embargoSection, filesSection, MessageSection, MetadataSection } from './utils';
-
+import {
+  embargoSection,
+  filesSection,
+  MessageSection,
+  MetadataSection,
+} from './utils';
+import { i18next } from '@translations/i18next';
+import { Trans } from '@translations/i18next';
 // Record and files restricted
 export class Restricted {
   constructor(embargo) {
@@ -22,28 +29,37 @@ export class Restricted {
   renderFilesSection() {
     // Same as embargoed
     const filesStyle = {
-      opacity: "0.5",
-      cursor: "default !important"
+      opacity: '0.5',
+      cursor: 'default !important',
     };
-    let filesContent = <p style={{...filesStyle, textAlign: "center"}}><em>The full record is restricted.</em></p>;
+    let filesContent = (
+      <p style={{ ...filesStyle, textAlign: 'center' }}>
+        <em>{i18next.t('The full record is restricted.')}</em>
+      </p>
+    );
     return filesSection(filesStyle, filesContent);
   }
 
   renderMessageSection() {
-    const text = <>The record and files can <b>only</b> be accessed by <b>users specified</b> in the permissions.</>;
+    const text = (
+      <Trans>
+        The record and files can <b>only</b> be accessed by
+        <b> users specified</b> in the permissions.
+      </Trans>
+    );
 
-    return <MessageSection
-      intent={{negative: true}}
-      icon="lock"
-      title="Restricted"
-      text={text}
-    />;
-
+    return (
+      <MessageSection
+        intent={{ negative: true }}
+        icon="lock"
+        title={i18next.t('Restricted')}
+        text={text}
+      />
+    );
   }
 
-  renderEmbargoSection() {
+  renderEmbargoSection(initialAccessValues) {
     // Same as Embargoed, same as Public
-    return embargoSection(this.embargo);
+    return embargoSection(initialAccessValues, this.embargo);
   }
-
 }

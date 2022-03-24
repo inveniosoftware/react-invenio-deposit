@@ -1,79 +1,49 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2021 CERN.
+// Copyright (C) 2022 CERN.
+// Copyright (C) 2022 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import { i18next } from '@translations/i18next';
 import React, { Component } from 'react';
+import { ActionButton } from 'react-invenio-forms';
 import { connect } from 'react-redux';
 import { Icon } from 'semantic-ui-react';
-import { ActionButton } from 'react-invenio-forms';
-
-import { submitAction } from '../state/actions';
 import {
-  FORM_SAVE_FAILED,
-  FORM_SAVE_PARTIALLY_SUCCEEDED,
-  FORM_SAVE_SUCCEEDED,
-  FORM_SAVING,
-} from '../state/types';
+  DepositFormSubmitActions,
+  DepositFormSubmitContext,
+} from '../DepositFormSubmitContext';
+import { DRAFT_PREVIEW_STARTED } from '../state/types';
 
 export class PreviewButtonComponent extends Component {
-  state = {
-    isLoading: false,
-    previewButtonClicked: false,
-    previousFormState: '',
-  };
+  static contextType = DepositFormSubmitContext;
 
-  isDisabled = (formik) => {
-    return formik.isSubmitting;
+  handlePreview = (event, formik) => {
+    this.context.setSubmitContext(DepositFormSubmitActions.PREVIEW);
+    formik.handleSubmit(event);
   };
 
   render() {
-    const { record, saveClick, formState, ...uiProps } = this.props;
-    const { isLoading, previewButtonClicked, previousFormState } = this.state;
-    if (previewButtonClicked && formState !== previousFormState) {
-      switch (formState) {
-        case FORM_SAVING:
-          this.setState({ previousFormState: formState });
-          break;
-        case FORM_SAVE_SUCCEEDED:
-          window.location = `/records/${record.id}?preview=1`;
-          break;
-        case FORM_SAVE_PARTIALLY_SUCCEEDED:
-        case FORM_SAVE_FAILED:
-          this.setState({
-            isLoading: false,
-            previewButtonClicked: false,
-            previousFormState: formState,
-          });
-          break;
-        default:
-      }
-    }
+    const { record, actionState, ...uiProps } = this.props;
 
     return (
       <ActionButton
         name="preview"
-        isDisabled={this.isDisabled}
-        onClick={(event, formik) => {
-          saveClick(event, formik);
-          this.setState({
-            isLoading: true,
-            previewButtonClicked: true,
-          });
-        }}
+        isDisabled={(formik) => formik.isSubmitting}
+        onClick={this.handlePreview}
         icon
         labelPosition="left"
         {...uiProps}
       >
         {(formik) => (
           <>
-            {formik.isSubmitting && isLoading ? (
+            {formik.isSubmitting && actionState === DRAFT_PREVIEW_STARTED ? (
               <Icon size="large" loading name="spinner" />
             ) : (
               <Icon name="eye" />
             )}
-            Preview
+            {i18next.t('Preview')}
           </>
         )}
       </ActionButton>
@@ -82,16 +52,11 @@ export class PreviewButtonComponent extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  formState: state.deposit.formState,
+  actionState: state.deposit.actionState,
   record: state.deposit.record,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  saveClick: (event, formik) =>
-    dispatch(submitAction(FORM_SAVING, event, formik)),
 });
 
 export const PreviewButton = connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(PreviewButtonComponent);

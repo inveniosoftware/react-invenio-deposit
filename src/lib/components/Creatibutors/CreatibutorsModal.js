@@ -8,25 +8,34 @@
 
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Grid, Header, Form, Ref } from 'semantic-ui-react';
+import { Form, Grid, Header, Icon, Image, Modal } from 'semantic-ui-react';
 import { Formik } from 'formik';
 import {
   SelectField,
-  RemoteSelectField,
   TextField,
   ActionButton,
   RadioField,
+  RemoteSelectField,
 } from 'react-invenio-forms';
 import * as Yup from 'yup';
 import _get from 'lodash/get';
 import _find from 'lodash/find';
+import _isEmpty from 'lodash/isEmpty';
 import _map from 'lodash/map';
+import { AffiliationsField } from './../AffiliationsField';
 import { CreatibutorsIdentifiers } from './CreatibutorsIdentifiers';
 import { CREATIBUTOR_TYPE } from './type';
+import { i18next } from '@translations/i18next';
 
 const ModalActions = {
   ADD: 'add',
   EDIT: 'edit',
+};
+
+const NamesAutocompleteOptions = {
+  SEARCH: 'search',
+  SEARCH_ONLY: 'search_only',
+  OFF: 'off',
 };
 
 export class CreatibutorsModal extends Component {
@@ -34,10 +43,16 @@ export class CreatibutorsModal extends Component {
     super(props);
     this.state = {
       open: false,
-      saveAndContinueLabel: 'Save and add another',
+      saveAndContinueLabel: i18next.t('Save and add another'),
       action: null,
+      showPersonForm:
+        props.autocompleteNames !== NamesAutocompleteOptions.SEARCH_ONLY ||
+        !_isEmpty(props.initialCreatibutor),
     };
     this.inputRef = createRef();
+    this.identifiersRef = createRef();
+    this.affiliationsRef = createRef();
+    this.namesAutocompleteRef = createRef();
   }
 
   CreatorSchema = Yup.object({
@@ -45,23 +60,18 @@ export class CreatibutorsModal extends Component {
       type: Yup.string(),
       family_name: Yup.string().when('type', (type, schema) => {
         if (type === CREATIBUTOR_TYPE.PERSON && this.isCreator()) {
-          return schema.required('Family name is a required field.');
-        }
-      }),
-      given_name: Yup.string().when('type', (type, schema) => {
-        if (type === CREATIBUTOR_TYPE.PERSON && this.isCreator()) {
-          return schema.required('Given name is a required field.');
+          return schema.required(i18next.t('Family name is a required field.'));
         }
       }),
       name: Yup.string().when('type', (type, schema) => {
         if (type === CREATIBUTOR_TYPE.ORGANIZATION && this.isCreator()) {
-          return schema.required('Name is a required field.');
+          return schema.required(i18next.t('Name is a required field.'));
         }
       }),
     }),
     role: Yup.string().when('_', (_, schema) => {
       if (!this.isCreator()) {
-        return schema.required('Role is a required field.');
+        return schema.required(i18next.t('Role is a required field.'));
       }
     }),
   });
@@ -69,9 +79,7 @@ export class CreatibutorsModal extends Component {
   focusInput = () => this.inputRef.current.focus();
 
   openModal = () => {
-    this.setState({ open: true, action: null }, () => {
-      this.focusInput();
-    });
+    this.setState({ open: true, action: null }, () => {});
   };
 
   closeModal = () => {
@@ -79,10 +87,12 @@ export class CreatibutorsModal extends Component {
   };
 
   changeContent = () => {
-    this.setState({ saveAndContinueLabel: 'Added' });
+    this.setState({ saveAndContinueLabel: i18next.t('Added') });
     // change in 2 sec
     setTimeout(() => {
-      this.setState({ saveAndContinueLabel: 'Save and add another' });
+      this.setState({
+        saveAndContinueLabel: i18next.t('Save and add another'),
+      });
     }, 2000);
   };
 
@@ -122,15 +132,10 @@ export class CreatibutorsModal extends Component {
       return findField(initialIdentifiers, 'identifier', identifier);
     });
 
-    const initialAffilliations = _get(
-      this.props.initialCreatibutor,
+    const submittedAffiliations = _get(
+      submittedCreatibutor,
       affiliationsFieldPath,
       []
-    );
-    const affiliations = submittedCreatibutor.affiliations.map(
-      (affiliation) => {
-        return findField(initialAffilliations, 'name', affiliation);
-      }
     );
 
     return {
@@ -139,7 +144,7 @@ export class CreatibutorsModal extends Component {
         ...submittedCreatibutor.person_or_org,
         identifiers,
       },
-      affiliations,
+      affiliations: submittedAffiliations,
     };
   };
 
@@ -163,7 +168,7 @@ export class CreatibutorsModal extends Component {
           'identifier'
         ),
       },
-      affiliations: _map(_get(initialCreatibutor, 'affiliations', []), 'name'),
+      affiliations: _get(initialCreatibutor, 'affiliations', []),
       role: _get(initialCreatibutor, 'role', ''),
     };
   };
@@ -176,6 +181,10 @@ export class CreatibutorsModal extends Component {
     formikBag.resetForm();
     switch (this.state.action) {
       case 'saveAndContinue':
+        // Needed to close and open the modal to reset the internal
+        // state of the cmp inside the modal
+        this.closeModal();
+        this.openModal();
         this.changeContent();
         break;
       case 'saveAndClose':
@@ -184,6 +193,144 @@ export class CreatibutorsModal extends Component {
       default:
         break;
     }
+  };
+
+  serializeSuggestions = (creatibutors) => {
+    let results = creatibutors.map((creatibutor) => {
+      const orcid = _find(creatibutor.identifiers, (identifier) => {
+        return identifier.scheme === 'orcid';
+      });
+
+      let aff_names = '';
+      creatibutor.affiliations.forEach((affiliation, idx) => {
+        aff_names += affiliation.name;
+        if (idx < creatibutor.affiliations.length - 1) {
+          aff_names += ', ';
+        }
+      });
+
+      return {
+        text: creatibutor.name,
+        value: orcid.identifier,
+        extra: creatibutor,
+        key: creatibutor.id,
+        content: (
+          <Header>
+            <Header.Content>
+              {creatibutor.name} (
+              <Image
+                src="/static/images/orcid.svg"
+                className="inline-id-icon"
+                verticalAlign="middle"
+              />
+              {orcid.identifier})
+              <a
+                href={`https://orcid.org/${orcid.identifier}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Icon link name="external alternate" className="spaced-left" />
+              </a>
+            </Header.Content>
+            <Header.Subheader>{aff_names}</Header.Subheader>
+          </Header>
+        ),
+      };
+    });
+
+    const showManualEntry =
+      this.props.autocompleteNames === NamesAutocompleteOptions.SEARCH_ONLY &&
+      !this.state.showPersonForm;
+    if (showManualEntry) {
+      results.push({
+        text: 'Manual entry',
+        value: 'Manual entry',
+        extra: 'Manual entry',
+        key: 'manual-entry',
+        content: (
+          <Header textAlign="center">
+            <Header.Content>
+              <p>
+                <Trans>
+                  Couldn't find your person? You can <a>create a new entry</a>.
+                </Trans>
+              </p>
+            </Header.Content>
+          </Header>
+        ),
+      });
+    }
+    return results;
+  };
+
+  onPersonSearchChange = (
+    { event, data, formikProps },
+    selectedSuggestions
+  ) => {
+    if (selectedSuggestions[0].key === 'manual-entry') {
+      // Empty the autocomplete's selected values
+      this.namesAutocompleteRef.current.setState({
+        suggestions: [],
+        selectedSuggestions: [],
+      });
+      this.setState({
+        showPersonForm: true,
+      });
+      return;
+    }
+
+    this.setState(
+      {
+        showPersonForm: true,
+      },
+      () => {
+        const identifiers = selectedSuggestions[0].extra.identifiers.map(
+          (identifier) => {
+            return identifier.identifier;
+          }
+        );
+        const affiliations = selectedSuggestions[0].extra.affiliations.map(
+          (affiliation) => {
+            return affiliation;
+          }
+        );
+
+        const personOrOrgPath = `person_or_org`;
+        const familyNameFieldPath = `${personOrOrgPath}.family_name`;
+        const givenNameFieldPath = `${personOrOrgPath}.given_name`;
+        const identifiersFieldPath = `${personOrOrgPath}.identifiers`;
+        const affiliationsFieldPath = 'affiliations';
+
+        let chosen = {
+          [givenNameFieldPath]: selectedSuggestions[0].extra.given_name,
+          [familyNameFieldPath]: selectedSuggestions[0].extra.family_name,
+          [identifiersFieldPath]: identifiers,
+          [affiliationsFieldPath]: affiliations,
+        };
+        Object.entries(chosen).forEach(([path, value]) => {
+          formikProps.form.setFieldValue(path, value);
+        });
+        // Update identifiers render
+        this.identifiersRef.current.setState({
+          selectedOptions:
+            this.identifiersRef.current.valuesToOptions(identifiers),
+        });
+        // Update affiliations render
+        const affiliationsState = affiliations.map(({ name }) => ({
+          text: name,
+          value: name,
+          key: name,
+          name,
+        }));
+        this.affiliationsRef.current.setState({
+          suggestions: affiliationsState,
+          selectedSuggestions: affiliationsState,
+          searchQuery: null,
+          error: false,
+          open: false,
+        });
+      }
+    );
   };
 
   render() {
@@ -198,7 +345,7 @@ export class CreatibutorsModal extends Component {
         validateOnChange={false}
         validateOnBlur={false}
       >
-        {({ values, setFieldValue, resetForm }) => {
+        {({ values, resetForm }) => {
           const personOrOrgPath = `person_or_org`;
           const typeFieldPath = `${personOrOrgPath}.type`;
           const familyNameFieldPath = `${personOrOrgPath}.family_name`;
@@ -209,6 +356,7 @@ export class CreatibutorsModal extends Component {
           const roleFieldPath = 'role';
           return (
             <Modal
+              centered={false}
               onOpen={() => this.openModal()}
               open={this.state.open}
               trigger={this.props.trigger}
@@ -216,9 +364,10 @@ export class CreatibutorsModal extends Component {
                 this.closeModal();
                 resetForm();
               }}
-              closeIcon
+              closeIcon={true}
+              closeOnDimmerClick={false}
             >
-              <Modal.Header as="h6" className="deposit-modal-header">
+              <Modal.Header as="h6" className="pt-10 pb-10">
                 <Grid>
                   <Grid.Column floated="left" width={4}>
                     <Header as="h2">
@@ -232,7 +381,7 @@ export class CreatibutorsModal extends Component {
                   <Form.Group>
                     <RadioField
                       fieldPath={typeFieldPath}
-                      label="Person"
+                      label={i18next.t('Person')}
                       checked={
                         _get(values, typeFieldPath) === CREATIBUTOR_TYPE.PERSON
                       }
@@ -242,12 +391,12 @@ export class CreatibutorsModal extends Component {
                           typeFieldPath,
                           CREATIBUTOR_TYPE.PERSON
                         );
-                        this.focusInput();
                       }}
+                      optimized
                     />
                     <RadioField
                       fieldPath={typeFieldPath}
-                      label="Organization"
+                      label={i18next.t('Organization')}
                       checked={
                         _get(values, typeFieldPath) ===
                         CREATIBUTOR_TYPE.ORGANIZATION
@@ -260,84 +409,117 @@ export class CreatibutorsModal extends Component {
                         );
                         this.focusInput();
                       }}
+                      optimized
                     />
                   </Form.Group>
-                  <Form.Group widths="equal">
-                    {_get(values, typeFieldPath, '') ===
-                    CREATIBUTOR_TYPE.PERSON ? (
-                      <>
-                        <TextField
-                          label="Family name"
-                          placeholder="Family name"
-                          fieldPath={familyNameFieldPath}
-                          required={this.isCreator()}
-                          // forward ref to Input component because Form.Input
-                          // doesn't handle it
-                          input={{ ref: this.inputRef }}
+                  {_get(values, typeFieldPath, '') ===
+                  CREATIBUTOR_TYPE.PERSON ? (
+                    <div>
+                      {this.props.autocompleteNames !==
+                        NamesAutocompleteOptions.OFF && (
+                        <RemoteSelectField
+                          selectOnBlur={false}
+                          selectOnNavigation={false}
+                          searchInput={{
+                            autoFocus: _isEmpty(initialCreatibutor),
+                          }}
+                          fieldPath={'creators'}
+                          clearable={true}
+                          multiple={false}
+                          allowAdditions={false}
+                          placeholder={i18next.t(
+                            'Search for persons by name, identifier, or affiliation...'
+                          )}
+                          noQueryMessage={i18next.t(
+                            'Search for persons by name, identifier, or affiliation...'
+                          )}
+                          required={false}
+                          // Disable UI-side filtering of search results
+                          search={(options) => options}
+                          suggestionAPIUrl="/api/names"
+                          serializeSuggestions={this.serializeSuggestions}
+                          onValueChange={this.onPersonSearchChange}
+                          ref={this.namesAutocompleteRef}
                         />
-                        <TextField
-                          label="Given name(s)"
-                          placeholder="Given name"
-                          fieldPath={givenNameFieldPath}
-                          required={this.isCreator()}
-                        />
-                      </>
-                    ) : (
+                      )}
+                      {this.state.showPersonForm && (
+                        <div>
+                          <Form.Group widths="equal">
+                            <TextField
+                              label={i18next.t('Family name')}
+                              placeholder={i18next.t('Family name')}
+                              fieldPath={familyNameFieldPath}
+                              required={this.isCreator()}
+                            />
+                            <TextField
+                              label={i18next.t('Given name(s)')}
+                              placeholder={i18next.t('Given name')}
+                              fieldPath={givenNameFieldPath}
+                            />
+                          </Form.Group>
+                          <Form.Group widths="equal">
+                            <CreatibutorsIdentifiers
+                              initialOptions={_map(
+                                _get(values, identifiersFieldPath, []),
+                                (identifier) => ({
+                                  text: identifier,
+                                  value: identifier,
+                                  key: identifier,
+                                })
+                              )}
+                              fieldPath={identifiersFieldPath}
+                              ref={this.identifiersRef}
+                            />
+                          </Form.Group>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <>
                       <TextField
-                        label="Name"
-                        placeholder="Organization name"
+                        label={i18next.t('Name')}
+                        placeholder={i18next.t('Organization name')}
                         fieldPath={nameFieldPath}
                         required={this.isCreator()}
                         // forward ref to Input component because Form.Input
                         // doesn't handle it
                         input={{ ref: this.inputRef }}
                       />
-                    )}
-                  </Form.Group>
-                  <CreatibutorsIdentifiers
-                    initialOptions={_map(
-                      _get(values, identifiersFieldPath, []),
-                      (identifier) => ({
-                        text: identifier,
-                        value: identifier,
-                        key: identifier,
-                      })
-                    )}
-                    fieldPath={identifiersFieldPath}
-                  />
-                  <RemoteSelectField
-                    fieldPath={affiliationsFieldPath}
-                    suggestionAPIUrl="/api/vocabularies/affiliations"
-                    suggestionAPIHeaders={{
-                      Accept: 'application/vnd.inveniordm.v1+json',
-                    }}
-                    placeholder={'Search for an affiliation by name'}
-                    clearable
-                    multiple
-                    initialSuggestions={_get(
-                      initialCreatibutor,
-                      'affiliations',
-                      []
-                    )}
-                    serializeSuggestions={(affiliations) =>
-                      _map(affiliations, (affiliation) => ({
-                        text: affiliation.name,
-                        value: affiliation.name,
-                        key: affiliation.name,
-                      }))
-                    }
-                    label="Affiliations"
-                    noQueryMessage="Search for affiliations..."
-                    allowAdditions
-                  />
-                  <SelectField
-                    fieldPath={roleFieldPath}
-                    label={'Role'}
-                    options={this.props.roleOptions}
-                    placeholder="Select role"
-                    {...(this.isCreator() && { clearable: true })}
-                    required={!this.isCreator()}
-                  />
+                      <CreatibutorsIdentifiers
+                        initialOptions={_map(
+                          _get(values, identifiersFieldPath, []),
+                          (identifier) => ({
+                            text: identifier,
+                            value: identifier,
+                            key: identifier,
+                          })
+                        )}
+                        fieldPath={identifiersFieldPath}
+                        placeholder={i18next.t('e.g. ROR, ISNI or GND.')}
+                      />
+                    </>
+                  )}
+                  {(_get(values, typeFieldPath) ===
+                    CREATIBUTOR_TYPE.ORGANIZATION ||
+                    (this.state.showPersonForm &&
+                      _get(values, typeFieldPath) ===
+                        CREATIBUTOR_TYPE.PERSON)) && (
+                    <div>
+                      <AffiliationsField
+                        fieldPath={affiliationsFieldPath}
+                        selectRef={this.affiliationsRef}
+                      />
+                      <SelectField
+                        fieldPath={roleFieldPath}
+                        label={i18next.t('Role')}
+                        options={this.props.roleOptions}
+                        placeholder={i18next.t('Select role')}
+                        {...(this.isCreator() && { clearable: true })}
+                        required={!this.isCreator()}
+                        optimized
+                      />
+                    </div>
+                  )}
                 </Form>
               </Modal.Content>
               <Modal.Actions>
@@ -348,17 +530,24 @@ export class CreatibutorsModal extends Component {
                     this.closeModal();
                   }}
                   icon="remove"
-                  content="Cancel"
+                  content={i18next.t('Cancel')}
                   floated="left"
                 />
                 {this.props.action === ModalActions.ADD && (
                   <ActionButton
                     name="submit"
                     onClick={(event, formik) => {
-                      this.setState({ action: 'saveAndContinue' }, () => {
-                        formik.handleSubmit();
-                        this.focusInput();
-                      });
+                      this.setState(
+                        {
+                          action: 'saveAndContinue',
+                          showPersonForm:
+                            this.props.autocompleteNames !==
+                            NamesAutocompleteOptions.SEARCH_ONLY,
+                        },
+                        () => {
+                          formik.handleSubmit();
+                        }
+                      );
                     }}
                     primary
                     icon="checkmark"
@@ -368,13 +557,19 @@ export class CreatibutorsModal extends Component {
                 <ActionButton
                   name="submit"
                   onClick={(event, formik) => {
-                    this.setState({ action: 'saveAndClose' }, () =>
-                      formik.handleSubmit()
+                    this.setState(
+                      {
+                        action: 'saveAndClose',
+                        showPersonForm:
+                          this.props.autocompleteNames !==
+                          NamesAutocompleteOptions.SEARCH_ONLY,
+                      },
+                      () => formik.handleSubmit()
                     );
                   }}
                   primary
                   icon="checkmark"
-                  content="Save"
+                  content={i18next.t('Save')}
                 />
               </Modal.Actions>
             </Modal>
@@ -389,6 +584,7 @@ CreatibutorsModal.propTypes = {
   schema: PropTypes.oneOf(['creators', 'contributors']).isRequired,
   action: PropTypes.oneOf(['add', 'edit']).isRequired,
   addLabel: PropTypes.string.isRequired,
+  autocompleteNames: PropTypes.oneOf(['search', 'search_only', 'off']),
   editLabel: PropTypes.string.isRequired,
   initialCreatibutor: PropTypes.shape({
     id: PropTypes.string,
@@ -403,17 +599,7 @@ CreatibutorsModal.propTypes = {
         })
       ),
     }),
-    affiliations: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string,
-        identifiers: PropTypes.arrayOf(
-          PropTypes.shape({
-            scheme: PropTypes.string,
-            identifier: PropTypes.string,
-          })
-        ),
-      })
-    ),
+    affiliations: PropTypes.array,
     role: PropTypes.string,
   }),
   trigger: PropTypes.object.isRequired,
@@ -424,4 +610,5 @@ CreatibutorsModal.propTypes = {
 CreatibutorsModal.defaultProps = {
   roleOptions: [],
   initialCreatibutor: {},
+  autocompleteNames: 'search',
 };

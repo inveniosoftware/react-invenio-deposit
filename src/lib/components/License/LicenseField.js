@@ -1,10 +1,12 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
-// Copyright (C) 2020-2021 Northwestern University.
+// Copyright (C) 2020-2022 Northwestern University.
+// Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import _find from 'lodash/find';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getIn, FieldArray } from 'formik';
@@ -15,6 +17,44 @@ import { Button, Form, Icon, List } from 'semantic-ui-react';
 
 import { LicenseModal } from './LicenseModal';
 import { LicenseFieldItem } from './LicenseFieldItem';
+import { i18next } from '@translations/i18next';
+
+
+/**
+ * The user-facing license.
+ *
+ */
+class VisibleLicense {
+
+  /**
+   * Constructor.
+   *
+  * @param {array} uiRights
+  * @param {object} right
+  * @param {int} index
+  */
+  constructor(uiRights, right, index) {
+    this.index = index;
+    this.type = right.id ? 'standard' : 'custom';
+    this.key = right.id || right.title;
+    this.initial = this.type === 'custom' ? right : null;
+
+    let uiRight = _find(
+      uiRights,
+      right.id ? (o) => o.id === right.id : (o) => o.title === right.title
+    ) || {};
+
+    this.description = uiRight.description_l10n || right.description || "";
+    this.title = uiRight.title_l10n || right.title || "";
+    this.link = (
+      uiRight.props && uiRight.props.url ||
+      uiRight.link ||
+      right.props && right.props.url ||
+      right.link || ""
+    );
+  }
+}
+
 
 class LicenseFieldForm extends Component {
   render() {
@@ -22,6 +62,7 @@ class LicenseFieldForm extends Component {
       label,
       labelIcon,
       fieldPath,
+      uiFieldPath,
       form: { values, errors },
       move: formikArrayMove,
       push: formikArrayPush,
@@ -29,6 +70,9 @@ class LicenseFieldForm extends Component {
       replace: formikArrayReplace,
       required,
     } = this.props;
+
+    const uiRights = getIn(values, uiFieldPath, []);
+
     return (
       <DndProvider backend={HTML5Backend}>
         <Form.Field required={required}>
@@ -36,42 +80,28 @@ class LicenseFieldForm extends Component {
             htmlFor={fieldPath}
             icon={labelIcon}
             label={label}
-          ></FieldLabel>
+          />
           <List>
-            {getIn(values, fieldPath, []).map((value, index, array) => {
-              const arrayPath = fieldPath;
-              const indexPath = index;
-              const key = `${arrayPath}.${indexPath}`;
-              const licenseType = value.id ? 'standard' : 'custom';
-              const description = getIn(values, `${key}.description`, '');
-              const link = getIn(values, `${key}.link`, '');
-              const title = getIn(values, `${key}.title`, '');
+            {getIn(values, fieldPath, []).map((value, index) => {
+              const license = new VisibleLicense(uiRights, value, index);
               return (
                 <LicenseFieldItem
-                  key={key}
-                  {...{
-                    index,
-                    licenseType,
-                    compKey: key,
-                    initialLicense: licenseType === 'custom' ? value : null,
-                    licenseDescription: description,
-                    licenseTitle: title,
-                    moveLicense: formikArrayMove,
-                    replaceLicense: formikArrayReplace,
-                    removeLicense: formikArrayRemove,
-                    searchConfig: this.props.searchConfig,
-                    serializeLicenses: this.props.serializeLicenses,
-                    link: link,
-                  }}
+                  key={license.key}
+                  license={license}
+                  moveLicense={formikArrayMove}
+                  replaceLicense={formikArrayReplace}
+                  removeLicense={formikArrayRemove}
+                  searchConfig={this.props.searchConfig}
+                  serializeLicenses={this.props.serializeLicenses}
                 />
               );
             })}
             <LicenseModal
               searchConfig={this.props.searchConfig}
               trigger={
-                <Button type="button" key="standard">
+                <Button type="button" key="standard" icon labelPosition="left">
                   <Icon name="add" />
-                  Add standard
+                  {i18next.t('Add standard')}
                 </Button>
               }
               onLicenseChange={(selectedLicense) => {
@@ -84,9 +114,9 @@ class LicenseFieldForm extends Component {
             <LicenseModal
               searchConfig={this.props.searchConfig}
               trigger={
-                <Button type="button" key="custom">
+                <Button type="button" key="custom" icon labelPosition="left">
                   <Icon name="add" />
-                  Add custom
+                  {i18next.t('Add custom')}
                 </Button>
               }
               onLicenseChange={(selectedLicense) => {
@@ -127,7 +157,8 @@ LicenseField.propTypes = {
 
 LicenseField.defaultProps = {
   fieldPath: 'metadata.rights',
-  label: 'Licenses',
+  label: i18next.t('Licenses'),
+  uiFieldPath: 'ui.rights',
   labelIcon: 'drivers license',
   required: false,
 };
