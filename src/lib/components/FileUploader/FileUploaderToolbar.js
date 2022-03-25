@@ -35,10 +35,10 @@ export const FileUploaderToolbar = ({
                 checked={!filesEnabled}
               />
             </List.Item>
-            <List.Item style={{ marginLeft: '5px' }}>
+            <List.Item>
               <Popup
                 trigger={
-                  <Icon name="question circle outline" color="grey"></Icon>
+                  <Icon name="question circle outline" color="grey"/>
                 }
                 content={i18next.t('Disable files for this record')}
                 position="top center"

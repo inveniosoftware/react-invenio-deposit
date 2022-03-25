@@ -159,7 +159,7 @@ export const FileUploaderComponent = ({
           )}
         </Grid.Row>
         {displayImportBtn && (
-          <Grid.Row className="file-import-note-row">
+          <Grid.Row className="pb-5 pt-5">
             <Grid.Column width={16}>
               <Message visible info>
                 <div style={{ display: 'inline-block', float: 'right' }}>
@@ -183,7 +183,7 @@ export const FileUploaderComponent = ({
           </Grid.Row>
         )}
         {filesEnabled && (
-          <Grid.Row className="file-upload-area-row">
+          <Grid.Row className="pt-0 pb-0">
             <FileUploaderArea
               {...uiProps}
               filesList={filesList}
@@ -195,7 +195,7 @@ export const FileUploaderComponent = ({
           </Grid.Row>
         )}
         {isDraftRecord ? (
-          <Grid.Row className="file-upload-note-row">
+          <Grid.Row className="file-upload-note pt-5">
             <Grid.Column width={16}>
               <Message visible warning>
                 <p>
@@ -208,7 +208,7 @@ export const FileUploaderComponent = ({
             </Grid.Column>
           </Grid.Row>
         ) : (
-          <Grid.Row className="file-upload-note-row">
+          <Grid.Row className="file-upload-note pt-5">
             <Grid.Column width={16}>
               <Message info>
                 <NewVersionButton

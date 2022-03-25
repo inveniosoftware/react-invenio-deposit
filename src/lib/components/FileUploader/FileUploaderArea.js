@@ -196,6 +196,7 @@ const FileUploadBox = ({
             <Button
               type="button"
               primary={true}
+              labelPosition="left"
               icon={uploadButtonIcon}
               content={uploadButtonText}
               onClick={() => openFileDialog()}

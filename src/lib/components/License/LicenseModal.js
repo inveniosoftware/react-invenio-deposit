@@ -141,22 +141,22 @@ export class LicenseModal extends Component {
                             title={i18next.t('Recommended')}
                             label="recommended"
                             filterValue={['tags', 'recommended']}
-                          ></Toggle>
+                          />
                           <Toggle
                             title={i18next.t('All')}
                             label="all"
                             filterValue={['tags', 'all']}
-                          ></Toggle>
+                          />
                           <Toggle
                             title={i18next.t('Data')}
                             label="data"
                             filterValue={['tags', 'data']}
-                          ></Toggle>
+                          />
                           <Toggle
                             title={i18next.t('Software')}
                             label="software"
                             filterValue={['tags', 'software']}
-                          ></Toggle>
+                          />
                         </Menu>
                       </Grid.Column>
                     </Grid.Row>
@@ -184,7 +184,7 @@ export class LicenseModal extends Component {
                   placeholder={i18next.t('License title')}
                   fieldPath="selectedLicense.title"
                   required
-                ></TextField>
+                />
                 <TextAreaField
                   fieldPath={'selectedLicense.description'}
                   label={i18next.t('Description')}
@@ -193,7 +193,7 @@ export class LicenseModal extends Component {
                   label={i18next.t('Link')}
                   placeholder={i18next.t('License link')}
                   fieldPath="selectedLicense.link"
-                ></TextField>
+                />
               </Form>
             )}
           </Modal.Content>
@@ -205,6 +205,7 @@ export class LicenseModal extends Component {
                 this.closeModal();
               }}
               icon="remove"
+              labelPosition="left"
               content={i18next.t('Cancel')}
               floated="left"
             />
@@ -213,6 +214,7 @@ export class LicenseModal extends Component {
               onClick={(event, formik) => formik.handleSubmit(event)}
               primary
               icon="checkmark"
+              labelPosition="left"
               content={
                 this.props.action === ModalActions.ADD
                   ? i18next.t('Add license')
