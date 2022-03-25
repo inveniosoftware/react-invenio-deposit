@@ -20,8 +20,6 @@ const axiosWithconfig = axios.create(apiConfig);
 export const NewVersionButton = ({ onError, record, disabled, ...uiProps }) => {
   const [loading, setLoading] = useState(false);
 
-  const handleError = onError;
-
   const handleClick = async () => {
     setLoading(true);
 
@@ -32,7 +30,7 @@ export const NewVersionButton = ({ onError, record, disabled, ...uiProps }) => {
     } catch (error) {
       console.log(error);
       setLoading(false);
-      handleError(error.response.data.message);
+      onError(error.response.data.message);
     }
   };
 

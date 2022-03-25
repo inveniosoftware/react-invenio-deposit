@@ -73,7 +73,9 @@ export class AdditionalTitlesField extends Component {
               />
               <Form.Field width={1} className="align-self-end">
                 <Button icon
-                        onClick={() => arrayHelpers.remove(indexPath)}>
+                        onClick={() => arrayHelpers.remove(indexPath)}
+                        aria-label={ i18next.t('Close') }
+                >
                   <Icon name="close" />
                 </Button>
               </Form.Field>

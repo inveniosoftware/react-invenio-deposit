@@ -79,7 +79,7 @@ export class CommunitySelectionSearch extends Component {
                 <Header as="h5">{i18next.t('Currently selected')}</Header>
                 <Segment
                   placeholder={!chosenCommunity}
-                  className="community-selected-item-container"
+                  className="community-selected-item-container m-0"
                   textAlign={chosenCommunity ? undefined : 'center'}
                 >
                   {chosenCommunity ? (
@@ -87,7 +87,7 @@ export class CommunitySelectionSearch extends Component {
                       <CommunityListItem result={chosenCommunity} standAlone />
                     </Item.Group>
                   ) : (
-                    <Header icon>
+                    <Header icon className="m-0">
                       <Icon name="users" />
                       {i18next.t('No community selected.')}
                     </Header>

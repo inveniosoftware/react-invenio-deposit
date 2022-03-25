@@ -7,7 +7,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Menu } from 'semantic-ui-react';
+import { Button, Menu } from 'semantic-ui-react';
 
 export const LicenseFilter = ({
   updateQueryFilters,
@@ -26,12 +26,14 @@ export const LicenseFilter = ({
   const onToggleClicked = () => {
     updateQueryFilters(userSelectionFilters.concat([filterValue]));
   };
-  var isChecked = _isChecked(userSelectionFilters);
+
+  const isChecked = _isChecked(userSelectionFilters);
   return isChecked ? (
     <Menu.Item
       name={label}
       active
-      className="license-menu-item-active"
+      as={Button}
+      primary
       onClick={onToggleClicked}
     >
       {title}
