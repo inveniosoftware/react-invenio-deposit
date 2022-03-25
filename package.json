@@ -1,6 +1,6 @@
 {
   "name": "react-invenio-deposit",
-  "version": "0.18.2",
+  "version": "0.18.3",
   "description": "React components to build forms in Invenio",
   "main": "dist/cjs/index.js",
   "browser": "dist/cjs/index.js",
@@ -94,7 +94,7 @@
     "react-dnd-html5-backend": "^11.1.0",
     "react-dom": "^16.13.0",
     "react-i18next": "^11.11.0",
-    "react-invenio-forms": "^0.10.2",
+    "react-invenio-forms": "^0.10.3",
     "react-overridable": "^0.0.3",
     "react-redux": "^7.2.0",
     "react-scripts": "^3.4.0",
