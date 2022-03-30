@@ -6,28 +6,28 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
+import { i18next } from '@translations/i18next';
+import { Formik } from 'formik';
 import PropTypes from 'prop-types';
-import { Modal, Grid, Header, Menu, Form } from 'semantic-ui-react';
+import React, { Component } from 'react';
+import { ActionButton, TextAreaField, TextField } from 'react-invenio-forms';
+import { OverridableContext } from 'react-overridable';
 import {
-  ReactSearchKit,
-  SearchBar,
-  InvenioSearchApi,
-  Toggle,
-  ResultsLoader,
   EmptyResults,
   Error,
+  InvenioSearchApi,
+  ReactSearchKit,
+  ResultsLoader,
+  SearchBar,
+  Toggle,
 } from 'react-searchkit';
-import { OverridableContext } from 'react-overridable';
+import { Form, Grid, Header, Menu, Modal } from 'semantic-ui-react';
+import * as Yup from 'yup';
 import { LicenseFilter } from './LicenseFilter';
 import { LicenseResults } from './LicenseResults';
-import { Formik } from 'formik';
-import { TextAreaField, TextField, ActionButton } from 'react-invenio-forms';
-import * as Yup from 'yup';
-import { i18next } from '@translations/i18next';
 
 const overriddenComponents = {
-  'SearchFilters.ToggleComponent': LicenseFilter,
+  'SearchFilters.Toggle.element': LicenseFilter,
 };
 
 const ModalTypes = {
