@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.19.0 (released 2022-03-31)
+* upgrade react-searchkit dependency
+
 Version 0.18.3 (released 2022-03-25)
 * forms: refactor styling classes
 * remove bottom margin from the form feedback
