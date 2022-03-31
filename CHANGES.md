@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.19.1 (released 2022-03-31)
+* upgrade react-searchkit dependency to v2.0.0 because of the
+  wrong version v1.0.0
+
 Version 0.19.0 (released 2022-03-31)
 * upgrade react-searchkit dependency
 
