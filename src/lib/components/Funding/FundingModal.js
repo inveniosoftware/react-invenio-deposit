@@ -17,6 +17,7 @@ import {
   EmptyResults,
   Error,
   Pagination,
+  withState
 } from 'react-searchkit';
 import { OverridableContext } from 'react-overridable';
 import { Formik } from 'formik';
@@ -81,7 +82,6 @@ export function FundingModal({
         .then((res) => {
           setFundersWithAwards(res.data.hits.hits);
         })
-        .catch((err) => console.log(err));
     }
   }, [open]);
 
@@ -130,6 +130,7 @@ export function FundingModal({
                 appName={'awards'}
                 urlHandlerApi={{ enabled: false }}
                 initialQueryState={searchConfig.initialQueryState}
+                // suggestionApi={'/api/awards'} TODO can I do it?
               >
                 <Grid>
                   <Grid.Row>
@@ -152,16 +153,7 @@ export function FundingModal({
                     <Grid.Column width={8} floated="right" textAlign="right">
                       <span>
                         <Icon name="filter" />
-                        <Dropdown
-                          placeholder={i18next.t('Funder')}
-                          search
-                          selection
-                          options={fundersWithAwards.map(({ pid, name }) => ({
-                            key: pid,
-                            value: pid,
-                            text: name,
-                          }))}
-                        />
+                        <FunderDropdown/>
                       </span>
                     </Grid.Column>
                   </Grid.Row>
@@ -211,6 +203,126 @@ export function FundingModal({
     </Formik>
   );
 }
+
+/**
+ * TODO
+ */
+const FunderDropdown = withState(({ currentResultsState: awardsList, search, selection }) => {
+  const [fundersFromFacets] = loadFundersFromFacets(awardsList);
+  const [query, setQuery] = React.useState("");
+  const [loadedFunders, loading] = queryFundersAPI(query);
+
+  /**
+   * TODO
+   * @param {*} awards 
+   * @returns 
+   */
+  function loadFundersFromFacets(awards) {
+    const [result, setResult] = React.useState([]);
+    React.useEffect(() => {
+
+      /**
+      * TODO
+      * @param {} awards
+      * @returns 
+      */
+      function getFundersFromAwardsFacet() {
+        if (awards.loading) {
+          setResult([]);
+          return;
+        }
+
+        const funders = awards.data.aggregations?.funders?.buckets.map((agg) => {
+          return {
+            key: agg.key,
+            value: agg.key,
+            text: agg.key
+          };
+        })
+        setResult(funders);
+      }
+
+      getFundersFromAwardsFacet();
+    }, [awards]);
+
+    return [result];
+  }
+
+  /**
+   * TODO
+   * @param {*} query 
+   * @returns 
+   */
+  function queryFundersAPI(query) {
+
+    const [result, setResult] = React.useState([]);
+    const [loading, setLoading] = React.useState(false); // TODO can we use already built components from react search kit?
+
+
+    function serializeFunderToDropdown(funder) {
+      return {
+        key: funder.pid,
+        value: funder.pid,
+        text: funder.acronym || funder.name
+      }
+    }
+
+    React.useEffect(() => {
+      /**
+       * TODO
+       * @returns 
+       */
+      async function searchFunders() {
+        setLoading(true);
+        axios
+          .get(`https://127.0.0.1:5000/api/funders?q=${query}`, {
+            headers: { 'Content-Type': 'application/json' },
+          })
+          .then((res) => {
+            setResult(
+              res.data.hits.hits.map((funder) =>
+                (serializeFunderToDropdown(funder))
+              )
+            );
+          })
+          .catch((error) => {
+            setResult([]);
+            setLoading(null);
+          });
+      }
+
+      if (query !== "") {
+        searchFunders();
+      }
+
+    }, [query]);
+
+    return [result, loading]
+  }
+
+  return (
+    <Dropdown
+      placeholder={i18next.t('Funder')}
+      search
+      selection
+      options={
+        loadedFunders.length ? loadedFunders : fundersFromFacets
+      }
+      onSearchChange={handleDropdownSearchChange}
+    />
+  )
+
+
+
+  /**
+   * TODO
+   * @param {*} e 
+   * @param {*} value 
+   */
+  function handleDropdownSearchChange(e, value) {
+    setQuery(value.searchQuery);
+  }
+});
 
 FundingModal.propTypes = {
   mode: PropTypes.oneOf(['standard', 'custom']).isRequired,
