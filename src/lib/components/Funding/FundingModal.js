@@ -26,9 +26,10 @@ import * as Yup from 'yup';
 import { AwardResults } from './AwardResults';
 import { CustomAwardForm } from './CustomAwardForm';
 import { NoAwardResults } from './NoAwardResults';
+import { i18next } from '@translations/i18next';
 
 const overriddenComponents = {
-  'EmptyResults.element': NoAwardResults,
+  'awards.EmptyResults.element': NoAwardResults,
 };
 
 const ModalTypes = {
@@ -41,13 +42,14 @@ const ModalActions = {
   EDIT: 'edit',
 };
 
+// TODO revisit this schema, does it makes sense?
 const FundingSchema = Yup.object().shape({
   selectedAward: Yup.object().shape({
     funder: Yup.object().shape({
-      id: Yup.string().required('Funder is a required field.'),
+      id: Yup.string().required(i18next.t('Funder is a required field.')),
     }),
     award: Yup.object().shape({
-      link: Yup.string().url('Link must be a valid URL'),
+      link: Yup.string().url(i18next.t('Link must be a valid URL')),
     }),
   }),
 });
@@ -65,11 +67,15 @@ export function FundingModal({
   const [fundersWithAwards, setFundersWithAwards] = useState([]);
   const [mode, setMode] = useState(initialMode);
 
+  // TODO this might not be needed. We have facets, and we only want to 
+  // TODO query when someone actually searches
   useEffect(() => {
     if (open) {
       axios
         // FIXME: use PROD URL eventually
-        .get('http://127.0.0.1:9999/api/vocabularies/funders/awards', {
+        // TODO get from facets or backend, depends on search state.
+        // const funders = results?.aggregations.funders.buckets;
+        .get('https://127.0.0.1:5000/api/funders', {
           headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => {
@@ -94,9 +100,7 @@ export function FundingModal({
 
   const initialAward = props.initialAward || {
     award: {
-      title: '',
-      number: '',
-      link: '',
+      "pid": "",
     },
   };
   const searchApi = new InvenioSearchApi(searchConfig.searchApi);
@@ -115,8 +119,8 @@ export function FundingModal({
         onClose={closeModal}
         closeIcon
       >
-        <Modal.Header as="h6" className="deposit-modal-header">
-          {mode === 'standard' ? 'Add standard award' : 'Add missing'}
+        <Modal.Header as="h6" className="pt-10 pb-10">
+          {mode === 'standard' ? i18next.t('Add standard award') : i18next.t('Add missing')}
         </Modal.Header>
         <Modal.Content>
           {mode === ModalTypes.STANDARD && (
@@ -127,8 +131,9 @@ export function FundingModal({
                 urlHandlerApi={{ enabled: false }}
                 initialQueryState={searchConfig.initialQueryState}
               >
-                <Grid padded>
+                <Grid>
                   <Grid.Row>
+                    {/* SearchBar implemented here */}
                     <Grid.Column
                       width={8}
                       floated="left"
@@ -143,29 +148,33 @@ export function FundingModal({
                         }}
                       />
                     </Grid.Column>
+                    {/* Dropdown implemented here */}
                     <Grid.Column width={8} floated="right" textAlign="right">
                       <span>
                         <Icon name="filter" />
                         <Dropdown
-                          placeholder="Funder..."
+                          placeholder={i18next.t('Funder')}
                           search
                           selection
-                          options={fundersWithAwards.map(({ id, name }) => ({
-                            key: id,
-                            value: id,
+                          options={fundersWithAwards.map(({ pid, name }) => ({
+                            key: pid,
+                            value: pid,
                             text: name,
                           }))}
                         />
                       </span>
                     </Grid.Column>
                   </Grid.Row>
-                  <Grid.Row>
+                  <Grid.Row verticalAlign='middle'>
                     <ResultsLoader>
                       <EmptyResults
                         switchToCustom={() => setMode(ModalTypes.CUSTOM)}
                       />
                       <Error />
-                      <AwardResults />
+                      <AwardResults
+                        serializeAward={props.serializeAward}
+                        computeFundingContents={props.computeFundingContents}
+                      />
                     </ResultsLoader>
                   </Grid.Row>
                   <Grid.Row>
@@ -187,7 +196,7 @@ export function FundingModal({
               closeModal();
             }}
             icon="remove"
-            content="Cancel"
+            content={i18next.t('Cancel')}
             floated="left"
           />
           <ActionButton
@@ -195,7 +204,7 @@ export function FundingModal({
             onClick={(event, formik) => formik.handleSubmit(event)}
             primary
             icon="checkmark"
-            content={action === ModalActions.ADD ? 'Add award' : 'Change award'}
+            content={action === ModalActions.ADD ? i18next.t('Add award') : i18next.t('Change award')}
           />
         </Modal.Actions>
       </Modal>
@@ -207,10 +216,7 @@ FundingModal.propTypes = {
   mode: PropTypes.oneOf(['standard', 'custom']).isRequired,
   action: PropTypes.oneOf(['add', 'edit']).isRequired,
   initialAward: PropTypes.shape({
-    id: PropTypes.string,
-    title: PropTypes.string,
-    number: PropTypes.string,
-    link: PropTypes.string,
+    pid: PropTypes.string
   }),
   trigger: PropTypes.object.isRequired,
   onAwardChange: PropTypes.func.isRequired,
@@ -222,4 +228,6 @@ FundingModal.propTypes = {
     }).isRequired,
     initialQueryState: PropTypes.object.isRequired,
   }).isRequired,
+  serializeAward: PropTypes.func.isRequired,
+  computeFundingContents: PropTypes.func.isRequired
 };

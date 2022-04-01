@@ -8,16 +8,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Message } from 'semantic-ui-react';
+import { i18next } from '@translations/i18next';
 
 export function NoAwardResults({ switchToCustom }) {
   return (
     <Message
       warning
       icon="warning circle"
-      header="No results found"
+      header={i18next.t('No results found')}
       content={
         <p>
-          No awards matching your criteria were found.{' '}
+          {i18next.t('No awards matching your criteria were found.')}
           <a
             href="#"
             onClick={(e) => {
@@ -25,7 +26,7 @@ export function NoAwardResults({ switchToCustom }) {
               switchToCustom();
             }}
           >
-            Add a custom award.
+            {i18next.t('Add a custom award.')}
           </a>
         </p>
       }
