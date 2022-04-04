@@ -28,6 +28,7 @@ import { AwardResults } from './AwardResults';
 import { CustomAwardForm } from './CustomAwardForm';
 import { NoAwardResults } from './NoAwardResults';
 import { i18next } from '@translations/i18next';
+import { clone, cloneDeep } from 'lodash';
 
 const overriddenComponents = {
   'awards.EmptyResults.element': NoAwardResults,
@@ -65,25 +66,7 @@ export function FundingModal({
   ...props
 }) {
   const [open, setOpen] = useState(false);
-  const [fundersWithAwards, setFundersWithAwards] = useState([]);
   const [mode, setMode] = useState(initialMode);
-
-  // TODO this might not be needed. We have facets, and we only want to 
-  // TODO query when someone actually searches
-  useEffect(() => {
-    if (open) {
-      axios
-        // FIXME: use PROD URL eventually
-        // TODO get from facets or backend, depends on search state.
-        // const funders = results?.aggregations.funders.buckets;
-        .get('https://127.0.0.1:5000/api/funders', {
-          headers: { 'Content-Type': 'application/json' },
-        })
-        .then((res) => {
-          setFundersWithAwards(res.data.hits.hits);
-        })
-    }
-  }, [open]);
 
   const openModal = () => setOpen(true);
   const closeModal = () => {
@@ -130,18 +113,17 @@ export function FundingModal({
                 appName={'awards'}
                 urlHandlerApi={{ enabled: false }}
                 initialQueryState={searchConfig.initialQueryState}
-                // suggestionApi={'/api/awards'} TODO can I do it?
+                // suggestionApi={'/api/awards'} TODO can I do it? to implement suggester
               >
                 <Grid>
                   <Grid.Row>
-                    {/* SearchBar implemented here */}
                     <Grid.Column
                       width={8}
                       floated="left"
                       verticalAlign="middle"
                     >
                       <SearchBar
-                        autofocus
+                        autofocus // TODO not working
                         actionProps={{
                           icon: 'search',
                           content: null,
@@ -205,21 +187,122 @@ export function FundingModal({
 }
 
 /**
- * TODO
+ * TODO implement in its own file
  */
-const FunderDropdown = withState(({ currentResultsState: awardsList, search, selection }) => {
-  const [fundersFromFacets] = loadFundersFromFacets(awardsList);
+const FunderDropdown = withState(({ currentResultsState: awardsList, currentQueryState: currentQueryState, updateQueryState: updateQueryState }) => {
+  // TODO After querying and deleting, facets should show up again.
+  const [fundersFromFacets] = useFundersFromFacets(awardsList);
   const [query, setQuery] = React.useState("");
-  const [loadedFunders, loading] = queryFundersAPI(query);
+  const [loadedFunders, loading] = useFundersAPI(query);
+
+  /**
+   * TODO
+   * @param {*} event 
+   * @param {*} data 
+   */
+  function onFunderSelect(event, data) {
+    const newQueryState = cloneDeep(currentQueryState);
+    const newFilters = updateFiltersArray(newQueryState.filters, ['funders', data.value]);
+    newQueryState.filters = newFilters;
+    console.log("New filters");
+    console.log(newQueryState.filters);
+    updateQueryState(newQueryState); // TODO can I trigger updateQueryFilters directly?
+    // TODO query is returning all awards
+  }
+
+  /**
+   * Updates a query's filter array with a new entry.
+   * A new array is returned.
+   * 
+   * @param {*} filters 
+   */
+  function updateFiltersArray(filters, newFilterEntry) {
+
+    let newFilters = [];
+
+    // New entry is invalid, format is [field, value]
+    if (newFilterEntry.length !== 2) {
+      return cloneDeep(array);
+    }
+
+    // Filters are empty, push the new entry if it has any value set.
+    if (filters.length === 0) {
+      if (newFilterEntry[1] !== "") {
+        newFilters.push(newFilterEntry);
+      }
+
+      return newFilters;
+    }
+
+    let tmpFilterEntry;
+
+    // Iterate filters and update them if needed.
+    filters.forEach(filter => {
+      tmpFilterEntry = computeNewFilter(filter, newFilterEntry);
+      if (tmpFilterEntry.length) {
+        newFilters.push(tmpFilterEntry);
+      }
+    });
+
+    return newFilters;
+
+    /**
+     * This method computes an array given two arrays.
+     * Each array represents a query 'filter' as ['field', 'value'].
+     * If the given filters are the same, one of the following applies:
+     * 1 - filter's value is changed, if it has a new value.
+     * 2 - filter is discarded, if it has not a new value.
+     * 
+     * @param {array} filter 
+     * @param {array} newFilter 
+     * 
+     * @returns {array} new filter's representation 
+     */
+    function computeNewFilter(filter, newFilter) {
+      if (newFilter.length !== 2 || filter.length !== 2) {
+        return [];
+      }
+
+      let [newFilterField, newFilterValue] = newFilter;
+
+      if (filter[0] === newFilterField) {
+        if (newFilterValue !== "") {
+          return newFilter;
+        }
+        return [];
+      }
+      return filter;
+    }
+  }
+
+  // TODO since it is memoized, 'timer' persists between re-renders meaning that 
+  // TODO the timer will be updated on every keystroke.
+  const debounce = (func) => {
+    let timer;
+    return function (...args) {
+      const context = this;
+      if (timer)
+        clearTimeout(timer);
+      timer = setTimeout(() => {
+        timer = null;
+        func.apply(context, args);
+      }, 500);
+    };
+  };
+
+  /**
+   * TODO
+   */
+  const debounceCb = React.useCallback(debounce(handleDropdownSearchChange), []);
 
   /**
    * TODO
    * @param {*} awards 
    * @returns 
    */
-  function loadFundersFromFacets(awards) {
+  function useFundersFromFacets(awards) {
     const [result, setResult] = React.useState([]);
-    React.useEffect(() => {
+    React.useEffect(() => {  // TODO there are two useEffect hooks of this. Is it ok?
 
       /**
       * TODO
@@ -249,21 +332,40 @@ const FunderDropdown = withState(({ currentResultsState: awardsList, search, sel
   }
 
   /**
-   * TODO
+   * Hook to query funder's API.
+   * When 'query' changes, the hook will be executed and a request is going to be executed to retrieve
+   * funders from the API.
+   * 
+   * TODO 
    * @param {*} query 
    * @returns 
    */
-  function queryFundersAPI(query) {
+  function useFundersAPI(query) {
+    console.log('useFundersAPI');
 
     const [result, setResult] = React.useState([]);
     const [loading, setLoading] = React.useState(false); // TODO can we use already built components from react search kit?
 
 
+    /**
+     * Auxiliary function to serialize a funder to match the dropdown's schema. 
+     * 
+     * @param {object} funder
+     * @param {string} funder.pid 
+     * @param {string} [funder.acronym]
+     * @param {string} [funder.name] 
+     * 
+     * @returns 
+     */
     function serializeFunderToDropdown(funder) {
+      if (!funder || !funder.pid) {
+        return {};
+      }
+
       return {
         key: funder.pid,
         value: funder.pid,
-        text: funder.acronym || funder.name
+        text: funder.acronym || funder.name || funder.pid
       }
     }
 
@@ -273,6 +375,10 @@ const FunderDropdown = withState(({ currentResultsState: awardsList, search, sel
        * @returns 
        */
       async function searchFunders() {
+        if (query === "") {
+          setResult([]);
+          return;
+        }
         setLoading(true);
         axios
           .get(`https://127.0.0.1:5000/api/funders?q=${query}`, {
@@ -291,9 +397,7 @@ const FunderDropdown = withState(({ currentResultsState: awardsList, search, sel
           });
       }
 
-      if (query !== "") {
-        searchFunders();
-      }
+      searchFunders();
 
     }, [query]);
 
@@ -301,14 +405,17 @@ const FunderDropdown = withState(({ currentResultsState: awardsList, search, sel
   }
 
   return (
+    // TODO selection is not being cleared properly
     <Dropdown
       placeholder={i18next.t('Funder')}
       search
       selection
+      clearable
       options={
         loadedFunders.length ? loadedFunders : fundersFromFacets
       }
-      onSearchChange={handleDropdownSearchChange}
+      onSearchChange={(e, value) => debounceCb(value)}
+      onChange={onFunderSelect}
     />
   )
 
@@ -319,7 +426,7 @@ const FunderDropdown = withState(({ currentResultsState: awardsList, search, sel
    * @param {*} e 
    * @param {*} value 
    */
-  function handleDropdownSearchChange(e, value) {
+  function handleDropdownSearchChange(value) {
     setQuery(value.searchQuery);
   }
 });
