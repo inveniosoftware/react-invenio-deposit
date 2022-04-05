@@ -16,6 +16,8 @@ import { FieldLabel } from 'react-invenio-forms';
 import { FundingFieldItem } from './FundingFieldItem';
 import { FundingModal } from './FundingModal';
 
+import { i18next } from '@translations/i18next';
+
 function FundingFieldForm(props) {
   const {
     label,
@@ -29,6 +31,25 @@ function FundingFieldForm(props) {
     required,
   } = props;
 
+  const computeFundingContents = props.computeFundingContents 
+  ? props.computeFundingContents
+  :(award) => {
+    const awardTitle = award.title;
+    const funderName = award?.funder?.name ?? award.funder.title.en ?? award?.funder?.id ?? '';
+
+    const headerContent = awardTitle ?? funderName;
+    const descriptionContent = headerContent === awardTitle ? funderName : '';
+    return { headerContent, descriptionContent };
+  };
+
+  const serializeAward = props.serializeAward
+  ? props.serializeAward
+  : (award) => ({
+    title: award.title.en ?? award.title, // TODO deserialize properly
+    pid: award.pid,
+    number: award.number,
+    funder: award.funder ?? ''
+  });
   return (
     <DndProvider backend={HTML5Backend}>
       <Form.Field required={required}>
@@ -38,27 +59,28 @@ function FundingFieldForm(props) {
           label={label}
         ></FieldLabel>
         <List>
+          {/* TODO don't get values from field path actually? Unless added items go there */}
           {getIn(values, fieldPath, []).map((value, index, array) => {
+            const serializedAward = serializeAward(value.award);
             const arrayPath = fieldPath;
             const indexPath = index;
             const key = `${arrayPath}.${indexPath}`;
-            const funderName = value.funder?.name;
             // if award has no id, it's a custom one
-            const awardType = value.award?.id ? 'standard' : 'custom';
+            const awardType = serializedAward.pid ? 'standard' : 'custom';
             return (
               <FundingFieldItem
-                key={key}
+                key={key} // TODO key overlaps?
                 {...{
                   index,
-                  compKey: key,
-                  initialAward: awardType === 'custom' ? value : null,
-                  award: value.award,
-                  funderName,
+                  compKey: key, // TODO key overlaps?
+                  award: serializedAward,
                   awardType,
                   moveAward: formikArrayMove,
                   replaceAward: formikArrayReplace,
                   removeAward: formikArrayRemove,
                   searchConfig: props.searchConfig,
+                  computeFundingContents: computeFundingContents,
+                  serializeAward: props.serializeAward
                 }}
               />
             );
@@ -68,7 +90,7 @@ function FundingFieldForm(props) {
             trigger={
               <Button>
                 <Icon name="add" />
-                Add award
+                {i18next.t('Add award')}
               </Button>
             }
             onAwardChange={(selectedAward) => {
@@ -76,13 +98,15 @@ function FundingFieldForm(props) {
             }}
             mode="standard"
             action="add"
+            serializeAward = {props.serializeAward}            
+            computeFundingContents = {props.computeFundingContents}
           />
           <FundingModal
             searchConfig={props.searchConfig}
             trigger={
               <Button>
                 <Icon name="add" />
-                Add missing
+                {i18next.t('Add custom')}
               </Button>
             }
             onAwardChange={(selectedAward) => {
@@ -90,6 +114,8 @@ function FundingFieldForm(props) {
             }}
             mode="custom"
             action="add"
+            serializeAward = {props.serializeAward}
+            computeFundingContents= {props.computeFundingContents}
           />
         </List>
       </Form.Field>
@@ -114,7 +140,8 @@ FundingField.propTypes = {
   labelIcon: PropTypes.string,
   searchConfig: PropTypes.object.isRequired,
   required: PropTypes.bool,
-  serializeAwards: PropTypes.func,
+  serializeAward: PropTypes.func,
+  computeFundingContents: PropTypes.func
 };
 
 FundingField.defaultProps = {

@@ -222,9 +222,20 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
       serializedDefault: [],
       labelField: 'subject',
     }),
-    funding: new Field({
+    funding: new SchemaField({
       fieldpath: 'metadata.funding',
-      deserializedDefault: [emptyFunding],
+      schema: {
+        award: new VocabularyField({
+          fieldpath: 'award',
+          deserializedDefault: [],
+          localeFields: ['title']
+        }),
+        funder: new VocabularyField({
+          fieldpath: 'funder',
+          deserializedDefault: [],
+          localeFields: []
+        })
+      }
     }),
     version: new Field({
       fieldpath: 'metadata.version',

@@ -6,6 +6,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import i18next from 'i18next';
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { Button, Label, List, Ref } from 'semantic-ui-react';
@@ -15,14 +16,14 @@ import { FundingModal } from './FundingModal';
 export const FundingFieldItem = ({
   compKey,
   index,
-  initialAward,
   award,
-  funderName,
   awardType,
   moveAward,
   replaceAward,
   removeAward,
   searchConfig,
+  serializeAward,
+  computeFundingContents
 }) => {
   const dropRef = React.useRef(null);
   const [_, drag, preview] = useDrag({
@@ -52,6 +53,8 @@ export const FundingFieldItem = ({
     }),
   });
 
+  let {headerContent, descriptionContent} = computeFundingContents(award);
+
   // Initialize the ref explicitely
   drop(dropRef);
   return (
@@ -69,41 +72,40 @@ export const FundingFieldItem = ({
               replaceAward(index, selectedAward);
             }}
             mode={awardType}
-            initialAward={initialAward}
             action="edit"
             trigger={
               <Button size="mini" primary type="button">
                 Edit
               </Button>
             }
+            serializeAward={serializeAward}
+            computeFundingContents={computeFundingContents}
           />
           <Button size="mini" type="button" onClick={() => removeAward(index)}>
             Remove
           </Button>
         </List.Content>
 
+        {/* TODO in case of empty results, this gets rendered as an empty bar */}
         <Ref innerRef={drag}>
           <List.Icon name="bars" className="drag-anchor" />
         </Ref>
         <Ref innerRef={preview}>
           <List.Content>
             <List.Header>
-              {!!award?.title ? (
+              {(
                 <span>
-                  {award?.title}{' '}
-                  {!!award?.number && (
+                  {headerContent}
+                  {/* TODO what if award does not have title? We're using funder for header content. IN that case, award number should not be displayed */}
+                  {award.number && (
                     <Label basic size="mini">
-                      {award?.number}
+                      {award.number}
                     </Label>
                   )}
                 </span>
-              ) : (
-                funderName
               )}
             </List.Header>
-            {!!award?.title && (
-              <List.Description>{funderName}</List.Description>
-            )}
+            <List.Description>{descriptionContent}</List.Description>
           </List.Content>
         </Ref>
       </List.Item>

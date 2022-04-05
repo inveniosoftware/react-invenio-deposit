@@ -17,20 +17,62 @@ export class VocabularyField extends Field {
     deserializedDefault = null,
     serializedDefault = null,
     labelField = 'name',
+    localeFields = [],
   }) {
     super({ fieldpath, deserializedDefault, serializedDefault });
     this.labelField = labelField;
+    this.localeFields = localeFields;
   }
 
-  deserialize(record) {
+  /**
+   * Deserializes a given record, optionally using a locale.
+   * Optional argument 'locale' is used to deserialize a composite property of the record which has multiple languages support.
+   * 
+   * @param {object} record The record to be deserialized. 
+   * @param {string} [locale="en"] A string that matches a locale. 
+   * 
+   * @example <caption>Deserialize a record usign a locale</caption>
+   * const vocabField = new VocabularyField({fieldpath: "nation", localeFields: ["name"]})
+   * vocabField.deserialize(country: {{nation: {name: {en: "Switzerland", fr: "Suisse"}}}, capital: 'Bern'}, "fr")
+   * // returns {nation: {name: "Suisse"}}
+   * 
+   * @returns {object} Returns a deep copy of the given record, deserialized using the provided settings.
+   */
+  deserialize(record, locale="en") {
+    /**
+     * Deserializes an object. 
+     * 
+     * If the object contains an id, its returned as-is. 
+     * If 'localeFields' is populated, each field going to be deserialized using a provided locale or a default one ("en").
+     * If no locale is found within the object, the given object's clone is not mutated. Same applies for invalid locale fields.
+     * 
+     * @param {object} value The object to be deserialized.
+     * 
+     * @returns {(object|*)} Returns a clone of the given object or its 'id' property, if exists.
+     */
+    const _deserialize = (value) => {
+      if (value?.id) {
+        return value.id;
+      }
+      
+      if (this.localeFields.length > 0){
+        const clonedValue = _cloneDeep(value);
+        this.localeFields.forEach((field) => {
+          clonedValue[field] = value?.[field]?.[locale] || clonedValue[field];
+        });
+        return clonedValue;
+      }
+
+    };
+
     const fieldValue = _get(record, this.fieldpath, this.deserializedDefault);
-    const _deserialize = (value) => value.id;
     let deserializedValue = null;
     if (fieldValue !== null) {
       deserializedValue = Array.isArray(fieldValue)
         ? fieldValue.map(_deserialize)
         : _deserialize(fieldValue);
     }
+
     return _set(
       _cloneDeep(record),
       this.fieldpath,
@@ -38,7 +80,10 @@ export class VocabularyField extends Field {
     );
   }
 
-  serialize(record) {
+  // TODO this might not be correct. If we are trying to serialize an object that was deserialized,
+  // TODO we might have already lost other locales data.
+  // TODO additionally, if the locale is changed between de/serialization we might be serializing to the wrong locale. 
+  serialize(record, locale='en') {
     let fieldValue = _get(record, this.fieldpath, this.serializedDefault);
     let serializedValue = null;
     if (fieldValue !== null) {
@@ -46,10 +91,22 @@ export class VocabularyField extends Field {
         ? fieldValue.map((value) => {
             if (typeof value === 'string') {
               return { id: value };
-            } else {
+            }
+            
+            if (this.localeFields){
+              // TODO validate this
+              const serLocaleFields = this.localeFields.map((field) => {
+                if (field in fieldValue) {
+                  return { [field]: {
+                    [locale]: fieldValue[field]
+                  } };
+                }
+              });
+
               return {
                 ...(value.id ? { id: value.id } : {}),
                 [this.labelField]: value[this.labelField],
+                ...serLocaleFields
               };
             }
           })

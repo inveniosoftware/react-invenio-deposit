@@ -10,7 +10,7 @@ import React, { useState } from 'react';
 import { Accordion, Form, Icon } from 'semantic-ui-react';
 import { TextField, RemoteSelectField } from 'react-invenio-forms';
 
-export function CustomAwardForm({ initialAward }) {
+export function CustomAwardForm() {
   const [accordionActive, setAccordionActive] = useState(true);
 
   return (
@@ -18,13 +18,15 @@ export function CustomAwardForm({ initialAward }) {
       <RemoteSelectField
         fieldPath="selectedAward.funder.id"
         // TODO: Use PROD URL eventually
-        suggestionAPIUrl="http://127.0.0.1:9999/api/vocabularies/funders"
+        suggestionAPIUrl="https://127.0.0.1:5000/api/funders"
         suggestionAPIHeaders={{
-          Accept: 'application/vnd.inveniordm.v1+json',
+          // Accept: 'application/vnd.inveniordm.v1+json',
+          // TODO why this header?
+          Accept: 'application/json',
         }}
         placeholder={'Search for a funder by name'}
         clearable
-        initialSuggestions={initialAward.funder ? [initialAward.funder] : []}
+        initialSuggestions={[]}
         serializeSuggestions={(funders) =>
           funders.map((funder) => ({
             text: funder.name,
@@ -66,10 +68,9 @@ export function CustomAwardForm({ initialAward }) {
               fieldPath="selectedAward.award.number"
             ></TextField>
             <TextField
-              label="Link"
-              placeholder="Award link"
-              fieldPath="selectedAward.award.link"
-              type="url"
+              label="Title"
+              placeholder="Award Title"
+              fieldPath="selectedAward.award.title"
             ></TextField>
           </Form.Group>
         </Accordion.Content>
