@@ -36,21 +36,19 @@ export const LicenseResults = withState(
                       serializeLicenseResult(result)
                     )
                   }
-                  className="license-item"
+                  className="license-item mb-15"
                 >
-                  <Image ui={false} className="license-radiobox" centered>
-                    <Radio
-                      checked={_get(values, 'selectedLicense.title') === title}
-                      onChange={() =>
-                        setFieldValue(
-                          'selectedLicense',
-                          serializeLicenseResult(result)
-                        )
-                      }
-                    />
-                  </Image>
+                  <Radio
+                    checked={_get(values, 'selectedLicense.title') === title}
+                    onChange={() =>
+                      setFieldValue(
+                        'selectedLicense',
+                        serializeLicenseResult(result)
+                      )
+                    }
+                  />
                   <Item.Content className="license-item-content">
-                    <Header size="small">{title}</Header>
+                    <Header size="small mt-0">{title}</Header>
                     <Item.Description className="license-item-description">
                       {description}
                     </Item.Description>

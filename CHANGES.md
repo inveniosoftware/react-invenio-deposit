@@ -1,5 +1,16 @@
 # Changes
 
+Version 0.19.1 (released 2022-03-31)
+* upgrade react-searchkit dependency to v2.0.0 because of the
+  wrong version v1.0.0
+
+Version 0.19.0 (released 2022-03-31)
+* upgrade react-searchkit dependency
+
+Version 0.18.3 (released 2022-03-25)
+* forms: refactor styling classes
+* remove bottom margin from the form feedback
+
 Version 0.18.2 (released 2022-03-18)
 * add submit review confirmation modal
 * forms: refactor buttons style

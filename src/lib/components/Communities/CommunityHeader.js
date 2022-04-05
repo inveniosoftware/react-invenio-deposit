@@ -21,27 +21,27 @@ class CommunityHeaderComponent extends Component {
       this.props;
 
     return (
-      <Container className="community-header-outer" fluid>
-        <Container className="community-header">
+      <Container className="page-subheader-outer compact" fluid>
+        <Container className="page-subheader">
           {community ? (
             <>
-              <div className="community-header-element">
+              <div className="page-subheader-element">
                 <Image
                   className="community-logo-header"
                   src={community.logo || imagePlaceholderLink}
                   fallbackSrc={imagePlaceholderLink}
                 />
               </div>
-              <div className="community-header-element">
+              <div className="page-subheader-element">
                 {community.title || community.uuid}
               </div>
             </>
           ) : (
-            <div className="community-header-element">
+            <div className="page-subheader-element">
               {i18next.t('No community selected.')}
             </div>
           )}
-          <div className="community-header-element">
+          <div className="page-subheader-element">
             <CommunitySelectionModal
               onCommunityChange={(community) => {
                 changeSelectedCommunity(community);
