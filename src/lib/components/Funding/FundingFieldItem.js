@@ -98,7 +98,6 @@ export const FundingFieldItem = ({
               {(
                 <>
                   {headerContent}
-                  {/* TODO what if award does not have title? We're using funder for header content. IN that case, award number should not be displayed */}
                   {awardOrFunder === 'award'
                     ? (fundingItem.award.number && (
                       <Label basic size="mini">

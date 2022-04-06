@@ -1,13 +1,14 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2021 CERN.
+// Copyright (C) 2021-2022 CERN.
 // Copyright (C) 2021 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import React, { useState } from 'react';
+
 import PropTypes from 'prop-types';
-import { Dropdown, Grid, Modal, Icon, Form } from 'semantic-ui-react';
+import { Grid, Modal, Icon } from 'semantic-ui-react';
 import _isEmpty from 'lodash/isEmpty';
 import {
   ReactSearchKit,
@@ -16,18 +17,18 @@ import {
   ResultsLoader,
   EmptyResults,
   Error,
-  Pagination,
-  withState
-,} from 'react-searchkit';
+  Pagination
+} from 'react-searchkit';
 import { OverridableContext } from 'react-overridable';
 import { Formik } from 'formik';
-import { ActionButton, RemoteSelectField, TextField } from 'react-invenio-forms';
+import { ActionButton } from 'react-invenio-forms';
 import * as Yup from 'yup';
+import { i18next } from '@translations/i18next';
 
 import { AwardResults } from './AwardResults';
 import { CustomAwardForm } from './CustomAwardForm';
 import { NoAwardResults } from './NoAwardResults';
-import { i18next } from '@translations/i18next';
+import { FunderDropdown } from './FunderDropdown';
 
 const overriddenComponents = {
   'awards.EmptyResults.element': NoAwardResults,
@@ -62,7 +63,7 @@ const FundingSchema = Yup.object().shape({
 
 export function FundingModal({
   action,
-  mode,
+  mode: initialMode,
   handleSubmit,
   trigger,
   onAwardChange,
@@ -73,12 +74,18 @@ export function FundingModal({
   ...props
 }) {
   const [open, setOpen] = useState(false);
-
+  const [mode, setMode] = useState(initialMode);
+  console.log('mode');
+  console.log(mode);
   const openModal = () => setOpen(true);
-  const closeModal = () =>  setOpen(false);
+  const closeModal = () => {
+    setMode(initialMode);
+    setOpen(false);
+  };  
   const onSubmit = (values, formikBag) => {
     formikBag.setSubmitting(false);
     formikBag.resetForm();
+    setMode(initialMode);
     closeModal();
     onAwardChange(values.selectedFunding);
   };
@@ -128,7 +135,7 @@ export function FundingModal({
                       verticalAlign="middle"
                     >
                       <SearchBar
-                        autofocus // TODO not working
+                        autofocus
                         actionProps={{
                           icon: 'search',
                           content: null,
@@ -137,13 +144,16 @@ export function FundingModal({
                       />
                     </Grid.Column>
                     {/* Dropdown implemented here */}
-                    <Grid.Column width={8} floated="right" textAlign="right" className='flex'>
+                    <Grid.Column width={8} floated="right" textAlign="right">
                         <Icon name="filter" />
                         <FunderDropdown/>
                     </Grid.Column>
                   </Grid.Row>
                   <Grid.Row verticalAlign='middle'>
                     <ResultsLoader>
+                      {/* TODO switch to custom is being passed as 'undefined' and throws an error */}
+                      {/* TODO check whether it has something to do with react-searchkit / react-overridable */}
+                      {/* TODO maybe the component (NoAwardResults) is being rendered before the prop is injected */}
                       <EmptyResults
                         switchToCustom={() => setMode(ModalTypes.CUSTOM)}
                       />
@@ -191,89 +201,6 @@ export function FundingModal({
     </Formik>
   );
 }
-
-/**
- * TODO implement in its own file
- */
-const FunderDropdown = withState(({ currentResultsState: awardsList, updateQueryState: updateQueryState }) => {
-  const [fundersFromFacets] = useFundersFromFacets(awardsList);
-
-  /**
-   * TODO
-   * @param {*} event 
-   * @param {*} data 
-   */
-  function onFunderSelect(event, data) {
-    let newFilter = [];
-
-    if (data && data.value !== "") {
-      newFilter = ['funders', data.value]
-    }
-    updateQueryState({ filters: newFilter });
-  }
-
-  /**
- * TODO
- * @param {*} awards 
-   * @param {*} awards 
- * @param {*} awards 
-   * @param {*} awards 
- * @param {*} awards 
- * @returns 
-   * @returns 
- * @returns 
-   * @returns 
- * @returns 
- */
-  function useFundersFromFacets(awards) {
-    const [result, setResult] = React.useState([]);
-    React.useEffect(() => {
-
-      /**
-      * TODO
-      * @param {} awards
-      * @returns 
-      * @returns 
-      * @returns 
-      */
-      function getFundersFromAwardsFacet() {
-        if (awards.loading) {
-          setResult([]);
-          return;
-        }
-
-        const funders = awards.data.aggregations?.funders?.buckets.map((agg) => {
-          return {
-            key: agg.key,
-            value: agg.key,
-            text: agg.label
-          };
-        })
-        setResult(funders);
-      }
-
-      getFundersFromAwardsFacet();
-    }, [awards]);
-
-    return [result];
-  }
-
-  return (
-    <Dropdown
-      placeholder={i18next.t('Funder')}
-      search
-      selection
-      clearable
-      multiple={false}
-      options={fundersFromFacets || []}
-      allowAdditions={false}
-      onChange={onFunderSelect}
-      fluid={false}
-      selectOnBlur={false}
-      selectOnNavigation={false}
-    />
-  )
-});
 
 FundingModal.propTypes = {
   mode: PropTypes.oneOf(['standard', 'custom']).isRequired,

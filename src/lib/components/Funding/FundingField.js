@@ -79,7 +79,6 @@ function FundingFieldForm(props) {
           label={label}
         ></FieldLabel>
         <List>
-          {/* TODO don't get values from field path actually? Unless added items go there */}
           {getIn(values, fieldPath, []).map((value, index, array) => {
             console.log('Iterating value ');
             console.log(value);
@@ -93,7 +92,7 @@ function FundingFieldForm(props) {
                 key={key}
                 {...{
                   index,
-                  compKey: key, // TODO key overlaps?
+                  compKey: key,
                   fundingItem: value,
                   awardType,
                   moveFunding: formikArrayMove,

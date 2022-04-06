@@ -19,7 +19,7 @@ export const AwardResults = withState(({ currentResultsState: results, deseriali
         return (
           <Item.Group>
             {results.data.hits.map((award) => {
-              // TODO check internationalization and unprotected accesses
+              // TODO check internationalization
               let funder = award?.funder;
               const deserializedAward = deserializeAward(award);
               const deserializedFunder = deserializeFunder(funder);
@@ -38,7 +38,6 @@ export const AwardResults = withState(({ currentResultsState: results, deseriali
                   }
                   className="license-item"
                 >
-                  {/* TODO selectedFunding is not being cleared after submitting */}
                   <Radio
                     checked={
                       _get(values, 'selectedFunding.award.pid') === funding.award.pid

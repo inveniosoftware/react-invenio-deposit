@@ -18,7 +18,7 @@ export { DepositFormTitle } from './DepositFormTitle';
 export { DescriptionsField } from './DescriptionsField';
 export { FileUploader } from './FileUploader';
 export { FormFeedback } from './FormFeedback';
-export { FundingField } from './FundingField';
+export * from './Funding';
 export { IdentifiersField, PIDField } from './Identifiers';
 export { LanguagesField } from './LanguagesField';
 export * from './License';
