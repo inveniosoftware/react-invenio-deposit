@@ -31,7 +31,6 @@ function FundingFieldForm(props) {
     required,
   } = props;
 
-<<<<<<< HEAD
   const deserializeAward = props.deserializeAward
   ? props.deserializeAward
   : (award) => ({
@@ -71,27 +70,6 @@ function FundingFieldForm(props) {
 
     return { headerContent, descriptionContent, awardOrFunder };
   };
-=======
-  const computeFundingContents = props.computeFundingContents 
-  ? props.computeFundingContents
-  :(award) => {
-    const awardTitle = award.title;
-    const funderName = award?.funder?.name ?? award.funder.title.en ?? award?.funder?.id ?? '';
-
-    const headerContent = awardTitle ?? funderName;
-    const descriptionContent = headerContent === awardTitle ? funderName : '';
-    return { headerContent, descriptionContent };
-  };
-
-  const serializeAward = props.serializeAward
-  ? props.serializeAward
-  : (award) => ({
-    title: award.title.en ?? award.title, // TODO deserialize properly
-    pid: award.pid,
-    number: award.number,
-    funder: award.funder ?? ''
-  });
->>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
   return (
     <DndProvider backend={HTML5Backend}>
       <Form.Field required={required}>
@@ -101,20 +79,13 @@ function FundingFieldForm(props) {
           label={label}
         ></FieldLabel>
         <List>
-<<<<<<< HEAD
           {getIn(values, fieldPath, []).map((value, index, array) => {
             console.log('Iterating value ');
             console.log(value);
-=======
-          {/* TODO don't get values from field path actually? Unless added items go there */}
-          {getIn(values, fieldPath, []).map((value, index, array) => {
-            const serializedAward = serializeAward(value.award);
->>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
             const arrayPath = fieldPath;
             const indexPath = index;
             const key = `${arrayPath}.${indexPath}`;
             // if award has no id, it's a custom one
-<<<<<<< HEAD
             const awardType = value.award.pid ? 'standard' : 'custom';
             return (
               <FundingFieldItem
@@ -131,23 +102,6 @@ function FundingFieldForm(props) {
                   computeFundingContents: computeFundingContents,
                   deserializeAward: deserializeAward,
                   deserializeFunder: deserializeFunder
-=======
-            const awardType = serializedAward.pid ? 'standard' : 'custom';
-            return (
-              <FundingFieldItem
-                key={key} // TODO key overlaps?
-                {...{
-                  index,
-                  compKey: key, // TODO key overlaps?
-                  award: serializedAward,
-                  awardType,
-                  moveAward: formikArrayMove,
-                  replaceAward: formikArrayReplace,
-                  removeAward: formikArrayRemove,
-                  searchConfig: props.searchConfig,
-                  computeFundingContents: computeFundingContents,
-                  serializeAward: props.serializeAward
->>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
                 }}
               />
             );
@@ -155,16 +109,11 @@ function FundingFieldForm(props) {
           <FundingModal
             searchConfig={props.searchConfig}
             trigger={
-<<<<<<< HEAD
               <Button type="button" key="custom" icon labelPosition="left">
-=======
-              <Button>
->>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
                 <Icon name="add" />
                 {i18next.t('Add award')}
               </Button>
             }
-<<<<<<< HEAD
             onAwardChange={(selectedFunding) => {
               console.log('Add award on award change');
               formikArrayPush(selectedFunding);
@@ -174,29 +123,15 @@ function FundingFieldForm(props) {
             deserializeAward={deserializeAward}      
             deserializeFunder={deserializeFunder}      
             computeFundingContents={computeFundingContents}
-=======
-            onAwardChange={(selectedAward) => {
-              formikArrayPush(selectedAward);
-            }}
-            mode="standard"
-            action="add"
-            serializeAward = {props.serializeAward}            
-            computeFundingContents = {props.computeFundingContents}
->>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
           />
           <FundingModal
             searchConfig={props.searchConfig}
             trigger={
-<<<<<<< HEAD
               <Button type="button" key="custom" icon labelPosition="left">
-=======
-              <Button>
->>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
                 <Icon name="add" />
                 {i18next.t('Add custom')}
               </Button>
             }
-<<<<<<< HEAD
             onAwardChange={(selectedFunding) => {
               console.log('Add custom award on award change');
               formikArrayPush(selectedFunding);
@@ -206,15 +141,6 @@ function FundingFieldForm(props) {
             deserializeAward={deserializeAward}
             deserializeFunder={deserializeFunder}      
             computeFundingContents={computeFundingContents}
-=======
-            onAwardChange={(selectedAward) => {
-              formikArrayPush(selectedAward);
-            }}
-            mode="custom"
-            action="add"
-            serializeAward = {props.serializeAward}
-            computeFundingContents= {props.computeFundingContents}
->>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
           />
         </List>
       </Form.Field>
@@ -239,12 +165,8 @@ FundingField.propTypes = {
   labelIcon: PropTypes.string,
   searchConfig: PropTypes.object.isRequired,
   required: PropTypes.bool,
-<<<<<<< HEAD
   deserializeAward: PropTypes.func,
   deserializeFunder: PropTypes.func,
-=======
-  serializeAward: PropTypes.func,
->>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
   computeFundingContents: PropTypes.func
 };
 
