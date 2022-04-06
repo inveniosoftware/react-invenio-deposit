@@ -11,8 +11,11 @@ import { Message } from 'semantic-ui-react';
 import { i18next } from '@translations/i18next';
 
 export function NoAwardResults({ switchToCustom }) {
+<<<<<<< HEAD
     console.log('Rendering NoAwardResults');
     console.log(switchToCustom);
+=======
+>>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
   return (
     <Message
       warning
@@ -38,4 +41,8 @@ export function NoAwardResults({ switchToCustom }) {
 
 NoAwardResults.propTypes = {
   switchToCustom: PropTypes.func.isRequired,
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3

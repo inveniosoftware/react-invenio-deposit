@@ -16,6 +16,7 @@ import { FundingModal } from './FundingModal';
 export const FundingFieldItem = ({
   compKey,
   index,
+<<<<<<< HEAD
   fundingItem,
   awardType,
   moveFunding,
@@ -24,6 +25,15 @@ export const FundingFieldItem = ({
   searchConfig,
   deserializeAward,
   deserializeFunder,
+=======
+  award,
+  awardType,
+  moveAward,
+  replaceAward,
+  removeAward,
+  searchConfig,
+  serializeAward,
+>>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
   computeFundingContents
 }) => {
   const dropRef = React.useRef(null);
@@ -45,7 +55,11 @@ export const FundingFieldItem = ({
       }
 
       if (monitor.isOver({ shallow: true })) {
+<<<<<<< HEAD
         moveFunding(dragIndex, hoverIndex);
+=======
+        moveAward(dragIndex, hoverIndex);
+>>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
         item.index = hoverIndex;
       }
     },
@@ -54,7 +68,11 @@ export const FundingFieldItem = ({
     }),
   });
 
+<<<<<<< HEAD
   let {headerContent, descriptionContent, awardOrFunder} = computeFundingContents(fundingItem);
+=======
+  let {headerContent, descriptionContent} = computeFundingContents(award);
+>>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
 
   // Initialize the ref explicitely
   drop(dropRef);
@@ -69,8 +87,13 @@ export const FundingFieldItem = ({
         <List.Content floated="right">
           <FundingModal
             searchConfig={searchConfig}
+<<<<<<< HEAD
             onAwardChange={(selectedFunding) => {
               replaceFunding(index, selectedFunding);
+=======
+            onAwardChange={(selectedAward) => {
+              replaceAward(index, selectedAward);
+>>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
             }}
             mode={awardType}
             action="edit"
@@ -79,16 +102,27 @@ export const FundingFieldItem = ({
                 Edit
               </Button>
             }
+<<<<<<< HEAD
             deserializeAward={deserializeAward}
             deserializeFunder={deserializeFunder}
             computeFundingContents={computeFundingContents}
             initialFunding={fundingItem}
           />
           <Button size="mini" type="button" onClick={() => removeFunding(index)}>
+=======
+            serializeAward={serializeAward}
+            computeFundingContents={computeFundingContents}
+          />
+          <Button size="mini" type="button" onClick={() => removeAward(index)}>
+>>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
             Remove
           </Button>
         </List.Content>
 
+<<<<<<< HEAD
+=======
+        {/* TODO in case of empty results, this gets rendered as an empty bar */}
+>>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
         <Ref innerRef={drag}>
           <List.Icon name="bars" className="drag-anchor" />
         </Ref>
@@ -96,6 +130,7 @@ export const FundingFieldItem = ({
           <List.Content>
             <List.Header>
               {(
+<<<<<<< HEAD
                 <>
                   {headerContent}
                   {awardOrFunder === 'award'
@@ -106,6 +141,17 @@ export const FundingFieldItem = ({
                     ))
                     : ''}
                 </>
+=======
+                <span>
+                  {headerContent}
+                  {/* TODO what if award does not have title? We're using funder for header content. IN that case, award number should not be displayed */}
+                  {award.number && (
+                    <Label basic size="mini">
+                      {award.number}
+                    </Label>
+                  )}
+                </span>
+>>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
               )}
             </List.Header>
             <List.Description>{descriptionContent}</List.Description>

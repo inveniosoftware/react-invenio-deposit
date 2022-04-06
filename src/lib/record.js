@@ -46,13 +46,9 @@ export const emptyDate = {
 export const emptyFunding = {
   funder: {
     name: '',
-    identifier: '',
-    scheme: '',
   },
   award: {
     title: '',
     number: '',
-    identifier: '',
-    scheme: '',
   },
 };

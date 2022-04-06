@@ -72,6 +72,7 @@ export class VocabularyField extends Field {
         ? fieldValue.map(_deserialize)
         : _deserialize(fieldValue);
     }
+
     return _set(
       _cloneDeep(record),
       this.fieldpath,

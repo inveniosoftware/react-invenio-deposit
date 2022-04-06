@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Accordion, Form, Icon } from 'semantic-ui-react';
 import { TextField, RemoteSelectField } from 'react-invenio-forms';
+<<<<<<< HEAD
 import { i18next } from '@translations/i18next';
 export function CustomAwardForm({
   deserializeFunder
@@ -48,17 +49,28 @@ export function CustomAwardForm({
       ...(funderDropObject.pid && { pid: funderDropObject.pid }),
     };
   }
+=======
+
+export function CustomAwardForm() {
+  const [accordionActive, setAccordionActive] = useState(true);
+>>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
 
   return (
     <Form>
       <RemoteSelectField
+<<<<<<< HEAD
         fieldPath="selectedFunding.funder.id"
+=======
+        fieldPath="selectedAward.funder.id"
+        // TODO: Use PROD URL eventually
+>>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
         suggestionAPIUrl="https://127.0.0.1:5000/api/funders"
         suggestionAPIHeaders={{
           // Accept: 'application/vnd.inveniordm.v1+json',
           // TODO why this header?
           Accept: 'application/json',
         }}
+<<<<<<< HEAD
         placeholder={i18next.t('Search for a funder by name')}
         clearable
         initialSuggestions={[]}
@@ -76,6 +88,28 @@ export function CustomAwardForm({
               const deserializedFunder = serializeFunderFromDropdown(selectedFunder);
               formikProps.form.setFieldValue('selectedFunding.funder', deserializedFunder);
             }
+=======
+        placeholder={'Search for a funder by name'}
+        clearable
+        initialSuggestions={[]}
+        serializeSuggestions={(funders) =>
+          funders.map((funder) => ({
+            text: funder.name,
+            value: funder.id,
+            key: funder.id,
+          }))
+        }
+        label="Funder"
+        noQueryMessage="Search for funder..."
+        required
+        onChange={(data, formikProps) => {
+          // XXX: set funder name manually, as `RemoteSelectField`
+          // only allows setting a single value via `fieldPath`.
+          const funderId = data.value;
+          if (funderId) {
+            const name = data.options.find((op) => op.key === funderId).text;
+            formikProps.form.setFieldValue('selectedAward.funder.name', name);
+>>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
           }
         }}
       />
@@ -85,6 +119,7 @@ export function CustomAwardForm({
           onClick={() => setAccordionActive(!accordionActive)}
         >
           <Icon name={`caret ${accordionActive ? 'down' : 'right'}`} />
+<<<<<<< HEAD
           {accordionActive ? i18next.t('Custom award information') : i18next.t('Award information') }
         </Accordion.Title>
         <Accordion.Content active={accordionActive}>
@@ -104,6 +139,27 @@ export function CustomAwardForm({
               placeholder={i18next.t("Award Title")}
               fieldPath="selectedFunding.award.title"
             />
+=======
+          <strong>Custom award information</strong>
+        </Accordion.Title>
+        <Accordion.Content active={accordionActive}>
+          <TextField
+            label="Title"
+            placeholder="Award title"
+            fieldPath="selectedAward.award.title"
+          ></TextField>
+          <Form.Group widths="equal">
+            <TextField
+              label="Number"
+              placeholder="Award number"
+              fieldPath="selectedAward.award.number"
+            ></TextField>
+            <TextField
+              label="Title"
+              placeholder="Award Title"
+              fieldPath="selectedAward.award.title"
+            ></TextField>
+>>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
           </Form.Group>
         </Accordion.Content>
       </Accordion>
@@ -112,5 +168,13 @@ export function CustomAwardForm({
 }
 
 CustomAwardForm.propTypes = {
+<<<<<<< HEAD
   deserializeFunder: PropTypes.func.isRequired,
+=======
+  initialAward: PropTypes.shape({
+    id: PropTypes.string,
+    title: PropTypes.string,
+    number: PropTypes.string,
+  }).isRequired,
+>>>>>>> 8c2829bcddcec067d46f8119bbe4ebaa494803b3
 };
