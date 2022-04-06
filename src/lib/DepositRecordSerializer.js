@@ -20,13 +20,13 @@ import _set from 'lodash/set';
 import {
   AllowAdditionsVocabularyField,
   Field,
+  FundingField,
   RightsVocabularyField,
   SchemaField,
   VocabularyField,
 } from './fields';
 import {
   emptyDate,
-  emptyFunding,
   emptyIdentifier,
   emptyRelatedWork,
 } from './record';
@@ -222,9 +222,18 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
       serializedDefault: [],
       labelField: 'subject',
     }),
-    funding: new Field({
+    funding: new SchemaField({
       fieldpath: 'metadata.funding',
-      deserializedDefault: [emptyFunding],
+      schema: {
+        award: new FundingField({
+          fieldpath: 'award',
+          deserializedDefault: {}
+        }),
+        funder: new FundingField({
+          fieldpath: 'funder',
+          deserializedDefault: {}
+        })
+      }
     }),
     version: new Field({
       fieldpath: 'metadata.version',

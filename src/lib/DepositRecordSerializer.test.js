@@ -8,7 +8,6 @@
 import { RDMDepositRecordSerializer } from './DepositRecordSerializer';
 import {
   emptyDate,
-  emptyFunding,
   emptyIdentifier,
   emptyRelatedWork,
 } from './record';
@@ -167,7 +166,7 @@ describe('RDMDepositRecordSerializer tests', () => {
           related_identifiers: [{ ...emptyRelatedWork, __key: 0 }],
           subjects: [],
           rights: [],
-          funding: [emptyFunding],
+          funding: [],
           version: '',
         },
         access: {
@@ -296,14 +295,23 @@ describe('RDMDepositRecordSerializer tests', () => {
             {
               funder: {
                 name: 'Funder 2',
-                identifier: 'funder2',
-                scheme: 'funderScheme2',
               },
               award: {
-                title: 'Award B2',
+                title: {
+                  en: 'Award B2',
+                },
                 number: 'B21234',
-                identifier: 'awardB2',
-                scheme: 'awardSchemeB',
+                identifiers: [
+                  {
+                    identifier: 'https://inveniosoftware.org/products/rdm/',
+                    scheme: 'url'
+                  },
+                ]
+              },
+            },
+            {
+              funder: {
+                name: 'Funder 3'
               },
             },
           ],
@@ -427,16 +435,21 @@ describe('RDMDepositRecordSerializer tests', () => {
             {
               funder: {
                 name: 'Funder 2',
-                identifier: 'funder2',
-                scheme: 'funderScheme2',
               },
               award: {
                 title: 'Award B2',
                 number: 'B21234',
-                identifier: 'awardB2',
-                scheme: 'awardSchemeB',
+                url: 'https://inveniosoftware.org/products/rdm/'
               },
+              __key: 0,
             },
+            {
+              funder: {
+                name: 'Funder 3'
+              },
+              award: {},
+              __key: 1,
+            }
           ],
           version: 'v2.0.0',
         },

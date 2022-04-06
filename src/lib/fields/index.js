@@ -10,6 +10,7 @@ export { Field } from './Field';
 export { SchemaField } from './SchemaField';
 export {
   AllowAdditionsVocabularyField,
-  VocabularyField,
+  FundingField,
   RightsVocabularyField,
+  VocabularyField,
 } from './VocabularyField';
