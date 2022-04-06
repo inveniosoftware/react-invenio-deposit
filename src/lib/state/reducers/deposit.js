@@ -5,7 +5,6 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import _isString from 'lodash/isString';
 import {
@@ -35,6 +34,7 @@ import {
 
 export class DepositStatus {
   static DRAFT = 'draft';
+  static NEW_VERSION_DRAFT = 'new_version_draft';
   static DRAFT_WITH_REVIEW = 'draft_with_review';
   static IN_REVIEW = 'in_review';
   static DECLINED = 'declined';
@@ -57,7 +57,12 @@ export class DepositStatus {
   static disallowsSubmitForReviewStates = [
     DepositStatus.PUBLISHED,
     DepositStatus.IN_REVIEW,
+    DepositStatus.NEW_VERSION_DRAFT,
   ];
+}
+
+function hasStatus(record, statuses = []) {
+  return statuses.includes(record.status);
 }
 
 function getSelectedCommunityMetadata(record, selectedCommunity) {
@@ -93,10 +98,12 @@ function getSelectedCommunityMetadata(record, selectedCommunity) {
   switch (selectedCommunity) {
     case undefined:
       // when `undefined`, retrieve the community from the record, if previously selected
-      const _community =
-        record.status === DepositStatus.PUBLISHED
-          ? _get(record, 'parent.communities.default', undefined)
-          : _get(record, 'parent.review.receiver.community', undefined);
+      const _community = hasStatus(record, [
+        DepositStatus.PUBLISHED,
+        DepositStatus.NEW_VERSION_DRAFT,
+      ])
+        ? record.parent?.communities?.default
+        : record.parent?.review?.receiver?.community;
       return _community ? mockCommunityMetadata(_community) : undefined;
     case null:
       // when value is `null`, the selected community was deselected
@@ -110,7 +117,7 @@ function getSelectedCommunityMetadata(record, selectedCommunity) {
 
 /**
  * Given a draft and optionally a newly selected community, it computes multiple states. The computed
- * states are splitted in 2 namespaces i.e `ui` and `actions`. The former is holding state regarding
+ * states are split in 2 namespaces, `ui` and `actions`. The former is holding state regarding
  * the UI components while the later holds the state that is used on redux actions. More specifically:
  *
  * - `actions.shouldUpdateReview`: true if the review associated with the draft needs to be updated or created i.e
@@ -147,10 +154,6 @@ function getSelectedCommunityMetadata(record, selectedCommunity) {
  * @returns a new state for the deposit form
  */
 export function computeDepositState(record, selectedCommunity = undefined) {
-  const hasStatus = (record, statuses = []) => {
-    return statuses.includes(record.status);
-  };
-
   const depositStatusAllowsReviewDeletion = hasStatus(
     record,
     DepositStatus.allowsReviewDeletionStates
@@ -186,18 +189,24 @@ export function computeDepositState(record, selectedCommunity = undefined) {
 
   // check if the record is published without a community selected
   const isRecordPublishedWithoutCommunity =
-    hasStatus(record, [DepositStatus.PUBLISHED]) &&
-    _isEmpty(record.parent?.communities);
+    hasStatus(record, [
+      DepositStatus.PUBLISHED,
+      DepositStatus.NEW_VERSION_DRAFT,
+    ]) && _isEmpty(record.parent?.communities);
 
   // show submit for review button conditions extracted to be reused
   const _showSubmitReviewButton =
     communityIsSelected &&
     !isReviewForSelectedCommunityDeclinedOrExpired &&
-    !hasStatus(record, [DepositStatus.PUBLISHED]);
+    !hasStatus(record, [
+      DepositStatus.PUBLISHED,
+      DepositStatus.NEW_VERSION_DRAFT,
+    ]);
 
   // show community selection button conditions extracted to be reused
   const _showCommunitySelectionButton = !hasStatus(record, [
     DepositStatus.PUBLISHED,
+    DepositStatus.NEW_VERSION_DRAFT,
   ]);
 
   const shouldUpdateReview =
@@ -209,6 +218,12 @@ export function computeDepositState(record, selectedCommunity = undefined) {
   const shouldDeleteReview =
     !communityIsSelected && depositStatusAllowsReviewDeletion;
 
+  const _disableCommunitySelectionButton =
+    _showCommunitySelectionButton &&
+    (isReviewForSelectedCommunityDeclinedOrExpired ||
+      (depositStatusDisallowsSubmitForReview &&
+        !isRecordPublishedWithoutCommunity));
+
   return {
     selectedCommunity: _selectedCommunity,
     ui: {
@@ -218,11 +233,7 @@ export function computeDepositState(record, selectedCommunity = undefined) {
       showChangeCommunityButton: isReviewForSelectedCommunityDeclinedOrExpired,
       showCommunitySelectionButton: _showCommunitySelectionButton,
       hideCommunityHeader: isRecordPublishedWithoutCommunity,
-      disableCommunitySelectionButton:
-        _showCommunitySelectionButton &&
-        (isReviewForSelectedCommunityDeclinedOrExpired ||
-          (depositStatusDisallowsSubmitForReview &&
-            !isRecordPublishedWithoutCommunity)),
+      disableCommunitySelectionButton: _disableCommunitySelectionButton,
     },
     actions: {
       shouldUpdateReview,
