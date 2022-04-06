@@ -4,13 +4,13 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import { Header, Button, Modal } from 'semantic-ui-react';
-import PropTypes from 'prop-types';
 import { i18next } from '@translations/i18next';
-import { CommunitySelectionSearch } from './CommunitySelectionSearch';
-import { CommunitySelectionFooter } from './CommunitySelectionFooter';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Button, Header, Modal } from 'semantic-ui-react';
 import { CommunityContext } from './CommunityContext';
+import { CommunitySelectionFooter } from './CommunitySelectionFooter';
+import { CommunitySelectionSearch } from './CommunitySelectionSearch';
 
 export class CommunitySelectionModal extends Component {
   constructor(props) {

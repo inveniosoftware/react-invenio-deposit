@@ -4,85 +4,88 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import { i18next } from '@translations/i18next';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Card, Icon, Item, Popup } from 'semantic-ui-react';
-import { i18next } from '@translations/i18next';
+import { Button, Grid, Icon, Popup } from 'semantic-ui-react';
 import { DepositStatus } from '../../state/reducers/deposit';
 
 const STATUSES = {
   [DepositStatus.IN_REVIEW]: {
-    feedback: 'yellow',
-    title: i18next.t('Pending review'),
+    color: 'warning',
+    title: i18next.t('In review'),
     message: i18next.t(
-      'Community curators are able to edit your record. Once they accept, your upload will be published.'
+      'Community curators will review your upload. Once accepted, it will be published.'
     ),
   },
   [DepositStatus.DECLINED]: {
-    feedback: 'red',
+    color: 'negative',
     title: i18next.t('Declined'),
-    message: i18next.t('The request associated with this upload was declined.'),
+    message: i18next.t(
+      'The request to submit this upload to the community was declined.'
+    ),
   },
   [DepositStatus.EXPIRED]: {
-    feedback: 'purple',
+    color: 'light orange',
     title: i18next.t('Expired'),
-    message: i18next.t('The request associated with this upload has expired.'),
+    message: i18next.t(
+      'The request to submit this upload to the community has expired.'
+    ),
   },
   [DepositStatus.PUBLISHED]: {
-    feedback: 'green',
+    color: 'positive',
     title: i18next.t('Published'),
     message: i18next.t('Your upload is published.'),
   },
   [DepositStatus.DRAFT_WITH_REVIEW]: {
-    feedback: 'yellow',
-    title: i18next.t('Unpublished'),
+    color: 'light grey',
+    title: i18next.t('Draft'),
     message: i18next.t(
-      'Once your upload is complete you can submit it for review to the community curators.'
+      'Once your upload is complete, you can submit it for review to the community curators.'
     ),
   },
   [DepositStatus.DRAFT]: {
-    feedback: 'yellow',
-    title: i18next.t('Unpublished'),
+    color: 'light grey',
+    title: i18next.t('Draft'),
     message: i18next.t(
-      'Once your upload is complete you can submit it for review to the community curators.'
+      'Once your upload is complete, you can publish or submit it for review to the community curators.'
     ),
+  },
+  [DepositStatus.NEW_VERSION_DRAFT]: {
+    color: 'light grey',
+    title: i18next.t('New version draft'),
+    message: i18next.t('Once your upload is complete, you can publish it.'),
   },
 };
 
 const DepositStatusBoxComponent = ({ depositReview, depositStatus }) => {
-  const status = STATUSES[depositStatus];
+  let status = STATUSES[depositStatus];
   if (!status) {
     throw new Error('Status is undefined');
   }
 
   return (
-    <Card.Content className={`background ${status.feedback}`}>
-      <Card.Header textAlign="center">
-        <Item>
-          <Item.Content verticalAlign="middle">
-            <Item.Header>
-              <Popup
-                trigger={<Icon name="info circle" />}
-                content={status.message}
-              />
-              {status.title}
-            </Item.Header>
-            {depositStatus === DepositStatus.IN_REVIEW && (
-              <Button
-                icon
-                labelPosition="left"
-                href={`/me/requests/${depositReview.id}`}
-                target="_blank"
-                fluid
-              >
-                <Icon name="eye" />
-                {i18next.t('View request')}
-              </Button>
-            )}
-          </Item.Content>
-        </Item>
-      </Card.Header>
-    </Card.Content>
+    <Grid verticalAlign="middle">
+      <Grid.Row centered className={`pt-5 pb-5 ${status.color}`}>
+        <Grid.Column computer={8} mobile={16} textAlign="center">
+          <span>{status.title}</span>
+          <Popup
+            trigger={<Icon className="ml-10" name="info circle" />}
+            content={status.message}
+          />
+        </Grid.Column>
+        {depositStatus === DepositStatus.IN_REVIEW && (
+          <Grid.Column computer={8} mobile={16} textAlign="center">
+            <Button
+              href={`/me/requests/${depositReview.id}`}
+              target="_blank"
+              content={i18next.t('View request')}
+              size="mini"
+            />
+          </Grid.Column>
+        )}
+      </Grid.Row>
+    </Grid>
   );
 };
 

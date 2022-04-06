@@ -4,15 +4,14 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
 import { i18next } from '@translations/i18next';
-
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
+import { changeSelectedCommunity } from '../../state/actions';
+import { CommunitySelectionModal } from '../CommunitySelectionModal';
 import { PublishButton } from './PublishButton';
 import { SubmitReviewButton } from './SubmitReviewButton';
-import { CommunitySelectionModal } from '../CommunitySelectionModal';
-import { changeSelectedCommunity } from '../../state/actions';
 
 class SubmitReviewOrPublishComponent extends Component {
   state = { confirmOpen: false };
@@ -34,15 +33,14 @@ class SubmitReviewOrPublishComponent extends Component {
       <SubmitReviewButton {...ui} />
     ) : showChangeCommunityButton ? (
       <>
-        <div className="mb-5">
-          <CommunitySelectionModal
-            onCommunityChange={(community) => {
-              changeSelectedCommunity(community);
-            }}
-            chosenCommunity={community}
-            trigger={<Button fluid>{i18next.t('Change community')}</Button>}
-          />
-        </div>
+        <CommunitySelectionModal
+          className="mb-5"
+          onCommunityChange={(community) => {
+            changeSelectedCommunity(community);
+          }}
+          chosenCommunity={community}
+          trigger={<Button fluid>{i18next.t('Change community')}</Button>}
+        />
         <PublishButton
           buttonLabel={i18next.t('Publish without community')}
           publishWithoutCommunity={true}

@@ -238,7 +238,7 @@ export const preview = (draft) => {
  * This function is different from the save/publish above because this thunk
  * is independent of form submission.
  */
-export const delete_ = (_, { isDiscardingVersion = false }) => {
+export const delete_ = () => {
   return async (dispatch, getState, config) => {
     dispatch({
       type: DRAFT_DELETE_STARTED,
@@ -248,14 +248,8 @@ export const delete_ = (_, { isDiscardingVersion = false }) => {
       const draft = getState().deposit.record;
       await config.service.drafts.delete(draft.links);
 
-      let redirectURL;
-      if (isDiscardingVersion) {
-        // go back to the previous version when discarding
-        redirectURL = `/records/${draft.id}`;
-      } else {
-        // redirect to the the uploads page after deleting a draft
-        redirectURL = '/me/uploads';
-      }
+      // redirect to the the uploads page after deleting/discarding a draft
+      const redirectURL = '/me/uploads';
       window.location.replace(redirectURL);
     } catch (error) {
       dispatch({
