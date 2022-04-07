@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.19.2 (released 2022-04-07)
+* add a new cmp to display the upload status
+* refactor how the status of the upload is computed
+
 Version 0.19.1 (released 2022-03-31)
 * upgrade react-searchkit dependency to v2.0.0 because of the
   wrong version v1.0.0
