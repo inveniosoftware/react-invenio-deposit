@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-03-18T14:32:16.898Z\n"
-"PO-Revision-Date: 2022-03-18T14:32:16.898Z\n"
+"POT-Creation-Date: 2022-04-11T13:41:25.815Z\n"
+"PO-Revision-Date: 2022-04-11T13:41:25.815Z\n"
 "Language: en\n"
 
 msgid "Embargo until"
@@ -700,3 +700,73 @@ msgstr ""
 "If your upload is accepted by the community curators, it will be <bold> "
 "immediately published.</bold> Before that, you will still be able to modify "
 "metadata and files of this uploads."
+
+msgid "In review"
+msgstr "In review"
+
+msgid ""
+"Community curators will review your upload. Once accepted, it will be "
+"published."
+msgstr ""
+"Community curators will review your upload. Once accepted, it will be "
+"published."
+
+msgid "Declined"
+msgstr "Declined"
+
+msgid "The request to submit this upload to the community was declined."
+msgstr "The request to submit this upload to the community was declined."
+
+msgid "Expired"
+msgstr "Expired"
+
+msgid "The request to submit this upload to the community has expired."
+msgstr "The request to submit this upload to the community has expired."
+
+msgid "Published"
+msgstr "Published"
+
+msgid "Your upload is published."
+msgstr "Your upload is published."
+
+msgid "Draft"
+msgstr "Draft"
+
+msgid ""
+"Once your upload is complete, you can submit it for review to the community "
+"curators."
+msgstr ""
+"Once your upload is complete, you can submit it for review to the community "
+"curators."
+
+msgid ""
+"Once your upload is complete, you can publish or submit it for review to "
+"the community curators."
+msgstr ""
+"Once your upload is complete, you can publish or submit it for review to "
+"the community curators."
+
+msgid "New version draft"
+msgstr "New version draft"
+
+msgid "Once your upload is complete, you can publish it."
+msgstr "Once your upload is complete, you can publish it."
+
+msgid "View request"
+msgstr "View request"
+
+msgid "Submitted for review"
+msgstr "Submitted for review"
+
+msgid "Change community"
+msgstr "Change community"
+
+msgid "Publish without community"
+msgstr "Publish without community"
+
+msgid ""
+"Once the record is published you will no longer be able to change the files "
+"in the upload!"
+msgstr ""
+"Once the record is published you will no longer be able to change the files "
+"in the upload!"
