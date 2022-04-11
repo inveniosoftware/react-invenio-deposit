@@ -2,6 +2,7 @@
 // Copyright (C) 2020-2022 CERN.
 // Copyright (C) 2020-2022 Northwestern University.
 // Copyright (C) 2021-2022 Graz University of Technology.
+// Copyright (C)      2022 TU Wien.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -114,7 +115,7 @@ const FileTableRow = ({
         )}
       </Table.Cell>
       <Table.Cell className="file-table-cell" width={2}>
-        {file.size ? humanReadableBytes(file.size) : ''}
+        {file.size ? humanReadableBytes(file.size, decimalSizeDisplay) : ''}
       </Table.Cell>
       {isDraftRecord && (
         <Table.Cell className="file-table-cell file-upload-pending" width={2}>
@@ -208,7 +209,12 @@ const FileUploadBox = ({
     </Segment>
   );
 
-const FilesListTable = ({ isDraftRecord, filesList, deleteFile }) => {
+const FilesListTable = ({
+  isDraftRecord,
+  filesList,
+  deleteFile,
+  decimalSizeDisplay,
+}) => {
   const { setFieldValue, values: formikDraft } = useFormikContext();
   const defaultPreview = _get(formikDraft, 'files.default_preview', '');
   return (
@@ -226,6 +232,7 @@ const FilesListTable = ({ isDraftRecord, filesList, deleteFile }) => {
               setDefaultPreview={(filename) =>
                 setFieldValue('files.default_preview', filename)
               }
+              decimalSizeDisplay={decimalSizeDisplay}
             />
           );
         })}
@@ -282,4 +289,5 @@ FileUploaderArea.propTypes = {
   setDefaultPreviewFile: PropTypes.func,
   uploadButtonIcon: PropTypes.string,
   uploadButtonText: PropTypes.string,
+  decimalSizeDisplay: PropTypes.bool,
 };
