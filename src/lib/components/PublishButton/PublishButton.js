@@ -49,9 +49,13 @@ class PublishButtonComponent extends Component {
       numberOfFiles,
       buttonLabel,
       publishWithoutCommunity,
+      publishWarning,
       ...uiProps
     } = this.props;
     const { isConfirmModalOpen } = this.state;
+    const modalText =
+      i18next.t(publishWarning) ||
+      PublishButtonComponent.defaultProps.publishWarning;
 
     return (
       <>
@@ -83,9 +87,11 @@ class PublishButtonComponent extends Component {
             closeIcon={true}
             closeOnDimmerClick={false}
           >
-            <Modal.Content>
+            <Modal.Header>
               {i18next.t('Are you sure you want to publish this record?')}
-            </Modal.Content>
+            </Modal.Header>
+            {/* the modal text should only ever come from backend configuration */}
+            <Modal.Content dangerouslySetInnerHTML={{ __html: modalText }} />
             <Modal.Actions>
               <Button onClick={this.closeConfirmModal} floated="left">
                 {i18next.t('Cancel')}
@@ -107,11 +113,15 @@ class PublishButtonComponent extends Component {
 }
 
 PublishButtonComponent.propTypes = {
+  publishWarning: PropTypes.string,
   buttonLabel: PropTypes.string,
   publishWithoutCommunity: PropTypes.bool,
 };
 
 PublishButtonComponent.defaultProps = {
+  publishWarning: i18next.t(
+    'Once the record is published you will no longer be able to change the files in the upload!'
+  ),
   buttonLabel: i18next.t('Publish'),
   publishWithoutCommunity: false,
 };
