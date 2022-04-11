@@ -1,7 +1,8 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
-// Copyright (C) 2021 Graz University of Technology.
+// Copyright (C)      2021 Graz University of Technology.
+// Copyright (C)      2022 TU Wien.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -19,6 +20,7 @@ export const FileUploaderToolbar = ({
   filesSize,
   filesEnabled,
   quota,
+  decimalSizeDisplay,
 }) => {
   const { setFieldValue } = useFormikContext();
 
@@ -37,9 +39,7 @@ export const FileUploaderToolbar = ({
             </List.Item>
             <List.Item>
               <Popup
-                trigger={
-                  <Icon name="question circle outline" color="grey"/>
-                }
+                trigger={<Icon name="question circle outline" color="grey" />}
                 content={i18next.t('Disable files for this record')}
                 position="top center"
               />
@@ -65,13 +65,14 @@ export const FileUploaderToolbar = ({
             </List.Item>
             <List.Item>
               <Label
-                {...(humanReadableBytes(filesSize) ===
-                humanReadableBytes(quota.maxStorage)
+                {...(humanReadableBytes(filesSize, decimalSizeDisplay) ===
+                humanReadableBytes(quota.maxStorage, decimalSizeDisplay)
                   ? { color: 'blue' }
                   : {})}
               >
-                {humanReadableBytes(filesSize)} {i18next.t('out of')}{' '}
-                {humanReadableBytes(quota.maxStorage)}
+                {humanReadableBytes(filesSize, decimalSizeDisplay)}{' '}
+                {i18next.t('out of')}{' '}
+                {humanReadableBytes(quota.maxStorage, decimalSizeDisplay)}
               </Label>
             </List.Item>
           </List>

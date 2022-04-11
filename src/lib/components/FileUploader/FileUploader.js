@@ -1,7 +1,8 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2022 CERN.
 // Copyright (C) 2020-2022 Northwestern University.
-// Copyright (C) 2022 Graz University of Technology.
+// Copyright (C)      2022 Graz University of Technology.
+// Copyright (C)      2022 TU Wien.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -35,6 +36,7 @@ export const FileUploaderComponent = ({
   importButtonIcon,
   importButtonText,
   isFileImportInProgress,
+  decimalSizeDisplay,
   ...uiProps
 }) => {
   // We extract the working copy of the draft stored as `values` in formik
@@ -105,9 +107,12 @@ export const FileUploaderComponent = ({
               content={
                 <>
                   {i18next.t('Uploading the selected files would result in')}{' '}
-                  {humanReadableBytes(filesSize + acceptedFilesSize)}
+                  {humanReadableBytes(
+                    filesSize + acceptedFilesSize,
+                    decimalSizeDisplay
+                  )}
                   {i18next.t('but the limit is')}
-                  {humanReadableBytes(quota.maxStorage)}.
+                  {humanReadableBytes(quota.maxStorage, decimalSizeDisplay)}.
                 </>
               }
             />
@@ -155,6 +160,7 @@ export const FileUploaderComponent = ({
               filesSize={filesSize}
               isDraftRecord={isDraftRecord}
               quota={quota}
+              decimalSizeDisplay={decimalSizeDisplay}
             />
           )}
         </Grid.Row>
@@ -191,6 +197,7 @@ export const FileUploaderComponent = ({
               isDraftRecord={isDraftRecord}
               filesEnabled={filesEnabled}
               deleteFile={deleteFile}
+              decimalSizeDisplay={decimalSizeDisplay}
             />
           </Grid.Row>
         )}
@@ -272,6 +279,7 @@ FileUploaderComponent.propTypes = {
   importParentFiles: PropTypes.func,
   uploadFiles: PropTypes.func,
   deleteFile: PropTypes.func,
+  decimalSizeDisplay: PropTypes.bool,
 };
 
 FileUploaderComponent.defaultProps = {
@@ -286,4 +294,5 @@ FileUploaderComponent.defaultProps = {
   uploadButtonText: i18next.t('Upload files'),
   importButtonIcon: 'sync',
   importButtonText: i18next.t('Import files'),
+  decimalSizeDisplay: true,
 };
