@@ -13,7 +13,14 @@ import _isEmpty from 'lodash/isEmpty';
 import _map from 'lodash/map';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { Button, Grid, Icon, Message, Modal } from 'semantic-ui-react';
+import {
+  Button,
+  Container,
+  Grid,
+  Icon,
+  Message,
+  Modal,
+} from 'semantic-ui-react';
 import { UploadState } from '../../state/reducers/files';
 import { NewVersionButton } from '../NewVersionButton';
 import { FileUploaderArea } from './FileUploaderArea';
@@ -37,6 +44,7 @@ export const FileUploaderComponent = ({
   importButtonText,
   isFileImportInProgress,
   decimalSizeDisplay,
+  fileAreaWarning,
   ...uiProps
 }) => {
   // We extract the working copy of the draft stored as `values` in formik
@@ -147,6 +155,10 @@ export const FileUploaderComponent = ({
   const displayImportBtn =
     filesEnabled && isDraftRecord && hasParentRecord && !filesList.length;
 
+  const draftFilesWarning =
+    i18next.t(fileAreaWarning) ||
+    FileUploaderComponent.defaultProps.fileAreaWarning;
+
   return (
     <>
       <Grid>
@@ -205,12 +217,24 @@ export const FileUploaderComponent = ({
           <Grid.Row className="file-upload-note pt-5">
             <Grid.Column width={16}>
               <Message visible warning>
-                <p>
-                  <Icon name="warning sign" />
-                  {i18next.t(
-                    'File addition, removal or modification are not allowed after you have published your upload.'
-                  )}
-                </p>
+                <Grid>
+                  <Grid.Row>
+                    <Grid.Column
+                      width={1}
+                      textAlign="center"
+                      verticalAlign="middle"
+                    >
+                      <Icon name="warning sign" fitted />
+                    </Grid.Column>
+                    <Grid.Column width={15}>
+                      {/* the warning text should only ever come from backend configuration */}
+                      <Container
+                        fluid
+                        dangerouslySetInnerHTML={{ __html: draftFilesWarning }}
+                      />
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
               </Message>
             </Grid.Column>
           </Grid.Row>
@@ -275,6 +299,7 @@ FileUploaderComponent.propTypes = {
   uploadButtonText: PropTypes.string,
   importButtonIcon: PropTypes.string,
   importButtonText: PropTypes.string,
+  fileAreaWarning: PropTypes.string,
   isFileImportInProgress: PropTypes.bool,
   importParentFiles: PropTypes.func,
   uploadFiles: PropTypes.func,
@@ -295,4 +320,7 @@ FileUploaderComponent.defaultProps = {
   importButtonIcon: 'sync',
   importButtonText: i18next.t('Import files'),
   decimalSizeDisplay: true,
+  fileAreaWarning: i18next.t(
+    'File addition, removal or modification are not allowed after you have published your upload.'
+  ),
 };
