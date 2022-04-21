@@ -188,11 +188,15 @@ const FileUploadBox = ({
     >
       <Grid columns={3} textAlign="center">
         <Grid.Row verticalAlign="middle">
-          <Grid.Column width="7">
+          <Grid.Column mobile={16} tablet={7} computer={7}>
             <Header size="small">{dragText}</Header>
           </Grid.Column>
-          <Grid.Column width="2">- {i18next.t('or')} -</Grid.Column>
-          <Grid.Column width="7">
+
+          <Grid.Column className="mt-10 mb-10" mobile={16} tablet={2} computer={2}>
+            - {i18next.t('or')} -
+          </Grid.Column>
+          
+          <Grid.Column mobile={16} tablet={7} computer={7}>
             <Button
               type="button"
               primary={true}

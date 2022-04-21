@@ -122,8 +122,8 @@ export class FundingField extends Component {
                 optimized
               />
               <Form.Field>
-                <label>&nbsp;</label>
                 <Button
+                  className="close-btn"
                   icon
                   onClick={() => arrayHelpers.remove(indexPath)}
                 >

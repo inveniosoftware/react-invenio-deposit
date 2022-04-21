@@ -7,7 +7,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 import { useFormikContext } from 'formik';
 import React from 'react';
-import { Checkbox, Grid, Icon, Label, List, Popup } from 'semantic-ui-react';
+import { Header, Checkbox, Grid, Icon, Label, List, Popup } from 'semantic-ui-react';
 import { humanReadableBytes } from './utils';
 import { i18next } from '@translations/i18next';
 
@@ -24,7 +24,7 @@ export const FileUploaderToolbar = ({
 
   return (
     <>
-      <Grid.Column verticalAlign="middle" floated="left" width={6}>
+      <Grid.Column verticalAlign="middle" floated="left" mobile={16} tablet={6} computer={6}>
         {config.canHaveMetadataOnlyRecords && (
           <List horizontal>
             <List.Item>
@@ -48,9 +48,9 @@ export const FileUploaderToolbar = ({
         )}
       </Grid.Column>
       {filesEnabled && (
-        <Grid.Column width={10}>
+        <Grid.Column mobile={16} tablet={10} computer={10} className="storage-col">
+          <Header size="tiny" className="mr-10">{i18next.t('Storage available')}</Header>
           <List horizontal floated="right">
-            <List.Item>{i18next.t('Storage available')}</List.Item>
             <List.Item>
               <Label
                 {...(filesList.length === quota.maxFiles

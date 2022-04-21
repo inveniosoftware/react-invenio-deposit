@@ -48,17 +48,19 @@ export class SubjectsField extends Component {
       limitToOptions,
     } = this.props;
     return (
-      <GroupField>
-        <Form.Field width={5}>
+      <GroupField className="main-group-field">
+        <Form.Field width={5} className="subjects-field">
           <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
           <GroupField>
             <Form.Field
-              width={7}
+              width={8}
               style={{ marginBottom: 'auto', marginTop: 'auto' }}
+              className="p-0"
             >
               {i18next.t('Suggest from')}
             </Form.Field>
             <Form.Dropdown
+              className="p-0"
               defaultValue={limitToOptions[0].value}
               fluid
               onChange={(event, data) => this.setState({ limitTo: data.value })}
@@ -97,7 +99,7 @@ export class SubjectsField extends Component {
                   );
                 }}
                 value={getIn(values, fieldPath, []).map((val) => val.subject)}
-                label={<label>&nbsp;</label>} /** For alignment purposes */
+                label={<label className="mobile-hidden">&nbsp;</label>} /** For alignment purposes */
                 allowAdditions
                 width={11}
               />

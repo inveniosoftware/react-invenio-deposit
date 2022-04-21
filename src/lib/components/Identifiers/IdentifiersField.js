@@ -62,13 +62,11 @@ export class IdentifiersField extends Component {
                   />
                 )}
                 <Form.Field>
-                  <Form.Field>
-                    <label>&nbsp;</label>
-                    <Button
-                      icon="close"
-                      onClick={() => arrayHelpers.remove(indexPath)}
-                    />
-                  </Form.Field>
+                  <Button
+                    className="close-btn"
+                    icon="close"
+                    onClick={() => arrayHelpers.remove(indexPath)}
+                  />
                 </Form.Field>
               </GroupField>
             );
