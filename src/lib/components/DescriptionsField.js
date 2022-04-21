@@ -20,6 +20,7 @@ export class DescriptionsField extends Component {
     return (
       <>
         <RichInputField
+          className="description-field rel-mb-1"
           fieldPath={fieldPath}
           editorConfig={editorConfig}
           label={

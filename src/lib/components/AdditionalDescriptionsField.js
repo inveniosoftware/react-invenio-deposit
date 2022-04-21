@@ -24,16 +24,16 @@ export class AdditionalDescriptionsField extends Component {
         addButtonLabel={i18next.t('Add description')}
         defaultNewValue={emptyAdditionalDescription}
         fieldPath={fieldPath}
-        className={"additional-descriptions"}
+        className="additional-descriptions"
       >
         {({ arrayHelpers, indexPath }) => {
           const fieldPathPrefix = `${fieldPath}.${indexPath}`;
 
           return (
             <>
-              <Grid relaxed>
+              <Grid className="description">
                 <Grid.Row>
-                  <Grid.Column width={12}>
+                  <Grid.Column mobile={16} tablet={10} computer={12}>
                     <RichInputField
                       fieldPath={`${fieldPathPrefix}.description`}
                       label={i18next.t('Additional Description')}
@@ -41,9 +41,10 @@ export class AdditionalDescriptionsField extends Component {
                       required
                     />
                   </Grid.Column>
-                  <Grid.Column width={4}>
+                  <Grid.Column mobile={16} tablet={6} computer={4}>
                     <Form.Field>
                       <Button
+                        className="close-btn"
                         floated="right"
                         icon
                         onClick={() => arrayHelpers.remove(indexPath)}

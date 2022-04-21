@@ -63,9 +63,9 @@ export class DatesField extends Component {
                 label={i18next.t('Description')}
                 width={5}
               />
-              <Form.Field width={1}>
-                <label>&nbsp;</label>
+              <Form.Field>
                 <Button
+                  className="close-btn"
                   icon
                   onClick={() => arrayHelpers.remove(indexPath)}
                   type="button"

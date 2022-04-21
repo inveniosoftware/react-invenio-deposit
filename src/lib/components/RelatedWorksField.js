@@ -84,9 +84,12 @@ export class RelatedWorksField extends Component {
                   labelclassname="small field-label-class"
                 />
 
-                <Form.Field width={1}>
-                  <label>&nbsp;</label>
-                  <Button icon onClick={() => arrayHelpers.remove(indexPath)}>
+                <Form.Field>
+                  <Button
+                    className="close-btn"
+                    icon 
+                    onClick={() => arrayHelpers.remove(indexPath)}
+                  >
                     <Icon name="close" />
                   </Button>
                 </Form.Field>

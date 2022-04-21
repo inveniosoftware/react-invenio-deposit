@@ -28,6 +28,7 @@ export class AdditionalTitlesField extends Component {
         addButtonLabel={i18next.t('Add titles')}
         defaultNewValue={emptyAdditionalTitle}
         fieldPath={fieldPath}
+        className="additional-titles"
       >
         {({ arrayHelpers, indexPath }) => {
           const fieldPathPrefix = `${fieldPath}.${indexPath}`;
@@ -71,10 +72,12 @@ export class AdditionalTitlesField extends Component {
                 selectOnBlur={false}
                 width={5}
               />
-              <Form.Field width={1} className="align-self-end">
-                <Button icon
-                        onClick={() => arrayHelpers.remove(indexPath)}
-                        aria-label={ i18next.t('Close') }
+              <Form.Field>
+                <Button
+                  className="close-btn"
+                  icon
+                  onClick={() => arrayHelpers.remove(indexPath)}
+                  aria-label={ i18next.t('Close') }
                 >
                   <Icon name="close" />
                 </Button>

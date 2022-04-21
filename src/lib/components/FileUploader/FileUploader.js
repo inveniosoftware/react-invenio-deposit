@@ -144,8 +144,8 @@ export const FileUploaderComponent = ({
 
   return (
     <>
-      <Grid style={{ marginBottom: '20px' }}>
-        <Grid.Row>
+      <Grid>
+        <Grid.Row className="pt-10 pb-5">
           {isDraftRecord && (
             <FileUploaderToolbar
               {...uiProps}
