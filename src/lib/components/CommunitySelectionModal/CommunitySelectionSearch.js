@@ -18,9 +18,6 @@ import {
 import {
   Container,
   Grid,
-  Header,
-  Icon,
-  Item,
   Menu,
   Modal,
   Segment,
@@ -74,28 +71,6 @@ export class CommunitySelectionSearch extends Component {
           initialQueryState={{ size: 5, page: 1 }}
         >
           <Grid>
-            <Grid.Row>
-              <Grid.Column width={16}>
-                <Header as="h5">{i18next.t('Currently selected')}</Header>
-                <Segment
-                  placeholder={!chosenCommunity}
-                  className="community-selected-item-container m-0"
-                  textAlign={chosenCommunity ? undefined : 'center'}
-                >
-                  {chosenCommunity ? (
-                    <Item.Group>
-                      <CommunityListItem result={chosenCommunity} standAlone />
-                    </Item.Group>
-                  ) : (
-                    <Header icon className="m-0">
-                      <Icon name="users" />
-                      {i18next.t('No community selected.')}
-                    </Header>
-                  )}
-                </Segment>
-              </Grid.Column>
-            </Grid.Row>
-
             <Grid.Row verticalAlign="middle">
               <Grid.Column width={8} textAlign="left" floated="left">
                 <Menu compact>
@@ -139,7 +114,7 @@ export class CommunitySelectionSearch extends Component {
             <Grid.Row verticalAlign="middle">
               <Grid.Column>
                 <ResultsLoader>
-                  <Segment>
+                  <Segment className="community-list-container p-0">
                     <Modal.Content scrolling className="community-list-results">
                       <EmptyResults />
                       <Error />

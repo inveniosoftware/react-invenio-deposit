@@ -45,30 +45,31 @@ class CommunityHeaderComponent extends Component {
               </>
             ) : (
               <div className="page-subheader-element">
-                {i18next.t('No community selected.')}
+                {i18next.t('Select the community where you want to submit your record.')}
               </div>
             )}
-            <div className="community-header-element">
+            <div className="community-header-element rel-ml-1">
               {showCommunitySelectionButton && (
                 <CommunitySelectionModal
                   onCommunityChange={(community) => {
                     changeSelectedCommunity(community);
                   }}
                   chosenCommunity={community}
-                  trigger={
-                    <Button
-                      primary
-                      size="mini"
-                      className="community-header-button ml-5"
-                      name="setting"
-                      type="button"
-                      disabled={disableCommunitySelectionButton}
-                    >
-                      {i18next.t('Edit')}
-                    </Button>
-                  }
+                  disableTriggerButton={disableCommunitySelectionButton}
                 />
               )}
+              {community && 
+                <Button
+                  basic
+                  color="black"
+                  size="mini"
+                  className="community-header-button ml-5"
+                  onClick={() => changeSelectedCommunity(null)}
+                  content={i18next.t('Remove')}
+                  icon="close"
+                  disabled={disableCommunitySelectionButton}
+                />
+              }
             </div>
           </Container>
         </Container>

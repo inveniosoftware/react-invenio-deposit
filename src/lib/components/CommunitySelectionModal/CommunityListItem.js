@@ -12,18 +12,17 @@ import PropTypes from 'prop-types';
 import { i18next } from '@translations/i18next';
 import { CommunityContext } from './CommunityContext';
 
-export const CommunityListItem = ({ result, standAlone }) => {
+export const CommunityListItem = ({ result }) => {
   const { setLocalCommunity, getChosenCommunity } =
     useContext(CommunityContext);
 
   const { metadata } = result;
   const linkToCommunityPage = result.links.self_html;
   const linkToLogo = result.links.logo;
-
   const itemSelected = getChosenCommunity()?.uuid === result.uuid;
 
   return (
-    <Item key={result.id} className="pr-20">
+    <Item key={result.id} className={itemSelected ? 'selected' : ''}>
       <Item.Image
         as={Image}
         size="tiny"
@@ -31,51 +30,41 @@ export const CommunityListItem = ({ result, standAlone }) => {
         fallbackSrc="/static/images/square-placeholder.png"
       />
 
-      <Item.Content verticalAlign="top">
-        <Item.Header
-          as="a"
-          href={linkToCommunityPage}
-          target="_blank"
-          rel="noreferrer"
-        >
+      <Item.Content>
+        <Item.Header>
           {metadata.title}
+          <Button
+            as="a"
+            href={linkToCommunityPage}
+            target="_blank"
+            rel="noreferrer"
+            size="small"
+            className="transparent pt-0 ml-15 mb-5"
+            content={i18next.t("View community")}
+            icon="external alternate"
+            title={i18next.t("Opens in new tab")}
+          />
         </Item.Header>
-        <Item.Description>
+        <Item.Description as="p" className="rel-pr-1">
           {_truncate(metadata.description, { length: 150 })}
         </Item.Description>
         <Item.Extra>{metadata.type}</Item.Extra>
       </Item.Content>
-      <div className="flex">
-        {!standAlone && (
+      <Item.Extra className="flex width auto mt-0">
+        <div className="align-self-center">
           <Button
-            content={itemSelected ? i18next.t('selected') : i18next.t('select')}
-            className="align-self-center"
-            floated="right"
+            content={itemSelected ? i18next.t('Selected') : i18next.t('Select')}
             size="small"
             positive={itemSelected}
-            onClick={() => setLocalCommunity(itemSelected ? null : result)}
+            onClick={() => setLocalCommunity(result)}
+            aria-label={i18next.t("Select ") + metadata.title}
           />
-        )}
-
-        {standAlone && (
-          <Button
-            icon="delete"
-            floated="right"
-            size="small"
-            className="align-self-center"
-            onClick={() => setLocalCommunity(null)}
-          />
-        )}
-      </div>
+        </div>
+      </Item.Extra>
     </Item>
   );
 };
 
 CommunityListItem.propTypes = {
-  result: PropTypes.object.isRequired,
-  standAlone: PropTypes.bool,
-};
-
-CommunityListItem.defaultProps = {
-  standAlone: false,
+  result: PropTypes.object.isRequired
 };
