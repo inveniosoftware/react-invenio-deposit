@@ -48,7 +48,7 @@ export const LicenseResults = withState(
                     }
                   />
                   <Item.Content className="license-item-content">
-                    <Header size="small mt-0">{title}</Header>
+                    <Header size="small" className="mt-0">{title}</Header>
                     <Item.Description className="license-item-description">
                       {description}
                     </Item.Description>
