@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Button, Header, Modal } from 'semantic-ui-react';
 import { CommunityContext } from './CommunityContext';
-import { CommunitySelectionFooter } from './CommunitySelectionFooter';
 import { CommunitySelectionSearch } from './CommunitySelectionSearch';
 
 export class CommunitySelectionModal extends Component {
@@ -24,26 +23,25 @@ export class CommunitySelectionModal extends Component {
     };
 
     this.contextValue = {
-      setLocalCommunity: (community) =>
-        this.setState({ localChosenCommunity: community }),
+      setLocalCommunity: (community) => {
+        const { onCommunityChange } = this.props;
+
+        onCommunityChange(community);
+        this.setState({ localChosenCommunity: null, modalOpen: false });
+      },
       getChosenCommunity: () => this.state.localChosenCommunity,
     };
   }
 
-  onSave = (chosenCommunity) => {
-    const { onCommunityChange } = this.props;
-
-    onCommunityChange(chosenCommunity);
-    this.setState({ localChosenCommunity: null, modalOpen: false });
-  };
-
   render() {
     const { modalOpen, localChosenCommunity } = this.state;
-    const { trigger, chosenCommunity } = this.props;
+    const { trigger, chosenCommunity, disableTriggerButton } = this.props;
 
     return (
       <CommunityContext.Provider value={this.contextValue}>
         <Modal
+          role="dialog"
+          aria-labelledby="community-modal-header"
           id="community-selection-modal"
           className="m-0"
           closeIcon={true}
@@ -56,35 +54,28 @@ export class CommunitySelectionModal extends Component {
               localChosenCommunity: chosenCommunity,
             })
           }
-          trigger={trigger}
+          trigger={
+            <Button
+              primary
+              size="mini"
+              className="community-header-button"
+              name="setting"
+              type="button"
+              disabled={disableTriggerButton}
+              aria-haspopup="dialog"
+              aria-expanded={modalOpen}
+            >
+              {chosenCommunity ? i18next.t('Change') : i18next.t('Select a community')}
+            </Button>
+          }
         >
           <Modal.Header>
-            <Header as="h2">{i18next.t('Select a community')}</Header>
+            <Header as="h2" id="community-modal-header">{i18next.t('Select a community')}</Header>
           </Modal.Header>
 
           <Modal.Content>
             <CommunitySelectionSearch chosenCommunity={localChosenCommunity} />
-            <CommunitySelectionFooter />
           </Modal.Content>
-
-          <Modal.Actions>
-            <Button
-              name="close"
-              onClick={() => {
-                this.setState({ modalOpen: false, localChosenCommunity: null });
-              }}
-              icon="remove"
-              content={i18next.t('Close')}
-            />
-            <Button
-              name="submit"
-              primary
-              onClick={() => this.onSave(localChosenCommunity)}
-              icon="checkmark"
-              type="submit"
-              content={i18next.t('Save')}
-            />
-          </Modal.Actions>
         </Modal>
       </CommunityContext.Provider>
     );
@@ -94,7 +85,7 @@ export class CommunitySelectionModal extends Component {
 CommunitySelectionModal.propTypes = {
   chosenCommunity: PropTypes.object,
   onCommunityChange: PropTypes.func.isRequired,
-  trigger: PropTypes.node,
+  disableTriggerButton: PropTypes.bool.isRequired
 };
 
 CommunitySelectionModal.defaultProps = {
