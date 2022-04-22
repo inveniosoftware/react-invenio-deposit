@@ -67,7 +67,7 @@ const DepositStatusBoxComponent = ({ depositReview, depositStatus }) => {
   return (
     <Grid verticalAlign="middle">
       <Grid.Row centered className={`pt-5 pb-5 ${status.color}`}>
-        <Grid.Column computer={8} mobile={16} textAlign="center">
+        <Grid.Column width={8}>
           <span>{status.title}</span>
           <Popup
             trigger={<Icon className="ml-10" name="info circle" />}
@@ -75,12 +75,15 @@ const DepositStatusBoxComponent = ({ depositReview, depositStatus }) => {
           />
         </Grid.Column>
         {depositStatus === DepositStatus.IN_REVIEW && (
-          <Grid.Column computer={8} mobile={16} textAlign="center">
+          <Grid.Column width={8} textAlign="right">
             <Button
               href={`/me/requests/${depositReview.id}`}
               target="_blank"
+              icon="external alternate"
               content={i18next.t('View request')}
               size="mini"
+              className="transparent"
+              title={i18next.t('Opens in new tab')}
             />
           </Grid.Column>
         )}
