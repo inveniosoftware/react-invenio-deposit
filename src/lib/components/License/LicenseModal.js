@@ -27,7 +27,7 @@ import { LicenseFilter } from './LicenseFilter';
 import { LicenseResults } from './LicenseResults';
 
 const overriddenComponents = {
-  'SearchFilters.Toggle.element': LicenseFilter,
+  'SearchFilters.Toggle': LicenseFilter,
 };
 
 const ModalTypes = {
