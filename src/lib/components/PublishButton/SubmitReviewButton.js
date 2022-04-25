@@ -77,7 +77,7 @@ class SubmitReviewButtonComponent extends Component {
               )}
               {isRecordSubmittedForReview
                 ? i18next.t('Submitted for review')
-                : i18next.t('Submit review')}
+                : i18next.t('Submit for review')}
             </>
           )}
         </ActionButton>
