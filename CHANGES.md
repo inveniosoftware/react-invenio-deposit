@@ -1,5 +1,11 @@
 # Changes
 
+Version 0.19.3 (released 2022-04-26)
+* fixed License header class name
+* publish button: change submit text to be consistent in button and modal
+* align content and change button styling
+* change submit review button text
+
 Version 0.19.2 (released 2022-04-07)
 * add a new cmp to display the upload status
 * refactor how the status of the upload is computed
