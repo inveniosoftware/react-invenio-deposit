@@ -63,18 +63,19 @@ const DepositStatusBoxComponent = ({ depositReview, depositStatus }) => {
   if (!status) {
     throw new Error('Status is undefined');
   }
+  const isReviewStatus = depositStatus === DepositStatus.IN_REVIEW;
 
   return (
     <Grid verticalAlign="middle">
       <Grid.Row centered className={`pt-5 pb-5 ${status.color}`}>
-        <Grid.Column width={8}>
+        <Grid.Column width={isReviewStatus ? 8 : 16} textAlign={isReviewStatus ? 'left' : 'center'}>
           <span>{status.title}</span>
           <Popup
             trigger={<Icon className="ml-10" name="info circle" />}
             content={status.message}
           />
         </Grid.Column>
-        {depositStatus === DepositStatus.IN_REVIEW && (
+        {isReviewStatus && (
           <Grid.Column width={8} textAlign="right">
             <Button
               href={`/me/requests/${depositReview.id}`}
