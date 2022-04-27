@@ -116,8 +116,30 @@ export const CreatibutorsFieldItem = ({
                 ) && (
                   <img
                     alt="ORCID logo"
-                    className="inline-id-icon"
+                    className="inline-id-icon mr-5"
                     src="/static/images/orcid.svg"
+                    width="16"
+                    height="16"
+                  />
+                )}
+                {_get(initialCreatibutor, 'person_or_org.identifiers', []).some(
+                  (identifier) => identifier.scheme === 'ror'
+                ) && (
+                  <img
+                    alt="ROR logo"
+                    className="inline-id-icon mr-5"
+                    src="/static/images/ror-icon.svg"
+                    width="16"
+                    height="16"
+                  />
+                )}
+                {_get(initialCreatibutor, 'person_or_org.identifiers', []).some(
+                  (identifier) => identifier.scheme === 'gnd'
+                ) && (
+                  <img
+                    alt="GND logo"
+                    className="inline-id-icon mr-5"
+                    src="/static/images/gnd-icon.svg"
                     width="16"
                     height="16"
                   />
