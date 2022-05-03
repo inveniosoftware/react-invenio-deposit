@@ -1,6 +1,6 @@
 {
   "name": "react-invenio-deposit",
-  "version": "0.19.3",
+  "version": "0.19.4",
   "description": "React components to build forms in Invenio",
   "main": "dist/cjs/index.js",
   "browser": "dist/cjs/index.js",

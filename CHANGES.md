@@ -1,5 +1,10 @@
 # Changes
 
+Version 0.19.4 (released 2022-05-03)
+* improve form responsiveness and layout
+* added an option to change the display of the file size
+* added GND and ROR icons
+
 Version 0.19.3 (released 2022-04-26)
 * fixed License header class name
 * publish button: change submit text to be consistent in button and modal
