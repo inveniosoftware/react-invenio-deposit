@@ -20,14 +20,13 @@ export const CommunityListItem = ({ result }) => {
   const linkToCommunityPage = result.links.self_html;
   const linkToLogo = result.links.logo;
   const itemSelected = getChosenCommunity()?.uuid === result.uuid;
-
   return (
     <Item key={result.id} className={itemSelected ? 'selected' : ''}>
-      <Item.Image
-        as={Image}
+      <Image
         size="tiny"
         src={linkToLogo}
         fallbackSrc="/static/images/square-placeholder.png"
+        as={Item.Image}
       />
 
       <Item.Content>
@@ -40,9 +39,9 @@ export const CommunityListItem = ({ result }) => {
             rel="noreferrer"
             size="small"
             className="transparent pt-0 ml-15 mb-5"
-            content={i18next.t("View community")}
+            content={i18next.t('View community')}
             icon="external alternate"
-            title={i18next.t("Opens in new tab")}
+            title={i18next.t('Opens in new tab')}
           />
         </Item.Header>
         <Item.Description as="p" className="rel-pr-1">
@@ -57,7 +56,7 @@ export const CommunityListItem = ({ result }) => {
             size="small"
             positive={itemSelected}
             onClick={() => setLocalCommunity(result)}
-            aria-label={i18next.t("Select ") + metadata.title}
+            aria-label={i18next.t('Select ') + metadata.title}
           />
         </div>
       </Item.Extra>
@@ -66,5 +65,5 @@ export const CommunityListItem = ({ result }) => {
 };
 
 CommunityListItem.propTypes = {
-  result: PropTypes.object.isRequired
+  result: PropTypes.object.isRequired,
 };

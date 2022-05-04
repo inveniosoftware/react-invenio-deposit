@@ -15,13 +15,7 @@ import {
   ResultsLoader,
   SearchBar,
 } from 'react-searchkit';
-import {
-  Container,
-  Grid,
-  Menu,
-  Modal,
-  Segment,
-} from 'semantic-ui-react';
+import { Container, Grid, Menu, Modal, Segment } from 'semantic-ui-react';
 import { CommunityListItem } from './CommunityListItem';
 import { OverridableContext } from 'react-overridable';
 import { i18next } from '@translations/i18next';

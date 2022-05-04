@@ -6,7 +6,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import React from 'react';
-import { Item, Header, Radio, Image } from 'semantic-ui-react';
+import { Item, Header, Radio } from 'semantic-ui-react';
 import { withState } from 'react-searchkit';
 import _get from 'lodash/get';
 import { FastField } from 'formik';
@@ -48,7 +48,9 @@ export const LicenseResults = withState(
                     }
                   />
                   <Item.Content className="license-item-content">
-                    <Header size="small" className="mt-0">{title}</Header>
+                    <Header size="small" className="mt-0">
+                      {title}
+                    </Header>
                     <Item.Description className="license-item-description">
                       {description}
                     </Item.Description>

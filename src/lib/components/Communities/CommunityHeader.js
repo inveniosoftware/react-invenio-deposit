@@ -35,7 +35,7 @@ class CommunityHeaderComponent extends Component {
                 <div className="page-subheader-element">
                   <Image
                     className="community-logo-header"
-                    src={community.logo || imagePlaceholderLink}
+                    src={community.logo}
                     fallbackSrc={imagePlaceholderLink}
                   />
                 </div>
@@ -45,7 +45,9 @@ class CommunityHeaderComponent extends Component {
               </>
             ) : (
               <div className="page-subheader-element">
-                {i18next.t('Select the community where you want to submit your record.')}
+                {i18next.t(
+                  'Select the community where you want to submit your record.'
+                )}
               </div>
             )}
             <div className="community-header-element rel-ml-1">
@@ -58,7 +60,7 @@ class CommunityHeaderComponent extends Component {
                   disableTriggerButton={disableCommunitySelectionButton}
                 />
               )}
-              {community && 
+              {community && (
                 <Button
                   basic
                   color="black"
@@ -69,7 +71,7 @@ class CommunityHeaderComponent extends Component {
                   icon="close"
                   disabled={disableCommunitySelectionButton}
                 />
-              }
+              )}
             </div>
           </Container>
         </Container>
