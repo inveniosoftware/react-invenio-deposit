@@ -8,12 +8,13 @@
 
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Grid, Header, Icon, Image, Modal } from 'semantic-ui-react';
+import { Form, Grid, Header, Icon, Modal } from 'semantic-ui-react';
 import { Formik } from 'formik';
 import {
+  ActionButton,
+  Image,
   SelectField,
   TextField,
-  ActionButton,
   RadioField,
   RemoteSelectField,
 } from 'react-invenio-forms';
@@ -25,7 +26,7 @@ import _map from 'lodash/map';
 import { AffiliationsField } from './../AffiliationsField';
 import { CreatibutorsIdentifiers } from './CreatibutorsIdentifiers';
 import { CREATIBUTOR_TYPE } from './type';
-import { i18next } from '@translations/i18next';
+import { i18next, Trans } from '@translations/i18next';
 
 const ModalActions = {
   ADD: 'add',
