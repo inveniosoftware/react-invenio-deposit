@@ -92,6 +92,7 @@ function getSelectedCommunityMetadata(record, selectedCommunity) {
       },
       links: {
         self_html: '/',
+        ...community.links,
       },
     };
   }
