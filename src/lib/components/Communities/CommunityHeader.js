@@ -35,7 +35,7 @@ class CommunityHeaderComponent extends Component {
                 <div className="page-subheader-element">
                   <Image
                     className="community-logo-header"
-                    src={community.logo}
+                    src={community.links?.logo || imagePlaceholderLink} // logo is undefined when new draft and no selection
                     fallbackSrc={imagePlaceholderLink}
                   />
                 </div>
