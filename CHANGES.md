@@ -1,5 +1,11 @@
 # Changes
 
+Version 0.19.5 (released 2022-05-06)
+* add new Funding field
+* fix community image loading
+* add option to customize warning text in upload area
+* add configurable modal text in PublishButton
+
 Version 0.19.4 (released 2022-05-03)
 * improve form responsiveness and layout
 * added an option to change the display of the file size
