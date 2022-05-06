@@ -65,7 +65,7 @@ export class DepositApiClient {
     throw new Error('Not implemented.');
   }
 
-  async createOrUpdateReview(draftLinks, communityUUID) {
+  async createOrUpdateReview(draftLinks, communityId) {
     throw new Error('Not implemented.');
   }
 
@@ -199,11 +199,11 @@ export class RDMDepositApiClient extends DepositApiClient {
    *
    * @param {object} draftLinks - the draft links object
    */
-  async createOrUpdateReview(draftLinks, communityUUID) {
+  async createOrUpdateReview(draftLinks, communityId) {
     return this._createResponse(() =>
       axiosWithConfig.put(draftLinks.review, {
         receiver: {
-          community: communityUUID,
+          community: communityId,
         },
         type: 'community-submission',
       })

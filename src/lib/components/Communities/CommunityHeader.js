@@ -23,11 +23,11 @@ class CommunityHeaderComponent extends Component {
       imagePlaceholderLink,
       showCommunitySelectionButton,
       disableCommunitySelectionButton,
-      hideCommunityHeader,
+      showCommunityHeader,
     } = this.props;
 
     return (
-      !hideCommunityHeader && (
+      showCommunityHeader && (
         <Container className="page-subheader-outer compact" fluid>
           <Container className="page-subheader">
             {community ? (
@@ -40,7 +40,7 @@ class CommunityHeaderComponent extends Component {
                   />
                 </div>
                 <div className="page-subheader-element">
-                  {community.metadata.title || community.uuid}
+                  {community.metadata.title}
                 </div>
               </>
             ) : (
@@ -82,10 +82,14 @@ class CommunityHeaderComponent extends Component {
 
 CommunityHeaderComponent.propTypes = {
   imagePlaceholderLink: PropTypes.string.isRequired,
-  community: PropTypes.oneOf([PropTypes.object, null]).isRequired,
+  community: PropTypes.object,
   disableCommunitySelectionButton: PropTypes.bool.isRequired,
   showCommunitySelectionButton: PropTypes.bool.isRequired,
-  hideCommunityHeader: PropTypes.bool.isRequired,
+  showCommunityHeader: PropTypes.bool.isRequired,
+};
+
+CommunityHeaderComponent.defaultProps = {
+  community: null,
 };
 
 const mapStateToProps = (state) => ({
@@ -94,7 +98,7 @@ const mapStateToProps = (state) => ({
     state.deposit.editorState.ui.disableCommunitySelectionButton,
   showCommunitySelectionButton:
     state.deposit.editorState.ui.showCommunitySelectionButton,
-  hideCommunityHeader: state.deposit.editorState.ui.hideCommunityHeader,
+  showCommunityHeader: state.deposit.editorState.ui.showCommunityHeader,
 });
 
 const mapDispatchToProps = (dispatch) => ({

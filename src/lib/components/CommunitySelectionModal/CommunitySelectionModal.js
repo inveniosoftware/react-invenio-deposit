@@ -35,7 +35,7 @@ export class CommunitySelectionModal extends Component {
 
   render() {
     const { modalOpen, localChosenCommunity } = this.state;
-    const { trigger, chosenCommunity, disableTriggerButton } = this.props;
+    const { chosenCommunity, disableTriggerButton } = this.props;
 
     return (
       <CommunityContext.Provider value={this.contextValue}>
@@ -65,12 +65,16 @@ export class CommunitySelectionModal extends Component {
               aria-haspopup="dialog"
               aria-expanded={modalOpen}
             >
-              {chosenCommunity ? i18next.t('Change') : i18next.t('Select a community')}
+              {chosenCommunity
+                ? i18next.t('Change')
+                : i18next.t('Select a community')}
             </Button>
           }
         >
           <Modal.Header>
-            <Header as="h2" id="community-modal-header">{i18next.t('Select a community')}</Header>
+            <Header as="h2" id="community-modal-header">
+              {i18next.t('Select a community')}
+            </Header>
           </Modal.Header>
 
           <Modal.Content>
@@ -85,7 +89,7 @@ export class CommunitySelectionModal extends Component {
 CommunitySelectionModal.propTypes = {
   chosenCommunity: PropTypes.object,
   onCommunityChange: PropTypes.func.isRequired,
-  disableTriggerButton: PropTypes.bool.isRequired
+  disableTriggerButton: PropTypes.bool.isRequired,
 };
 
 CommunitySelectionModal.defaultProps = {

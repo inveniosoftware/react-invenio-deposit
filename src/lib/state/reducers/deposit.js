@@ -70,7 +70,7 @@ function getSelectedCommunityMetadata(record, selectedCommunity) {
     if (_isString(community)) {
       return {
         id: community,
-        uuid: community,
+        slug: community,
         metadata: {
           title: community,
           description: community,
@@ -83,7 +83,7 @@ function getSelectedCommunityMetadata(record, selectedCommunity) {
     }
     return {
       id: community?.id,
-      uuid: community?.uuid,
+      slug: community?.slug,
       metadata: {
         title: community?.metadata?.title,
         description:
@@ -143,8 +143,8 @@ function getSelectedCommunityMetadata(record, selectedCommunity) {
  * - `ui.showCommunitySelectionButton`: true if the record is not published
  * - `ui.disableCommunitySelectionButton`: true `ui.showCommunitySelectionButton` is true and any of the following is true:
  *     - the associated review for the selected community is declined/expired
- *     - the draft status is one of `DepositStatus.disallowsSubmitForReviewStates` and `ui.hideCommunityHeader` is false
- * - `ui.hideCommunityHeader`: true if all of the following is true:
+ *     - the draft status is one of `DepositStatus.disallowsSubmitForReviewStates` and `ui.showCommunityHeader` is false
+ * - `ui.showCommunityHeader`: false if all of the following is true:
  *     - the draft is published
  *     - the `record.parent.communities` is empty i.e the record was published without a community selected.
  *
@@ -181,12 +181,12 @@ export function computeDepositState(record, selectedCommunity = undefined) {
   // check if the selected community has a request created
   const isReviewForSelectedCommunityCreated =
     hasStatus(record, [DepositStatus.DRAFT_WITH_REVIEW]) &&
-    draftReview?.receiver?.community === _selectedCommunity?.uuid;
+    draftReview?.receiver?.community === _selectedCommunity?.id;
 
   // check if the selected community has a declined or expired request
   const isReviewForSelectedCommunityDeclinedOrExpired =
     hasStatus(record, [DepositStatus.DECLINED, DepositStatus.EXPIRED]) &&
-    draftReview?.receiver?.community === _selectedCommunity?.uuid;
+    draftReview?.receiver?.community === _selectedCommunity?.id;
 
   // check if the record is published without a community selected
   const isRecordPublishedWithoutCommunity =
@@ -233,7 +233,7 @@ export function computeDepositState(record, selectedCommunity = undefined) {
         _showSubmitReviewButton && depositStatusDisallowsSubmitForReview,
       showChangeCommunityButton: isReviewForSelectedCommunityDeclinedOrExpired,
       showCommunitySelectionButton: _showCommunitySelectionButton,
-      hideCommunityHeader: isRecordPublishedWithoutCommunity,
+      showCommunityHeader: !isRecordPublishedWithoutCommunity,
       disableCommunitySelectionButton: _disableCommunitySelectionButton,
     },
     actions: {

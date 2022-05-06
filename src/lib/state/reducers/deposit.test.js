@@ -5,7 +5,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { DepositStatus, computeDepositState } from './deposit';
+import { computeDepositState, DepositStatus } from './deposit';
 
 const initialRecord = {
   metadata: {
@@ -31,7 +31,7 @@ const initialRecord = {
 const fakeSelectedCommunities = [
   {
     id: 'comid',
-    uuid: 'comid',
+    slug: 'comid',
     metadata: {
       title: 'My first community',
       description: 'My first community',
@@ -43,7 +43,7 @@ const fakeSelectedCommunities = [
   },
   {
     id: 'comid2',
-    uuid: 'comid2',
+    slug: 'comid2',
     metadata: {
       title: 'My second community',
       description: 'My second community',
@@ -127,7 +127,7 @@ describe('Test deposit reducer', () => {
           showChangeCommunityButton: false,
           showCommunitySelectionButton: true,
           disableCommunitySelectionButton: false,
-          hideCommunityHeader: false,
+          showCommunityHeader: true,
         },
         actions: {
           shouldUpdateReview: true,
@@ -149,7 +149,7 @@ describe('Test deposit reducer', () => {
           showChangeCommunityButton: false,
           showCommunitySelectionButton: true,
           disableCommunitySelectionButton: false,
-          hideCommunityHeader: false,
+          showCommunityHeader: true,
         },
         actions: {
           shouldUpdateReview: false,
@@ -173,7 +173,7 @@ describe('Test deposit reducer', () => {
           showChangeCommunityButton: false,
           showCommunitySelectionButton: true,
           disableCommunitySelectionButton: false,
-          hideCommunityHeader: false,
+          showCommunityHeader: true,
         },
         actions: {
           shouldUpdateReview: true,
@@ -198,7 +198,7 @@ describe('Test deposit reducer', () => {
           showChangeCommunityButton: false,
           showCommunitySelectionButton: true,
           disableCommunitySelectionButton: false,
-          hideCommunityHeader: false,
+          showCommunityHeader: true,
         },
         actions: {
           shouldUpdateReview: false,
@@ -220,7 +220,7 @@ describe('Test deposit reducer', () => {
           showChangeCommunityButton: false,
           showCommunitySelectionButton: true,
           disableCommunitySelectionButton: false,
-          hideCommunityHeader: false,
+          showCommunityHeader: true,
         },
         actions: {
           shouldUpdateReview: true,
@@ -245,7 +245,7 @@ describe('Test deposit reducer', () => {
           showChangeCommunityButton: false,
           showCommunitySelectionButton: true,
           disableCommunitySelectionButton: true,
-          hideCommunityHeader: false,
+          showCommunityHeader: true,
         },
         actions: {
           shouldUpdateReview: false,
@@ -267,7 +267,7 @@ describe('Test deposit reducer', () => {
           showChangeCommunityButton: true,
           showCommunitySelectionButton: true,
           disableCommunitySelectionButton: true,
-          hideCommunityHeader: false,
+          showCommunityHeader: true,
         },
         actions: {
           shouldUpdateReview: false,
@@ -290,7 +290,7 @@ describe('Test deposit reducer', () => {
           showChangeCommunityButton: true,
           showCommunitySelectionButton: true,
           disableCommunitySelectionButton: true,
-          hideCommunityHeader: false,
+          showCommunityHeader: true,
         },
         actions: {
           shouldUpdateReview: false,
@@ -313,7 +313,7 @@ describe('Test deposit reducer', () => {
           showChangeCommunityButton: false,
           showCommunitySelectionButton: true,
           disableCommunitySelectionButton: false,
-          hideCommunityHeader: false,
+          showCommunityHeader: true,
         },
         actions: {
           shouldUpdateReview: true,
@@ -336,7 +336,7 @@ describe('Test deposit reducer', () => {
           showChangeCommunityButton: false,
           showCommunitySelectionButton: true,
           disableCommunitySelectionButton: false,
-          hideCommunityHeader: false,
+          showCommunityHeader: true,
         },
         actions: {
           shouldUpdateReview: true,
@@ -360,7 +360,7 @@ describe('Test deposit reducer', () => {
         showChangeCommunityButton: false,
         showCommunitySelectionButton: true,
         disableCommunitySelectionButton: false,
-        hideCommunityHeader: false,
+        showCommunityHeader: true,
       },
       actions: {
         shouldUpdateReview: false,
@@ -383,7 +383,7 @@ describe('Test deposit reducer', () => {
         showChangeCommunityButton: false,
         showCommunitySelectionButton: false,
         disableCommunitySelectionButton: false,
-        hideCommunityHeader: true,
+        showCommunityHeader: false,
       },
       actions: {
         shouldUpdateReview: false,
@@ -406,7 +406,7 @@ describe('Test deposit reducer', () => {
         showChangeCommunityButton: false,
         showCommunitySelectionButton: false,
         disableCommunitySelectionButton: false,
-        hideCommunityHeader: false,
+        showCommunityHeader: true,
       },
       actions: {
         shouldUpdateReview: false,
