@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-04-11T13:41:25.815Z\n"
-"PO-Revision-Date: 2022-04-11T13:41:25.815Z\n"
+"POT-Creation-Date: 2022-05-06T14:39:05.644Z\n"
+"PO-Revision-Date: 2022-05-06T14:39:05.644Z\n"
 "Language: en\n"
 
 msgid "Embargo until"
@@ -434,21 +434,6 @@ msgstr ""
 msgid "Add award"
 msgstr "Add award"
 
-msgid "Funding Organization"
-msgstr "Funding Organization"
-
-msgid "Funding organization..."
-msgstr "Funding organization..."
-
-msgid "Award"
-msgstr "Award"
-
-msgid "Award number/acronym/name ..."
-msgstr "Award number/acronym/name ..."
-
-msgid "Awards"
-msgstr "Awards"
-
 msgid "Add identifier"
 msgstr "Add identifier"
 
@@ -619,14 +604,8 @@ msgstr "Add {{mode}} license"
 msgid "Change {{mode}} license"
 msgstr "Change {{mode}} license"
 
-msgid "No community selected."
-msgstr "No community selected."
-
 msgid "My communities"
 msgstr "My communities"
-
-msgid "Currently selected"
-msgstr "Currently selected"
 
 msgid "Search in all communities"
 msgstr "Search in all communities"
@@ -636,12 +615,6 @@ msgstr "Search in my communities"
 
 msgid "Close"
 msgstr "Close"
-
-msgid "selected"
-msgstr "selected"
-
-msgid "select"
-msgstr "select"
 
 msgid "Search for persons by name, identifier, or affiliation..."
 msgstr "Search for persons by name, identifier, or affiliation..."
@@ -679,9 +652,6 @@ msgstr "You must click and accept this."
 
 msgid "Before requesting review please read and check the following."
 msgstr "Before requesting review please read and check the following."
-
-msgid "Request for review"
-msgstr "Request for review"
 
 msgid ""
 "The '{{communityTitle}}' curators will have access to\n"
@@ -764,9 +734,95 @@ msgstr "Change community"
 msgid "Publish without community"
 msgstr "Publish without community"
 
+msgid "Select the community where you want to submit your record."
+msgstr "Select the community where you want to submit your record."
+
+msgid "View community"
+msgstr "View community"
+
+msgid "Opens in new tab"
+msgstr "Opens in new tab"
+
+msgid "Selected"
+msgstr "Selected"
+
+msgid "Select"
+msgstr "Select"
+
+msgid "Select "
+msgstr "Select "
+
+msgid "Change"
+msgstr "Change"
+
+msgid "Search for a funder by name"
+msgstr "Search for a funder by name"
+
+msgid "Funder"
+msgstr "Funder"
+
+msgid "Search for funder..."
+msgstr "Search for funder..."
+
+msgid "Custom award information"
+msgstr "Custom award information"
+
+msgid "Award information"
+msgstr "Award information"
+
+msgid "Number"
+msgstr "Number"
+
+msgid "Award number"
+msgstr "Award number"
+
+msgid "Award Title"
+msgstr "Award Title"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Award URL"
+msgstr "Award URL"
+
+msgid "Funder is required"
+msgstr "Funder is required"
+
+msgid "Title must be set alongside number"
+msgstr "Title must be set alongside number"
+
+msgid "Number must be set alongside title"
+msgstr "Number must be set alongside title"
+
+msgid "Url Must be a valid url"
+msgstr "Url Must be a valid url"
+
+msgid "Url must be set alongside title and number."
+msgstr "Url must be set alongside title and number."
+
+msgid "Add standard award"
+msgstr "Add standard award"
+
+msgid "Add custom award"
+msgstr "Add custom award"
+
+msgid "Change award"
+msgstr "Change award"
+
+msgid "Did not find your award? "
+msgstr "Did not find your award? "
+
+msgid "Add a custom award."
+msgstr "Add a custom award."
+
 msgid ""
 "Once the record is published you will no longer be able to change the files "
-"in the upload!"
+"in the upload! However, you will still be able to update the record's "
+"metadata later."
 msgstr ""
 "Once the record is published you will no longer be able to change the files "
-"in the upload!"
+"in the upload! However, you will still be able to update the record's "
+"metadata later."
+
+msgid "Submit for review"
+msgstr "Submit for review"

@@ -58,6 +58,7 @@ const FileTableRow = ({
   deleteFile,
   defaultPreview,
   setDefaultPreview,
+  decimalSizeDisplay,
 }) => {
   const [isCancelling, setIsCancelling] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -193,10 +194,15 @@ const FileUploadBox = ({
             <Header size="small">{dragText}</Header>
           </Grid.Column>
 
-          <Grid.Column className="mt-10 mb-10" mobile={16} tablet={2} computer={2}>
+          <Grid.Column
+            className="mt-10 mb-10"
+            mobile={16}
+            tablet={2}
+            computer={2}
+          >
             - {i18next.t('or')} -
           </Grid.Column>
-          
+
           <Grid.Column mobile={16} tablet={7} computer={7}>
             <Button
               type="button"

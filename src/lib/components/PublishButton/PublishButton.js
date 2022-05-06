@@ -11,7 +11,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ActionButton } from 'react-invenio-forms';
 import { connect } from 'react-redux';
-import { Button, Icon, Modal } from 'semantic-ui-react';
+import { Button, Icon, Message, Modal } from 'semantic-ui-react';
 import {
   DepositFormSubmitActions,
   DepositFormSubmitContext,
@@ -49,13 +49,9 @@ class PublishButtonComponent extends Component {
       numberOfFiles,
       buttonLabel,
       publishWithoutCommunity,
-      publishWarning,
       ...uiProps
     } = this.props;
     const { isConfirmModalOpen } = this.state;
-    const modalText =
-      i18next.t(publishWarning) ||
-      PublishButtonComponent.defaultProps.publishWarning;
 
     return (
       <>
@@ -91,7 +87,16 @@ class PublishButtonComponent extends Component {
               {i18next.t('Are you sure you want to publish this record?')}
             </Modal.Header>
             {/* the modal text should only ever come from backend configuration */}
-            <Modal.Content dangerouslySetInnerHTML={{ __html: modalText }} />
+            <Modal.Content>
+              <Message visible warning>
+                <p>
+                  <Icon name="warning sign" />{' '}
+                  {i18next.t(
+                    "Once the record is published you will no longer be able to change the files in the upload! However, you will still be able to update the record's metadata later."
+                  )}
+                </p>
+              </Message>
+            </Modal.Content>
             <Modal.Actions>
               <Button onClick={this.closeConfirmModal} floated="left">
                 {i18next.t('Cancel')}
@@ -113,15 +118,11 @@ class PublishButtonComponent extends Component {
 }
 
 PublishButtonComponent.propTypes = {
-  publishWarning: PropTypes.string,
   buttonLabel: PropTypes.string,
   publishWithoutCommunity: PropTypes.bool,
 };
 
 PublishButtonComponent.defaultProps = {
-  publishWarning: i18next.t(
-    'Once the record is published you will no longer be able to change the files in the upload!'
-  ),
   buttonLabel: i18next.t('Publish'),
   publishWithoutCommunity: false,
 };
