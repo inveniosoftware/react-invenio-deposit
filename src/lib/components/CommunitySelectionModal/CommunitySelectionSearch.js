@@ -4,7 +4,10 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import { i18next } from '@translations/i18next';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { OverridableContext } from 'react-overridable';
 import {
   EmptyResults,
   Error,
@@ -17,9 +20,6 @@ import {
 } from 'react-searchkit';
 import { Container, Grid, Menu, Modal, Segment } from 'semantic-ui-react';
 import { CommunityListItem } from './CommunityListItem';
-import { OverridableContext } from 'react-overridable';
-import { i18next } from '@translations/i18next';
-import PropTypes from 'prop-types';
 
 const overriddenComponents = {
   'communities.ResultsList.item': CommunityListItem,
@@ -42,7 +42,6 @@ export class CommunitySelectionSearch extends Component {
   }
 
   render() {
-    const { chosenCommunity } = this.props;
     const { selectedEndpoint } = this.state;
     const { allCommunities, myCommunities } = this.apiEndpoints;
 

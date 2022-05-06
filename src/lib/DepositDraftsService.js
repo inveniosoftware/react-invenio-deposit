@@ -32,7 +32,7 @@ export class DepositDraftsService {
   async discardPID(draftLinks, pidType) {
     throw new Error('Not implemented.');
   }
-  async createOrUpdateReview(draftLinks, newCommunityUUID) {
+  async createOrUpdateReview(draftLinks, newCommunityId) {
     throw new Error('Not implemented.');
   }
   async deleteReview(draftLinks) {
@@ -107,8 +107,8 @@ export class RDMDepositDraftsService extends DepositDraftsService {
   /**
    * Creates or updates a review request.
    */
-  async createOrUpdateReview(draftLinks, newCommunityUUID) {
-    return this.apiClient.createOrUpdateReview(draftLinks, newCommunityUUID);
+  async createOrUpdateReview(draftLinks, newCommunityId) {
+    return this.apiClient.createOrUpdateReview(draftLinks, newCommunityId);
   }
 
   /**

@@ -4,27 +4,27 @@
 // Invenio RDM Records is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { i18next } from '@translations/i18next';
+import { Formik } from 'formik';
 import _get from 'lodash/get';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Trans } from 'react-i18next';
+import {
+  ActionButton,
+  ErrorLabel,
+  RadioField,
+  TextAreaField,
+} from 'react-invenio-forms';
 import {
   Button,
-  Icon,
+  Checkbox,
   Form,
+  Icon,
   Message,
   Modal,
-  Checkbox,
 } from 'semantic-ui-react';
-import { i18next } from '@translations/i18next';
-import { Trans } from 'react-i18next';
 import * as Yup from 'yup';
-import { Formik } from 'formik';
-import {
-  ErrorLabel,
-  TextAreaField,
-  RadioField,
-  ActionButton,
-} from 'react-invenio-forms';
 
 export class SubmitReviewModal extends Component {
   ConfirmSubmitReviewSchema = Yup.object({
@@ -169,7 +169,7 @@ export class SubmitReviewModal extends Component {
 
 SubmitReviewModal.propTypes = {
   isConfirmModalOpen: PropTypes.bool.isRequired,
-  community: PropTypes.string.isRequired,
+  community: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   initialReviewComment: PropTypes.string,

@@ -68,6 +68,8 @@ export function configureStore(appConfig) {
   return createStore(
     rootReducer,
     preloadedState,
-    composeEnhancers(applyMiddleware(thunk.withExtraArgument(extra)))
+    composeEnhancers(
+      applyMiddleware(thunk.withExtraArgument({ config, ...extra }))
+    )
   );
 }

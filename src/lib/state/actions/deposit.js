@@ -86,7 +86,7 @@ async function _saveDraft(
       // TODO handle global error here
       await draftsService.createOrUpdateReview(
         draftWithLinks.links,
-        selectedCommunity.uuid
+        selectedCommunity.id
       );
     }
 
@@ -198,12 +198,17 @@ export const submitReview = (draft, { reviewComment }) => {
 
     const draftWithLinks = response.data;
     try {
-      const response = await config.service.drafts.submitReview(
+      const reqResponse = await config.service.drafts.submitReview(
         draftWithLinks.links,
         reviewComment
       );
+      const request = reqResponse.data;
       // after submitting for review, redirect to the review record
-      const requestURL = response.data.links.self_html;
+      const rawRequestURL = config.config.links.user_dashboard_request;
+      const requestURL = rawRequestURL.replace(
+        '<request_pid_value>',
+        request.id
+      );
       window.location.replace(requestURL);
     } catch (error) {
       dispatch({

@@ -4,12 +4,12 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { useContext } from 'react';
-import { Item, Button } from 'semantic-ui-react';
-import _truncate from 'lodash/truncate';
-import { Image } from 'react-invenio-forms';
-import PropTypes from 'prop-types';
 import { i18next } from '@translations/i18next';
+import _truncate from 'lodash/truncate';
+import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
+import { Image } from 'react-invenio-forms';
+import { Button, Item } from 'semantic-ui-react';
 import { CommunityContext } from './CommunityContext';
 
 export const CommunityListItem = ({ result }) => {
@@ -19,7 +19,7 @@ export const CommunityListItem = ({ result }) => {
   const { metadata } = result;
   const linkToCommunityPage = result.links.self_html;
   const linkToLogo = result.links.logo;
-  const itemSelected = getChosenCommunity()?.uuid === result.uuid;
+  const itemSelected = getChosenCommunity()?.id === result.id;
   // TODO: fix the hardcoded `en`
   const type_l10n = metadata.type.title.en;
   return (
