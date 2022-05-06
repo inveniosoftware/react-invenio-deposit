@@ -1,5 +1,10 @@
 # Changes
 
+Version 0.19.6 (released 2022-05-06)
+* fixed type for community selection
+* fixed community workflow for slug changes
+* refactored warning text on publish
+
 Version 0.19.5 (released 2022-05-06)
 * add new Funding field
 * fix community image loading
