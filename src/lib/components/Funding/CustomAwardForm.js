@@ -12,11 +12,11 @@ import { TextField, RemoteSelectField } from 'react-invenio-forms';
 import { i18next } from '@translations/i18next';
 import _isEmpty from 'lodash/isEmpty';
 
-function CustomAwardForm({
-  deserializeFunder,
-  selectedFunding,
-}) {
-  const existsFunding = (selectedFunding?.award?.title && selectedFunding?.award?.number) ? true : false;
+function CustomAwardForm({ deserializeFunder, selectedFunding }) {
+  const existsFunding =
+    selectedFunding?.award?.title && selectedFunding?.award?.number
+      ? true
+      : false;
   const [accordionActive, setAccordionActive] = useState(existsFunding);
 
   function deserializeFunderToDropdown(funderItem) {
@@ -56,15 +56,17 @@ function CustomAwardForm({
     <Form>
       <RemoteSelectField
         fieldPath="selectedFunding.funder.id"
-        suggestionAPIUrl="https://127.0.0.1:5000/api/funders"
+        suggestionAPIUrl="/api/funders"
         suggestionAPIHeaders={{
           // Accept: 'application/vnd.inveniordm.v1+json',
-          // TODO replace 'Accept' header when backend supports internationalisation. 
+          // TODO replace 'Accept' header when backend supports internationalisation.
           Accept: 'application/json',
         }}
         placeholder={i18next.t('Search for a funder by name')}
         serializeSuggestions={(funders) => {
-          return funders.map((funder) => (deserializeFunderToDropdown(deserializeFunder(funder))));
+          return funders.map((funder) =>
+            deserializeFunderToDropdown(deserializeFunder(funder))
+          );
         }}
         searchInput={{
           autoFocus: _isEmpty(selectedFunding),
@@ -82,8 +84,12 @@ function CustomAwardForm({
           if (selectedFundersArray.length === 1) {
             const selectedFunder = selectedFundersArray[0];
             if (selectedFunder) {
-              const deserializedFunder = serializeFunderFromDropdown(selectedFunder);
-              formikProps.form.setFieldValue('selectedFunding.funder', deserializedFunder);
+              const deserializedFunder =
+                serializeFunderFromDropdown(selectedFunder);
+              formikProps.form.setFieldValue(
+                'selectedFunding.funder',
+                deserializedFunder
+              );
             }
           }
         }}
@@ -94,7 +100,9 @@ function CustomAwardForm({
           onClick={() => setAccordionActive(!accordionActive)}
         >
           <Icon name={`caret ${accordionActive ? 'down' : 'right'}`} />
-          {accordionActive ? i18next.t('Custom award information') : i18next.t('Award information')}
+          {accordionActive
+            ? i18next.t('Custom award information')
+            : i18next.t('Award information')}
         </Accordion.Title>
         <Accordion.Content active={accordionActive}>
           <Form.Group widths="equal">
