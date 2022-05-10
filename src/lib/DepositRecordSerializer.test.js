@@ -6,11 +6,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import { RDMDepositRecordSerializer } from './DepositRecordSerializer';
-import {
-  emptyDate,
-  emptyIdentifier,
-  emptyRelatedWork,
-} from './record';
+import { emptyDate, emptyIdentifier, emptyRelatedWork } from './record';
 
 describe('RDMDepositRecordSerializer tests', () => {
   const defaultLocale = 'en';
@@ -152,6 +148,7 @@ describe('RDMDepositRecordSerializer tests', () => {
         },
       };
       const expectedRecord = {
+        expanded: {},
         metadata: {
           title: '',
           additional_titles: [],
@@ -304,14 +301,14 @@ describe('RDMDepositRecordSerializer tests', () => {
                 identifiers: [
                   {
                     identifier: 'https://inveniosoftware.org/products/rdm/',
-                    scheme: 'url'
+                    scheme: 'url',
                   },
-                ]
+                ],
               },
             },
             {
               funder: {
-                name: 'Funder 3'
+                name: 'Funder 3',
               },
             },
           ],
@@ -332,6 +329,7 @@ describe('RDMDepositRecordSerializer tests', () => {
           files: false,
           metadata: false,
         },
+        expanded: {},
         id: 'wk205-00878',
         links: {
           publish:
@@ -439,17 +437,17 @@ describe('RDMDepositRecordSerializer tests', () => {
               award: {
                 title: 'Award B2',
                 number: 'B21234',
-                url: 'https://inveniosoftware.org/products/rdm/'
+                url: 'https://inveniosoftware.org/products/rdm/',
               },
               __key: 0,
             },
             {
               funder: {
-                name: 'Funder 3'
+                name: 'Funder 3',
               },
               award: {},
               __key: 1,
-            }
+            },
           ],
           version: 'v2.0.0',
         },
