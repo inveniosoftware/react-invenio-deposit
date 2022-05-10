@@ -5,28 +5,26 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { useState } from 'react';
-
+import { i18next } from '@translations/i18next';
+import { Formik } from 'formik';
 import PropTypes from 'prop-types';
-import { Grid, Modal } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { ActionButton } from 'react-invenio-forms';
 import {
-  ReactSearchKit,
-  SearchBar,
-  InvenioSearchApi,
-  ResultsLoader,
   EmptyResults,
   Error,
+  InvenioSearchApi,
   Pagination,
+  ReactSearchKit,
+  ResultsLoader,
+  SearchBar,
 } from 'react-searchkit';
-import { Formik } from 'formik';
-import { ActionButton } from 'react-invenio-forms';
+import { Grid, Modal } from 'semantic-ui-react';
 import * as Yup from 'yup';
-import { i18next } from '@translations/i18next';
-
 import { AwardResults } from './AwardResults';
 import CustomAwardForm from './CustomAwardForm';
-import { NoAwardResults } from './NoAwardResults';
 import { FunderDropdown } from './FunderDropdown';
+import { NoAwardResults } from './NoAwardResults';
 
 const ModalTypes = {
   STANDARD: 'standard',
@@ -66,7 +64,7 @@ const CustomFundingSchema = Yup.object().shape({
           }
 
           return true;
-        }
+        },
       }),
       number: Yup.string().test({
         name: 'testNumber',
@@ -79,24 +77,25 @@ const CustomFundingSchema = Yup.object().shape({
           }
 
           return true;
-        }
+        },
       }),
-      url: Yup.string().url(i18next.t('Url Must be a valid url')).test({
-        name: 'validateUrlDependencies',
-        message: i18next.t('Url must be set alongside title and number.'),
-        test: function testUrl(value) {
-          const { title, number } = this.parent;
+      url: Yup.string()
+        .url(i18next.t('Url Must be a valid url'))
+        .test({
+          name: 'validateUrlDependencies',
+          message: i18next.t('Url must be set alongside title and number.'),
+          test: function testUrl(value) {
+            const { title, number } = this.parent;
 
-          console.log('url value ', value);
-          if (value && value !== "" && !title && !number) {
-            return false;
-          }
+            if (value && value !== '' && !title && !number) {
+              return false;
+            }
 
-          return true;
-        }
-      })
+            return true;
+          },
+        }),
     }),
-  })
+  }),
 });
 
 function FundingModal({
@@ -128,12 +127,11 @@ function FundingModal({
   const searchApi = new InvenioSearchApi(searchConfig.searchApi);
   const customObject = mode === ModalTypes.CUSTOM ? props.initialFunding : {};
   const initialFunding = {
-    selectedFunding: action === ModalActions.EDIT
-      ? customObject
-      : {},
+    selectedFunding: action === ModalActions.EDIT ? customObject : {},
   };
 
-  const FundingSchema = mode === ModalTypes.CUSTOM ? CustomFundingSchema : StandardSchema;
+  const FundingSchema =
+    mode === ModalTypes.CUSTOM ? CustomFundingSchema : StandardSchema;
 
   return (
     <Formik
@@ -155,7 +153,9 @@ function FundingModal({
           closeOnDimmerClick={false}
         >
           <Modal.Header as="h6" className="pt-10 pb-10">
-            {mode === 'standard' ? i18next.t('Add standard award') : i18next.t('Add custom award')}
+            {mode === 'standard'
+              ? i18next.t('Add standard award')
+              : i18next.t('Add custom award')}
           </Modal.Header>
           <Modal.Content>
             {mode === ModalTypes.STANDARD && (
@@ -189,14 +189,14 @@ function FundingModal({
                     <Grid.Column>
                       <ResultsLoader>
                         <EmptyResults
-                          extraContent={(
+                          extraContent={
                             <NoAwardResults
                               switchToCustom={() => {
                                 resetForm();
                                 setMode(ModalTypes.CUSTOM);
                               }}
                             />
-                          )}
+                          }
                         />
                         <Error />
                         <AwardResults
@@ -236,7 +236,11 @@ function FundingModal({
               onClick={(event, formik) => formik.handleSubmit(event)}
               primary
               icon="checkmark"
-              content={action === ModalActions.ADD ? i18next.t('Add award') : i18next.t('Change award')}
+              content={
+                action === ModalActions.ADD
+                  ? i18next.t('Add award')
+                  : i18next.t('Change award')
+              }
             />
           </Modal.Actions>
         </Modal>

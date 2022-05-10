@@ -25,11 +25,7 @@ import {
   SchemaField,
   VocabularyField,
 } from './fields';
-import {
-  emptyDate,
-  emptyIdentifier,
-  emptyRelatedWork,
-} from './record';
+import { emptyDate, emptyIdentifier, emptyRelatedWork } from './record';
 
 export class DepositRecordSerializer {
   constructor(defaultLocale) {
@@ -60,6 +56,10 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
     }),
     links: new Field({
       fieldpath: 'links',
+    }),
+    expanded: new Field({
+      fieldpath: 'expanded',
+      deserializedDefault: {},
     }),
     pids: new Field({
       fieldpath: 'pids',
@@ -227,13 +227,13 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
       schema: {
         award: new FundingField({
           fieldpath: 'award',
-          deserializedDefault: {}
+          deserializedDefault: {},
         }),
         funder: new FundingField({
           fieldpath: 'funder',
-          deserializedDefault: {}
-        })
-      }
+          deserializedDefault: {},
+        }),
+      },
     }),
     version: new Field({
       fieldpath: 'metadata.version',
@@ -289,6 +289,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
     //       without affecting the original
     const originalRecord = _pick(_cloneDeep(record), [
       'access',
+      'expanded',
       'metadata',
       'id',
       'links',

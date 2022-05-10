@@ -116,6 +116,7 @@ export class RDMDepositApiClient extends DepositApiClient {
     return this._createResponse(() =>
       axiosWithConfig.post(this.createDraftURL, payload, {
         headers: BASE_HEADERS['vnd+json'],
+        params: { expand: 1 },
       })
     );
   }
@@ -129,6 +130,7 @@ export class RDMDepositApiClient extends DepositApiClient {
     return this._createResponse(() =>
       axiosWithConfig.get(draftLinks.self, {
         headers: BASE_HEADERS['vnd+json'],
+        params: { expand: 1 },
       })
     );
   }
@@ -143,6 +145,7 @@ export class RDMDepositApiClient extends DepositApiClient {
     return this._createResponse(() =>
       axiosWithConfig.put(draftLinks.self, payload, {
         headers: BASE_HEADERS['vnd+json'],
+        params: { expand: 1 },
       })
     );
   }
@@ -154,7 +157,7 @@ export class RDMDepositApiClient extends DepositApiClient {
    */
   async publishDraft(draftLinks) {
     return this._createResponse(() =>
-      axiosWithConfig.post(draftLinks.publish, {})
+      axiosWithConfig.post(draftLinks.publish, {}, { params: { expand: 1 } })
     );
   }
 
@@ -177,7 +180,13 @@ export class RDMDepositApiClient extends DepositApiClient {
     return this._createResponse(() => {
       const linkName = `reserve_${pidType}`;
       const link = draftLinks[linkName];
-      return axiosWithConfig.post(link, {});
+      return axiosWithConfig.post(
+        link,
+        {},
+        {
+          params: { expand: 1 },
+        }
+      );
     });
   }
 
@@ -189,7 +198,9 @@ export class RDMDepositApiClient extends DepositApiClient {
     return this._createResponse(() => {
       const linkName = `reserve_${pidType}`;
       const link = draftLinks[linkName];
-      return axiosWithConfig.delete(link, {});
+      return axiosWithConfig.delete(link, {
+        params: { expand: 1 },
+      });
     });
   }
 

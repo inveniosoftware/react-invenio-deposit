@@ -6,7 +6,6 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import _isEmpty from 'lodash/isEmpty';
-import _isString from 'lodash/isString';
 import {
   DISCARD_PID_FAILED,
   DISCARD_PID_STARTED,
@@ -66,53 +65,31 @@ function hasStatus(record, statuses = []) {
 }
 
 function getSelectedCommunityMetadata(record, selectedCommunity) {
-  function mockCommunityMetadata(community) {
-    if (_isString(community)) {
-      return {
-        id: community,
-        slug: community,
-        metadata: {
-          title: community,
-          description: community,
-          type: 'Type',
-        },
-        links: {
-          self_html: '/',
-        },
-      };
-    }
-    return {
-      id: community?.id,
-      slug: community?.slug,
-      metadata: {
-        title: community?.metadata?.title,
-        description:
-          community.metadata?.description || community.metadata?.title,
-        type: 'Type',
-      },
-      links: {
-        self_html: '/',
-        ...community.links,
-      },
-    };
-  }
   switch (selectedCommunity) {
     case undefined:
       // when `undefined`, retrieve the community from the record, if previously selected
-      const _community = hasStatus(record, [
+      const reviewCommunityId = record.parent?.review?.receiver?.community;
+      const defaultCommunityId = record.parent?.communities?.default;
+      const hasCommunity = reviewCommunityId || defaultCommunityId;
+      if (!hasCommunity) {
+        // community never selected
+        return undefined;
+      }
+
+      const alreadyPublished = hasStatus(record, [
         DepositStatus.PUBLISHED,
         DepositStatus.NEW_VERSION_DRAFT,
-      ])
-        ? record.parent?.communities?.default
-        : record.parent?.review?.receiver?.community;
-      return _community ? mockCommunityMetadata(_community) : undefined;
+      ]);
+
+      // record should be expanded
+      return alreadyPublished
+        ? record.expanded.parent.communities.default
+        : record.expanded.parent.review.receiver;
     case null:
       // when value is `null`, the selected community was deselected
       return null;
     default:
-      // FIXME
-      // needed until backend will resolve community and return an obj instead of UUID only
-      return mockCommunityMetadata(selectedCommunity);
+      return selectedCommunity;
   }
 }
 
@@ -169,11 +146,10 @@ export function computeDepositState(record, selectedCommunity = undefined) {
   );
 
   // Serialize selectedCommunity
-  let _selectedCommunity = getSelectedCommunityMetadata(
+  const _selectedCommunity = getSelectedCommunityMetadata(
     record,
     selectedCommunity
   );
-
   const communityIsSelected = !_isEmpty(_selectedCommunity);
 
   const draftReview = record?.parent?.review;
