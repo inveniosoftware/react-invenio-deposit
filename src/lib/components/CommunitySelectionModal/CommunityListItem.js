@@ -21,7 +21,7 @@ export const CommunityListItem = ({ result }) => {
   const linkToLogo = result.links.logo;
   const itemSelected = getChosenCommunity()?.id === result.id;
   // TODO: fix the hardcoded `en`
-  const type_l10n = metadata.type.title.en;
+  const type_l10n = metadata.type?.title?.en;
   return (
     <Item key={result.id} className={itemSelected ? 'selected' : ''}>
       <Image
@@ -49,7 +49,7 @@ export const CommunityListItem = ({ result }) => {
         <Item.Description as="p" className="rel-pr-1">
           {_truncate(metadata.description, { length: 150 })}
         </Item.Description>
-        <Item.Extra>{type_l10n}</Item.Extra>
+        {type_l10n && <Item.Extra>{type_l10n}</Item.Extra>}
       </Item.Content>
       <Item.Extra className="flex width auto mt-0">
         <div className="align-self-center">
