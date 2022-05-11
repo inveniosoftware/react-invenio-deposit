@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.19.7 (released 2022-05-06)
+* expand draft/record endpoint after action
+* resolve community metadata to display logo/title
+
 Version 0.19.6 (released 2022-05-06)
 * fixed type for community selection
 * fixed community workflow for slug changes
