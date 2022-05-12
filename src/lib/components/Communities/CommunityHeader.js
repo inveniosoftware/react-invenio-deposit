@@ -53,25 +53,27 @@ class CommunityHeaderComponent extends Component {
             )}
             <div className="community-header-element rel-ml-1">
               {showCommunitySelectionButton && (
-                <CommunitySelectionModal
-                  onCommunityChange={(community) => {
-                    changeSelectedCommunity(community);
-                  }}
-                  chosenCommunity={community}
-                  disableTriggerButton={disableCommunitySelectionButton}
-                />
-              )}
-              {community && (
-                <Button
-                  basic
-                  color="black"
-                  size="mini"
-                  className="community-header-button ml-5"
-                  onClick={() => changeSelectedCommunity(null)}
-                  content={i18next.t('Remove')}
-                  icon="close"
-                  disabled={disableCommunitySelectionButton}
-                />
+                <>
+                  <CommunitySelectionModal
+                    onCommunityChange={(community) => {
+                      changeSelectedCommunity(community);
+                    }}
+                    chosenCommunity={community}
+                    disableTriggerButton={disableCommunitySelectionButton}
+                  />
+                  {community && (
+                    <Button
+                      basic
+                      color="black"
+                      size="mini"
+                      className="community-header-button ml-5"
+                      onClick={() => changeSelectedCommunity(null)}
+                      content={i18next.t('Remove')}
+                      icon="close"
+                      disabled={disableCommunitySelectionButton}
+                    />
+                  )}
+                </>
               )}
             </div>
           </Container>
