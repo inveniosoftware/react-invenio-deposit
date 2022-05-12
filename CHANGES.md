@@ -1,5 +1,11 @@
 # Changes
 
+Version 0.19.8 (released 2022-05-12)
+* show "Remove" button in community selection modal whenever the user can
+  select a community only
+* Fix broken preview when user is previewing a draft that has not yet been created
+* Fix upload of files
+
 Version 0.19.7 (released 2022-05-06)
 * expand draft/record endpoint after action
 * resolve community metadata to display logo/title
