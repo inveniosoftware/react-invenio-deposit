@@ -226,14 +226,15 @@ export const preview = (draft) => {
       type: DRAFT_PREVIEW_STARTED,
     });
 
-    await _saveDraft(draft, config.service.drafts, {
+    const response = await _saveDraft(draft, config.service.drafts, {
       depositState: getState().deposit,
       dispatchFn: dispatch,
       failType: DRAFT_PREVIEW_FAILED,
       partialValidationActionType: DRAFT_HAS_VALIDATION_ERRORS,
     });
+    const recordUrl = response.data.links.record_html;
     // redirect to the preview page
-    window.location = `/records/${draft.id}?preview=1`;
+    window.location = `${recordUrl}?preview=1`;
   };
 };
 
