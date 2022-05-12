@@ -6,6 +6,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import {
+  DRAFT_FETCHED,
   FILE_DELETED_SUCCESS,
   FILE_DELETE_FAILED,
   FILE_IMPORT_FAILED,
@@ -20,17 +21,23 @@ export const uploadFiles = (draft, files) => {
     let response;
     try {
       response = await saveDraftWithUrlUpdate(draft, config.service.drafts);
+      // update state with created draft
+      dispatch({
+        type: DRAFT_FETCHED,
+        payload: { data: response.data },
+      });
+
+      // upload files
+      const uploadFileUrl = response.data.links.files;
+      for (const file of files) {
+        config.service.files.upload(uploadFileUrl, file);
+      }
     } catch (error) {
       dispatch({
         type: FILE_UPLOAD_SAVE_DRAFT_FAILED,
         payload: { errors: error.errors },
       });
       throw error;
-    }
-
-    const uploadFileUrl = response.data.links.files;
-    for (const file of files) {
-      config.service.files.upload(uploadFileUrl, file);
     }
   };
 };
