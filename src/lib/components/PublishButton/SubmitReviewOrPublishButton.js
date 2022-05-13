@@ -34,12 +34,17 @@ class SubmitReviewOrPublishComponent extends Component {
     ) : showChangeCommunityButton ? (
       <>
         <CommunitySelectionModal
-          className="mb-5"
           onCommunityChange={(community) => {
             changeSelectedCommunity(community);
           }}
           chosenCommunity={community}
-          trigger={<Button fluid>{i18next.t('Change community')}</Button>}
+          trigger={
+            <Button
+              content={i18next.t("Change community")}
+              fluid={true}
+              className="mb-10"
+            />
+          }
         />
         <PublishButton
           buttonLabel={i18next.t('Publish without community')}

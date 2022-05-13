@@ -35,7 +35,7 @@ export class CommunitySelectionModal extends Component {
 
   render() {
     const { modalOpen, localChosenCommunity } = this.state;
-    const { chosenCommunity, disableTriggerButton } = this.props;
+    const { chosenCommunity, trigger } = this.props;
 
     return (
       <CommunityContext.Provider value={this.contextValue}>
@@ -55,20 +55,10 @@ export class CommunitySelectionModal extends Component {
             })
           }
           trigger={
-            <Button
-              primary
-              size="mini"
-              className="community-header-button"
-              name="setting"
-              type="button"
-              disabled={disableTriggerButton}
-              aria-haspopup="dialog"
-              aria-expanded={modalOpen}
-            >
-              {chosenCommunity
-                ? i18next.t('Change')
-                : i18next.t('Select a community')}
-            </Button>
+            React.cloneElement(trigger, {
+              'aria-haspopup': "dialog",
+              'aria-expanded': modalOpen
+            })
           }
         >
           <Modal.Header>
@@ -89,7 +79,7 @@ export class CommunitySelectionModal extends Component {
 CommunitySelectionModal.propTypes = {
   chosenCommunity: PropTypes.object,
   onCommunityChange: PropTypes.func.isRequired,
-  disableTriggerButton: PropTypes.bool.isRequired,
+  trigger: PropTypes.object.isRequired,
 };
 
 CommunitySelectionModal.defaultProps = {
