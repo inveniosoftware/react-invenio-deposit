@@ -59,7 +59,20 @@ class CommunityHeaderComponent extends Component {
                       changeSelectedCommunity(community);
                     }}
                     chosenCommunity={community}
-                    disableTriggerButton={disableCommunitySelectionButton}
+                    trigger={
+                      <Button
+                        className="community-header-button"
+                        disabled={disableCommunitySelectionButton}
+                        primary={true}
+                        size="mini"
+                        name="setting"
+                        type="button"
+                        content={community 
+                          ? i18next.t('Change') 
+                          : i18next.t('Select a community')
+                        }
+                      />
+                    }
                   />
                   {community && (
                     <Button
