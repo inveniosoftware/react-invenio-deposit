@@ -19,7 +19,7 @@ import {
   ResultsLoader,
   SearchBar,
 } from 'react-searchkit';
-import { Grid, Modal } from 'semantic-ui-react';
+import { Grid, Modal, Container } from 'semantic-ui-react';
 import * as Yup from 'yup';
 import { AwardResults } from './AwardResults';
 import CustomAwardForm from './CustomAwardForm';
@@ -144,15 +144,19 @@ function FundingModal({
     >
       {({ values, resetForm }) => (
         <Modal
+          role="dialog"
           centered={false}
           onOpen={openModal}
           open={open}
-          trigger={trigger}
+          trigger={React.cloneElement(trigger, {
+            'aria-expanded': open,
+            'aria-haspopup': "dialog"
+          })}
           onClose={closeModal}
           closeIcon
           closeOnDimmerClick={false}
         >
-          <Modal.Header as="h6" className="pt-10 pb-10">
+          <Modal.Header as="h2" className="pt-10 pb-10">
             {mode === 'standard'
               ? i18next.t('Add standard award')
               : i18next.t('Add custom award')}
@@ -173,6 +177,7 @@ function FundingModal({
                       verticalAlign="middle"
                     >
                       <SearchBar
+                        placeholder={i18next.t("Search for awards")}
                         autofocus
                         actionProps={{
                           icon: 'search',
@@ -185,31 +190,30 @@ function FundingModal({
                       <FunderDropdown />
                     </Grid.Column>
                   </Grid.Row>
-                  <Grid.Row verticalAlign="middle">
-                    <Grid.Column>
-                      <ResultsLoader>
-                        <EmptyResults
-                          extraContent={
-                            <NoAwardResults
-                              switchToCustom={() => {
-                                resetForm();
-                                setMode(ModalTypes.CUSTOM);
-                              }}
-                            />
-                          }
-                        />
-                        <Error />
-                        <AwardResults
-                          deserializeAward={deserializeAward}
-                          deserializeFunder={deserializeFunder}
-                          computeFundingContents={computeFundingContents}
-                        />
-                      </ResultsLoader>
-                    </Grid.Column>
-                  </Grid.Row>
-                  <Grid.Row>
-                    <Pagination />
-                  </Grid.Row>
+
+                  <Grid.Column width={16} className="pb-0">
+                    <ResultsLoader>
+                      <EmptyResults />
+                      <Error />
+                      <AwardResults
+                        deserializeAward={deserializeAward}
+                        deserializeFunder={deserializeFunder}
+                        computeFundingContents={computeFundingContents}
+                      />
+                    </ResultsLoader>
+                    <Container textAlign="center" className="rel-mb-1">
+                      <Pagination/>
+                    </Container>
+                  </Grid.Column>
+
+                  <Grid.Column width={16} textAlign="center" className="pt-0 pb-0">
+                    <NoAwardResults
+                      switchToCustom={() => {
+                        resetForm();
+                        setMode(ModalTypes.CUSTOM);
+                      }}
+                    />
+                  </Grid.Column>
                 </Grid>
               </ReactSearchKit>
             )}

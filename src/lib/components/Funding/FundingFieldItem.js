@@ -6,6 +6,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import { i18next } from '@translations/i18next';
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { Button, Icon, Label, List, Ref } from 'semantic-ui-react';
@@ -75,7 +76,7 @@ export const FundingFieldItem = ({
             action="edit"
             trigger={
               <Button size="mini" primary type="button">
-                Edit
+                {i18next.t('Edit')}
               </Button>
             }
             deserializeAward={deserializeAward}
@@ -84,7 +85,7 @@ export const FundingFieldItem = ({
             initialFunding={fundingItem}
           />
           <Button size="mini" type="button" onClick={() => removeFunding(index)}>
-            Remove
+            {i18next.t('Remove')}
           </Button>
         </List.Content>
 
@@ -96,10 +97,13 @@ export const FundingFieldItem = ({
             <List.Header>
               {(
                 <>
-                  {headerContent}
+                  <span className="mr-5">
+                    {headerContent}
+                  </span>
+
                   {awardOrFunder === 'award'
                     ? (fundingItem?.award?.number && (
-                      <Label basic size="mini">
+                      <Label basic size="mini" className="mr-5">
                         {fundingItem.award.number}
                       </Label>)
                     )
@@ -111,9 +115,9 @@ export const FundingFieldItem = ({
                       href={`${fundingItem.award.url}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label="Open external link"
+                      aria-label={i18next.t('Open external link')}
                     >
-                      <Icon link name="external alternate" className="spaced-left" />
+                      <Icon link name="external alternate" />
                     </a>
                     ))
                     : ''

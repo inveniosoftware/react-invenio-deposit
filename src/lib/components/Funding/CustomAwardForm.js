@@ -7,7 +7,7 @@
 
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { Accordion, Form, Icon } from 'semantic-ui-react';
+import { Form, Header } from 'semantic-ui-react';
 import { TextField, RemoteSelectField } from 'react-invenio-forms';
 import { i18next } from '@translations/i18next';
 import _isEmpty from 'lodash/isEmpty';
@@ -94,38 +94,27 @@ function CustomAwardForm({ deserializeFunder, selectedFunding }) {
           }
         }}
       />
-      <Accordion fluid styled>
-        <Accordion.Title
-          active={accordionActive}
-          onClick={() => setAccordionActive(!accordionActive)}
-        >
-          <Icon name={`caret ${accordionActive ? 'down' : 'right'}`} />
-          {accordionActive
-            ? i18next.t('Custom award information')
-            : i18next.t('Award information')}
-        </Accordion.Title>
-        <Accordion.Content active={accordionActive}>
-          <Form.Group widths="equal">
-            <TextField
-              label={i18next.t('Number')}
-              placeholder={i18next.t('Award number')}
-              fieldPath="selectedFunding.award.number"
-              required
-            />
-            <TextField
-              label={i18next.t('Title')}
-              placeholder={i18next.t('Award Title')}
-              fieldPath="selectedFunding.award.title"
-              required
-            />
-            <TextField
-              label={i18next.t('URL')}
-              placeholder={i18next.t('Award URL')}
-              fieldPath="selectedFunding.award.url"
-            />
-          </Form.Group>
-        </Accordion.Content>
-      </Accordion>
+
+      <Header as="h3" size="small">
+        {i18next.t('Award information')} ({i18next.t('optional')})
+      </Header>
+        <Form.Group widths="equal">
+          <TextField
+            label={i18next.t('Number')}
+            placeholder={i18next.t('Award number')}
+            fieldPath="selectedFunding.award.number"
+          />
+          <TextField
+            label={i18next.t('Title')}
+            placeholder={i18next.t('Award Title')}
+            fieldPath="selectedFunding.award.title"
+          />
+          <TextField
+            label={i18next.t('URL')}
+            placeholder={i18next.t('Award URL')}
+            fieldPath="selectedFunding.award.url"
+          />
+        </Form.Group>
     </Form>
   );
 }
