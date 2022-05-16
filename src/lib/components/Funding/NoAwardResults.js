@@ -7,14 +7,13 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Message } from 'semantic-ui-react';
+import { Segment } from 'semantic-ui-react';
 import { i18next } from '@translations/i18next';
 
 export function NoAwardResults({ switchToCustom }) {
   return (
-    <Message
-      warning
-      icon="warning circle"
+    <Segment
+      basic
       content={
         <p>
           {i18next.t('Did not find your award? ')}
