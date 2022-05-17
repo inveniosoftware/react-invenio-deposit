@@ -13,10 +13,9 @@ import { i18next } from '@translations/i18next';
 import _isEmpty from 'lodash/isEmpty';
 
 function CustomAwardForm({ deserializeFunder, selectedFunding }) {
-  const existsFunding =
+  const existsFunding = !!(
     selectedFunding?.award?.title && selectedFunding?.award?.number
-      ? true
-      : false;
+  );
   const [accordionActive, setAccordionActive] = useState(existsFunding);
 
   function deserializeFunderToDropdown(funderItem) {
@@ -94,38 +93,23 @@ function CustomAwardForm({ deserializeFunder, selectedFunding }) {
           }
         }}
       />
-      <Accordion fluid styled>
-        <Accordion.Title
-          active={accordionActive}
-          onClick={() => setAccordionActive(!accordionActive)}
-        >
-          <Icon name={`caret ${accordionActive ? 'down' : 'right'}`} />
-          {accordionActive
-            ? i18next.t('Custom award information')
-            : i18next.t('Award information')}
-        </Accordion.Title>
-        <Accordion.Content active={accordionActive}>
-          <Form.Group widths="equal">
-            <TextField
-              label={i18next.t('Number')}
-              placeholder={i18next.t('Award number')}
-              fieldPath="selectedFunding.award.number"
-              required
-            />
-            <TextField
-              label={i18next.t('Title')}
-              placeholder={i18next.t('Award Title')}
-              fieldPath="selectedFunding.award.title"
-              required
-            />
-            <TextField
-              label={i18next.t('URL')}
-              placeholder={i18next.t('Award URL')}
-              fieldPath="selectedFunding.award.url"
-            />
-          </Form.Group>
-        </Accordion.Content>
-      </Accordion>
+      <Form.Group widths="equal">
+        <TextField
+          label={i18next.t('Number')}
+          placeholder={i18next.t('Award number')}
+          fieldPath="selectedFunding.award.number"
+        />
+        <TextField
+          label={i18next.t('Title')}
+          placeholder={i18next.t('Award Title')}
+          fieldPath="selectedFunding.award.title"
+        />
+        <TextField
+          label={i18next.t('URL')}
+          placeholder={i18next.t('Award URL')}
+          fieldPath="selectedFunding.award.url"
+        />
+      </Form.Group>
     </Form>
   );
 }
