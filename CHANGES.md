@@ -1,5 +1,10 @@
 # Changes
 
+Version 0.19.9 (released 2022-05-19)
+* made trigger button customizable in community selectio modal
+* made improvements in funder field
+* access: automatically switch record to restricted if a restricted community selected
+
 Version 0.19.8 (released 2022-05-12)
 * show "Remove" button in community selection modal whenever the user can
   select a community only
