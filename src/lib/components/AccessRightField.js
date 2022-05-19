@@ -26,12 +26,13 @@ import {
 } from './Access';
 
 class Protection {
-  static create(access, isMetadataOnly) {
+  static create(access, isMetadataOnly, isRestrictedCommunity) {
     const embargo = new Embargo({
       state: EmbargoState.from(access),
       date: access.embargo ? access.embargo.until : '',
       reason: access.embargo ? access.embargo.reason : '',
     });
+
     if (access.record === 'public') {
       if (isMetadataOnly) {
         return new PublicMetadataOnly(embargo);
@@ -52,13 +53,22 @@ class Protection {
       } else if (embargo.is(EmbargoState.APPLIED)) {
         return new Embargoed(embargo);
       } else {
-        return new Restricted(embargo); // technically no embargo
+        if (isRestrictedCommunity) {
+          const embargoDisabled = new Embargo({
+            state: EmbargoState.DISABLED,
+            date: access.embargo ? access.embargo.until : '',
+            reason: access.embargo ? access.embargo.reason : '',
+          });
+          return new Restricted(embargoDisabled); // if selected community is restricted embargo is disabled
+        } else {
+          return new Restricted(embargo); // technically no embargo
+        }
       }
     }
   }
 }
 
-class AccessRightFieldComponent extends Component {
+class AccessRightFieldCmp extends Component {
   /** Top-level Access Right Component */
 
   render() {
@@ -68,16 +78,26 @@ class AccessRightFieldComponent extends Component {
       isMetadataOnly,
       label,
       labelIcon,
+      community,
     } = this.props;
+    const isRestrictedCommunity =
+      community?.access.visibility === 'restricted' ? true : false;
+    if (isRestrictedCommunity) {
+      const recordAccessFieldPath = 'access.record';
+      formik.form.setFieldValue(recordAccessFieldPath, 'restricted');
+    }
 
-    const protection = Protection.create(formik.field.value, isMetadataOnly);
+    const protection = Protection.create(
+      formik.field.value,
+      isMetadataOnly,
+      isRestrictedCommunity
+    );
 
     return (
       <Card className="access-right">
         <Card.Content>
           <Form.Field required>
             <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
-
             {protection.renderMetadataSection()}
 
             <Divider hidden />
@@ -102,6 +122,15 @@ class AccessRightFieldComponent extends Component {
     );
   }
 }
+
+const mapStateToPropsAccessRightFieldCmp = (state) => ({
+  community: state.deposit.editorState.selectedCommunity,
+});
+
+export const AccessRightFieldComponent = connect(
+  mapStateToPropsAccessRightFieldCmp,
+  null
+)(AccessRightFieldCmp);
 
 class FormikAccessRightField extends Component {
   render() {
