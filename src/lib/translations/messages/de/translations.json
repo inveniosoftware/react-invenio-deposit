@@ -164,7 +164,6 @@
   "Add {{mode}} license": "Lizenz {{mode}} hinzufügen",
   "Change {{mode}} license": "Lizenz {{mode}} ändern",
   "Search for persons by name, identifier, or affiliation...": "Suche nach Personen nach Name, Kennung oder Zugehörigkeit...",
-  "Did not find a community that fits you? Upload without a community or <2> create your own.</2>": "Did not find a community that fits you? Upload without a community or <2>create your own.</2>",
   "Select a community": "",
   "Close": "",
   "Search in all communities": "",
@@ -208,7 +207,6 @@
   "Search for a funder by name": "",
   "Funder": "",
   "Search for funder...": "",
-  "Custom award information": "",
   "Award information": "",
   "Number": "",
   "Award number": "",
@@ -226,5 +224,9 @@
   "Did not find your award? ": "",
   "Add a custom award.": "",
   "Once the record is published you will no longer be able to change the files in the upload! However, you will still be able to update the record's metadata later.": "",
-  "Submit for review": "Submit for review"
+  "Submit for review": "Submit for review",
+  "optional": "",
+  "Open external link": "",
+  "Search for awards": "",
+  "Did not find a community that fits you? Upload without a community or <1>create your own.</1>": "Did not find a community that fits you? Upload without a community or <1>create your own.</1>"
 }
