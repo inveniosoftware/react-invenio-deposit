@@ -46,13 +46,9 @@ export class ResourceTypeField extends Component {
       .sort((o1, o2) => o1.label.localeCompare(o2.label))
       .map((o) => {
         return {
-          text: (
-            <>
-              <i className={o.icon + ' icon'}></i>
-              <span className="text">{o.label}</span>
-            </>
-          ),
           value: o.id,
+          icon: o.icon,
+          text: o.label,
         };
       });
   };
@@ -68,6 +64,7 @@ export class ResourceTypeField extends Component {
         }
         optimized={true}
         options={frontEndOptions}
+        selectOnBlur={false}
         {...restProps}
       />
     );
