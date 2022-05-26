@@ -169,7 +169,6 @@
   "Search in my communities": "Search in my communities",
   "Close": "Close",
   "Search for persons by name, identifier, or affiliation...": "Search for persons by name, identifier, or affiliation...",
-  "Did not find a community that fits you? Upload without a community or <2> create your own.</2>": "Did not find a community that fits you? Upload without a community or <2> create your own.</2>",
   "Select a community": "Select a community",
   "Submit review": "Submit review",
   "Publish": "Publish",
@@ -208,7 +207,6 @@
   "Search for a funder by name": "Search for a funder by name",
   "Funder": "Funder",
   "Search for funder...": "Search for funder...",
-  "Custom award information": "Custom award information",
   "Award information": "Award information",
   "Number": "Number",
   "Award number": "Award number",
@@ -226,5 +224,9 @@
   "Did not find your award? ": "Did not find your award? ",
   "Add a custom award.": "Add a custom award.",
   "Once the record is published you will no longer be able to change the files in the upload! However, you will still be able to update the record's metadata later.": "Once the record is published you will no longer be able to change the files in the upload! However, you will still be able to update the record's metadata later.",
-  "Submit for review": "Submit for review"
+  "Submit for review": "Submit for review",
+  "optional": "optional",
+  "Open external link": "Open external link",
+  "Search for awards": "Search for awards",
+  "Did not find a community that fits you? Upload without a community or <1>create your own.</1>": "Did not find a community that fits you? Upload without a community or <1>create your own.</1>"
 }

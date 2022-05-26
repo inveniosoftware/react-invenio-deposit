@@ -15,7 +15,7 @@ export const CommunitySelectionFooter = () => {
       <Container>
         <Segment textAlign="center">
           <p>
-            <Trans i18nKey="Did not find a community that fits you? Upload without a community or <2> create your own.</2>">
+            <Trans>
               Did not find a community that fits you? Upload without a community
               or <a href="/communities/new">create your own.</a>
             </Trans>

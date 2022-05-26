@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-05-06T14:39:05.644Z\n"
-"PO-Revision-Date: 2022-05-06T14:39:05.644Z\n"
+"POT-Creation-Date: 2022-05-26T15:29:43.004Z\n"
+"PO-Revision-Date: 2022-05-26T15:29:43.004Z\n"
 "Language: en\n"
 
 msgid "Embargo until"
@@ -619,13 +619,6 @@ msgstr "Close"
 msgid "Search for persons by name, identifier, or affiliation..."
 msgstr "Search for persons by name, identifier, or affiliation..."
 
-msgid ""
-"Did not find a community that fits you? Upload without a community or <2> "
-"create your own.</2>"
-msgstr ""
-"Did not find a community that fits you? Upload without a community or <2> "
-"create your own.</2>"
-
 msgid "Select a community"
 msgstr "Select a community"
 
@@ -764,9 +757,6 @@ msgstr "Funder"
 msgid "Search for funder..."
 msgstr "Search for funder..."
 
-msgid "Custom award information"
-msgstr "Custom award information"
-
 msgid "Award information"
 msgstr "Award information"
 
@@ -826,3 +816,19 @@ msgstr ""
 
 msgid "Submit for review"
 msgstr "Submit for review"
+
+msgid "optional"
+msgstr "optional"
+
+msgid "Open external link"
+msgstr "Open external link"
+
+msgid "Search for awards"
+msgstr "Search for awards"
+
+msgid ""
+"Did not find a community that fits you? Upload without a community or "
+"<1>create your own.</1>"
+msgstr ""
+"Did not find a community that fits you? Upload without a community or "
+"<1>create your own.</1>"
