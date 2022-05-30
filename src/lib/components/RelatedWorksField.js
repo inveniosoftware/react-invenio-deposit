@@ -80,7 +80,7 @@ export class RelatedWorksField extends Component {
                   fieldPath={`${fieldPathPrefix}.resource_type`}
                   labelIcon={''} // Otherwise breaks alignment
                   options={options.resource_type}
-                  width={6}
+                  width={7}
                   labelclassname="small field-label-class"
                 />
 
