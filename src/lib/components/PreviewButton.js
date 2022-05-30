@@ -7,46 +7,41 @@
 
 import { i18next } from '@translations/i18next';
 import React, { Component } from 'react';
-import { ActionButton } from 'react-invenio-forms';
 import { connect } from 'react-redux';
-import { Icon } from 'semantic-ui-react';
+import { connect as connectFormik } from 'formik';
 import {
   DepositFormSubmitActions,
   DepositFormSubmitContext,
 } from '../DepositFormSubmitContext';
 import { DRAFT_PREVIEW_STARTED } from '../state/types';
+import { Button } from 'semantic-ui-react';
+import _omit from 'lodash/omit';
 
 export class PreviewButtonComponent extends Component {
   static contextType = DepositFormSubmitContext;
 
-  handlePreview = (event, formik) => {
+  handlePreview = (event, handleSubmit) => {
     this.context.setSubmitContext(DepositFormSubmitActions.PREVIEW);
-    formik.handleSubmit(event);
+    handleSubmit(event);
   };
 
   render() {
-    const { record, actionState, ...uiProps } = this.props;
+    const { record, actionState, formik, ...ui } = this.props;
+    const { handleSubmit, isSubmitting } = formik;
+
+    const uiProps = _omit(ui, ['dispatch']);
 
     return (
-      <ActionButton
+      <Button
         name="preview"
-        isDisabled={(formik) => formik.isSubmitting}
-        onClick={this.handlePreview}
-        icon
+        disabled={isSubmitting}
+        onClick={(e) => this.handlePreview(e, handleSubmit)}
+        loading={isSubmitting && actionState === DRAFT_PREVIEW_STARTED}
+        icon="eye"
         labelPosition="left"
+        content={i18next.t('Preview')}
         {...uiProps}
-      >
-        {(formik) => (
-          <>
-            {formik.isSubmitting && actionState === DRAFT_PREVIEW_STARTED ? (
-              <Icon size="large" loading name="spinner" />
-            ) : (
-              <Icon name="eye" />
-            )}
-            {i18next.t('Preview')}
-          </>
-        )}
-      </ActionButton>
+      />
     );
   }
 }
@@ -59,4 +54,4 @@ const mapStateToProps = (state) => ({
 export const PreviewButton = connect(
   mapStateToProps,
   null
-)(PreviewButtonComponent);
+)(connectFormik(PreviewButtonComponent));

@@ -9,7 +9,6 @@ import { i18next } from '@translations/i18next';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { ActionButton } from 'react-invenio-forms';
 import {
   EmptyResults,
   Error,
@@ -19,7 +18,7 @@ import {
   ResultsLoader,
   SearchBar,
 } from 'react-searchkit';
-import { Grid, Modal, Container } from 'semantic-ui-react';
+import {Grid, Modal, Container, Button} from 'semantic-ui-react';
 import * as Yup from 'yup';
 import { AwardResults } from './AwardResults';
 import CustomAwardForm from './CustomAwardForm';
@@ -142,7 +141,7 @@ function FundingModal({
       validateOnBlur={false}
       enableReinitialize={true}
     >
-      {({ values, resetForm }) => (
+      {({ values, resetForm, handleSubmit }) => (
         <Modal
           role="dialog"
           centered={false}
@@ -229,19 +228,17 @@ function FundingModal({
             )}
           </Modal.Content>
           <Modal.Actions>
-            <ActionButton
-              name="cancel"
-              onClick={(values, formikBag) => {
-                formikBag.resetForm();
+            <Button
+              onClick={() => {
+                resetForm();
                 closeModal();
               }}
               icon="remove"
               content={i18next.t('Cancel')}
               floated="left"
             />
-            <ActionButton
-              name="submit"
-              onClick={(event, formik) => formik.handleSubmit(event)}
+            <Button
+              onClick={(event) => handleSubmit(event)}
               primary
               icon="checkmark"
               content={

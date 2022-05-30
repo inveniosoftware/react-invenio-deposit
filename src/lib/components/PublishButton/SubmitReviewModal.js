@@ -11,7 +11,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Trans } from 'react-i18next';
 import {
-  ActionButton,
   ErrorLabel,
   RadioField,
   TextAreaField,
@@ -58,7 +57,7 @@ export class SubmitReviewModal extends Component {
         validateOnChange={false}
         validateOnBlur={false}
       >
-        {({ values, errors, touched }) => {
+        {({ values, resetForm, handleSubmit }) => {
           return (
             <Modal
               open={isConfirmModalOpen}
@@ -151,10 +150,10 @@ export class SubmitReviewModal extends Component {
                 <Button onClick={onClose} floated="left">
                   {i18next.t('Cancel')}
                 </Button>
-                <ActionButton
+                <Button
                   name="submitReview"
-                  onClick={(event, formik) => {
-                    formik.handleSubmit(event);
+                  onClick={(event) => {
+                    handleSubmit(event);
                   }}
                   positive
                   content={i18next.t('Submit review')}

@@ -10,7 +10,7 @@ import { i18next } from '@translations/i18next';
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { ActionButton, TextAreaField, TextField } from 'react-invenio-forms';
+import { TextAreaField, TextField } from 'react-invenio-forms';
 import { OverridableContext } from 'react-overridable';
 import {
   EmptyResults,
@@ -21,7 +21,7 @@ import {
   SearchBar,
   Toggle,
 } from 'react-searchkit';
-import { Form, Grid, Header, Menu, Modal } from 'semantic-ui-react';
+import { Button, Form, Grid, Header, Menu, Modal } from 'semantic-ui-react';
 import * as Yup from 'yup';
 import { LicenseFilter } from './LicenseFilter';
 import { LicenseResults } from './LicenseResults';
@@ -86,143 +86,151 @@ export class LicenseModal extends Component {
         validateOnChange={false}
         validateOnBlur={false}
       >
-        <Modal
-          onOpen={() => this.openModal()}
-          open={this.state.open}
-          trigger={this.props.trigger}
-          onClose={this.closeModal}
-          closeIcon={true}
-          closeOnDimmerClick={false}
-        >
-          <Modal.Header as="h6" className="pt-10 pb-10">
-            <Grid>
-              <Grid.Column floated="left">
-                <Header as="h2">
-                  {this.props.action === ModalActions.ADD
-                    ? i18next.t(`Add {{mode}} license`, {
-                        mode: this.props.mode,
-                      })
-                    : i18next.t(`Change {{mode}} license`, {
-                        mode: this.props.mode,
-                      })}
-                </Header>
-              </Grid.Column>
-            </Grid>
-          </Modal.Header>
-          <Modal.Content scrolling>
-            {this.props.mode === ModalTypes.STANDARD && (
-              <OverridableContext.Provider value={overriddenComponents}>
-                <ReactSearchKit
-                  searchApi={searchApi}
-                  appName={'licenses'}
-                  urlHandlerApi={{ enabled: false }}
-                  initialQueryState={this.props.searchConfig.initialQueryState}
-                >
-                  <Grid>
-                    <Grid.Row>
-                      <Grid.Column
-                        width={8}
-                        floated="left"
-                        verticalAlign="middle"
-                      >
-                        <SearchBar
-                          placeholder={i18next.t('Search')}
-                          autofocus
-                          actionProps={{
-                            icon: 'search',
-                            content: null,
-                            className: 'search',
-                          }}
-                        />
-                      </Grid.Column>
-                      <Grid.Column width={8} textAlign="right" floated="right">
-                        <Menu compact>
-                          <Toggle
-                            title={i18next.t('Recommended')}
-                            label="recommended"
-                            filterValue={['tags', 'recommended']}
+        {({ handleSubmit, resetForm }) => (
+          <Modal
+            onOpen={() => this.openModal()}
+            open={this.state.open}
+            trigger={this.props.trigger}
+            onClose={this.closeModal}
+            closeIcon={true}
+            closeOnDimmerClick={false}
+          >
+            <Modal.Header as="h6" className="pt-10 pb-10">
+              <Grid>
+                <Grid.Column floated="left">
+                  <Header as="h2">
+                    {this.props.action === ModalActions.ADD
+                      ? i18next.t(`Add {{mode}} license`, {
+                          mode: this.props.mode,
+                        })
+                      : i18next.t(`Change {{mode}} license`, {
+                          mode: this.props.mode,
+                        })}
+                  </Header>
+                </Grid.Column>
+              </Grid>
+            </Modal.Header>
+            <Modal.Content scrolling>
+              {this.props.mode === ModalTypes.STANDARD && (
+                <OverridableContext.Provider value={overriddenComponents}>
+                  <ReactSearchKit
+                    searchApi={searchApi}
+                    appName={'licenses'}
+                    urlHandlerApi={{ enabled: false }}
+                    initialQueryState={
+                      this.props.searchConfig.initialQueryState
+                    }
+                  >
+                    <Grid>
+                      <Grid.Row>
+                        <Grid.Column
+                          width={8}
+                          floated="left"
+                          verticalAlign="middle"
+                        >
+                          <SearchBar
+                            placeholder={i18next.t('Search')}
+                            autofocus
+                            actionProps={{
+                              icon: 'search',
+                              content: null,
+                              className: 'search',
+                            }}
                           />
-                          <Toggle
-                            title={i18next.t('All')}
-                            label="all"
-                            filterValue={['tags', 'all']}
-                          />
-                          <Toggle
-                            title={i18next.t('Data')}
-                            label="data"
-                            filterValue={['tags', 'data']}
-                          />
-                          <Toggle
-                            title={i18next.t('Software')}
-                            label="software"
-                            filterValue={['tags', 'software']}
-                          />
-                        </Menu>
-                      </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row verticalAlign="middle">
-                      <Grid.Column>
-                        <ResultsLoader>
-                          <EmptyResults />
-                          <Error />
-                          <LicenseResults
-                            {...(this.props.serializeLicenses && {
-                              serializeLicenses: this.props.serializeLicenses,
-                            })}
-                          />
-                        </ResultsLoader>
-                      </Grid.Column>
-                    </Grid.Row>
-                  </Grid>
-                </ReactSearchKit>
-              </OverridableContext.Provider>
-            )}
-            {this.props.mode === ModalTypes.CUSTOM && (
-              <Form>
-                <TextField
-                  label={i18next.t('Title')}
-                  placeholder={i18next.t('License title')}
-                  fieldPath="selectedLicense.title"
-                  required
-                />
-                <TextAreaField
-                  fieldPath={'selectedLicense.description'}
-                  label={i18next.t('Description')}
-                />
-                <TextField
-                  label={i18next.t('Link')}
-                  placeholder={i18next.t('License link')}
-                  fieldPath="selectedLicense.link"
-                />
-              </Form>
-            )}
-          </Modal.Content>
-          <Modal.Actions>
-            <ActionButton
-              name="cancel"
-              onClick={(values, formikBag) => {
-                formikBag.resetForm();
-                this.closeModal();
-              }}
-              icon="remove"
-              labelPosition="left"
-              content={i18next.t('Cancel')}
-              floated="left"
-            />
-            <ActionButton
-              name="submit"
-              onClick={(event, formik) => formik.handleSubmit(event)}
-              primary
-              icon="checkmark"
-              labelPosition="left"
-              content={
-                this.props.action === ModalActions.ADD
-                  ? i18next.t('Add license')
-                  : i18next.t('Change license')
-              }
-            />
-          </Modal.Actions>
-        </Modal>
+                        </Grid.Column>
+                        <Grid.Column
+                          width={8}
+                          textAlign="right"
+                          floated="right"
+                        >
+                          <Menu compact>
+                            <Toggle
+                              title={i18next.t('Recommended')}
+                              label="recommended"
+                              filterValue={['tags', 'recommended']}
+                            />
+                            <Toggle
+                              title={i18next.t('All')}
+                              label="all"
+                              filterValue={['tags', 'all']}
+                            />
+                            <Toggle
+                              title={i18next.t('Data')}
+                              label="data"
+                              filterValue={['tags', 'data']}
+                            />
+                            <Toggle
+                              title={i18next.t('Software')}
+                              label="software"
+                              filterValue={['tags', 'software']}
+                            />
+                          </Menu>
+                        </Grid.Column>
+                      </Grid.Row>
+                      <Grid.Row verticalAlign="middle">
+                        <Grid.Column>
+                          <ResultsLoader>
+                            <EmptyResults />
+                            <Error />
+                            <LicenseResults
+                              {...(this.props.serializeLicenses && {
+                                serializeLicenses: this.props.serializeLicenses,
+                              })}
+                            />
+                          </ResultsLoader>
+                        </Grid.Column>
+                      </Grid.Row>
+                    </Grid>
+                  </ReactSearchKit>
+                </OverridableContext.Provider>
+              )}
+              {this.props.mode === ModalTypes.CUSTOM && (
+                <Form>
+                  <TextField
+                    label={i18next.t('Title')}
+                    placeholder={i18next.t('License title')}
+                    fieldPath="selectedLicense.title"
+                    required
+                  />
+                  <TextAreaField
+                    fieldPath={'selectedLicense.description'}
+                    label={i18next.t('Description')}
+                  />
+                  <TextField
+                    label={i18next.t('Link')}
+                    placeholder={i18next.t('License link')}
+                    fieldPath="selectedLicense.link"
+                  />
+                </Form>
+              )}
+            </Modal.Content>
+            <Modal.Actions>
+              <Button
+                name="cancel"
+                onClick={() => {
+                  resetForm();
+                  this.closeModal();
+                }}
+                icon="remove"
+                labelPosition="left"
+                content={i18next.t('Cancel')}
+                floated="left"
+              />
+              <Button
+                name="submit"
+                onClick={(event) => handleSubmit(event)}
+                primary
+                icon="checkmark"
+                labelPosition="left"
+                content={
+                  this.props.action === ModalActions.ADD
+                    ? i18next.t('Add license')
+                    : i18next.t('Change license')
+                }
+              />
+            </Modal.Actions>
+          </Modal>
+        )}
       </Formik>
     );
   }

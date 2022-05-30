@@ -9,15 +9,15 @@ import React, { Component } from 'react';
 import { i18next } from '@translations/i18next';
 import _get from 'lodash/get';
 import { connect } from 'react-redux';
-import { Icon } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import { connect as connectFormik } from 'formik';
 import {
   DepositFormSubmitActions,
   DepositFormSubmitContext,
 } from '../../DepositFormSubmitContext';
-import { ActionButton } from 'react-invenio-forms';
 import { SubmitReviewModal } from './SubmitReviewModal';
 import { DepositStatus } from '../../state/reducers/deposit';
+import _omit from 'lodash/omit';
 
 class SubmitReviewButtonComponent extends Component {
   static contextType = DepositFormSubmitContext;
@@ -28,17 +28,23 @@ class SubmitReviewButtonComponent extends Component {
   closeConfirmModal = () => this.setState({ isConfirmModalOpen: false });
 
   handleSubmitReview = ({ reviewComment }) => {
+    const { formik } = this.props;
+    const { handleSubmit } = formik;
+
     this.context.setSubmitContext(DepositFormSubmitActions.SUBMIT_REVIEW, {
       reviewComment,
     });
-    this.props.formik.handleSubmit();
+    handleSubmit();
     this.closeConfirmModal();
   };
 
-  isDisabled = (formik, numberOfFiles, disableSubmitForReviewButton) => {
-    const filesEnabled = _get(formik.values, 'files.enabled', false);
+  isDisabled = (numberOfFiles, disableSubmitForReviewButton) => {
+    const { formik } = this.props;
+    const { values, isSubmitting } = formik;
+
+    const filesEnabled = _get(values, 'files.enabled', false);
     const filesMissing = filesEnabled && !numberOfFiles;
-    return formik.isSubmitting || filesMissing || disableSubmitForReviewButton;
+    return isSubmitting || filesMissing || disableSubmitForReviewButton;
   };
 
   render() {
@@ -49,38 +55,38 @@ class SubmitReviewButtonComponent extends Component {
       numberOfFiles,
       disableSubmitForReviewButton,
       isRecordSubmittedForReview,
-      ...uiProps
+      formik,
+      ...ui
     } = this.props;
+
+    const { isSubmitting } = formik;
+
+    const uiProps = _omit(ui, ['dispatch']);
 
     const { isConfirmModalOpen } = this.state;
 
     return (
       <>
-        <ActionButton
-          isDisabled={(formik) =>
-            this.isDisabled(formik, numberOfFiles, disableSubmitForReviewButton)
-          }
+        <Button
+          disabled={this.isDisabled(
+            numberOfFiles,
+            disableSubmitForReviewButton
+          )}
           name="SubmitReview"
           onClick={this.openConfirmModal}
           positive
-          icon
+          icon="upload"
+          loading={
+            isSubmitting && actionState === 'DRAFT_SUBMIT_REVIEW_STARTED'
+          }
           labelPosition="left"
+          content={
+            isRecordSubmittedForReview
+              ? i18next.t('Submitted for review')
+              : i18next.t('Submit for review')
+          }
           {...uiProps}
-        >
-          {(formik) => (
-            <>
-              {formik.isSubmitting &&
-              actionState === 'DRAFT_SUBMIT_REVIEW_STARTED' ? (
-                <Icon size="large" loading name="spinner" />
-              ) : (
-                <Icon name="upload" />
-              )}
-              {isRecordSubmittedForReview
-                ? i18next.t('Submitted for review')
-                : i18next.t('Submit for review')}
-            </>
-          )}
-        </ActionButton>
+        />
         {isConfirmModalOpen && (
           <SubmitReviewModal
             isConfirmModalOpen={isConfirmModalOpen}
