@@ -56,7 +56,7 @@ class CreatibutorsFieldForm extends Component {
       <DndProvider backend={HTML5Backend}>
         <Form.Field
           required={schema === 'creators'}
-          className={creatibutorsError && 'error'}
+          className={creatibutorsError ? 'error' : ''}
         >
           <FieldLabel
             htmlFor={fieldPath}
@@ -92,7 +92,7 @@ class CreatibutorsFieldForm extends Component {
                   })
                 : displayCreatibutorName({
                     familyName: _get(
-                      value, 
+                      value,
                       nameFieldPath
                     ),
                     affiliationName: _get(
