@@ -9,7 +9,6 @@ import { i18next } from '@translations/i18next';
 import _get from 'lodash/get';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ActionButton } from 'react-invenio-forms';
 import { connect } from 'react-redux';
 import { Button, Icon, Message, Modal } from 'semantic-ui-react';
 import {
@@ -17,6 +16,8 @@ import {
   DepositFormSubmitContext,
 } from '../../DepositFormSubmitContext';
 import { DRAFT_PUBLISH_STARTED } from '../../state/types';
+import { connect as connectFormik } from 'formik';
+import _omit from 'lodash/omit';
 
 class PublishButtonComponent extends Component {
   static contextType = DepositFormSubmitContext;
@@ -26,20 +27,20 @@ class PublishButtonComponent extends Component {
 
   closeConfirmModal = () => this.setState({ isConfirmModalOpen: false });
 
-  handlePublish = (event, formik, publishWithoutCommunity) => {
+  handlePublish = (event, handleSubmit, publishWithoutCommunity) => {
     this.context.setSubmitContext(
       publishWithoutCommunity
         ? DepositFormSubmitActions.PUBLISH_WITHOUT_COMMUNITY
         : DepositFormSubmitActions.PUBLISH
     );
-    formik.handleSubmit(event);
+    handleSubmit(event);
     this.closeConfirmModal();
   };
 
-  isDisabled = (formik, numberOfFiles) => {
-    const filesEnabled = _get(formik.values, 'files.enabled', false);
+  isDisabled = (values, isSubmitting, numberOfFiles) => {
+    const filesEnabled = _get(values, 'files.enabled', false);
     const filesMissing = filesEnabled && !numberOfFiles;
-    return formik.isSubmitting || filesMissing;
+    return isSubmitting || filesMissing;
   };
 
   render() {
@@ -49,32 +50,27 @@ class PublishButtonComponent extends Component {
       numberOfFiles,
       buttonLabel,
       publishWithoutCommunity,
-      ...uiProps
+      formik,
+      ...ui
     } = this.props;
     const { isConfirmModalOpen } = this.state;
+    const { values, isSubmitting, handleSubmit } = formik;
+
+    const uiProps = _omit(ui, ['dispatch']);
 
     return (
       <>
-        <ActionButton
-          isDisabled={(formik) => this.isDisabled(formik, numberOfFiles)}
+        <Button
+          disabled={this.isDisabled(values, isSubmitting, numberOfFiles)}
           name="publish"
           onClick={this.openConfirmModal}
           positive
-          icon
+          icon="upload"
+          loading={isSubmitting && actionState === DRAFT_PUBLISH_STARTED}
           labelPosition="left"
+          content={buttonLabel}
           {...uiProps}
-        >
-          {(formik) => (
-            <>
-              {formik.isSubmitting && actionState === DRAFT_PUBLISH_STARTED ? (
-                <Icon size="large" loading name="spinner" />
-              ) : (
-                <Icon name="upload" />
-              )}
-              {buttonLabel}
-            </>
-          )}
-        </ActionButton>
+        />
         {isConfirmModalOpen && (
           <Modal
             open={isConfirmModalOpen}
@@ -101,10 +97,13 @@ class PublishButtonComponent extends Component {
               <Button onClick={this.closeConfirmModal} floated="left">
                 {i18next.t('Cancel')}
               </Button>
-              <ActionButton
-                name="publish"
-                onClick={(event, formik) =>
-                  this.handlePublish(event, formik, publishWithoutCommunity)
+              <Button
+                onClick={(event) =>
+                  this.handlePublish(
+                    event,
+                    handleSubmit,
+                    publishWithoutCommunity
+                  )
                 }
                 positive
                 content={buttonLabel}
@@ -135,4 +134,4 @@ const mapStateToProps = (state) => ({
 export const PublishButton = connect(
   mapStateToProps,
   null
-)(PublishButtonComponent);
+)(connectFormik(PublishButtonComponent));

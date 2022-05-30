@@ -9,10 +9,9 @@
 
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Grid, Header, Icon, Modal } from 'semantic-ui-react';
+import {Button, Form, Grid, Header, Icon, Modal} from 'semantic-ui-react';
 import { Formik } from 'formik';
 import {
-  ActionButton,
   Image,
   SelectField,
   TextField,
@@ -375,7 +374,7 @@ export class CreatibutorsModal extends Component {
         validateOnChange={false}
         validateOnBlur={false}
       >
-        {({ values, resetForm }) => {
+        {({ values, resetForm, handleSubmit }) => {
           const personOrOrgPath = `person_or_org`;
           const typeFieldPath = `${personOrOrgPath}.type`;
           const familyNameFieldPath = `${personOrOrgPath}.family_name`;
@@ -553,10 +552,10 @@ export class CreatibutorsModal extends Component {
                 </Form>
               </Modal.Content>
               <Modal.Actions>
-                <ActionButton
+                <Button
                   name="cancel"
-                  onClick={(values, formikBag) => {
-                    formikBag.resetForm();
+                  onClick={() => {
+                    resetForm();
                     this.closeModal();
                   }}
                   icon="remove"
@@ -564,9 +563,9 @@ export class CreatibutorsModal extends Component {
                   floated="left"
                 />
                 {this.props.action === ModalActions.ADD && (
-                  <ActionButton
+                  <Button
                     name="submit"
-                    onClick={(event, formik) => {
+                    onClick={() => {
                       this.setState(
                         {
                           action: 'saveAndContinue',
@@ -575,7 +574,7 @@ export class CreatibutorsModal extends Component {
                             NamesAutocompleteOptions.SEARCH_ONLY,
                         },
                         () => {
-                          formik.handleSubmit();
+                          handleSubmit();
                         }
                       );
                     }}
@@ -584,9 +583,9 @@ export class CreatibutorsModal extends Component {
                     content={this.state.saveAndContinueLabel}
                   />
                 )}
-                <ActionButton
+                <Button
                   name="submit"
-                  onClick={(event, formik) => {
+                  onClick={() => {
                     this.setState(
                       {
                         action: 'saveAndClose',
@@ -594,7 +593,7 @@ export class CreatibutorsModal extends Component {
                           this.props.autocompleteNames !==
                           NamesAutocompleteOptions.SEARCH_ONLY,
                       },
-                      () => formik.handleSubmit()
+                      () => handleSubmit()
                     );
                   }}
                   primary

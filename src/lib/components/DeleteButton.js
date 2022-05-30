@@ -8,15 +8,16 @@
 
 import { i18next } from '@translations/i18next';
 import React, { Component } from 'react';
-import { ActionButton } from 'react-invenio-forms';
 import { connect } from 'react-redux';
-import { Button, Icon, Modal } from 'semantic-ui-react';
+import { connect as connectFormik } from 'formik';
+import { Button, Modal } from 'semantic-ui-react';
 import {
   DepositFormSubmitActions,
   DepositFormSubmitContext,
 } from '../DepositFormSubmitContext';
 import { DRAFT_DELETE_STARTED } from '../state/types';
 import { toCapitalCase } from '../utils';
+import _omit from 'lodash/omit';
 
 // action
 const DISCARD_CHANGES_LBL = i18next.t('discard changes');
@@ -61,12 +62,14 @@ export class DeleteButtonComponent extends Component {
 
   closeConfirmModal = () => this.setState({ modalOpen: false });
 
-  handleDelete = async (event, formik) => {
-    const { isPublished, isVersion } = this.props;
+  handleDelete = async (event) => {
+    const { isPublished, isVersion, formik } = this.props;
+    const { handleSubmit } = formik;
+
     this.context.setSubmitContext(DepositFormSubmitActions.DELETE, {
       isDiscardingVersion: isPublished || isVersion,
     });
-    formik.handleSubmit(event);
+    handleSubmit(event);
     this.closeConfirmModal();
   };
 
@@ -76,8 +79,13 @@ export class DeleteButtonComponent extends Component {
       isPublished,
       isVersion,
       actionState,
-      ...uiProps // only has ActionButton props
+      formik,
+      ...ui // only has ActionButton props
     } = this.props;
+
+    const { isSubmitting } = formik;
+
+    const uiProps = _omit(ui, ['dispatch']);
 
     let actionLbl = '';
     if (!isPublished) {
@@ -90,12 +98,12 @@ export class DeleteButtonComponent extends Component {
 
     return (
       <>
-        <ActionButton
-          isDisabled={(formik) => !draftExists || formik.isSubmitting}
-          name="delete"
+        <Button
+          disabled={!draftExists || isSubmitting}
           onClick={this.openConfirmModal}
           {...color}
           icon
+          loading={isSubmitting && actionState === DRAFT_DELETE_STARTED}
           labelPosition="left"
           {...uiProps}
           content={capitalizedActionLbl}
@@ -113,19 +121,13 @@ export class DeleteButtonComponent extends Component {
             <Button onClick={this.closeConfirmModal} floated="left">
               {i18next.t('Cancel')}
             </Button>
-            <ActionButton {...color} name="delete" onClick={this.handleDelete}>
-              {(formik) => (
-                <>
-                  {formik.isSubmitting &&
-                  actionState === DRAFT_DELETE_STARTED ? (
-                    <Icon size="large" loading name="spinner" />
-                  ) : (
-                    <Icon name="trash alternate outline" />
-                  )}
-                  {capitalizedActionLbl}
-                </>
-              )}
-            </ActionButton>
+            <Button
+              {...color}
+              onClick={this.handleDelete}
+              loading={isSubmitting && actionState === DRAFT_DELETE_STARTED}
+              icon="trash alternate outline"
+              content={capitalizedActionLbl}
+            />
           </Modal.Actions>
         </Modal>
       </>
@@ -143,4 +145,4 @@ const mapStateToProps = (state) => ({
 export const DeleteButton = connect(
   mapStateToProps,
   null
-)(DeleteButtonComponent);
+)(connectFormik(DeleteButtonComponent));
