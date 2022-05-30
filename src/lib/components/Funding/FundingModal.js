@@ -150,7 +150,7 @@ function FundingModal({
           open={open}
           trigger={React.cloneElement(trigger, {
             'aria-expanded': open,
-            'aria-haspopup': "dialog"
+            'aria-haspopup': 'dialog',
           })}
           onClose={closeModal}
           closeIcon
@@ -169,7 +169,7 @@ function FundingModal({
                 urlHandlerApi={{ enabled: false }}
                 initialQueryState={searchConfig.initialQueryState}
               >
-                <Grid>
+                <Grid className="m-0">
                   <Grid.Row>
                     <Grid.Column
                       width={11}
@@ -177,7 +177,7 @@ function FundingModal({
                       verticalAlign="middle"
                     >
                       <SearchBar
-                        placeholder={i18next.t("Search for awards")}
+                        placeholder={i18next.t('Search for awards')}
                         autofocus
                         actionProps={{
                           icon: 'search',
@@ -202,11 +202,15 @@ function FundingModal({
                       />
                     </ResultsLoader>
                     <Container textAlign="center" className="rel-mb-1">
-                      <Pagination/>
+                      <Pagination />
                     </Container>
                   </Grid.Column>
 
-                  <Grid.Column width={16} textAlign="center" className="pt-0 pb-0">
+                  <Grid.Column
+                    width={16}
+                    textAlign="center"
+                    className="pt-0 pb-0"
+                  >
                     <NoAwardResults
                       switchToCustom={() => {
                         resetForm();
