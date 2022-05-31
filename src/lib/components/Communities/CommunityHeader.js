@@ -28,7 +28,7 @@ class CommunityHeaderComponent extends Component {
 
     return (
       showCommunityHeader && (
-        <Container className="page-subheader-outer compact" fluid>
+        <Container className="page-subheader-outer" fluid>
           <Container className="page-subheader">
             {community ? (
               <>
