@@ -22,6 +22,13 @@ import { DISCARD_PID_STARTED, RESERVE_PID_STARTED } from '../../state/types';
 const PROVIDER_EXTERNAL = 'external';
 const UPDATE_PID_DEBOUNCE_MS = 200;
 
+const getFieldErrors = (form, fieldPath) => {
+  return (
+    getIn(form.errors, fieldPath, null) ||
+    getIn(form.initialErrors, fieldPath, null)
+  );
+};
+
 /**
  * Button component to reserve a PID.
  */
@@ -301,25 +308,16 @@ class UnmanagedIdentifierCmp extends Component {
   render() {
     const { localIdentifier } = this.state;
     const { form, fieldPath, helpText, pidPlaceholder } = this.props;
-
+    const fieldError = getFieldErrors(form, fieldPath);
     return (
       <>
-        <Form.Field
-          width={8}
-          error={
-            getIn(form.errors, fieldPath, null) ||
-            getIn(form.errors, 'pids', null)
-          }
-        >
+        <Form.Field width={8} error={fieldError}>
           <Form.Input
             onChange={(e, { value }) => this.onChange(value)}
             value={localIdentifier}
             placeholder={pidPlaceholder}
             width={16}
-            error={
-              getIn(form.errors, fieldPath, null) ||
-              getIn(form.errors, 'pids', null)
-            }
+            error={fieldError}
           />
         </Form.Field>
         {helpText && <label className="helptext">{helpText}</label>}
@@ -412,15 +410,10 @@ class CustomPIDField extends Component {
         ? hasManagedIdentifier || currentProvider === '' // i.e pids: {}
         : isManagedSelected;
 
+    const fieldError = getFieldErrors(form, fieldPath);
     return (
       <>
-        <Form.Field
-          required={required}
-          error={
-            getIn(form.errors, fieldPath, null) ||
-            getIn(form.errors, 'pids', null)
-          }
-        >
+        <Form.Field required={required} error={fieldError}>
           <FieldLabel htmlFor={fieldPath} icon={pidIcon} label={fieldLabel} />
         </Form.Field>
 

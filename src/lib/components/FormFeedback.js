@@ -48,7 +48,6 @@ const defaultLabels = {
   'metadata.identifiers': i18next.t('Alternate identifiers'),
   'access.embargo.until': i18next.t('Embargo until'),
   'pids.doi': i18next.t('DOI'),
-  pids: i18next.t('PIDS'),
 };
 
 const ACTIONS = {
