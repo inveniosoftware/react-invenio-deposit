@@ -13,6 +13,11 @@ import { FieldLabel, SelectField } from 'react-invenio-forms';
 import { i18next } from '@translations/i18next';
 
 export class ResourceTypeField extends Component {
+  constructor(props) {
+    super(props);
+    this.blur = false;
+  }
+
   groupErrors = (errors, fieldPath) => {
     const fieldErrors = _get(errors, fieldPath);
     if (fieldErrors) {
@@ -60,7 +65,13 @@ export class ResourceTypeField extends Component {
   render() {
     const { fieldPath, label, labelIcon, options, ...restProps } = this.props;
     const frontEndOptions = this.createOptions(options);
-    return (
+    let forceValue = false;
+    if (this.onBlur) {
+      this.onBlur = false;
+      forceValue = true;
+    }
+    console.log(forceValue);
+    return forceValue ? (
       <SelectField
         fieldPath={fieldPath}
         label={
@@ -68,8 +79,22 @@ export class ResourceTypeField extends Component {
         }
         optimized={true}
         options={frontEndOptions}
-        onBlur={({ formikProps }) => {
-          formikProps.form.setFieldValue("", "");
+        value=""
+        onBlur={() => {
+          this.onBlur = true;
+        }}
+        {...restProps}
+      />
+    ) : (
+      <SelectField
+        fieldPath={fieldPath}
+        label={
+          <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+        }
+        optimized={true}
+        options={frontEndOptions}
+        onBlur={() => {
+          this.onBlur = true;
         }}
         {...restProps}
       />
