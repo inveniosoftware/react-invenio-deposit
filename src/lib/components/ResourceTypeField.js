@@ -68,6 +68,9 @@ export class ResourceTypeField extends Component {
         }
         optimized={true}
         options={frontEndOptions}
+        onBlur={({ formikProps }) => {
+          formikProps.form.setFieldValue("", "");
+        }}
         {...restProps}
       />
     );
