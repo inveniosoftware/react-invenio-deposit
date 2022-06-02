@@ -97,12 +97,8 @@ export class RDMDepositApiClient extends DepositApiClient {
       );
       return new DepositApiClientResponse(data, errors);
     } catch (error) {
-      const data = this.recordSerializer.deserialize(error.response.data || {});
-      const errors = this.recordSerializer.deserializeErrors(
-        error.response.data.errors || []
-      );
-      const wrapped = new DepositApiClientResponse(data, errors);
-      throw new Error(wrapped);
+      const errorData = error.response.data;
+      throw new DepositApiClientResponse({}, errorData);
     }
   }
 
@@ -284,6 +280,7 @@ export class DepositFileApiClient {
       throw new Error('Abstract');
     }
   }
+
   isCancelled(error) {
     return axios.isCancel(error);
   }
