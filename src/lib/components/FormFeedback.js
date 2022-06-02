@@ -232,10 +232,12 @@ class DisconnectedFormFeedback extends Component {
 
     return labelledErrorMessages;
   }
+
   render() {
     const actionState = this.props.actionState;
 
     const errors = this.props.errors || {};
+
     const { feedback, message } = _get(ACTIONS, actionState, {
       feedback: undefined,
       message: undefined,
@@ -255,6 +257,9 @@ class DisconnectedFormFeedback extends Component {
       )
     );
 
+    // errors not related to validation, following a different format {status:.., message:..}
+    const backendErrorMessage = errors.message;
+
     return (
       <Message
         visible
@@ -265,7 +270,7 @@ class DisconnectedFormFeedback extends Component {
       >
         <Grid container>
           <Grid.Column width={15} textAlign="left">
-            <strong>{message}</strong>
+            <strong>{backendErrorMessage || message}</strong>
             {listErrors.length > 0 && <Message.List>{listErrors}</Message.List>}
           </Grid.Column>
         </Grid>
