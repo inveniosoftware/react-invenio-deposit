@@ -119,7 +119,6 @@ class DepositBootstrapComponent extends Component {
         <BaseForm
           onSubmit={this.onFormSubmit}
           formik={{
-            enableReinitialize: true, // Needed for files
             initialValues: this.props.record,
             ...(this.props.errors && { initialErrors: this.props.errors }), // Needed because of enableReinitialize
           }}
