@@ -93,6 +93,7 @@ export class SubmitReviewModal extends Component {
                             communityTitle,
                           }}
                           components={{ bold: <b /> }}
+                          shouldUnescape={true}
                         />
                       }
                       checked={
