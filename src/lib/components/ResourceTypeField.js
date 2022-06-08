@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import _get from 'lodash/get';
 import { FieldLabel, SelectField } from 'react-invenio-forms';
 import { i18next } from '@translations/i18next';
+import { Icon } from 'semantic-ui-react';
 
 export class ResourceTypeField extends Component {
   groupErrors = (errors, fieldPath) => {
