@@ -50,12 +50,12 @@ const StandardSchema = Yup.object().shape({
 const CustomFundingSchema = Yup.object().shape({
   selectedFunding: Yup.object().shape({
     funder: Yup.object().shape({
-      id: Yup.string().required(i18next.t('Funder is required')),
+      id: Yup.string().required(i18next.t('Funder is required.')),
     }),
     award: Yup.object().shape({
       title: Yup.string().test({
         name: 'testTitle',
-        message: i18next.t('Title must be set alongside number'),
+        message: i18next.t('Title must be set alongside number.'),
         test: function testTitle(value) {
           const { number } = this.parent;
 
@@ -68,7 +68,7 @@ const CustomFundingSchema = Yup.object().shape({
       }),
       number: Yup.string().test({
         name: 'testNumber',
-        message: i18next.t('Number must be set alongside title'),
+        message: i18next.t('Number must be set alongside title.'),
         test: function testNumber(value) {
           const { title } = this.parent;
 
@@ -80,7 +80,7 @@ const CustomFundingSchema = Yup.object().shape({
         },
       }),
       url: Yup.string()
-        .url(i18next.t('Url Must be a valid url'))
+        .url(i18next.t('Url must be a valid url.'))
         .test({
           name: 'validateUrlDependencies',
           message: i18next.t('Url must be set alongside title and number.'),

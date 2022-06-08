@@ -75,7 +75,7 @@ export class SubmitReviewModal extends Component {
                   <p>
                     <Icon name="warning sign" />
                     {i18next.t(
-                      'Before requesting review please read and check the following.'
+                      'Before requesting review please read and check the following:'
                     )}
                   </p>
                 </Message>
@@ -118,7 +118,7 @@ export class SubmitReviewModal extends Component {
                       fieldPath="acceptAfterPublishRecord"
                       label={
                         <Trans
-                          defaults="If your upload is accepted by the community curators, it will be <bold> immediately published.</bold> Before that, you will still be able to modify metadata and files of this uploads."
+                          defaults="If your upload is accepted by the community curators, it will be <bold>immediately published</bold>. Before that, you will still be able to modify metadata and files of this upload."
                           values={{
                             communityTitle: communityTitle,
                           }}
