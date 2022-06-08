@@ -23,6 +23,8 @@ export const FileUploaderToolbar = ({
   decimalSizeDisplay,
 }) => {
   const { setFieldValue } = useFormikContext();
+  console.log(filesEnabled);
+
 
   return (
     <>

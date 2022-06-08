@@ -8,120 +8,89 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { FastField } from 'formik';
+import { Field } from 'formik';
 import { FieldLabel } from 'react-invenio-forms';
-import { Card, Divider, Form } from 'semantic-ui-react';
+import { Card, Divider, Form, Header } from 'semantic-ui-react';
 import { i18next } from '@translations/i18next';
 import {
-  Embargo,
-  EmbargoState,
-  Embargoed,
-  EmbargoedFiles,
-  EmbargoedMetadataOnly,
-  PublicFiles,
-  PublicMetadataOnly,
-  Restricted,
-  RestrictedFiles,
-  RestrictedMetadataOnly,
+  MetadataAccess,
+  FilesAccess,
+  EmbargoAccess,
+  AccessMessage,
 } from './Access';
 
-class Protection {
-  static create(access, isMetadataOnly, isRestrictedCommunity) {
-    const embargo = new Embargo({
-      state: EmbargoState.from(access),
-      date: access.embargo ? access.embargo.until : '',
-      reason: access.embargo ? access.embargo.reason : '',
-    });
-
-    if (access.record === 'public') {
-      if (isMetadataOnly) {
-        return new PublicMetadataOnly(embargo);
-      } else if (access.files === 'public') {
-        return new PublicFiles(embargo);
-      } else if (embargo.is(EmbargoState.APPLIED)) {
-        return new EmbargoedFiles(embargo);
-      } else {
-        return new RestrictedFiles(embargo); // technically no embargo
-      }
-    } else {
-      if (isMetadataOnly) {
-        if (embargo.is(EmbargoState.APPLIED)) {
-          return new EmbargoedMetadataOnly(embargo);
-        } else {
-          return new RestrictedMetadataOnly(embargo); // technically no embargo
-        }
-      } else if (embargo.is(EmbargoState.APPLIED)) {
-        return new Embargoed(embargo);
-      } else {
-        if (isRestrictedCommunity) {
-          const embargoDisabled = new Embargo({
-            state: EmbargoState.DISABLED,
-            date: access.embargo ? access.embargo.until : '',
-            reason: access.embargo ? access.embargo.reason : '',
-          });
-          return new Restricted(embargoDisabled); // if selected community is restricted embargo is disabled
-        } else {
-          return new Restricted(embargo); // technically no embargo
-        }
-      }
-    }
-  }
-}
-
-class AccessRightFieldCmp extends Component {
+export class AccessRightFieldCmp extends Component {
   /** Top-level Access Right Component */
 
   render() {
     const {
       fieldPath,
       formik, // this is our access to the shared current draft
-      isMetadataOnly,
       label,
       labelIcon,
       community,
     } = this.props;
-    const isRestrictedCommunity =
-      community?.access.visibility === 'restricted' ? true : false;
-    if (isRestrictedCommunity) {
-      const recordAccessFieldPath = 'access.record';
-      formik.form.setFieldValue(recordAccessFieldPath, 'restricted');
-    }
 
-    const protection = Protection.create(
-      formik.field.value,
-      isMetadataOnly,
-      isRestrictedCommunity
-    );
+    const communityAccess = community?.access.visibility || 'public';
+    const isMetadataOnly = !formik.form.values.files.enabled;
 
     return (
       <Card className="access-right">
-        <Card.Content>
-          <Form.Field required>
-            <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
-            {protection.renderMetadataSection()}
+        <Form.Field required>
+          <Card.Content>
+            <Card.Header>
+              <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
+            </Card.Header>
+          </Card.Content>
+          <Card.Content>
+            <MetadataAccess
+              recordAccess={formik.field.value.record}
+              communityAccess={communityAccess}
+            />
 
             <Divider hidden />
 
-            {protection.renderFilesSection()}
+            <FilesAccess
+              access={formik.field.value}
+              accessCommunity={communityAccess}
+              metadataOnly={isMetadataOnly}
+            />
 
             <Divider hidden />
 
-            {protection.renderMessageSection()}
+            <AccessMessage
+              access={formik.field.value}
+              accessCommunity={communityAccess}
+              metadataOnly={isMetadataOnly}
+            />
 
             <Divider hidden />
-
-            <p>
-              <b>{i18next.t('Options')}</b>
-            </p>
-            <Divider />
-
-            {protection.renderEmbargoSection(formik.form.initialValues.access)}
-          </Form.Field>
-        </Card.Content>
+          </Card.Content>
+          <Card.Content>
+            <Card.Header as={Header} size="tiny">
+              {i18next.t('Options')}
+            </Card.Header>
+          </Card.Content>
+          <Card.Content extra>
+            <EmbargoAccess
+              access={formik.field.value}
+              accessCommunity={communityAccess}
+              metadataOnly={isMetadataOnly}
+            />
+          </Card.Content>
+        </Form.Field>
       </Card>
     );
   }
 }
+
+AccessRightFieldCmp.propTypes = {
+  fieldPath: PropTypes.string.isRequired,
+  formik: PropTypes.object.isRequired,
+  label: PropTypes.string.isRequired,
+  labelIcon: PropTypes.string.isRequired,
+  community: PropTypes.object.isRequired,
+};
 
 const mapStateToPropsAccessRightFieldCmp = (state) => ({
   community: state.deposit.editorState.selectedCommunity,
@@ -132,45 +101,27 @@ export const AccessRightFieldComponent = connect(
   null
 )(AccessRightFieldCmp);
 
-class FormikAccessRightField extends Component {
+export class AccessRightField extends Component {
   render() {
-    // NOTE: This is a "cute" optimization.
-    //       In general, FastField only re-renders if
-    //       * formik slice associated with this.props.fieldPath changes
-    //         (i.e. `access` changes)
-    //       * props are ADDED or REMOVED to FastField
-    // So we add/remove a prop to FastField based on the presence of files.
-    // This way, FastField only renders when the things (access and isMetadataOnly)
-    // it cares about change, as it should be.
-    const change = this.props.isMetadataOnly ? { change: true } : {};
+    const { fieldPath } = this.props;
+
     return (
-      <FastField
-        name={this.props.fieldPath}
-        component={(formikProps) => (
-          <AccessRightFieldComponent formik={formikProps} {...this.props} />
+      <Field name={fieldPath}>
+        {(formik) => (
+          <AccessRightFieldComponent formik={formik} {...this.props} />
         )}
-        {...change}
-      />
+      </Field>
     );
   }
 }
 
-FormikAccessRightField.propTypes = {
+AccessRightField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   labelIcon: PropTypes.string,
   isMetadataOnly: PropTypes.bool,
 };
 
-FormikAccessRightField.defaultProps = {
+AccessRightField.defaultProps = {
   fieldPath: 'access',
 };
-
-const mapStateToProps = (state) => ({
-  isMetadataOnly: !state.deposit.record.files.enabled,
-});
-
-export const AccessRightField = connect(
-  mapStateToProps,
-  null
-)(FormikAccessRightField);

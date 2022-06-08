@@ -5,12 +5,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-export { Embargo, EmbargoState } from './Embargo';
-export { Embargoed } from './Embargoed';
-export { EmbargoedFiles } from './EmbargoedFiles';
-export { EmbargoedMetadataOnly } from './EmbargoedMetadataOnly';
-export { PublicFiles } from './PublicFiles';
-export { PublicMetadataOnly } from './PublicMetadataOnly';
-export { Restricted } from './Restricted';
-export { RestrictedFiles } from './RestrictedFiles';
-export { RestrictedMetadataOnly } from './RestrictedMetadataOnly';
+export { MetadataAccess } from './MetadataAccess';
+export { FilesAccess } from './FilesAccess';
+export { EmbargoAccess } from './EmbargoAccess';
+export { AccessMessage } from './AccessMessage';
