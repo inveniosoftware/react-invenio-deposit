@@ -1,5 +1,12 @@
 # Changes
 
+Version 0.19.10 (released 2022-06-08)
+
+* add translations
+* ResourceTypeField: disable select on blur
+* fix alignment issues in the form
+* fix translation unescape in submit review modal
+
 Version 0.19.9 (released 2022-05-19)
 * made trigger button customizable in community selectio modal
 * made improvements in funder field
