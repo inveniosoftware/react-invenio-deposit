@@ -34,48 +34,50 @@ function FundingFieldForm(props) {
   const deserializeAward = props.deserializeAward
     ? props.deserializeAward
     : (award) => ({
-      // TODO not needed after the backend supports internationalisation.
-      title: award?.title?.en ?? award.title,
-      pid: award.pid,
-      number: award.number,
-      funder: award.funder ?? '',
-      id: award.id,
-      ...(award.identifiers && {identifiers: award.identifiers}),
-      ...(award.acronym && {acronym: award.acronym})
-    });
+        title: award?.title_l10n,
+        number: award.number,
+        funder: award.funder ?? '',
+        id: award.id,
+        ...(award.identifiers && { identifiers: award.identifiers }),
+        ...(award.acronym && { acronym: award.acronym }),
+      });
 
   const deserializeFunder = props.deserializeFunder
     ? props.deserializeFunder
     : (funder) => ({
-      id: funder.id,
-      name: funder.name,
-      ...(funder.pid && {pid: funder.pid}),
-      ...(funder.country && {country: funder.country}),
-      ...(funder.identifiers && {identifiers: funder.identifiers})
-    });
+        id: funder.id,
+        name: funder.name,
+        ...(funder.pid && { pid: funder.pid }),
+        ...(funder.country && { country: funder.country }),
+        ...(funder.identifiers && { identifiers: funder.identifiers }),
+      });
 
   const computeFundingContents = props.computeFundingContents
     ? props.computeFundingContents
     : (funding) => {
-
-      let headerContent, descriptionContent = '';
-      let awardOrFunder = 'award';
-      if (funding.award) {
-        headerContent = funding.award.title;
-      }
-
-      if (funding.funder) {
-        const funderName = funding?.funder?.name ?? funding.funder?.title?.en ?? funding?.funder?.id ?? '';
-        descriptionContent = funderName;
-        if (!headerContent) {
-          awardOrFunder = 'funder';
-          headerContent = funderName;
+        let headerContent,
           descriptionContent = '';
+        let awardOrFunder = 'award';
+        if (funding.award) {
+          headerContent = funding.award.title;
         }
-      }
 
-      return { headerContent, descriptionContent, awardOrFunder };
-    };
+        if (funding.funder) {
+          const funderName =
+            funding?.funder?.name ??
+            funding.funder?.title ??
+            funding?.funder?.id ??
+            '';
+          descriptionContent = funderName;
+          if (!headerContent) {
+            awardOrFunder = 'funder';
+            headerContent = funderName;
+            descriptionContent = '';
+          }
+        }
+
+        return { headerContent, descriptionContent, awardOrFunder };
+      };
   return (
     <DndProvider backend={HTML5Backend}>
       <Form.Field required={required}>
@@ -105,7 +107,7 @@ function FundingFieldForm(props) {
                   searchConfig: props.searchConfig,
                   computeFundingContents: computeFundingContents,
                   deserializeAward: deserializeAward,
-                  deserializeFunder: deserializeFunder
+                  deserializeFunder: deserializeFunder,
                 }}
               />
             );
@@ -169,7 +171,7 @@ FundingField.propTypes = {
   required: PropTypes.bool,
   deserializeAward: PropTypes.func,
   deserializeFunder: PropTypes.func,
-  computeFundingContents: PropTypes.func
+  computeFundingContents: PropTypes.func,
 };
 
 FundingField.defaultProps = {

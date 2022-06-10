@@ -138,7 +138,6 @@ export class RightsVocabularyField extends VocabularyField {
    * @returns
    */
   deserialize(record, defaultLocale) {
-
     const fieldValue = _get(record, this.fieldpath, this.deserializedDefault);
     const _deserialize = (value) => {
       if ('id' in value) {
@@ -228,10 +227,11 @@ export class FundingField extends Field {
    * Deserializes a funding record.
    * 
    * @param {object} record the funding record to be deserialized. 
+   * @param {string} defaultLocale - The default locale
    * 
    * @returns {object} the deserialized record.
    */
-  deserialize(record) {
+  deserialize(record, defaultLocale) {
     /**
      * Deserializes a record. In case the record contains a 'title' property, it will extract its 'en' property.
      * 
@@ -244,9 +244,8 @@ export class FundingField extends Field {
      */
     const _deserialize = (value) => {
       const deserializedValue = _cloneDeep(value);
-
-      if (value?.title?.en) {
-        deserializedValue.title = value.title.en;
+      if (value?.title) {
+        deserializedValue.title = value.title[defaultLocale];
       }
 
       if (value.identifiers) {
@@ -290,10 +289,11 @@ export class FundingField extends Field {
    * Serializes a funding record.
    * 
    * @param {object} record 
+   * @param {string} defaultLocale - The default locale
    * 
    * @returns
    */
-  serialize(record) {
+  serialize(record, defaultLocale) {
     /**
      * Serializes a record. Either returns a new object with the record's id or returns a deep copy of the record.
      * 
@@ -313,7 +313,7 @@ export class FundingField extends Field {
       const clonedValue = _cloneDeep(value);
       if (value.title) {
         clonedValue.title = {
-          "en": value.title
+          [defaultLocale]: value.title
         };
       }
 

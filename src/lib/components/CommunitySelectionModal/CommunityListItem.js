@@ -16,12 +16,11 @@ export const CommunityListItem = ({ result }) => {
   const { setLocalCommunity, getChosenCommunity } =
     useContext(CommunityContext);
 
-  const { metadata } = result;
+  const { metadata, ui } = result;
   const linkToCommunityPage = result.links.self_html;
   const linkToLogo = result.links.logo;
   const itemSelected = getChosenCommunity()?.id === result.id;
-  // TODO: fix the hardcoded `en`
-  const type_l10n = metadata.type?.title?.en;
+  const type_l10n = ui.type?.title_l10n;
   return (
     <Item key={result.id} className={itemSelected ? 'selected' : ''}>
       <Image

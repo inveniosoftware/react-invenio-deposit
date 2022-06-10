@@ -46,7 +46,10 @@ export class CommunitySelectionSearch extends Component {
     const { allCommunities, myCommunities } = this.apiEndpoints;
 
     const searchApi = new InvenioSearchApi({
-      axios: { url: selectedEndpoint },
+      axios: {
+        url: selectedEndpoint,
+        headers: { Accept: 'application/vnd.inveniordm.v1+json' },
+      },
     });
 
     const searchbarPlaceholder =
