@@ -34,7 +34,7 @@ export class SchemaField extends Field {
    * @param {object} serialized - in API format
    * @returns {object} deserialized - in frontent format
    */
-  deserialize(serialized) {
+  deserialize(serialized, defaultLocale) {
     const fieldValues = _get(
       serialized,
       this.fieldpath,
@@ -43,7 +43,7 @@ export class SchemaField extends Field {
     const deserializedElements = fieldValues.map((value, i) => {
       let deserializedElement = _pick(value, this.schemaKeys);
       this.schemaKeys.forEach((key) => {
-        deserializedElement = this.schema[key].deserialize(deserializedElement);
+        deserializedElement = this.schema[key].deserialize(deserializedElement, defaultLocale);
       });
       // Add __key
       deserializedElement.__key = i;
@@ -61,7 +61,7 @@ export class SchemaField extends Field {
    * @returns {object} serialized - in API format
    *
    */
-  serialize(deserialized) {
+  serialize(deserialized, defaultLocale) {
     const fieldValues = _get(
       deserialized,
       this.fieldpath,
@@ -70,7 +70,7 @@ export class SchemaField extends Field {
     const serializedElements = fieldValues.map((value) => {
       let serializedElement = _pick(value, this.schemaKeys);
       this.schemaKeys.forEach((key) => {
-        serializedElement = this.schema[key].serialize(serializedElement);
+        serializedElement = this.schema[key].serialize(serializedElement, defaultLocale);
       });
       return serializedElement;
     });

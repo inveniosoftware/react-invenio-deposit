@@ -58,9 +58,7 @@ function CustomAwardForm({ deserializeFunder, selectedFunding }) {
         fieldPath="selectedFunding.funder.id"
         suggestionAPIUrl="/api/funders"
         suggestionAPIHeaders={{
-          // Accept: 'application/vnd.inveniordm.v1+json',
-          // TODO replace 'Accept' header when backend supports internationalisation.
-          Accept: 'application/json',
+          Accept: 'application/vnd.inveniordm.v1+json',
         }}
         placeholder={i18next.t('Search for a funder by name')}
         serializeSuggestions={(funders) => {
