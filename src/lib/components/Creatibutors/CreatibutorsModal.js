@@ -2,6 +2,7 @@
 // Copyright (C) 2021 CERN.
 // Copyright (C) 2021 Northwestern University.
 // Copyright (C) 2021 Graz University of Technology.
+// Copyright (C) 2022 data-futures.org.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -196,11 +197,46 @@ export class CreatibutorsModal extends Component {
     }
   };
 
+
+  makeIdEntry = (identifier) => {
+
+    let icon = null;
+    let link = null;
+    let linkTitle = null;
+
+    if (identifier.scheme == "orcid") {
+      icon = "/static/images/orcid.svg";
+      link = "https://orcid.org/" + identifier.identifier;
+    } else if (identifier.scheme == "gnd") {
+      icon = "/static/images/gnd-icon.svg";
+      link = "https://d-nb.info/gnd/" + identifier.identifier;
+    } else if (identifier.scheme == "ror") {
+      icon = "/static/images/ror-icon.svg";
+      link = "https://ror.org/" + identifier.identifier;
+    } else {
+      return (<>{identifier.scehme}: {identifier.identifier}</>);
+    }
+
+    return (
+      <span key={identifier.identifier}>
+        <a
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            src={icon}
+            className="inline-id-icon ml-5 mr-5"
+            verticalAlign="middle"
+          />
+          {identifier.identifier}
+        </a>;
+      </span>
+    );
+  }
+
   serializeSuggestions = (creatibutors) => {
     let results = creatibutors.map((creatibutor) => {
-      const orcid = _find(creatibutor.identifiers, (identifier) => {
-        return identifier.scheme === 'orcid';
-      });
 
       let aff_names = '';
       creatibutor.affiliations.forEach((affiliation, idx) => {
@@ -210,28 +246,21 @@ export class CreatibutorsModal extends Component {
         }
       });
 
+      let idString = [];
+      creatibutor.identifiers.forEach((i, idx) => {
+        idString.push(this.makeIdEntry(i));
+      });
+
       return {
         text: creatibutor.name,
-        value: orcid.identifier,
+        value: creatibutor.id,
         extra: creatibutor,
         key: creatibutor.id,
         content: (
           <Header>
             <Header.Content>
-              {creatibutor.name} (
-              <Image
-                src="/static/images/orcid.svg"
-                className="inline-id-icon"
-                verticalAlign="middle"
-              />
-              {orcid.identifier})
-              <a
-                href={`https://orcid.org/${orcid.identifier}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Icon link name="external alternate" className="spaced-left" />
-              </a>
+              {creatibutor.name}{" "}
+              {idString.length ? <>({idString})</> : null }
             </Header.Content>
             <Header.Subheader>{aff_names}</Header.Subheader>
           </Header>
