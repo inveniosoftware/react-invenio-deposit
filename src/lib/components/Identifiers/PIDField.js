@@ -102,7 +102,7 @@ UnreservePIDBtn.defaultProps = {
 class ManagedUnmanagedSwitch extends Component {
   handleChange = (e, { value }) => {
     const { onManagedUnmanagedChange } = this.props;
-    const isManagedSelected = value === 'managed' ? true : false;
+    const isManagedSelected = value === 'managed';
     onManagedUnmanagedChange(isManagedSelected);
   };
 

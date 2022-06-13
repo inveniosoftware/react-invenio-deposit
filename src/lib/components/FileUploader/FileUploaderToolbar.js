@@ -23,8 +23,11 @@ export const FileUploaderToolbar = ({
   decimalSizeDisplay,
 }) => {
   const { setFieldValue } = useFormikContext();
-  console.log(filesEnabled);
 
+  const handleOnChangeMetadataOnly = () => {
+    setFieldValue('files.enabled', !filesEnabled)
+    setFieldValue('access.files', 'public')
+  }
 
   return (
     <>
@@ -34,7 +37,7 @@ export const FileUploaderToolbar = ({
             <List.Item>
               <Checkbox
                 label={i18next.t('Metadata-only record')}
-                onChange={() => setFieldValue('files.enabled', !filesEnabled)}
+                onChange={handleOnChangeMetadataOnly}
                 disabled={filesList.length > 0}
                 checked={!filesEnabled}
               />

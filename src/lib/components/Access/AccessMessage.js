@@ -12,7 +12,8 @@ export const AccessMessage = ({ access, metadataOnly, accessCommunity }) => {
 
   // restriction logic
   const fullyRestricted = !communityPublic || (!recordPublic && !embargoActive);
-  const fullyPublic = communityPublic && recordPublic && filesPublic;
+  const fullyPublic = communityPublic && recordPublic &&
+    (metadataOnly || filesPublic);
 
   const embargoedFiles = embargoActive && !filesPublic && recordPublic;
   const restrictedFiles = !embargoActive && !filesPublic && recordPublic;
@@ -22,7 +23,7 @@ export const AccessMessage = ({ access, metadataOnly, accessCommunity }) => {
     ? DateTime.fromISO(access.embargo.date).toLocaleString(DateTime.DATE_FULL)
     : '???';
 
-  if (fullyPublic || (recordPublic && metadataOnly && !filesPublic)) {
+  if (fullyPublic) {
     return (
       <Message icon positive visible data-testid="access-message">
         <Icon name="lock open" />

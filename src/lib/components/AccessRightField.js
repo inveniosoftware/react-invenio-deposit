@@ -89,8 +89,12 @@ AccessRightFieldCmp.propTypes = {
   formik: PropTypes.object.isRequired,
   label: PropTypes.string.isRequired,
   labelIcon: PropTypes.string.isRequired,
-  community: PropTypes.object.isRequired,
+  community: PropTypes.object,
 };
+
+AccessRightFieldCmp.defaultProps = {
+  community: undefined,
+}
 
 const mapStateToPropsAccessRightFieldCmp = (state) => ({
   community: state.deposit.editorState.selectedCommunity,

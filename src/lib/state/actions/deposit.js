@@ -36,7 +36,7 @@ async function changeURLAfterCreation(draftURL) {
 }
 
 export const saveDraftWithUrlUpdate = async (draft, draftsService) => {
-  const hasAlreadyId = draft.id ? true : false;
+  const hasAlreadyId = !!draft.id;
   const response = await draftsService.save(draft);
   if (!hasAlreadyId) {
     // draft was created, change URL to add the draft PID
