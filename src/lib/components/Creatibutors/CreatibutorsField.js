@@ -21,85 +21,73 @@ import { CREATIBUTOR_TYPE } from './type';
 import { i18next } from '@translations/i18next';
 import { sortOptions } from '../../utils';
 
-const displayCreatibutorName = ({ familyName, givenName, affiliationName }) => {
-  let displayName = familyName;
-  if (givenName) {
-    displayName += `, ${givenName}`;
+const creatibutorNameDisplay = (value) => {
+  const creatibutorType = _get(
+    value,
+    'person_or_org.type',
+    CREATIBUTOR_TYPE.PERSON
+  );
+  const isPerson = creatibutorType === CREATIBUTOR_TYPE.PERSON;
+
+  const familyName = _get(value, 'person_or_org.family_name', '');
+  const givenName = _get(value, 'person_or_org.given_name', '');
+  const affiliationName = _get(value, `affiliations[0].name`, '');
+  const name = _get(value, `person_or_org.name`);
+
+  const affiliation = affiliationName ? ` (${affiliationName})` : '';
+
+  if (isPerson) {
+    const givenNameSuffix = givenName ? `, ${givenName}` : '';
+    return `${familyName}${givenNameSuffix}${affiliation}`;
   }
-  if (affiliationName) {
-    displayName += ` (${affiliationName})`;
-  }
-  return displayName;
+
+  return `${name}${affiliation}`;
 };
 
 class CreatibutorsFieldForm extends Component {
+  handleOnContributorChange = (selectedCreatibutor) => {
+    const { push: formikArrayPush } = this.props;
+    formikArrayPush(selectedCreatibutor);
+  };
+
   render() {
     const {
       form: { values, errors, initialErrors, initialValues },
       remove: formikArrayRemove,
       replace: formikArrayReplace,
       move: formikArrayMove,
-      push: formikArrayPush,
       name: fieldPath,
       label,
       labelIcon,
       roleOptions,
       schema,
+      modal,
+      autocompleteNames,
+      addButtonLabel,
     } = this.props;
-    const formikValues = getIn(values, fieldPath, []);
+
+    const creatibutorsList = getIn(values, fieldPath, []);
     const formikInitialValues = getIn(initialValues, fieldPath, []);
+
     const error = getIn(errors, fieldPath, null);
     const initialError = getIn(initialErrors, fieldPath, null);
     const creatibutorsError =
-      error || (formikValues === formikInitialValues && initialError);
+      error || (creatibutorsList === formikInitialValues && initialError);
+
     return (
       <DndProvider backend={HTML5Backend}>
         <Form.Field
           required={schema === 'creators'}
           className={creatibutorsError ? 'error' : ''}
         >
-          <FieldLabel
-            htmlFor={fieldPath}
-            icon={labelIcon}
-            label={label}
-          />
+          <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
           <List>
-            {getIn(values, fieldPath, []).map((value, index, array) => {
+            {creatibutorsList.map((value, index, array) => {
               const key = `${fieldPath}.${index}`;
-              const personOrOrgPath = 'person_or_org';
-              const typeFieldPath = `${personOrOrgPath}.type`;
-              const familyNameFieldPath = `${personOrOrgPath}.family_name`;
-              const givenNameFieldPath = `${personOrOrgPath}.given_name`;
-              const nameFieldPath = `${personOrOrgPath}.name`;
-              const affiliationsFieldPath = 'affiliations';
               const identifiersError =
-                creatibutorsError && creatibutorsError[index]?.person_or_org?.identifiers;
-              // Default to person type
-              const isPerson =
-                _get(value, typeFieldPath, CREATIBUTOR_TYPE.PERSON) ===
-                CREATIBUTOR_TYPE.PERSON;
-              let displayName = isPerson
-                ? displayCreatibutorName({
-                    familyName: _get(
-                      value,
-                      familyNameFieldPath
-                    ),
-                    givenName: _get(value, givenNameFieldPath),
-                    affiliationName: _get(
-                      value,
-                      `${affiliationsFieldPath}[0].name`
-                    ),
-                  })
-                : displayCreatibutorName({
-                    familyName: _get(
-                      value,
-                      nameFieldPath
-                    ),
-                    affiliationName: _get(
-                      value,
-                      `${affiliationsFieldPath}[0].name`
-                    ),
-                  });
+                creatibutorsError &&
+                creatibutorsError[index]?.person_or_org?.identifiers;
+              const displayName = creatibutorNameDisplay(value);
 
               return (
                 <CreatibutorsFieldItem
@@ -115,27 +103,25 @@ class CreatibutorsFieldForm extends Component {
                     removeCreatibutor: formikArrayRemove,
                     replaceCreatibutor: formikArrayReplace,
                     moveCreatibutor: formikArrayMove,
-                    addLabel: this.props.modal.addLabel,
-                    editLabel: this.props.modal.editLabel,
-                    autocompleteNames: this.props.autocompleteNames,
+                    addLabel: modal.addLabel,
+                    editLabel: modal.editLabel,
+                    autocompleteNames: autocompleteNames,
                   }}
                 />
               );
             })}
             <CreatibutorsModal
-              onCreatibutorChange={(selectedCreatibutor) => {
-                formikArrayPush(selectedCreatibutor);
-              }}
+              onCreatibutorChange={this.handleOnContributorChange}
               action="add"
-              addLabel={this.props.modal.addLabel}
-              editLabel={this.props.modal.editLabel}
+              addLabel={modal.addLabel}
+              editLabel={modal.editLabel}
               roleOptions={sortOptions(roleOptions)}
               schema={schema}
-              autocompleteNames={this.props.autocompleteNames}
+              autocompleteNames={autocompleteNames}
               trigger={
                 <Button type="button" icon labelPosition="left">
                   <Icon name="add" />
-                  {this.props.addButtonLabel}
+                  {addButtonLabel}
                 </Button>
               }
             />
