@@ -26,6 +26,7 @@ export const CommunityListItem = ({ result }) => {
     <Item key={result.id} className={itemSelected ? 'selected' : ''}>
       <Image
         size="tiny"
+        className="community-logo"
         src={linkToLogo}
         fallbackSrc="/static/images/square-placeholder.png"
         as={Item.Image}
