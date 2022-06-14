@@ -46,14 +46,18 @@ export const LicenseResults = withState(
                         serializeLicenseResult(result)
                       )
                     }
+                    {...(!description && { className: 'mt-0' })}
                   />
                   <Item.Content className="license-item-content">
                     <Header size="small" className="mt-0">
                       {title}
                     </Header>
-                    <Item.Description className="license-item-description">
-                      {description}
-                    </Item.Description>
+                    {
+                      description && 
+                      <Item.Description className="license-item-description">
+                        {description}
+                      </Item.Description>
+                    }
                   </Item.Content>
                 </Item>
               );
