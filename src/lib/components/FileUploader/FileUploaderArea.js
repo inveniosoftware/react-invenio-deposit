@@ -277,7 +277,7 @@ export class FileUploaderArea extends Component {
             <Grid.Row verticalAlign="middle">
               <Grid.Column>
                 <Header size="medium">
-                  {i18next.t('This is a Metadata only record')}
+                  {i18next.t('This is a Metadata-only record.')}
                 </Header>
               </Grid.Column>
             </Grid.Row>

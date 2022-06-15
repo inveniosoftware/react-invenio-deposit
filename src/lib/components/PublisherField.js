@@ -42,5 +42,5 @@ PublisherField.defaultProps = {
   fieldPath: 'metadata.publisher',
   label: i18next.t('Publisher'),
   labelIcon: 'building outline',
-  placeholder: i18next.t('Enter publisher name'),
+  placeholder: i18next.t('Publisher'),
 };

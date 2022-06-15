@@ -103,7 +103,7 @@ export const FileUploaderComponent = ({
             <Message
               warning
               icon="warning circle"
-              header="Could not upload file(s)."
+              header="Could not upload files."
               content={
                 <>
                   {i18next.t('Uploading the selected files would result in')}{' '}
@@ -283,7 +283,7 @@ FileUploaderComponent.propTypes = {
 };
 
 FileUploaderComponent.defaultProps = {
-  dragText: i18next.t('Drag and drop file(s)'),
+  dragText: i18next.t('Drag and drop files'),
   isDraftRecord: true,
   hasParentRecord: false,
   quota: {

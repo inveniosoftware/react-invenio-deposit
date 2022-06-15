@@ -92,6 +92,6 @@ IdentifiersField.propTypes = {
 
 IdentifiersField.defaultProps = {
   fieldPath: 'metadata.identifiers',
-  label: i18next.t('Identifier(s)'),
+  label: i18next.t('Identifiers'),
   labelIcon: 'barcode',
 };
