@@ -482,8 +482,8 @@ export class CreatibutorsModal extends Component {
                               required={this.isCreator()}
                             />
                             <TextField
-                              label={i18next.t('Given name(s)')}
-                              placeholder={i18next.t('Given name')}
+                              label={i18next.t('Given names')}
+                              placeholder={i18next.t('Given names')}
                               fieldPath={givenNameFieldPath}
                             />
                           </Form.Group>
