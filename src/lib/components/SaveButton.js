@@ -37,15 +37,12 @@ export class SaveButtonComponent extends Component {
         onClick={this.handleSave}
         icon
         labelPosition="left"
+        isLoading={(formik) => (formik.isSubmitting && actionState === DRAFT_SAVE_STARTED)}
         {...uiProps}
       >
         {(formik) => (
           <>
-            {formik.isSubmitting && actionState === DRAFT_SAVE_STARTED ? (
-              <Icon size="large" loading name="spinner" />
-            ) : (
-              <Icon name="save" />
-            )}
+            <Icon name="save" />
             {i18next.t('Save draft')}
           </>
         )}

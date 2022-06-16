@@ -34,15 +34,12 @@ export class PreviewButtonComponent extends Component {
         onClick={this.handlePreview}
         icon
         labelPosition="left"
+        isLoading={(formik) => (formik.isSubmitting && actionState === DRAFT_PREVIEW_STARTED)}
         {...uiProps}
       >
         {(formik) => (
           <>
-            {formik.isSubmitting && actionState === DRAFT_PREVIEW_STARTED ? (
-              <Icon size="large" loading name="spinner" />
-            ) : (
-              <Icon name="eye" />
-            )}
+            <Icon name="eye" />
             {i18next.t('Preview')}
           </>
         )}

@@ -97,6 +97,7 @@ export class DeleteButtonComponent extends Component {
           {...color}
           icon
           labelPosition="left"
+          isLoading={(formik) => (formik.isSubmitting && actionState === DRAFT_DELETE_STARTED)}
           {...uiProps}
           content={capitalizedActionLbl}
         />
@@ -116,12 +117,7 @@ export class DeleteButtonComponent extends Component {
             <ActionButton {...color} name="delete" onClick={this.handleDelete}>
               {(formik) => (
                 <>
-                  {formik.isSubmitting &&
-                  actionState === DRAFT_DELETE_STARTED ? (
-                    <Icon size="large" loading name="spinner" />
-                  ) : (
-                    <Icon name="trash alternate outline" />
-                  )}
+                  <Icon name="trash alternate outline" />
                   {capitalizedActionLbl}
                 </>
               )}

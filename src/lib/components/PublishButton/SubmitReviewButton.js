@@ -65,16 +65,12 @@ class SubmitReviewButtonComponent extends Component {
           positive
           icon
           labelPosition="left"
+          isLoading={(formik) => (formik.isSubmitting && actionState === DRAFT_SUBMIT_REVIEW_STARTED)}
           {...uiProps}
         >
           {(formik) => (
             <>
-              {formik.isSubmitting &&
-              actionState === 'DRAFT_SUBMIT_REVIEW_STARTED' ? (
-                <Icon size="large" loading name="spinner" />
-              ) : (
-                <Icon name="upload" />
-              )}
+              <Icon name="upload" />
               {isRecordSubmittedForReview
                 ? i18next.t('Submitted for review')
                 : i18next.t('Submit for review')}
