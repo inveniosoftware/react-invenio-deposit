@@ -1,5 +1,12 @@
 # Changes
 
+Version 0.19.11 (released 2022-06-22)
+
+* fix non-validation error propagation
+* styling fixes
+* disable public restriction button for restricted community's record
+* hide files restrictions on metadata-only option
+
 Version 0.19.10 (released 2022-06-08)
 
 * add translations
