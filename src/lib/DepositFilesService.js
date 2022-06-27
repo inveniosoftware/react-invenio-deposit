@@ -113,7 +113,7 @@ export class RDMDepositFilesService extends DepositFilesService {
 
     // get the init file with the sent filename
     const initializedFile = response.data.entries.filter(
-      (entry) => entry.key === file.name
+      (entry) => entry.key.normalize() === file.name.normalize()
     )[0]; // this should throw an error if not found
 
     return initializedFile;

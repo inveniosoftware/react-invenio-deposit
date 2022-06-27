@@ -32,15 +32,17 @@ const initialState = {};
 
 const fileReducer = (state = initialState, action) => {
   let newState;
+  // Filename needs to be normalised due to encoding differences between client and server.
+  const remoteFileName = action.payload?.filename?.normalize() ?? '';
   switch (action.type) {
     case FILE_UPLOAD_ADDED:
       return {
         ...state,
         entries: {
           ...state.entries,
-          [action.payload.filename]: {
+          [remoteFileName]: {
             progressPercentage: 0,
-            name: action.payload.filename,
+            name: remoteFileName,
             size: 0,
             status: UploadState.pending,
             checksum: null,
@@ -55,8 +57,8 @@ const fileReducer = (state = initialState, action) => {
         ...state,
         entries: {
           ...state.entries,
-          [action.payload.filename]: {
-            ...state.entries[action.payload.filename],
+          [remoteFileName]: {
+            ...state.entries[remoteFileName],
             progressPercentage: action.payload.percent,
             status: UploadState.uploading,
           },
@@ -69,8 +71,8 @@ const fileReducer = (state = initialState, action) => {
         ...state,
         entries: {
           ...state.entries,
-          [action.payload.filename]: {
-            ...state.entries[action.payload.filename],
+          [remoteFileName]: {
+            ...state.entries[remoteFileName],
             status: UploadState.finished,
             size: action.payload.size,
             progressPercentage: 100,
@@ -98,8 +100,8 @@ const fileReducer = (state = initialState, action) => {
         ...state,
         entries: {
           ...state.entries,
-          [action.payload.filename]: {
-            ...state.entries[action.payload.filename],
+          [remoteFileName]: {
+            ...state.entries[remoteFileName],
             status: UploadState.error,
             cancelUploadFn: null,
           },
@@ -117,8 +119,8 @@ const fileReducer = (state = initialState, action) => {
         ...state,
         entries: {
           ...state.entries,
-          [action.payload.filename]: {
-            ...state.entries[action.payload.filename],
+          [remoteFileName]: {
+            ...state.entries[remoteFileName],
             cancelUploadFn: action.payload.cancelUploadFn,
           },
         },
@@ -126,7 +128,7 @@ const fileReducer = (state = initialState, action) => {
       };
     case FILE_UPLOAD_CANCELLED:
       const {
-        [action.payload.filename]: cancelledFile,
+        [remoteFileName]: cancelledFile,
         ...afterCancellationEntriesState
       } = state.entries;
       return {
@@ -141,7 +143,7 @@ const fileReducer = (state = initialState, action) => {
       };
     case FILE_DELETED_SUCCESS:
       const {
-        [action.payload.filename]: deletedFile,
+        [remoteFileName]: deletedFile,
         ...afterDeletionEntriesState
       } = state.entries;
       return {
