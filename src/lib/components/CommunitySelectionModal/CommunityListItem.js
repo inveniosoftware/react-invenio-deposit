@@ -6,10 +6,11 @@
 
 import { i18next } from '@translations/i18next';
 import _truncate from 'lodash/truncate';
+import _capitalize from 'lodash/capitalize';
 import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
 import { Image } from 'react-invenio-forms';
-import { Button, Item } from 'semantic-ui-react';
+import { Button, Icon, Item, Label } from 'semantic-ui-react';
 import { CommunityContext } from './CommunityContext';
 
 export const CommunityListItem = ({ result }) => {
@@ -21,6 +22,8 @@ export const CommunityListItem = ({ result }) => {
   const linkToLogo = result.links.logo;
   const itemSelected = getChosenCommunity()?.id === result.id;
   const type_l10n = ui.type?.title_l10n;
+  const isRestricted = result.access.visibility === 'restricted';
+
   return (
     <Item key={result.id} className={itemSelected ? 'selected' : ''}>
       <Image
@@ -34,6 +37,13 @@ export const CommunityListItem = ({ result }) => {
       <Item.Content>
         <Item.Header>
           {metadata.title}
+          {
+            isRestricted && 
+            <Label size='tiny' color={'red'} className='rel-ml-1'>
+              <Icon name='ban'/>
+              {_capitalize(result.access.visibility)}
+            </Label>
+          }
           <Button
             as="a"
             href={linkToCommunityPage}
