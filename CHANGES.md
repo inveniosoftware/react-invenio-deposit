@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.19.12 (released 2022-06-29)
+
+* fix uploaded filename encoding comparison
+
 Version 0.19.11 (released 2022-06-22)
 
 * fix non-validation error propagation
