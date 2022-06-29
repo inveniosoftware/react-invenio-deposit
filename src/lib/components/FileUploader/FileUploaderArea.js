@@ -28,26 +28,26 @@ import { humanReadableBytes } from './utils';
 
 const FileTableHeader = ({ isDraftRecord }) => (
   <Table.Header>
-    <Table.Row className="file-table-row">
-      <Table.HeaderCell className="file-table-header-cell">
+    <Table.Row>
+      <Table.HeaderCell>
         {i18next.t('Preview')}{' '}
         <Popup
           content="Set the default preview"
           trigger={<Icon fitted name="help circle" size="small" />}
         />
       </Table.HeaderCell>
-      <Table.HeaderCell className="file-table-header-cell">
+      <Table.HeaderCell>
         {i18next.t('Filename')}
       </Table.HeaderCell>
-      <Table.HeaderCell className="file-table-header-cell">
+      <Table.HeaderCell>
         {i18next.t('Size')}
       </Table.HeaderCell>
       {isDraftRecord && (
-        <Table.HeaderCell textAlign="center" className="file-table-header-cell">
+        <Table.HeaderCell textAlign="center">
           {i18next.t('Progress')}
         </Table.HeaderCell>
       )}
-      {isDraftRecord && <Table.HeaderCell className="file-table-header-cell" />}
+      {isDraftRecord && <Table.HeaderCell />}
     </Table.Row>
   </Table.Header>
 );
@@ -80,8 +80,8 @@ const FileTableRow = ({
   };
 
   return (
-    <Table.Row key={file.name} className="file-table-row">
-      <Table.Cell className="file-table-cell" width={2}>
+    <Table.Row key={file.name}>
+      <Table.Cell data-label={i18next.t('Default preview')} width={2}>
         {/* TODO: Investigate if react-deposit-forms optimized Checkbox field
                   would be more performant */}
         <Checkbox
@@ -89,37 +89,40 @@ const FileTableRow = ({
           onChange={() => setDefaultPreview(isDefaultPreview ? '' : file.name)}
         />
       </Table.Cell>
-      <Table.Cell className="file-table-cell" width={10}>
+      <Table.Cell data-label={i18next.t('Filename')} width={10}>
+        <div>
         {file.uploadState.isPending ? (
-          file.name
-        ) : (
-          <a
-            href={_get(file, 'links.content', '')}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {file.name}
-          </a>
-        )}
-        <br />
-        {file.checksum && (
-          <div className="ui text-muted">
-            <span style={{ fontSize: '10px' }}>{file.checksum}</span>{' '}
-            <Popup
-              content={i18next.t(
-                'This is the file fingerprint (MD5 checksum), which can be used to verify the file integrity.'
-              )}
-              trigger={<Icon fitted name="help circle" size="small" />}
-              position="top center"
-            />
-          </div>
-        )}
+            file.name
+          ) : (
+            <a
+              href={_get(file, 'links.content', '')}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mr-5"
+            >
+              {file.name}
+            </a>
+          )}
+          <br />
+          {file.checksum && (
+            <div className="ui text-muted">
+              <span style={{ fontSize: '10px' }}>{file.checksum}</span>{' '}
+              <Popup
+                content={i18next.t(
+                  'This is the file fingerprint (MD5 checksum), which can be used to verify the file integrity.'
+                )}
+                trigger={<Icon fitted name="help circle" size="small" />}
+                position="top center"
+              />
+            </div>
+          )}
+        </div>
       </Table.Cell>
-      <Table.Cell className="file-table-cell" width={2}>
+      <Table.Cell data-label={i18next.t('Size')} width={2}>
         {file.size ? humanReadableBytes(file.size, decimalSizeDisplay) : ''}
       </Table.Cell>
       {isDraftRecord && (
-        <Table.Cell className="file-table-cell file-upload-pending" width={2}>
+        <Table.Cell className="file-upload-pending" data-label={i18next.t('Progress')} width={2}>
           {!file.uploadState?.isPending && (
             <Progress
               className="file-upload-progress"
@@ -136,7 +139,7 @@ const FileTableRow = ({
         </Table.Cell>
       )}
       {isDraftRecord && (
-        <Table.Cell textAlign="right" width={2} className="file-table-cell">
+        <Table.Cell textAlign="right" width={2}>
           {(file.uploadState?.isFinished || file.uploadState?.isFailed) &&
             (isDeleting ? (
               <Icon loading name="spinner" />
@@ -148,6 +151,8 @@ const FileTableRow = ({
                 color="blue"
                 disabled={isDeleting}
                 onClick={() => handleDelete(file)}
+                aria-label={i18next.t("Delete file")}
+                title={i18next.t("Delete file")}
               />
             ))}
           {file.uploadState?.isUploading && (
