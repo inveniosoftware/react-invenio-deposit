@@ -115,7 +115,7 @@ function FundingFieldForm(props) {
           <FundingModal
             searchConfig={props.searchConfig}
             trigger={
-              <Button type="button" key="custom" icon labelPosition="left">
+              <Button type="button" key="custom" icon labelPosition="left" className="mb-5">
                 <Icon name="add" />
                 {i18next.t('Add award')}
               </Button>
