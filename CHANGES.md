@@ -1,5 +1,12 @@
 # Changes
 
+Version 0.19.13 (released 2022-07-01)
+
+* fix community header margins on mobile view
+* add vertical spacing to button in funding field
+* add labels and remove custom css on file table
+* add community visitibility labels
+
 Version 0.19.12 (released 2022-06-29)
 
 * fix uploaded filename encoding comparison
