@@ -39,3 +39,5 @@ export const FileUploader = connect(
   mapStateToProps,
   mapDispatchToProps
 )(FileUploaderComponent);
+
+export { humanReadableBytes } from "./utils";
