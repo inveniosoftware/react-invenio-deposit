@@ -125,11 +125,10 @@ const FileTableRow = ({
         <Table.Cell className="file-upload-pending" data-label={i18next.t('Progress')} width={2}>
           {!file.uploadState?.isPending && (
             <Progress
-              className="file-upload-progress"
+              className="file-upload-progress primary"
               percent={file.progressPercentage}
               error={file.uploadState.isFailed}
               size="medium"
-              color="blue"
               progress
               autoSuccess
               active
@@ -146,9 +145,8 @@ const FileTableRow = ({
             ) : (
               <Icon
                 link
-                className="action"
+                className="action primary"
                 name="trash alternate outline"
-                color="blue"
                 disabled={isDeleting}
                 onClick={() => handleDelete(file)}
                 aria-label={i18next.t("Delete file")}

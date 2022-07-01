@@ -44,7 +44,7 @@ export const FileUploaderToolbar = ({
             </List.Item>
             <List.Item>
               <Popup
-                trigger={<Icon name="question circle outline" color="grey" />}
+                trigger={<Icon name="question circle outline" className="neutral" />}
                 content={i18next.t('Disable files for this record')}
                 position="top center"
               />
