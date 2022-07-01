@@ -17,7 +17,7 @@ export { DeleteButton } from './DeleteButton';
 export { DepositFormTitle } from './DepositFormTitle';
 export { DepositStatusBox } from './DepositStatus';
 export { DescriptionsField } from './DescriptionsField';
-export { FileUploader } from './FileUploader';
+export { FileUploader, humanReadableBytes } from './FileUploader';
 export { FormFeedback } from './FormFeedback';
 export { FundingField } from './Funding';
 export { IdentifiersField, PIDField } from './Identifiers';
