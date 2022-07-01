@@ -39,7 +39,7 @@ class ReservePIDBtn extends Component {
       <Field>
         {({ form: formik }) => (
           <Form.Button
-            color="green"
+            className="positive"
             size="mini"
             loading={loading}
             disabled={disabled || loading}

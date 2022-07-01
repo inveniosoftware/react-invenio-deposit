@@ -93,7 +93,7 @@ export class DeleteButtonComponent extends Component {
     } else {
       actionLbl = DISCARD_CHANGES_LBL;
     }
-    const color = { color: isPublished ? 'yellow' : 'red' };
+    const color = isPublished ? 'warning' : 'negative' ;
     const capitalizedActionLbl = toCapitalCase(actionLbl);
 
     return (
@@ -101,7 +101,7 @@ export class DeleteButtonComponent extends Component {
         <Button
           disabled={!draftExists || isSubmitting}
           onClick={this.openConfirmModal}
-          {...color}
+          className={color}
           icon
           loading={isSubmitting && actionState === DRAFT_DELETE_STARTED}
           labelPosition="left"

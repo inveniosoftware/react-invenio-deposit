@@ -40,7 +40,7 @@ export const NewVersionButton = ({ onError, record, disabled, ...uiProps }) => {
       trigger={
         <Button
           type="button"
-          color="green"
+          positive
           size="mini"
           onClick={handleClick}
           loading={loading}
