@@ -119,9 +119,16 @@ class DepositBootstrapComponent extends Component {
         <BaseForm
           onSubmit={this.onFormSubmit}
           formik={{
-            enableReinitialize: true, // Needed for files
+            // enableReinitialise needed due to
+            // updated draft PID (and the endpoint URL as a consequence).
+            // After saving draft for the first time, a new PID is obtained,
+            // initial values need to be updated with draft record containing
+            // the new PID in its payload, otherwise a new PID
+            // is requested on each action, generating countless drafts
+            enableReinitialize: true,
             initialValues: this.props.record,
-            ...(this.props.errors && { initialErrors: this.props.errors }), // Needed because of enableReinitialize
+            // errors need to be repopulated after form is reinitialised
+            ...(this.props.errors && { initialErrors: this.props.errors }),
           }}
         >
           {this.props.children}
