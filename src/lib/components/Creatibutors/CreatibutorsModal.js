@@ -546,6 +546,7 @@ export class CreatibutorsModal extends Component {
                         {...(this.isCreator() && { clearable: true })}
                         required={!this.isCreator()}
                         optimized
+                        scrolling
                       />
                     </div>
                   )}
