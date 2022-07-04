@@ -50,7 +50,7 @@ export class RDMDepositDraftsService extends DepositDraftsService {
   }
 
   _draftAlreadyCreated(record) {
-    return record.id ? true : false;
+    return !!record.id;
   }
 
   /**
