@@ -65,6 +65,7 @@ export class DatesField extends Component {
               />
               <Form.Field>
                 <Button
+                  aria-label={i18next.t("Remove field")}
                   className="close-btn"
                   icon
                   onClick={() => arrayHelpers.remove(indexPath)}
