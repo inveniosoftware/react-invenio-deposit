@@ -1,5 +1,10 @@
 # Changes
 
+Version 0.19.14 (released 2022-07-05)
+
+* utils: exports function humanReadableBytes to be used outside react-invenio-deposit.
+* creatibutors: fixed dropdown off-screen rendering
+
 Version 0.19.13 (released 2022-07-01)
 
 * fix community header margins on mobile view
