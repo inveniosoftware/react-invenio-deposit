@@ -44,6 +44,7 @@ export class AdditionalDescriptionsField extends Component {
                   <Grid.Column mobile={16} tablet={6} computer={4}>
                     <Form.Field>
                       <Button
+                        aria-label={i18next.t("Remove field")}
                         className="close-btn"
                         floated="right"
                         icon

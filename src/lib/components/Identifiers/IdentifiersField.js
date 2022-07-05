@@ -63,6 +63,7 @@ export class IdentifiersField extends Component {
                 )}
                 <Form.Field>
                   <Button
+                    aria-label={i18next.t("Remove field")}
                     className="close-btn"
                     icon="close"
                     onClick={() => arrayHelpers.remove(indexPath)}
