@@ -214,9 +214,24 @@ class DisconnectedFormFeedback extends Component {
           return ["pids." + key, value];
         })
       : [["pids", pids]];
+
+    // eslint-disable-next-line camelcase
+    const custom_fields = errors.custom_fields || {};
+    // eslint-disable-next-line camelcase
+    const step0_custom_fields = Object.entries(custom_fields).map(
+      ([key, value]) => {
+        // eslint-disable-next-line camelcase
+        return ['custom_fields.' + key, value];
+      }
+    );
+
+    // eslint-disable-next-line camelcase
     const step0 = Object.fromEntries(
-      // eslint-disable-next-line camelcase
-      step0_metadata.concat(step0_files).concat(step0_access).concat(step0_pids)
+      step0_metadata
+        .concat(step0_files)
+        .concat(step0_access)
+        .concat(step0_pids)
+        .concat(step0_custom_fields)
     );
 
     // Step 1 - Transform each error value into array of error messages
