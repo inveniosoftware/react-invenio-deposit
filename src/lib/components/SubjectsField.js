@@ -6,21 +6,21 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { FieldLabel, GroupField, RemoteSelectField } from 'react-invenio-forms';
-import { Form } from 'semantic-ui-react';
-import { Field, getIn } from 'formik';
-import { i18next } from '@translations/i18next';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { FieldLabel, GroupField, RemoteSelectField } from "react-invenio-forms";
+import { Form } from "semantic-ui-react";
+import { Field, getIn } from "formik";
+import { i18next } from "@translations/i18next";
 
 export class SubjectsField extends Component {
   state = {
-    limitTo: 'all',
+    limitTo: "all",
   };
 
   serializeSubjects = (subjects) =>
     subjects.map((subject) => {
-      const scheme = subject.scheme ? `(${subject.scheme}) ` : '';
+      const scheme = subject.scheme ? `(${subject.scheme}) ` : "";
       return {
         text: scheme + subject.subject,
         value: subject.subject,
@@ -31,8 +31,9 @@ export class SubjectsField extends Component {
     });
 
   prepareSuggest = (searchQuery) => {
-    const limitTo = this.state.limitTo;
-    const prefix = limitTo === 'all' ? '' : `${limitTo}:`;
+    const { limitTo } = this.state;
+
+    const prefix = limitTo === "all" ? "" : `${limitTo}:`;
     return `${prefix}${searchQuery}`;
   };
 
@@ -54,10 +55,10 @@ export class SubjectsField extends Component {
           <GroupField>
             <Form.Field
               width={8}
-              style={{ marginBottom: 'auto', marginTop: 'auto' }}
+              style={{ marginBottom: "auto", marginTop: "auto" }}
               className="p-0"
             >
-              {i18next.t('Suggest from')}
+              {i18next.t("Suggest from")}
             </Form.Field>
             <Form.Dropdown
               className="p-0"
@@ -70,7 +71,7 @@ export class SubjectsField extends Component {
             />
           </GroupField>
         </Form.Field>
-        <Field name={this.props.fieldPath}>
+        <Field name={fieldPath}>
           {({ form: { values } }) => {
             return (
               <RemoteSelectField
@@ -78,7 +79,7 @@ export class SubjectsField extends Component {
                 fieldPath={fieldPath}
                 initialSuggestions={getIn(values, fieldPath, [])}
                 multiple={multiple}
-                noQueryMessage={i18next.t('Search or create subjects...')}
+                noQueryMessage={i18next.t("Search or create subjects...")}
                 placeholder={placeholder}
                 preSearchChange={this.prepareSuggest}
                 required={required}
@@ -114,6 +115,7 @@ export class SubjectsField extends Component {
 }
 
 SubjectsField.propTypes = {
+  limitToOptions: PropTypes.array.isRequired,
   fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string,
   labelIcon: PropTypes.string,
@@ -121,20 +123,15 @@ SubjectsField.propTypes = {
   multiple: PropTypes.bool,
   clearable: PropTypes.bool,
   placeholder: PropTypes.string,
-  initialOptions: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.string,
-      value: PropTypes.string,
-      text: PropTypes.string,
-    })
-  ),
 };
 
 SubjectsField.defaultProps = {
-  fieldPath: 'metadata.subjects',
-  label: i18next.t('Subjects'),
-  labelIcon: 'tag',
+  // eslint-disable-next-line react/default-props-match-prop-types
+  fieldPath: "metadata.subjects",
+  required: false,
+  label: i18next.t("Subjects"),
+  labelIcon: "tag",
   multiple: true,
   clearable: true,
-  placeholder: i18next.t('Search for a subject by name'),
+  placeholder: i18next.t("Search for a subject by name"),
 };

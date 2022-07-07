@@ -5,12 +5,12 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { computeDepositState, DepositStatus } from './deposit';
+import { computeDepositState, DepositStatus } from "./deposit";
 
 const initialRecord = {
   metadata: {
-    publication_date: '2022-04-01',
-    title: '',
+    publication_date: "2022-04-01",
+    title: "",
     creators: [],
   },
   files: {
@@ -18,62 +18,62 @@ const initialRecord = {
   },
   status: DepositStatus.DRAFT,
   access: {
-    record: 'public',
-    status: 'metadata-only',
+    record: "public",
+    status: "metadata-only",
     embargo: {
       active: false,
     },
-    files: 'public',
+    files: "public",
   },
   is_published: false,
 };
 
 const fakeSelectedCommunities = [
   {
-    id: 'comid',
-    slug: 'comid',
+    id: "comid",
+    slug: "comid",
     metadata: {
-      title: 'My first community',
-      description: 'My first community',
-      type: 'Type',
+      title: "My first community",
+      description: "My first community",
+      type: "Type",
     },
     links: {
-      self_html: '/',
+      self_html: "/",
     },
   },
   {
-    id: 'comid2',
-    slug: 'comid2',
+    id: "comid2",
+    slug: "comid2",
     metadata: {
-      title: 'My second community',
-      description: 'My second community',
-      type: 'Type',
+      title: "My second community",
+      description: "My second community",
+      type: "Type",
     },
     links: {
-      self_html: '/',
+      self_html: "/",
     },
   },
 ];
 
 const savedDraftRecordNoCommunity = {
   ...initialRecord,
-  id: 'w7s4s-nyj77',
+  id: "w7s4s-nyj77",
   parent: {
-    id: '2bh62-33343',
+    id: "2bh62-33343",
   },
 };
 
 const savedDraftRecordWithCommunity = {
   ...initialRecord,
-  id: 'w7s4s-nyj77',
+  id: "w7s4s-nyj77",
   status: DepositStatus.DRAFT_WITH_REVIEW,
   parent: {
-    id: '2bh62-33343',
+    id: "2bh62-33343",
     review: {
-      id: '1234',
+      id: "1234",
       receiver: {
         community: fakeSelectedCommunities[0].id,
-        type: 'community-submission',
+        type: "community-submission",
       },
     },
   },
@@ -81,19 +81,19 @@ const savedDraftRecordWithCommunity = {
 
 const submittedForReviewDraft = {
   ...savedDraftRecordWithCommunity,
-  id: 'w7s4s-nyj77',
+  id: "w7s4s-nyj77",
   status: DepositStatus.IN_REVIEW,
 };
 
 const declinedReviewDraft = {
   ...savedDraftRecordWithCommunity,
-  id: 'w7s4s-nyj77',
+  id: "w7s4s-nyj77",
   status: DepositStatus.DECLINED,
 };
 
 const expiredReviewDraft = {
   ...savedDraftRecordWithCommunity,
-  id: 'w7s4s-nyj77',
+  id: "w7s4s-nyj77",
   status: DepositStatus.EXPIRED,
 };
 
@@ -101,7 +101,7 @@ const publishedRecordInCommunity = {
   ...savedDraftRecordNoCommunity,
   status: DepositStatus.PUBLISHED,
   parent: {
-    id: '2bh62-33343',
+    id: "2bh62-33343",
     communities: {
       default: fakeSelectedCommunities[0].id,
     },
@@ -112,13 +112,13 @@ const publishedRecordWithoutCommunity = {
   ...savedDraftRecordNoCommunity,
   status: DepositStatus.PUBLISHED,
   parent: {
-    id: '2bh62-33343',
+    id: "2bh62-33343",
   },
 };
 
-describe('Test deposit reducer', () => {
-  describe('Test deposit state when no draft has been created.', () => {
-    it('user selects a community', async () => {
+describe("Test deposit reducer", () => {
+  describe("Test deposit state when no draft has been created.", () => {
+    it("user selects a community", async () => {
       const expectedDepositState = {
         selectedCommunity: fakeSelectedCommunities[0],
         ui: {
@@ -136,11 +136,11 @@ describe('Test deposit reducer', () => {
         },
       };
 
-      expect(
-        computeDepositState(initialRecord, fakeSelectedCommunities[0])
-      ).toEqual(expectedDepositState);
+      expect(computeDepositState(initialRecord, fakeSelectedCommunities[0])).toEqual(
+        expectedDepositState
+      );
     });
-    it('user deselects a community', async () => {
+    it("user deselects a community", async () => {
       const expectedDepositState = {
         selectedCommunity: null,
         ui: {
@@ -158,13 +158,11 @@ describe('Test deposit reducer', () => {
         },
       };
 
-      expect(computeDepositState(initialRecord, null)).toEqual(
-        expectedDepositState
-      );
+      expect(computeDepositState(initialRecord, null)).toEqual(expectedDepositState);
     });
   });
-  describe('Test deposit state when already a draft has been created.', () => {
-    it('user selects a community and saves draft', async () => {
+  describe("Test deposit state when already a draft has been created.", () => {
+    it("user selects a community and saves draft", async () => {
       const expectedDepositState = {
         selectedCommunity: fakeSelectedCommunities[0],
         ui: {
@@ -183,13 +181,10 @@ describe('Test deposit reducer', () => {
       };
 
       expect(
-        computeDepositState(
-          savedDraftRecordNoCommunity,
-          fakeSelectedCommunities[0]
-        )
+        computeDepositState(savedDraftRecordNoCommunity, fakeSelectedCommunities[0])
       ).toEqual(expectedDepositState);
     });
-    it('user deselects a community and saves draft', async () => {
+    it("user deselects a community and saves draft", async () => {
       const expectedDepositState = {
         selectedCommunity: null,
         ui: {
@@ -211,7 +206,7 @@ describe('Test deposit reducer', () => {
         expectedDepositState
       );
     });
-    it('user changes the selected community and saves draft', async () => {
+    it("user changes the selected community and saves draft", async () => {
       const expectedDepositState = {
         selectedCommunity: fakeSelectedCommunities[1],
         ui: {
@@ -230,13 +225,10 @@ describe('Test deposit reducer', () => {
       };
 
       expect(
-        computeDepositState(
-          savedDraftRecordWithCommunity,
-          fakeSelectedCommunities[1]
-        )
+        computeDepositState(savedDraftRecordWithCommunity, fakeSelectedCommunities[1])
       ).toEqual(expectedDepositState);
     });
-    it('user access a submitted for review draft', async () => {
+    it("user access a submitted for review draft", async () => {
       const expectedDepositState = {
         selectedCommunity: fakeSelectedCommunities[0],
         ui: {
@@ -258,7 +250,7 @@ describe('Test deposit reducer', () => {
         computeDepositState(submittedForReviewDraft, fakeSelectedCommunities[0])
       ).toEqual(expectedDepositState);
     });
-    it('user access a declined draft. Same situation will occur if user selects again the community which request was declined', async () => {
+    it("user access a declined draft. Same situation will occur if user selects again the community which request was declined", async () => {
       const expectedDepositState = {
         selectedCommunity: fakeSelectedCommunities[0],
         ui: {
@@ -281,7 +273,7 @@ describe('Test deposit reducer', () => {
       ).toEqual(expectedDepositState);
     });
 
-    it('user access an expired draft. Same situation will occur if user selects again the community which request expired', async () => {
+    it("user access an expired draft. Same situation will occur if user selects again the community which request expired", async () => {
       const expectedDepositState = {
         selectedCommunity: fakeSelectedCommunities[0],
         ui: {
@@ -304,7 +296,7 @@ describe('Test deposit reducer', () => {
       ).toEqual(expectedDepositState);
     });
 
-    it('user changes community for a declined draft and resubmits', async () => {
+    it("user changes community for a declined draft and resubmits", async () => {
       const expectedDepositState = {
         selectedCommunity: fakeSelectedCommunities[1],
         ui: {
@@ -327,7 +319,7 @@ describe('Test deposit reducer', () => {
       ).toEqual(expectedDepositState);
     });
 
-    it('user changes community for an expired draft and resubmits', async () => {
+    it("user changes community for an expired draft and resubmits", async () => {
       const expectedDepositState = {
         selectedCommunity: fakeSelectedCommunities[1],
         ui: {
@@ -351,7 +343,7 @@ describe('Test deposit reducer', () => {
     });
   });
 
-  it('user publishes without community for a declined draft', async () => {
+  it("user publishes without community for a declined draft", async () => {
     const expectedDepositState = {
       selectedCommunity: null,
       ui: {
@@ -374,7 +366,7 @@ describe('Test deposit reducer', () => {
     );
   });
 
-  it('user accesses a published draft without community', async () => {
+  it("user accesses a published draft without community", async () => {
     const expectedDepositState = {
       selectedCommunity: null,
       ui: {
@@ -397,7 +389,7 @@ describe('Test deposit reducer', () => {
     );
   });
 
-  it('user accesses a published draft accepted in a community', async () => {
+  it("user accesses a published draft accepted in a community", async () => {
     const expectedDepositState = {
       selectedCommunity: null,
       ui: {

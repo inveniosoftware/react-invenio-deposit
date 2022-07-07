@@ -6,12 +6,12 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import { FieldLabel, TextField } from 'react-invenio-forms';
-import { AdditionalTitlesField } from './AdditionalTitlesField';
-import { i18next } from '@translations/i18next';
+import { FieldLabel, TextField } from "react-invenio-forms";
+import { AdditionalTitlesField } from "./AdditionalTitlesField";
+import { i18next } from "@translations/i18next";
 
 export class TitlesField extends Component {
   render() {
@@ -21,7 +21,7 @@ export class TitlesField extends Component {
       <>
         <TextField
           fieldPath={fieldPath}
-          label={<FieldLabel htmlFor={fieldPath} icon={'book'} label={label} />}
+          label={<FieldLabel htmlFor={fieldPath} icon="book" label={label} />}
           required={required}
           className="title-field"
         />
@@ -54,6 +54,9 @@ TitlesField.propTypes = {
 };
 
 TitlesField.defaultProps = {
-  fieldPath: 'metadata.title',
-  label: i18next.t('Title'),
+  // eslint-disable-next-line react/default-props-match-prop-types
+  fieldPath: "metadata.title",
+  label: i18next.t("Title"),
+  required: false,
+  recordUI: undefined,
 };

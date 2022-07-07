@@ -5,9 +5,9 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { combineReducers } from 'redux';
-import depositReducer from './deposit';
-import fileReducer from './files';
+import { combineReducers } from "redux";
+import depositReducer from "./deposit";
+import fileReducer from "./files";
 
 export default combineReducers({
   deposit: depositReducer,

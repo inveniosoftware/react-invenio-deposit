@@ -5,21 +5,21 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import axios from 'axios';
+import axios from "axios";
 
 const CancelToken = axios.CancelToken;
 const BASE_HEADERS = {
-  json: { 'Content-Type': 'application/json' },
-  'vnd+json': {
-    'Content-Type': 'application/json',
-    Accept: 'application/vnd.inveniordm.v1+json',
+  "json": { "Content-Type": "application/json" },
+  "vnd+json": {
+    "Content-Type": "application/json",
+    "Accept": "application/vnd.inveniordm.v1+json",
   },
-  'octet-stream': { 'Content-Type': 'application/octet-stream' },
+  "octet-stream": { "Content-Type": "application/octet-stream" },
 };
 const apiConfig = {
   withCredentials: true,
-  xsrfCookieName: 'csrftoken',
-  xsrfHeaderName: 'X-CSRFToken',
+  xsrfCookieName: "csrftoken",
+  xsrfHeaderName: "X-CSRFToken",
   headers: BASE_HEADERS.json,
 };
 const axiosWithConfig = axios.create(apiConfig);
@@ -35,46 +35,47 @@ export class DepositApiClientResponse {
 }
 
 export class DepositApiClient {
+  /* eslint-disable no-unused-vars */
   constructor(createDraftURL, recordSerializer) {
     if (this.constructor === DepositApiClient) {
-      throw new Error('Abstract');
+      throw new Error("Abstract");
     }
   }
 
   async createDraft(draft) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 
   async saveDraft(draft, draftLinks) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 
   async publishDraft(draftLinks) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 
   async deleteDraft(draftLinks) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 
   async reservePID(draftLinks, pidType) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 
   async discardPID(draftLinks, pidType) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 
   async createOrUpdateReview(draftLinks, communityId) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 
   async deleteReview(draftLinks) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 
   async submitReview(draftLinks) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 }
 
@@ -111,7 +112,7 @@ export class RDMDepositApiClient extends DepositApiClient {
     const payload = this.recordSerializer.serialize(draft);
     return this._createResponse(() =>
       axiosWithConfig.post(this.createDraftURL, payload, {
-        headers: BASE_HEADERS['vnd+json'],
+        headers: BASE_HEADERS["vnd+json"],
         params: { expand: 1 },
       })
     );
@@ -125,7 +126,7 @@ export class RDMDepositApiClient extends DepositApiClient {
   async readDraft(draftLinks) {
     return this._createResponse(() =>
       axiosWithConfig.get(draftLinks.self, {
-        headers: BASE_HEADERS['vnd+json'],
+        headers: BASE_HEADERS["vnd+json"],
         params: { expand: 1 },
       })
     );
@@ -140,7 +141,7 @@ export class RDMDepositApiClient extends DepositApiClient {
     const payload = this.recordSerializer.serialize(draft);
     return this._createResponse(() =>
       axiosWithConfig.put(draftLinks.self, payload, {
-        headers: BASE_HEADERS['vnd+json'],
+        headers: BASE_HEADERS["vnd+json"],
         params: { expand: 1 },
       })
     );
@@ -163,9 +164,7 @@ export class RDMDepositApiClient extends DepositApiClient {
    * @param {string} draftLinks - the URL to delete the draft
    */
   async deleteDraft(draftLinks) {
-    return this._createResponse(() =>
-      axiosWithConfig.delete(draftLinks.self, {})
-    );
+    return this._createResponse(() => axiosWithConfig.delete(draftLinks.self, {}));
   }
 
   /**
@@ -212,7 +211,7 @@ export class RDMDepositApiClient extends DepositApiClient {
         receiver: {
           community: communityId,
         },
-        type: 'community-submission',
+        type: "community-submission",
       })
     );
   }
@@ -223,9 +222,7 @@ export class RDMDepositApiClient extends DepositApiClient {
    * @param {object} draftLinks - the draft links object
    */
   async deleteReview(draftLinks) {
-    return this._createResponse(() =>
-      axiosWithConfig.delete(draftLinks.review, {})
-    );
+    return this._createResponse(() => axiosWithConfig.delete(draftLinks.review, {}));
   }
 
   /**
@@ -236,12 +233,12 @@ export class RDMDepositApiClient extends DepositApiClient {
   async submitReview(draftLinks, reviewComment) {
     return this._createResponse(() => {
       return axiosWithConfig.post(
-        draftLinks['submit-review'],
+        draftLinks["submit-review"],
         reviewComment
           ? {
               payload: {
                 content: reviewComment,
-                format: 'html',
+                format: "html",
               },
             }
           : {}
@@ -252,7 +249,8 @@ export class RDMDepositApiClient extends DepositApiClient {
   /**
    * Cancels the review for the draft by calling its cancel link.
    *
-   * @param {object} draftLinks - the draft links object
+   * @param reviewLinks
+   * @param reviewComment
    */
   async cancelReview(reviewLinks, reviewComment) {
     return axiosWithConfig.post(
@@ -261,7 +259,7 @@ export class RDMDepositApiClient extends DepositApiClient {
         ? {
             payload: {
               content: reviewComment,
-              format: 'html',
+              format: "html",
             },
           }
         : {}
@@ -277,7 +275,7 @@ export class RDMDepositApiClient extends DepositApiClient {
 export class DepositFileApiClient {
   constructor() {
     if (this.constructor === DepositFileApiClient) {
-      throw new Error('Abstract');
+      throw new Error("Abstract");
     }
   }
 
@@ -286,19 +284,19 @@ export class DepositFileApiClient {
   }
 
   initializeFileUpload(initializeUploadUrl, filename) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 
   uploadFile(uploadUrl, file, onUploadProgress, cancel) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 
   finalizeFileUpload(finalizeUploadUrl) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 
   deleteFile(fileLinks) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 }
 
@@ -317,7 +315,7 @@ export class RDMDepositFileApiClient extends DepositFileApiClient {
 
   uploadFile(uploadUrl, file, onUploadProgressFn, cancelFn) {
     return axiosWithConfig.put(uploadUrl, file, {
-      headers: BASE_HEADERS['octet-stream'],
+      headers: BASE_HEADERS["octet-stream"],
       onUploadProgress: (event) => {
         const percent = Math.floor((event.loaded / event.total) * 100);
         onUploadProgressFn && onUploadProgressFn(percent);

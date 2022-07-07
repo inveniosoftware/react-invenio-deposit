@@ -13,8 +13,8 @@ import {
   FILE_IMPORT_STARTED,
   FILE_IMPORT_SUCCESS,
   FILE_UPLOAD_SAVE_DRAFT_FAILED,
-} from '../types';
-import { saveDraftWithUrlUpdate } from './deposit';
+} from "../types";
+import { saveDraftWithUrlUpdate } from "./deposit";
 
 export const uploadFiles = (draft, files) => {
   return async (dispatch, _, config) => {
@@ -70,9 +70,7 @@ export const importParentFiles = () => {
 
     try {
       const draftLinks = draft.links;
-      const files = await config.service.files.importParentRecordFiles(
-        draftLinks
-      );
+      const files = await config.service.files.importParentRecordFiles(draftLinks);
       dispatch({
         type: FILE_IMPORT_SUCCESS,
         payload: { files: files },

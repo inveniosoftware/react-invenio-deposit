@@ -5,10 +5,10 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { i18next } from '@translations/i18next';
-import { Formik } from 'formik';
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import { i18next } from "@translations/i18next";
+import { Formik } from "formik";
+import PropTypes from "prop-types";
+import React, { useState } from "react";
 import {
   EmptyResults,
   Error,
@@ -17,22 +17,22 @@ import {
   ReactSearchKit,
   ResultsLoader,
   SearchBar,
-} from 'react-searchkit';
-import {Grid, Modal, Container, Button} from 'semantic-ui-react';
-import * as Yup from 'yup';
-import { AwardResults } from './AwardResults';
-import CustomAwardForm from './CustomAwardForm';
-import { FunderDropdown } from './FunderDropdown';
-import { NoAwardResults } from './NoAwardResults';
+} from "react-searchkit";
+import { Grid, Modal, Container, Button } from "semantic-ui-react";
+import * as Yup from "yup";
+import { AwardResults } from "./AwardResults";
+import CustomAwardForm from "./CustomAwardForm";
+import { FunderDropdown } from "./FunderDropdown";
+import { NoAwardResults } from "./NoAwardResults";
 
 const ModalTypes = {
-  STANDARD: 'standard',
-  CUSTOM: 'custom',
+  STANDARD: "standard",
+  CUSTOM: "custom",
 };
 
 const ModalActions = {
-  ADD: 'add',
-  EDIT: 'edit',
+  ADD: "add",
+  EDIT: "edit",
 };
 
 const StandardSchema = Yup.object().shape({
@@ -49,12 +49,12 @@ const StandardSchema = Yup.object().shape({
 const CustomFundingSchema = Yup.object().shape({
   selectedFunding: Yup.object().shape({
     funder: Yup.object().shape({
-      id: Yup.string().required(i18next.t('Funder is required.')),
+      id: Yup.string().required(i18next.t("Funder is required.")),
     }),
     award: Yup.object().shape({
       title: Yup.string().test({
-        name: 'testTitle',
-        message: i18next.t('Title must be set alongside number.'),
+        name: "testTitle",
+        message: i18next.t("Title must be set alongside number."),
         test: function testTitle(value) {
           const { number } = this.parent;
 
@@ -66,8 +66,8 @@ const CustomFundingSchema = Yup.object().shape({
         },
       }),
       number: Yup.string().test({
-        name: 'testNumber',
-        message: i18next.t('Number must be set alongside title.'),
+        name: "testNumber",
+        message: i18next.t("Number must be set alongside title."),
         test: function testNumber(value) {
           const { title } = this.parent;
 
@@ -79,14 +79,14 @@ const CustomFundingSchema = Yup.object().shape({
         },
       }),
       url: Yup.string()
-        .url(i18next.t('Url must be a valid url.'))
+        .url(i18next.t("Url must be a valid url."))
         .test({
-          name: 'validateUrlDependencies',
-          message: i18next.t('Url must be set alongside title and number.'),
+          name: "validateUrlDependencies",
+          message: i18next.t("Url must be set alongside title and number."),
           test: function testUrl(value) {
             const { title, number } = this.parent;
 
-            if (value && value !== '' && !title && !number) {
+            if (value && value !== "" && !title && !number) {
               return false;
             }
 
@@ -139,7 +139,7 @@ function FundingModal({
       validationSchema={FundingSchema}
       validateOnChange={false}
       validateOnBlur={false}
-      enableReinitialize={true}
+      enableReinitialize
     >
       {({ values, resetForm, handleSubmit }) => (
         <Modal
@@ -148,17 +148,17 @@ function FundingModal({
           onOpen={openModal}
           open={open}
           trigger={React.cloneElement(trigger, {
-            'aria-expanded': open,
-            'aria-haspopup': 'dialog',
+            "aria-expanded": open,
+            "aria-haspopup": "dialog",
           })}
           onClose={closeModal}
           closeIcon
           closeOnDimmerClick={false}
         >
           <Modal.Header as="h2" className="pt-10 pb-10">
-            {mode === 'standard'
-              ? i18next.t('Add standard award')
-              : i18next.t('Add custom award')}
+            {mode === "standard"
+              ? i18next.t("Add standard award")
+              : i18next.t("Add custom award")}
           </Modal.Header>
           <Modal.Content>
             {mode === ModalTypes.STANDARD && (
@@ -170,18 +170,14 @@ function FundingModal({
               >
                 <Grid className="m-0">
                   <Grid.Row>
-                    <Grid.Column
-                      width={11}
-                      floated="left"
-                      verticalAlign="middle"
-                    >
+                    <Grid.Column width={11} floated="left" verticalAlign="middle">
                       <SearchBar
-                        placeholder={i18next.t('Search for awards')}
+                        placeholder={i18next.t("Search for awards")}
                         autofocus
                         actionProps={{
-                          icon: 'search',
+                          icon: "search",
                           content: null,
-                          className: 'search',
+                          className: "search",
                         }}
                       />
                     </Grid.Column>
@@ -205,11 +201,7 @@ function FundingModal({
                     </Container>
                   </Grid.Column>
 
-                  <Grid.Column
-                    width={16}
-                    textAlign="center"
-                    className="pt-0 pb-0"
-                  >
+                  <Grid.Column width={16} textAlign="center" className="pt-0 pb-0">
                     <NoAwardResults
                       switchToCustom={() => {
                         resetForm();
@@ -234,7 +226,7 @@ function FundingModal({
                 closeModal();
               }}
               icon="remove"
-              content={i18next.t('Cancel')}
+              content={i18next.t("Cancel")}
               floated="left"
             />
             <Button
@@ -243,8 +235,8 @@ function FundingModal({
               icon="checkmark"
               content={
                 action === ModalActions.ADD
-                  ? i18next.t('Add award')
-                  : i18next.t('Change award')
+                  ? i18next.t("Add award")
+                  : i18next.t("Change award")
               }
             />
           </Modal.Actions>
@@ -255,8 +247,8 @@ function FundingModal({
 }
 
 FundingModal.propTypes = {
-  mode: PropTypes.oneOf(['standard', 'custom']).isRequired,
-  action: PropTypes.oneOf(['add', 'edit']).isRequired,
+  mode: PropTypes.oneOf(["standard", "custom"]).isRequired,
+  action: PropTypes.oneOf(["add", "edit"]).isRequired,
   trigger: PropTypes.object.isRequired,
   onAwardChange: PropTypes.func.isRequired,
   searchConfig: PropTypes.shape({
@@ -271,6 +263,10 @@ FundingModal.propTypes = {
   deserializeFunder: PropTypes.func.isRequired,
   computeFundingContents: PropTypes.func.isRequired,
   initialFunding: PropTypes.object,
+};
+
+FundingModal.defaultProps = {
+  initialFunding: undefined,
 };
 
 export default FundingModal;

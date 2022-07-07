@@ -9,46 +9,46 @@
 //       values to generate the empty values. Then delete this file.
 
 export const emptyIdentifier = {
-  scheme: '',
-  identifier: '',
+  scheme: "",
+  identifier: "",
 };
 
 export const emptyAffiliation = {
-  name: '',
+  name: "",
   identifiers: [emptyIdentifier],
 };
 
 export const emptyAdditionalTitle = {
-  lang: '',
-  title: '',
-  type: 'alternative-title',
+  lang: "",
+  title: "",
+  type: "alternative-title",
 };
 
 export const emptyAdditionalDescription = {
-  lang: '',
-  description: '',
-  type: '',
+  lang: "",
+  description: "",
+  type: "",
 };
 
 export const emptyRelatedWork = {
-  scheme: '',
-  identifier: '',
-  resource_type: '',
-  relation_type: '',
+  scheme: "",
+  identifier: "",
+  resource_type: "",
+  relation_type: "",
 };
 
 export const emptyDate = {
-  date: '',
-  description: '',
-  type: '',
+  date: "",
+  description: "",
+  type: "",
 };
 
 export const emptyFunding = {
   funder: {
-    name: '',
+    name: "",
   },
   award: {
-    title: '',
-    number: '',
+    title: "",
+    number: "",
   },
 };

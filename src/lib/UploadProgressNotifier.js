@@ -5,7 +5,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { UploadProgressNotifier } from './DepositFilesService';
+import { UploadProgressNotifier } from "./DepositFilesService";
 import {
   FILE_UPLOAD_ADDED,
   FILE_UPLOAD_CANCELLED,
@@ -13,7 +13,7 @@ import {
   FILE_UPLOAD_FINISHED,
   FILE_UPLOAD_IN_PROGRESS,
   FILE_UPLOAD_SET_CANCEL_FUNCTION,
-} from './state/types';
+} from "./state/types";
 
 export class RDMUploadProgressNotifier extends UploadProgressNotifier {
   onUploadAdded(filename) {

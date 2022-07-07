@@ -6,11 +6,11 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { FieldLabel, RemoteSelectField } from 'react-invenio-forms';
-import { Field, getIn } from 'formik';
-import { i18next } from '@translations/i18next';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { FieldLabel, RemoteSelectField } from "react-invenio-forms";
+import { Field, getIn } from "formik";
+import { i18next } from "@translations/i18next";
 
 /**Affiliation input component */
 export class AffiliationsField extends Component {
@@ -28,14 +28,14 @@ export class AffiliationsField extends Component {
   render() {
     const { fieldPath, selectRef } = this.props;
     return (
-      <Field name={this.props.fieldPath}>
+      <Field name={fieldPath}>
         {({ form: { values } }) => {
           return (
             <RemoteSelectField
               fieldPath={fieldPath}
               suggestionAPIUrl="/api/affiliations"
               suggestionAPIHeaders={{
-                Accept: 'application/json',
+                Accept: "application/json",
               }}
               initialSuggestions={getIn(values, fieldPath, [])}
               serializeSuggestions={this.serializeAffiliations}
@@ -43,10 +43,10 @@ export class AffiliationsField extends Component {
               label={
                 <FieldLabel
                   htmlFor={`${fieldPath}.name`}
-                  label={i18next.t('Affiliations')}
+                  label={i18next.t("Affiliations")}
                 />
               }
-              noQueryMessage={i18next.t('Search for affiliations..')}
+              noQueryMessage={i18next.t("Search for affiliations..")}
               allowAdditions
               clearable
               multiple
@@ -71,4 +71,8 @@ export class AffiliationsField extends Component {
 AffiliationsField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   selectRef: PropTypes.object,
+};
+
+AffiliationsField.defaultProps = {
+  selectRef: undefined,
 };

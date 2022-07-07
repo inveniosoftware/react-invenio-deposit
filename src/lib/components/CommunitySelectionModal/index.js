@@ -1,1 +1,1 @@
-export { CommunitySelectionModal } from './CommunitySelectionModal';
+export { CommunitySelectionModal } from "./CommunitySelectionModal";

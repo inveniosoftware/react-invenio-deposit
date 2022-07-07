@@ -5,34 +5,34 @@
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
-import React, { Component } from 'react';
-import { Button } from 'semantic-ui-react';
-import { Field } from 'formik';
-import { i18next } from '@translations/i18next';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { Button } from "semantic-ui-react";
+import { Field } from "formik";
+import { i18next } from "@translations/i18next";
+import PropTypes from "prop-types";
 
 class ProtectionButtonsComponent extends Component {
-  handlePublicButtonClick = (event, elemProps) => {
+  handlePublicButtonClick = () => {
     const { formik, fieldPath } = this.props;
-    formik.form.setFieldValue(fieldPath, 'public');
+    formik.form.setFieldValue(fieldPath, "public");
     // NOTE: We reset values, so if embargo filled and click Public,
     //       user needs to fill embargo again. Otherwise, lots of
     //       bookkeeping.
-    formik.form.setFieldValue('access.embargo', {
+    formik.form.setFieldValue("access.embargo", {
       active: false,
     });
   };
 
-  handleRestrictionButtonClick = (event, elemProps) => {
+  handleRestrictionButtonClick = () => {
     const { formik, fieldPath } = this.props;
-    formik.form.setFieldValue(fieldPath, 'restricted');
+    formik.form.setFieldValue(fieldPath, "restricted");
   };
 
   render() {
     const { active, disabled } = this.props;
 
-    const publicColor = active ? 'positive' : '';
-    const restrictedColor = !active ? 'negative' : '';
+    const publicColor = active ? "positive" : "";
+    const restrictedColor = !active ? "negative" : "";
 
     return (
       <Button.Group widths="2">
@@ -43,7 +43,7 @@ class ProtectionButtonsComponent extends Component {
           onClick={this.handlePublicButtonClick}
           active={active}
         >
-          {i18next.t('Public')}
+          {i18next.t("Public")}
         </Button>
         <Button
           className={restrictedColor}
@@ -51,7 +51,7 @@ class ProtectionButtonsComponent extends Component {
           active={!active}
           onClick={this.handleRestrictionButtonClick}
         >
-          {i18next.t('Restricted')}
+          {i18next.t("Restricted")}
         </Button>
       </Button.Group>
     );
@@ -84,3 +84,7 @@ export class ProtectionButtons extends Component {
     );
   }
 }
+
+ProtectionButtons.propTypes = {
+  fieldPath: PropTypes.string.isRequired,
+};

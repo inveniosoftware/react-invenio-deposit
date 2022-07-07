@@ -4,9 +4,9 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-const { readFileSync, writeFileSync } = require('fs');
-const { gettextToI18next } = require('i18next-conv');
-const { languages } = require('../../../../package').config;
+const { readFileSync, writeFileSync } = require("fs");
+const { gettextToI18next } = require("i18next-conv");
+const { languages } = require("../../../../package").config;
 
 // it accepts the same options as the cli.
 // https://github.com/i18next/i18next-gettext-converter#options
@@ -20,7 +20,7 @@ function save(target) {
   };
 }
 
-if ('lang' === process.argv[2]) {
+if ("lang" === process.argv[2]) {
   const lang = process.argv[3];
   gettextToI18next(
     lang,

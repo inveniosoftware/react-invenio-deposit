@@ -4,10 +4,10 @@
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
-import React, { Component } from 'react';
-import { Checkbox } from 'semantic-ui-react';
-import { FastField } from 'formik';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { Checkbox } from "semantic-ui-react";
+import { FastField } from "formik";
+import PropTypes from "prop-types";
 
 class EmbargoCheckboxComponent extends Component {
   render() {
@@ -18,12 +18,12 @@ class EmbargoCheckboxComponent extends Component {
         data-testid="embargo-checkbox-component"
         disabled={disabled}
         checked={checked}
-        onChange={(event, data) => {
+        onChange={() => {
           if (formik.field.value) {
             // NOTE: We reset values, so if embargo filled and user unchecks,
             //       user needs to fill embargo again. Otherwise, lots of
             //       bookkeeping.
-            formik.form.setFieldValue('access.embargo', {
+            formik.form.setFieldValue("access.embargo", {
               active: false,
             });
           } else {
@@ -68,3 +68,12 @@ export class EmbargoCheckboxField extends Component {
     );
   }
 }
+
+EmbargoCheckboxField.propTypes = {
+  disabled: PropTypes.bool,
+  fieldPath: PropTypes.string.isRequired,
+};
+
+EmbargoCheckboxField.defaultProps = {
+  disabled: false,
+};

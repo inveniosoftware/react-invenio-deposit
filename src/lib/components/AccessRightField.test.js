@@ -1,8 +1,8 @@
-import { Formik } from 'formik';
-import React from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
-import { act } from 'react-dom/test-utils';
-import { AccessRightFieldCmp } from './AccessRightField';
+import { Formik } from "formik";
+import React from "react";
+import { render, unmountComponentAtNode } from "react-dom";
+import { act } from "react-dom/test-utils";
+import { AccessRightFieldCmp } from "./AccessRightField";
 
 /* tests should verify those use cases:
    1) record public, community public, files enabled
@@ -52,7 +52,7 @@ let container;
 
 beforeEach(() => {
   // setup a DOM element as a render target
-  container = document.createElement('div');
+  container = document.createElement("div");
   document.body.appendChild(container);
 });
 
@@ -63,17 +63,17 @@ afterEach(() => {
   container = null;
 });
 
-it('Can render public access - record without files, public comm, not embargoed', () => {
+it("Can render public access - record without files, public comm, not embargoed", () => {
   const setFieldValueMock = jest.fn();
 
   const formikProps = {
-    fieldPath: 'access',
+    fieldPath: "access",
     formik: {
       field: {
         value: {
-          record: 'restricted',
-          files: 'restricted',
-          embargo: { until: '1900-12-01', reason: 'unknown', active: false },
+          record: "restricted",
+          files: "restricted",
+          embargo: { until: "1900-12-01", reason: "unknown", active: false },
         },
       },
       form: {
@@ -81,25 +81,22 @@ it('Can render public access - record without files, public comm, not embargoed'
         values: { files: { enabled: false } },
         initialValues: {
           access: {
-            embargo: { until: '1900-12-01', reason: 'unknown', active: false },
-            record: 'restricted',
-            files: 'restricted',
+            embargo: { until: "1900-12-01", reason: "unknown", active: false },
+            record: "restricted",
+            files: "restricted",
           },
         },
       },
     },
-    community: { access: { visibility: 'public' } },
+    community: { access: { visibility: "public" } },
     isMetadataOnly: true,
-    label: 'Access',
-    labelIcon: 'shield',
+    label: "Access",
+    labelIcon: "shield",
   };
 
   act(() => {
     render(
-      <Formik
-        initialValues={formikProps.formik.form.initialValues}
-        onSubmit={() => {}}
-      >
+      <Formik initialValues={formikProps.formik.form.initialValues} onSubmit={() => {}}>
         <AccessRightFieldCmp {...formikProps} />
       </Formik>,
       container
@@ -108,49 +105,45 @@ it('Can render public access - record without files, public comm, not embargoed'
 
   // check restricted button active
   expect(
-    container.querySelector(
-      '[data-testid="protection-buttons-component-restricted"]'
-    )
-  ).toHaveClass('active');
+    container.querySelector('[data-testid="protection-buttons-component-restricted"]')
+  ).toHaveClass("active");
 
   // check public button not active
   expect(
-    container.querySelector(
-      '[data-testid="protection-buttons-component-public"]'
-    )
-  ).not.toHaveClass('active');
+    container.querySelector('[data-testid="protection-buttons-component-public"]')
+  ).not.toHaveClass("active");
 
   // check embargo checkbox disabled
   expect(
     container.querySelector('[data-testid="embargo-checkbox-component"]')
-  ).not.toHaveClass('disabled');
+  ).not.toHaveClass("disabled");
 
   // check embargo option disabled
   expect(
     container.querySelector('[data-testid="option-list-embargo"]')
-  ).not.toHaveClass('disabled');
+  ).not.toHaveClass("disabled");
 
   // check if message informs about restriction
   expect(
     container.querySelector('[data-testid="access-message"]').textContent
-  ).toContain('Restricted');
+  ).toContain("Restricted");
 
   // check if files disabled
-  expect(
-    container.querySelector('[data-testid="access-files"]').textContent
-  ).toContain('The record has no files.');
+  expect(container.querySelector('[data-testid="access-files"]').textContent).toContain(
+    "The record has no files."
+  );
 });
 
-it('Can render public access - record with files, public comm, not embargoed', () => {
+it("Can render public access - record with files, public comm, not embargoed", () => {
   const setFieldValueMock = jest.fn();
   const formikProps = {
-    fieldPath: 'access',
+    fieldPath: "access",
     formik: {
       field: {
         value: {
-          record: 'public',
-          files: 'public',
-          embargo: { until: '3000-12-01', reason: 'unknown', active: false },
+          record: "public",
+          files: "public",
+          embargo: { until: "3000-12-01", reason: "unknown", active: false },
         },
       },
       form: {
@@ -158,25 +151,22 @@ it('Can render public access - record with files, public comm, not embargoed', (
         values: { files: { enabled: true } },
         initialValues: {
           access: {
-            embargo: { until: '3000-12-01', reason: 'unknown', active: false },
-            record: 'public',
-            files: 'public',
+            embargo: { until: "3000-12-01", reason: "unknown", active: false },
+            record: "public",
+            files: "public",
           },
         },
       },
     },
-    community: { access: { visibility: 'public' } },
+    community: { access: { visibility: "public" } },
     isMetadataOnly: false,
-    label: 'Access',
-    labelIcon: 'shield',
+    label: "Access",
+    labelIcon: "shield",
   };
 
   act(() => {
     render(
-      <Formik
-        initialValues={formikProps.formik.form.initialValues}
-        onSubmit={() => {}}
-      >
+      <Formik initialValues={formikProps.formik.form.initialValues} onSubmit={() => {}}>
         <AccessRightFieldCmp {...formikProps} />
       </Formik>,
       container
@@ -185,35 +175,31 @@ it('Can render public access - record with files, public comm, not embargoed', (
 
   // check restricted button active
   expect(
-    container.querySelector(
-      '[data-testid="protection-buttons-component-restricted"]'
-    )
-  ).not.toHaveClass('active');
+    container.querySelector('[data-testid="protection-buttons-component-restricted"]')
+  ).not.toHaveClass("active");
 
   // check public button not active
   expect(
-    container.querySelector(
-      '[data-testid="protection-buttons-component-public"]'
-    )
-  ).toHaveClass('active');
+    container.querySelector('[data-testid="protection-buttons-component-public"]')
+  ).toHaveClass("active");
 
   // check embargo checkbox disabled
   expect(
     container.querySelector('[data-testid="embargo-checkbox-component"]')
-  ).toHaveClass('disabled');
+  ).toHaveClass("disabled");
 
   // check embargo option disabled
-  expect(
-    container.querySelector('[data-testid="option-list-embargo"]')
-  ).toHaveClass('disabled');
+  expect(container.querySelector('[data-testid="option-list-embargo"]')).toHaveClass(
+    "disabled"
+  );
 
   // check if message informs about restriction
   expect(
     container.querySelector('[data-testid="access-message"]').textContent
-  ).toContain('The record and files are publicly accessible.');
+  ).toContain("The record and files are publicly accessible.");
 
   // check if files disabled
-  expect(
-    container.querySelector('[data-testid="access-files"]').textContent
-  ).toContain('Files onlyPublicRestricted');
+  expect(container.querySelector('[data-testid="access-files"]').textContent).toContain(
+    "Files onlyPublicRestricted"
+  );
 });

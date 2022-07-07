@@ -1,1 +1,1 @@
-export { DepositStatusBox } from './DepositStatusBox';
+export { DepositStatusBox } from "./DepositStatusBox";

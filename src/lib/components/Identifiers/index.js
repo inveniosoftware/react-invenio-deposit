@@ -5,5 +5,5 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-export { IdentifiersField } from './IdentifiersField';
-export { PIDField } from './PIDField';
+export { IdentifiersField } from "./IdentifiersField";
+export { PIDField } from "./PIDField";

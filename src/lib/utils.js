@@ -18,7 +18,7 @@ export function toCapitalCase(str) {
  *
  */
 export function leafTraverse(obj, func = (l) => l) {
-  if (typeof obj === 'object') {
+  if (typeof obj === "object") {
     // Objects and Arrays
     for (const key in obj) {
       leafTraverse(obj[key], func);
@@ -44,6 +44,6 @@ export function scrollTop() {
   window.scrollTo({
     top: 0,
     left: 0,
-    behavior: 'smooth',
+    behavior: "smooth",
   });
 }

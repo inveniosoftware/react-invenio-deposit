@@ -5,20 +5,14 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import { Form, Header } from 'semantic-ui-react';
-import { TextField, RemoteSelectField } from 'react-invenio-forms';
-import { i18next } from '@translations/i18next';
-import _isEmpty from 'lodash/isEmpty';
+import PropTypes from "prop-types";
+import React from "react";
+import { Form, Header } from "semantic-ui-react";
+import { TextField, RemoteSelectField } from "react-invenio-forms";
+import { i18next } from "@translations/i18next";
+import _isEmpty from "lodash/isEmpty";
 
 function CustomAwardForm({ deserializeFunder, selectedFunding }) {
-  const existsFunding =
-    selectedFunding?.award?.title && selectedFunding?.award?.number
-      ? true
-      : false;
-  const [accordionActive, setAccordionActive] = useState(existsFunding);
-
   function deserializeFunderToDropdown(funderItem) {
     let funderName = null;
     let funderPID = null;
@@ -58,9 +52,9 @@ function CustomAwardForm({ deserializeFunder, selectedFunding }) {
         fieldPath="selectedFunding.funder.id"
         suggestionAPIUrl="/api/funders"
         suggestionAPIHeaders={{
-          Accept: 'application/vnd.inveniordm.v1+json',
+          Accept: "application/vnd.inveniordm.v1+json",
         }}
-        placeholder={i18next.t('Search for a funder by name')}
+        placeholder={i18next.t("Search for a funder by name")}
         serializeSuggestions={(funders) => {
           return funders.map((funder) =>
             deserializeFunderToDropdown(deserializeFunder(funder))
@@ -69,8 +63,8 @@ function CustomAwardForm({ deserializeFunder, selectedFunding }) {
         searchInput={{
           autoFocus: _isEmpty(selectedFunding),
         }}
-        label={i18next.t('Funder')}
-        noQueryMessage={i18next.t('Search for funder...')}
+        label={i18next.t("Funder")}
+        noQueryMessage={i18next.t("Search for funder...")}
         clearable
         allowAdditions={false}
         multiple={false}
@@ -82,10 +76,9 @@ function CustomAwardForm({ deserializeFunder, selectedFunding }) {
           if (selectedFundersArray.length === 1) {
             const selectedFunder = selectedFundersArray[0];
             if (selectedFunder) {
-              const deserializedFunder =
-                serializeFunderFromDropdown(selectedFunder);
+              const deserializedFunder = serializeFunderFromDropdown(selectedFunder);
               formikProps.form.setFieldValue(
-                'selectedFunding.funder',
+                "selectedFunding.funder",
                 deserializedFunder
               );
             }
@@ -94,25 +87,25 @@ function CustomAwardForm({ deserializeFunder, selectedFunding }) {
       />
 
       <Header as="h3" size="small">
-        {i18next.t('Award information')} ({i18next.t('optional')})
+        {i18next.t("Award information")} ({i18next.t("optional")})
       </Header>
-        <Form.Group widths="equal">
-          <TextField
-            label={i18next.t('Number')}
-            placeholder={i18next.t('Award number')}
-            fieldPath="selectedFunding.award.number"
-          />
-          <TextField
-            label={i18next.t('Title')}
-            placeholder={i18next.t('Award Title')}
-            fieldPath="selectedFunding.award.title"
-          />
-          <TextField
-            label={i18next.t('URL')}
-            placeholder={i18next.t('Award URL')}
-            fieldPath="selectedFunding.award.url"
-          />
-        </Form.Group>
+      <Form.Group widths="equal">
+        <TextField
+          label={i18next.t("Number")}
+          placeholder={i18next.t("Award number")}
+          fieldPath="selectedFunding.award.number"
+        />
+        <TextField
+          label={i18next.t("Title")}
+          placeholder={i18next.t("Award Title")}
+          fieldPath="selectedFunding.award.title"
+        />
+        <TextField
+          label={i18next.t("URL")}
+          placeholder={i18next.t("Award URL")}
+          fieldPath="selectedFunding.award.url"
+        />
+      </Form.Group>
     </Form>
   );
 }
@@ -120,6 +113,10 @@ function CustomAwardForm({ deserializeFunder, selectedFunding }) {
 CustomAwardForm.propTypes = {
   deserializeFunder: PropTypes.func.isRequired,
   selectedFunding: PropTypes.object,
+};
+
+CustomAwardForm.defaultProps = {
+  selectedFunding: undefined,
 };
 
 export default CustomAwardForm;

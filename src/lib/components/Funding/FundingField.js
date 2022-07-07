@@ -5,18 +5,18 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { FieldArray, getIn } from 'formik';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
-import { Button, Form, Icon, List } from 'semantic-ui-react';
-import { FieldLabel } from 'react-invenio-forms';
+import React from "react";
+import PropTypes from "prop-types";
+import { FieldArray, getIn } from "formik";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
+import { Button, Form, Icon, List } from "semantic-ui-react";
+import { FieldLabel } from "react-invenio-forms";
 
-import { FundingFieldItem } from './FundingFieldItem';
-import FundingModal from './FundingModal';
+import { FundingFieldItem } from "./FundingFieldItem";
+import FundingModal from "./FundingModal";
 
-import { i18next } from '@translations/i18next';
+import { i18next } from "@translations/i18next";
 
 function FundingFieldForm(props) {
   const {
@@ -29,21 +29,25 @@ function FundingFieldForm(props) {
     remove: formikArrayRemove,
     replace: formikArrayReplace,
     required,
+    deserializeAward: deserializeAwardFunc,
+    deserializeFunder: deserializeFunderFunc,
+    computeFundingContents: computeFundingContentsFunc,
+    searchConfig,
   } = props;
 
-  const deserializeAward = props.deserializeAward
-    ? props.deserializeAward
+  const deserializeAward = deserializeAwardFunc
+    ? deserializeAwardFunc
     : (award) => ({
         title: award?.title_l10n,
         number: award.number,
-        funder: award.funder ?? '',
+        funder: award.funder ?? "",
         id: award.id,
         ...(award.identifiers && { identifiers: award.identifiers }),
         ...(award.acronym && { acronym: award.acronym }),
       });
 
-  const deserializeFunder = props.deserializeFunder
-    ? props.deserializeFunder
+  const deserializeFunder = deserializeFunderFunc
+    ? deserializeFunderFunc
     : (funder) => ({
         id: funder.id,
         name: funder.name,
@@ -52,27 +56,24 @@ function FundingFieldForm(props) {
         ...(funder.identifiers && { identifiers: funder.identifiers }),
       });
 
-  const computeFundingContents = props.computeFundingContents
-    ? props.computeFundingContents
+  const computeFundingContents = computeFundingContentsFunc
+    ? computeFundingContentsFunc
     : (funding) => {
         let headerContent,
-          descriptionContent = '';
-        let awardOrFunder = 'award';
+          descriptionContent = "";
+        let awardOrFunder = "award";
         if (funding.award) {
           headerContent = funding.award.title;
         }
 
         if (funding.funder) {
           const funderName =
-            funding?.funder?.name ??
-            funding.funder?.title ??
-            funding?.funder?.id ??
-            '';
+            funding?.funder?.name ?? funding.funder?.title ?? funding?.funder?.id ?? "";
           descriptionContent = funderName;
           if (!headerContent) {
-            awardOrFunder = 'funder';
+            awardOrFunder = "funder";
             headerContent = funderName;
-            descriptionContent = '';
+            descriptionContent = "";
           }
         }
 
@@ -81,18 +82,12 @@ function FundingFieldForm(props) {
   return (
     <DndProvider backend={HTML5Backend}>
       <Form.Field required={required}>
-        <FieldLabel
-          htmlFor={fieldPath}
-          icon={labelIcon}
-          label={label}
-        ></FieldLabel>
+        <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
         <List>
-          {getIn(values, fieldPath, []).map((value, index, array) => {
-            const arrayPath = fieldPath;
-            const indexPath = index;
-            const key = `${arrayPath}.${indexPath}`;
+          {getIn(values, fieldPath, []).map((value, index) => {
+            const key = `${fieldPath}.${index}`;
             // if award does not exist or has no id, it's a custom one
-            const awardType = value?.award?.id ? 'standard' : 'custom';
+            const awardType = value?.award?.id ? "standard" : "custom";
             return (
               <FundingFieldItem
                 key={key}
@@ -104,7 +99,7 @@ function FundingFieldForm(props) {
                   moveFunding: formikArrayMove,
                   replaceFunding: formikArrayReplace,
                   removeFunding: formikArrayRemove,
-                  searchConfig: props.searchConfig,
+                  searchConfig: searchConfig,
                   computeFundingContents: computeFundingContents,
                   deserializeAward: deserializeAward,
                   deserializeFunder: deserializeFunder,
@@ -113,11 +108,17 @@ function FundingFieldForm(props) {
             );
           })}
           <FundingModal
-            searchConfig={props.searchConfig}
+            searchConfig={searchConfig}
             trigger={
-              <Button type="button" key="custom" icon labelPosition="left" className="mb-5">
+              <Button
+                type="button"
+                key="custom"
+                icon
+                labelPosition="left"
+                className="mb-5"
+              >
                 <Icon name="add" />
-                {i18next.t('Add award')}
+                {i18next.t("Add award")}
               </Button>
             }
             onAwardChange={(selectedFunding) => {
@@ -130,11 +131,11 @@ function FundingFieldForm(props) {
             computeFundingContents={computeFundingContents}
           />
           <FundingModal
-            searchConfig={props.searchConfig}
+            searchConfig={searchConfig}
             trigger={
               <Button type="button" key="custom" icon labelPosition="left">
                 <Icon name="add" />
-                {i18next.t('Add custom')}
+                {i18next.t("Add custom")}
               </Button>
             }
             onAwardChange={(selectedFunding) => {
@@ -152,13 +153,43 @@ function FundingFieldForm(props) {
   );
 }
 
+FundingFieldForm.propTypes = {
+  label: PropTypes.node,
+  labelIcon: PropTypes.node,
+  fieldPath: PropTypes.string.isRequired,
+  form: PropTypes.object,
+  move: PropTypes.func,
+  push: PropTypes.func,
+  remove: PropTypes.func,
+  replace: PropTypes.func,
+  required: PropTypes.bool,
+  deserializeAward: PropTypes.func,
+  deserializeFunder: PropTypes.func,
+  computeFundingContents: PropTypes.func,
+  searchConfig: PropTypes.object,
+};
+
+FundingFieldForm.defaultProps = {
+  label: undefined,
+  labelIcon: undefined,
+  form: undefined,
+  move: undefined,
+  push: undefined,
+  remove: undefined,
+  replace: undefined,
+  required: undefined,
+  deserializeAward: undefined,
+  deserializeFunder: undefined,
+  computeFundingContents: undefined,
+  searchConfig: undefined,
+};
+
 export function FundingField(props) {
+  const { fieldPath } = props;
   return (
     <FieldArray
-      name={props.fieldPath}
-      component={(formikProps) => (
-        <FundingFieldForm {...formikProps} {...props} />
-      )}
+      name={fieldPath}
+      component={(formikProps) => <FundingFieldForm {...formikProps} {...props} />}
     />
   );
 }
@@ -175,8 +206,12 @@ FundingField.propTypes = {
 };
 
 FundingField.defaultProps = {
-  fieldPath: 'metadata.funding',
-  label: 'Awards',
-  labelIcon: 'money bill alternate outline',
+  // eslint-disable-next-line react/default-props-match-prop-types
+  fieldPath: "metadata.funding",
+  label: "Awards",
+  labelIcon: "money bill alternate outline",
   required: false,
+  deserializeAward: undefined,
+  deserializeFunder: undefined,
+  computeFundingContents: undefined,
 };

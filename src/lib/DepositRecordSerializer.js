@@ -5,18 +5,18 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import _cloneDeep from 'lodash/cloneDeep';
-import _defaults from 'lodash/defaults';
-import _isArray from 'lodash/isArray';
-import _isBoolean from 'lodash/isBoolean';
-import _isEmpty from 'lodash/isEmpty';
-import _isNull from 'lodash/isNull';
-import _isNumber from 'lodash/isNumber';
-import _isObject from 'lodash/isObject';
-import _mapValues from 'lodash/mapValues';
-import _pick from 'lodash/pick';
-import _pickBy from 'lodash/pickBy';
-import _set from 'lodash/set';
+import _cloneDeep from "lodash/cloneDeep";
+import _defaults from "lodash/defaults";
+import _isArray from "lodash/isArray";
+import _isBoolean from "lodash/isBoolean";
+import _isEmpty from "lodash/isEmpty";
+import _isNull from "lodash/isNull";
+import _isNumber from "lodash/isNumber";
+import _isObject from "lodash/isObject";
+import _mapValues from "lodash/mapValues";
+import _pick from "lodash/pick";
+import _pickBy from "lodash/pickBy";
+import _set from "lodash/set";
 import {
   AllowAdditionsVocabularyField,
   Field,
@@ -24,24 +24,25 @@ import {
   RightsVocabularyField,
   SchemaField,
   VocabularyField,
-} from './fields';
-import { emptyDate, emptyIdentifier, emptyRelatedWork } from './record';
+} from "./fields";
+import { emptyDate, emptyIdentifier, emptyRelatedWork } from "./record";
 
 export class DepositRecordSerializer {
+  /* eslint-disable no-unused-vars */
   constructor(defaultLocale) {
     if (this.constructor === DepositRecordSerializer) {
-      throw new Error('Abstract');
+      throw new Error("Abstract");
     }
   }
 
   deserialize(record) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
   deserializeErrors(errors) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
   serialize(record) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 }
 
@@ -52,198 +53,198 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
   }
   depositRecordSchema = {
     files: new Field({
-      fieldpath: 'files',
+      fieldpath: "files",
     }),
     links: new Field({
-      fieldpath: 'links',
+      fieldpath: "links",
     }),
     expanded: new Field({
-      fieldpath: 'expanded',
+      fieldpath: "expanded",
       deserializedDefault: {},
     }),
     pids: new Field({
-      fieldpath: 'pids',
+      fieldpath: "pids",
       deserializedDefault: {},
       serializedDefault: {},
     }),
     title: new Field({
-      fieldpath: 'metadata.title',
-      deserializedDefault: '',
+      fieldpath: "metadata.title",
+      deserializedDefault: "",
     }),
     additional_titles: new SchemaField({
-      fieldpath: 'metadata.additional_titles',
+      fieldpath: "metadata.additional_titles",
       schema: {
         title: new Field({
-          fieldpath: 'title',
+          fieldpath: "title",
         }),
         type: new VocabularyField({
-          fieldpath: 'type',
-          deserializedDefault: '',
-          serializedDefault: '',
+          fieldpath: "type",
+          deserializedDefault: "",
+          serializedDefault: "",
         }),
         lang: new VocabularyField({
-          fieldpath: 'lang',
-          deserializedDefault: '',
-          serializedDefault: '',
+          fieldpath: "lang",
+          deserializedDefault: "",
+          serializedDefault: "",
         }),
       },
     }),
     additional_descriptions: new SchemaField({
-      fieldpath: 'metadata.additional_descriptions',
+      fieldpath: "metadata.additional_descriptions",
       schema: {
         description: new Field({
-          fieldpath: 'description',
+          fieldpath: "description",
         }),
         type: new VocabularyField({
-          fieldpath: 'type',
-          deserializedDefault: '',
-          serializedDefault: '',
+          fieldpath: "type",
+          deserializedDefault: "",
+          serializedDefault: "",
         }),
         lang: new VocabularyField({
-          fieldpath: 'lang',
-          deserializedDefault: '',
-          serializedDefault: '',
+          fieldpath: "lang",
+          deserializedDefault: "",
+          serializedDefault: "",
         }),
       },
     }),
     creators: new SchemaField({
-      fieldpath: 'metadata.creators',
+      fieldpath: "metadata.creators",
       schema: {
         person_or_org: new Field({
-          fieldpath: 'person_or_org',
+          fieldpath: "person_or_org",
         }),
         role: new VocabularyField({
-          fieldpath: 'role',
-          deserializedDefault: '',
-          serializedDefault: '',
+          fieldpath: "role",
+          deserializedDefault: "",
+          serializedDefault: "",
         }),
         affiliations: new AllowAdditionsVocabularyField({
-          fieldpath: 'affiliations',
+          fieldpath: "affiliations",
           deserializedDefault: [],
           serializedDefault: [],
-          labelField: 'name',
+          labelField: "name",
         }),
       },
     }),
     contributors: new SchemaField({
-      fieldpath: 'metadata.contributors',
+      fieldpath: "metadata.contributors",
       schema: {
         person_or_org: new Field({
-          fieldpath: 'person_or_org',
+          fieldpath: "person_or_org",
         }),
         role: new VocabularyField({
-          fieldpath: 'role',
-          deserializedDefault: '',
-          serializedDefault: '',
+          fieldpath: "role",
+          deserializedDefault: "",
+          serializedDefault: "",
         }),
         affiliations: new AllowAdditionsVocabularyField({
-          fieldpath: 'affiliations',
+          fieldpath: "affiliations",
           deserializedDefault: [],
           serializedDefault: [],
-          labelField: 'name',
+          labelField: "name",
         }),
       },
     }),
     resource_type: new VocabularyField({
-      fieldpath: 'metadata.resource_type',
-      deserializedDefault: '',
-      serializedDefault: '',
+      fieldpath: "metadata.resource_type",
+      deserializedDefault: "",
+      serializedDefault: "",
     }),
     access: new Field({
-      fieldpath: 'access',
+      fieldpath: "access",
       deserializedDefault: {
-        record: 'public',
-        files: 'public',
+        record: "public",
+        files: "public",
       },
     }),
     publication_date: new Field({
-      fieldpath: 'metadata.publication_date',
-      deserializedDefault: '',
+      fieldpath: "metadata.publication_date",
+      deserializedDefault: "",
     }),
     dates: new SchemaField({
-      fieldpath: 'metadata.dates',
+      fieldpath: "metadata.dates",
       schema: {
         date: new Field({
-          fieldpath: 'date',
+          fieldpath: "date",
         }),
         type: new VocabularyField({
-          fieldpath: 'type',
-          deserializedDefault: '',
-          serializedDefault: '',
+          fieldpath: "type",
+          deserializedDefault: "",
+          serializedDefault: "",
         }),
         description: new Field({
-          fieldpath: 'description',
+          fieldpath: "description",
         }),
       },
       deserializedDefault: [emptyDate],
     }),
     languages: new VocabularyField({
-      fieldpath: 'metadata.languages',
+      fieldpath: "metadata.languages",
       deserializedDefault: [],
       serializedDefault: [],
     }),
     identifiers: new SchemaField({
-      fieldpath: 'metadata.identifiers',
+      fieldpath: "metadata.identifiers",
       schema: {
         scheme: new Field({
-          fieldpath: 'scheme',
+          fieldpath: "scheme",
         }),
         identifier: new Field({
-          fieldpath: 'identifier',
+          fieldpath: "identifier",
         }),
       },
       deserializedDefault: [emptyIdentifier],
     }),
     related_identifiers: new SchemaField({
-      fieldpath: 'metadata.related_identifiers',
+      fieldpath: "metadata.related_identifiers",
       schema: {
         scheme: new Field({
-          fieldpath: 'scheme',
+          fieldpath: "scheme",
         }),
         identifier: new Field({
-          fieldpath: 'identifier',
+          fieldpath: "identifier",
         }),
         relation_type: new VocabularyField({
-          fieldpath: 'relation_type',
-          deserializedDefault: '',
-          serializedDefault: '',
+          fieldpath: "relation_type",
+          deserializedDefault: "",
+          serializedDefault: "",
         }),
         resource_type: new VocabularyField({
-          fieldpath: 'resource_type',
-          deserializedDefault: '',
-          serializedDefault: '',
+          fieldpath: "resource_type",
+          deserializedDefault: "",
+          serializedDefault: "",
         }),
       },
       deserializedDefault: [emptyRelatedWork],
     }),
     subjects: new AllowAdditionsVocabularyField({
-      fieldpath: 'metadata.subjects',
+      fieldpath: "metadata.subjects",
       deserializedDefault: [],
       serializedDefault: [],
-      labelField: 'subject',
+      labelField: "subject",
     }),
     funding: new SchemaField({
-      fieldpath: 'metadata.funding',
+      fieldpath: "metadata.funding",
       schema: {
         award: new FundingField({
-          fieldpath: 'award',
+          fieldpath: "award",
           deserializedDefault: {},
         }),
         funder: new FundingField({
-          fieldpath: 'funder',
+          fieldpath: "funder",
           deserializedDefault: {},
         }),
       },
     }),
     version: new Field({
-      fieldpath: 'metadata.version',
-      deserializedDefault: '',
+      fieldpath: "metadata.version",
+      deserializedDefault: "",
     }),
     rights: new RightsVocabularyField({
-      fieldpath: 'metadata.rights',
+      fieldpath: "metadata.rights",
       deserializedDefault: [],
       serializedDefault: [],
-      localeFields: ['title', 'description'],
+      localeFields: ["title", "description"],
     }),
   };
 
@@ -264,9 +265,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
       });
       return filterValues;
     } else if (_isObject(obj)) {
-      let mappedValues = _mapValues(obj, (value) =>
-        this._removeEmptyValues(value)
-      );
+      let mappedValues = _mapValues(obj, (value) => this._removeEmptyValues(value));
       let pickedValues = _pickBy(mappedValues, (value) => {
         if (_isArray(value) || _isObject(value)) {
           return !_isEmpty(value);
@@ -288,18 +287,18 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
     // NOTE: cloning nows allows us to manipulate the copy with impunity
     //       without affecting the original
     const originalRecord = _pick(_cloneDeep(record), [
-      'access',
-      'expanded',
-      'metadata',
-      'id',
-      'links',
-      'files',
-      'is_published',
-      'versions',
-      'parent',
-      'status',
-      'pids',
-      'ui',
+      "access",
+      "expanded",
+      "metadata",
+      "id",
+      "links",
+      "files",
+      "is_published",
+      "versions",
+      "parent",
+      "status",
+      "pids",
+      "ui",
     ]);
 
     // FIXME: move logic in a more sophisticated PIDField that allows empty values
@@ -343,7 +342,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
     //                 Form/Error UX is tackled in next sprint and this is good
     //                 enough for now.
     for (const e of errors) {
-      _set(deserializedErrors, e.field, e.messages.join(' '));
+      _set(deserializedErrors, e.field, e.messages.join(" "));
     }
 
     return deserializedErrors;
@@ -360,13 +359,13 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
     // NOTE: cloning nows allows us to manipulate the copy with impunity without
     //       affecting the original
     let originalRecord = _pick(_cloneDeep(record), [
-      'access',
-      'metadata',
-      'id',
-      'links',
-      'files',
-      'pids',
-      'parent',
+      "access",
+      "metadata",
+      "id",
+      "links",
+      "files",
+      "pids",
+      "parent",
     ]);
 
     // FIXME: move logic in a more sophisticated PIDField that allows empty values

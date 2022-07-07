@@ -6,12 +6,12 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { i18next } from '@translations/i18next';
-import { Formik } from 'formik';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { TextAreaField, TextField } from 'react-invenio-forms';
-import { OverridableContext } from 'react-overridable';
+import { i18next } from "@translations/i18next";
+import { Formik } from "formik";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { TextAreaField, TextField } from "react-invenio-forms";
+import { OverridableContext } from "react-overridable";
 import {
   EmptyResults,
   Error,
@@ -20,30 +20,30 @@ import {
   ResultsLoader,
   SearchBar,
   Toggle,
-} from 'react-searchkit';
-import { Button, Form, Grid, Header, Menu, Modal } from 'semantic-ui-react';
-import * as Yup from 'yup';
-import { LicenseFilter } from './LicenseFilter';
-import { LicenseResults } from './LicenseResults';
+} from "react-searchkit";
+import { Button, Form, Grid, Header, Menu, Modal } from "semantic-ui-react";
+import * as Yup from "yup";
+import { LicenseFilter } from "./LicenseFilter";
+import { LicenseResults } from "./LicenseResults";
 
 const overriddenComponents = {
-  'SearchFilters.Toggle': LicenseFilter,
+  "SearchFilters.Toggle": LicenseFilter,
 };
 
 const ModalTypes = {
-  STANDARD: 'standard',
-  CUSTOM: 'custom',
+  STANDARD: "standard",
+  CUSTOM: "custom",
 };
 
 const ModalActions = {
-  ADD: 'add',
-  EDIT: 'edit',
+  ADD: "add",
+  EDIT: "edit",
 };
 
 const LicenseSchema = Yup.object().shape({
   selectedLicense: Yup.object().shape({
-    title: Yup.string().required(i18next.t('Title is a required field.')),
-    link: Yup.string().url(i18next.t('Link must be a valid URL')),
+    title: Yup.string().required(i18next.t("Title is a required field.")),
+    link: Yup.string().url(i18next.t("Link must be a valid URL")),
   }),
 });
 
@@ -60,22 +60,34 @@ export class LicenseModal extends Component {
     this.setState({ open: false });
   };
 
-  onSubmit = (values, formikBag) => {
+  onSubmit = (values) => {
     // We have to close the modal first because onLicenseChange and passing
     // license as an object makes React get rid of this component. Otherwise
     // we get a memory leak warning.
+    const { onLicenseChange } = this.props;
     this.closeModal();
-    this.props.onLicenseChange(values.selectedLicense);
+    onLicenseChange(values.selectedLicense);
   };
 
   render() {
-    const initialLicense = this.props.initialLicense || {
-      title: '',
-      description: '',
+    const {
+      mode,
+      trigger,
+      action,
+      searchConfig,
+      serializeLicenses,
+      initialLicense: initialLicenseProp,
+    } = this.props;
+    const { open } = this.state;
+
+    const initialLicense = initialLicenseProp || {
+      title: "",
+      description: "",
       id: null,
-      link: '',
+      link: "",
     };
-    const searchApi = new InvenioSearchApi(this.props.searchConfig.searchApi);
+
+    const searchApi = new InvenioSearchApi(searchConfig.searchApi);
     return (
       <Formik
         initialValues={{
@@ -89,80 +101,70 @@ export class LicenseModal extends Component {
         {({ handleSubmit, resetForm }) => (
           <Modal
             onOpen={() => this.openModal()}
-            open={this.state.open}
-            trigger={this.props.trigger}
-            onClose={this.closeModal}
-            closeIcon={true}
+            open={open}
+            trigger={trigger}
+            onClose={() => this.closeModal}
+            closeIcon
             closeOnDimmerClick={false}
           >
             <Modal.Header as="h6" className="pt-10 pb-10">
               <Grid>
                 <Grid.Column floated="left">
                   <Header as="h2">
-                    {this.props.action === ModalActions.ADD
+                    {action === ModalActions.ADD
                       ? i18next.t(`Add {{mode}} license`, {
-                          mode: this.props.mode,
+                          mode: mode,
                         })
                       : i18next.t(`Change {{mode}} license`, {
-                          mode: this.props.mode,
+                          mode: mode,
                         })}
                   </Header>
                 </Grid.Column>
               </Grid>
             </Modal.Header>
             <Modal.Content scrolling>
-              {this.props.mode === ModalTypes.STANDARD && (
+              {mode === ModalTypes.STANDARD && (
                 <OverridableContext.Provider value={overriddenComponents}>
                   <ReactSearchKit
                     searchApi={searchApi}
-                    appName={'licenses'}
+                    appName="licenses"
                     urlHandlerApi={{ enabled: false }}
-                    initialQueryState={
-                      this.props.searchConfig.initialQueryState
-                    }
+                    initialQueryState={searchConfig.initialQueryState}
                   >
                     <Grid>
                       <Grid.Row>
-                        <Grid.Column
-                          width={8}
-                          floated="left"
-                          verticalAlign="middle"
-                        >
+                        <Grid.Column width={8} floated="left" verticalAlign="middle">
                           <SearchBar
-                            placeholder={i18next.t('Search')}
+                            placeholder={i18next.t("Search")}
                             autofocus
                             actionProps={{
-                              icon: 'search',
+                              icon: "search",
                               content: null,
-                              className: 'search',
+                              className: "search",
                             }}
                           />
                         </Grid.Column>
-                        <Grid.Column
-                          width={8}
-                          textAlign="right"
-                          floated="right"
-                        >
+                        <Grid.Column width={8} textAlign="right" floated="right">
                           <Menu compact>
                             <Toggle
-                              title={i18next.t('Recommended')}
+                              title={i18next.t("Recommended")}
                               label="recommended"
-                              filterValue={['tags', 'recommended']}
+                              filterValue={["tags", "recommended"]}
                             />
                             <Toggle
-                              title={i18next.t('All')}
+                              title={i18next.t("All")}
                               label="all"
-                              filterValue={['tags', 'all']}
+                              filterValue={["tags", "all"]}
                             />
                             <Toggle
-                              title={i18next.t('Data')}
+                              title={i18next.t("Data")}
                               label="data"
-                              filterValue={['tags', 'data']}
+                              filterValue={["tags", "data"]}
                             />
                             <Toggle
-                              title={i18next.t('Software')}
+                              title={i18next.t("Software")}
                               label="software"
-                              filterValue={['tags', 'software']}
+                              filterValue={["tags", "software"]}
                             />
                           </Menu>
                         </Grid.Column>
@@ -173,8 +175,8 @@ export class LicenseModal extends Component {
                             <EmptyResults />
                             <Error />
                             <LicenseResults
-                              {...(this.props.serializeLicenses && {
-                                serializeLicenses: this.props.serializeLicenses,
+                              {...(serializeLicenses && {
+                                serializeLicenses,
                               })}
                             />
                           </ResultsLoader>
@@ -184,21 +186,21 @@ export class LicenseModal extends Component {
                   </ReactSearchKit>
                 </OverridableContext.Provider>
               )}
-              {this.props.mode === ModalTypes.CUSTOM && (
+              {mode === ModalTypes.CUSTOM && (
                 <Form>
                   <TextField
-                    label={i18next.t('Title')}
-                    placeholder={i18next.t('License title')}
+                    label={i18next.t("Title")}
+                    placeholder={i18next.t("License title")}
                     fieldPath="selectedLicense.title"
                     required
                   />
                   <TextAreaField
-                    fieldPath={'selectedLicense.description'}
-                    label={i18next.t('Description')}
+                    fieldPath="selectedLicense.description"
+                    label={i18next.t("Description")}
                   />
                   <TextField
-                    label={i18next.t('Link')}
-                    placeholder={i18next.t('License link')}
+                    label={i18next.t("Link")}
+                    placeholder={i18next.t("License link")}
                     fieldPath="selectedLicense.link"
                   />
                 </Form>
@@ -213,7 +215,7 @@ export class LicenseModal extends Component {
                 }}
                 icon="remove"
                 labelPosition="left"
-                content={i18next.t('Cancel')}
+                content={i18next.t("Cancel")}
                 floated="left"
               />
               <Button
@@ -223,9 +225,9 @@ export class LicenseModal extends Component {
                 icon="checkmark"
                 labelPosition="left"
                 content={
-                  this.props.action === ModalActions.ADD
-                    ? i18next.t('Add license')
-                    : i18next.t('Change license')
+                  action === ModalActions.ADD
+                    ? i18next.t("Add license")
+                    : i18next.t("Change license")
                 }
               />
             </Modal.Actions>
@@ -237,8 +239,8 @@ export class LicenseModal extends Component {
 }
 
 LicenseModal.propTypes = {
-  mode: PropTypes.oneOf(['standard', 'custom']).isRequired,
-  action: PropTypes.oneOf(['add', 'edit']).isRequired,
+  mode: PropTypes.oneOf(["standard", "custom"]).isRequired,
+  action: PropTypes.oneOf(["add", "edit"]).isRequired,
   initialLicense: PropTypes.shape({
     id: PropTypes.string,
     title: PropTypes.string,
@@ -257,4 +259,9 @@ LicenseModal.propTypes = {
     }).isRequired,
   }).isRequired,
   serializeLicenses: PropTypes.func,
+};
+
+LicenseModal.defaultProps = {
+  initialLicense: undefined,
+  serializeLicenses: undefined,
 };

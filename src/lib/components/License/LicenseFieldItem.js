@@ -6,12 +6,13 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React from 'react';
-import { useDrag, useDrop } from 'react-dnd';
-import { Button, List, Ref } from 'semantic-ui-react';
-import _truncate from 'lodash/truncate';
-import { LicenseModal } from './LicenseModal';
-import { i18next } from '@translations/i18next';
+import React from "react";
+import { useDrag, useDrop } from "react-dnd";
+import { Button, List, Ref } from "semantic-ui-react";
+import _truncate from "lodash/truncate";
+import { LicenseModal } from "./LicenseModal";
+import { i18next } from "@translations/i18next";
+import PropTypes from "prop-types";
 
 export const LicenseFieldItem = ({
   license,
@@ -22,11 +23,12 @@ export const LicenseFieldItem = ({
   serializeLicenses,
 }) => {
   const dropRef = React.useRef(null);
-  const [_, drag, preview] = useDrag({
-    item: { index: license.index, type: 'license' },
+
+  const [, drag, preview] = useDrag({
+    item: { index: license.index, type: "license" },
   });
   const [{ hidden }, drop] = useDrop({
-    accept: 'license',
+    accept: "license",
     hover(item, monitor) {
       if (!dropRef.current) {
         return;
@@ -55,9 +57,7 @@ export const LicenseFieldItem = ({
     <Ref innerRef={dropRef} key={license.key}>
       <List.Item
         key={license.key}
-        className={
-          hidden ? 'deposit-drag-listitem hidden' : 'deposit-drag-listitem'
-        }
+        className={hidden ? "deposit-drag-listitem hidden" : "deposit-drag-listitem"}
       >
         <List.Content floated="right">
           <LicenseModal
@@ -70,7 +70,7 @@ export const LicenseFieldItem = ({
             action="edit"
             trigger={
               <Button size="mini" primary type="button">
-                {i18next.t('Edit')}
+                {i18next.t("Edit")}
               </Button>
             }
             serializeLicenses={serializeLicenses}
@@ -82,7 +82,7 @@ export const LicenseFieldItem = ({
               removeLicense(license.index);
             }}
           >
-            {i18next.t('Remove')}
+            {i18next.t("Remove")}
           </Button>
         </List.Content>
         <Ref innerRef={drag}>
@@ -100,7 +100,7 @@ export const LicenseFieldItem = ({
               <span>
                 <a href={license.link} target="_blank" rel="noopener noreferrer">
                   {license.description && <span>&nbsp;</span>}
-                  {i18next.t('Read more')}
+                  {i18next.t("Read more")}
                 </a>
               </span>
             )}
@@ -109,4 +109,17 @@ export const LicenseFieldItem = ({
       </List.Item>
     </Ref>
   );
+};
+
+LicenseFieldItem.propTypes = {
+  license: PropTypes.object.isRequired,
+  moveLicense: PropTypes.func.isRequired,
+  replaceLicense: PropTypes.func.isRequired,
+  removeLicense: PropTypes.func.isRequired,
+  searchConfig: PropTypes.object.isRequired,
+  serializeLicenses: PropTypes.func,
+};
+
+LicenseFieldItem.defaultProps = {
+  serializeLicenses: undefined,
 };

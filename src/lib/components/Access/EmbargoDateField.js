@@ -6,10 +6,10 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import PropTypes from 'prop-types';
-import React from 'react';
-import { FieldLabel, TextField } from 'react-invenio-forms';
-import { i18next } from '@translations/i18next';
+import PropTypes from "prop-types";
+import React from "react";
+import { FieldLabel, TextField } from "react-invenio-forms";
+import { i18next } from "../../i18next";
 
 export function EmbargoDateField({
   fieldPath,
@@ -30,14 +30,17 @@ export function EmbargoDateField({
 
 EmbargoDateField.propTypes = {
   fieldPath: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  labelIcon: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  labelIcon: PropTypes.string,
+  placeholder: PropTypes.string,
+  required: PropTypes.bool,
 };
 
 EmbargoDateField.defaultProps = {
-  fieldPath: 'access.embargo.until',
-  label: i18next.t('Embargo until'),
-  labelIcon: 'calendar',
-  placeholder: i18next.t('YYYY-MM-DD'),
+  required: false,
+  labelIcon: "calendar",
+  placeholder: i18next.t("YYYY-MM-DD"),
+  // eslint-disable-next-line react/default-props-match-prop-types
+  fieldPath: "access.embargo.until",
+  label: i18next.t("Embargo until"),
 };

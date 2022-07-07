@@ -1,0 +1,20 @@
+extends:
+  - '@inveniosoftware/eslint-config-invenio'
+  - '@inveniosoftware/eslint-config-invenio/prettier'
+
+parser: '@babel/eslint-parser'
+
+parserOptions:
+   sourceType: module
+   allowImportExportEverywhere: true
+   requireConfigFile: false
+   babelOptions:
+     presets:
+       - "@babel/preset-react"
+
+
+env:
+  browser: true
+  es6: true
+  jest: true
+  node: true

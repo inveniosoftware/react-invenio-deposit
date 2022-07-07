@@ -6,11 +6,11 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import { FieldLabel, TextField } from 'react-invenio-forms';
-import { i18next } from '@translations/i18next';
+import { FieldLabel, TextField } from "react-invenio-forms";
+import { i18next } from "@translations/i18next";
 
 export class PublisherField extends Component {
   render() {
@@ -20,11 +20,9 @@ export class PublisherField extends Component {
       <TextField
         fieldPath={fieldPath}
         helpText={i18next.t(
-          'The publisher is used to formulate the citation, so consider the prominence of the role.'
+          "The publisher is used to formulate the citation, so consider the prominence of the role."
         )}
-        label={
-          <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
-        }
+        label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
         placeholder={placeholder}
       />
     );
@@ -39,8 +37,9 @@ PublisherField.propTypes = {
 };
 
 PublisherField.defaultProps = {
-  fieldPath: 'metadata.publisher',
-  label: i18next.t('Publisher'),
-  labelIcon: 'building outline',
-  placeholder: i18next.t('Publisher'),
+  // eslint-disable-next-line react/default-props-match-prop-types
+  fieldPath: "metadata.publisher",
+  label: i18next.t("Publisher"),
+  labelIcon: "building outline",
+  placeholder: i18next.t("Publisher"),
 };

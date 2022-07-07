@@ -1,1 +1,1 @@
-export { SubmitReviewOrPublishButton as PublishButton } from './SubmitReviewOrPublishButton';
+export { SubmitReviewOrPublishButton as PublishButton } from "./SubmitReviewOrPublishButton";
