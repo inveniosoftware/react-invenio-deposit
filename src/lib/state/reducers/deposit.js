@@ -291,10 +291,28 @@ const depositReducer = (state = {}, action) => {
         actionStateExtra: {},
       };
     case SET_COMMUNITY:
+      let recordCopy = {
+        ...state.record
+      }
+
+      const isCommunityRestricted = action.payload?.community?.access?.visibility === 'restricted';
+      const isRecordPublic = recordCopy.access.record === 'public';
+
+      if (isRecordPublic && isCommunityRestricted) {
+        recordCopy = {
+          ...state.record,
+          access: {
+            files: 'restricted',
+            record: 'restricted'
+          }
+        };
+      }
+
       return {
         ...state,
+        record: recordCopy,
         editorState: computeDepositState(
-          state.record,
+          recordCopy,
           action.payload.community
         ),
       };

@@ -7,7 +7,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
-import { FastField } from 'formik';
+import { Field } from 'formik';
 import { i18next } from '@translations/i18next';
 import PropTypes from 'prop-types';
 
@@ -72,12 +72,10 @@ ProtectionButtonsComponent.defaultProps = {
 
 export class ProtectionButtons extends Component {
   render() {
-    const { fieldPath, active, disabled } = this.props;
+    const { fieldPath } = this.props;
 
-    const changed = !active || disabled ? { changed: true } : {};
     return (
-      <FastField
-        {...changed}
+      <Field
         name={fieldPath}
         component={(formikProps) => (
           <ProtectionButtonsComponent formik={formikProps} {...this.props} />
