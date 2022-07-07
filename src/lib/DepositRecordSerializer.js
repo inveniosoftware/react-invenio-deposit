@@ -300,6 +300,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
       'status',
       'pids',
       'ui',
+      'custom',
     ]);
 
     // FIXME: move logic in a more sophisticated PIDField that allows empty values
@@ -367,6 +368,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
       'files',
       'pids',
       'parent',
+      'custom',
     ]);
 
     // FIXME: move logic in a more sophisticated PIDField that allows empty values
