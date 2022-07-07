@@ -5,23 +5,24 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import { i18next } from '@translations/i18next';
-import _get from 'lodash/get';
-import { connect } from 'react-redux';
-import { Button } from 'semantic-ui-react';
-import { connect as connectFormik } from 'formik';
+import React, { Component } from "react";
+import { i18next } from "@translations/i18next";
+import _get from "lodash/get";
+import { connect } from "react-redux";
+import { Button } from "semantic-ui-react";
+import { connect as connectFormik } from "formik";
 import {
   DepositFormSubmitActions,
   DepositFormSubmitContext,
-} from '../../DepositFormSubmitContext';
-import { SubmitReviewModal } from './SubmitReviewModal';
-import { DepositStatus } from '../../state/reducers/deposit';
-import _omit from 'lodash/omit';
+} from "../../DepositFormSubmitContext";
+import { SubmitReviewModal } from "./SubmitReviewModal";
+import { DepositStatus } from "../../state/reducers/deposit";
+import _omit from "lodash/omit";
+import PropTypes from "prop-types";
 
 class SubmitReviewButtonComponent extends Component {
-  static contextType = DepositFormSubmitContext;
   state = { isConfirmModalOpen: false };
+  static contextType = DepositFormSubmitContext;
 
   openConfirmModal = () => this.setState({ isConfirmModalOpen: true });
 
@@ -30,8 +31,9 @@ class SubmitReviewButtonComponent extends Component {
   handleSubmitReview = ({ reviewComment }) => {
     const { formik } = this.props;
     const { handleSubmit } = formik;
+    const { setSubmitContext } = this.context;
 
-    this.context.setSubmitContext(DepositFormSubmitActions.SUBMIT_REVIEW, {
+    setSubmitContext(DepositFormSubmitActions.SUBMIT_REVIEW, {
       reviewComment,
     });
     handleSubmit();
@@ -42,7 +44,7 @@ class SubmitReviewButtonComponent extends Component {
     const { formik } = this.props;
     const { values, isSubmitting } = formik;
 
-    const filesEnabled = _get(values, 'files.enabled', false);
+    const filesEnabled = _get(values, "files.enabled", false);
     const filesMissing = filesEnabled && !numberOfFiles;
     return isSubmitting || filesMissing || disableSubmitForReviewButton;
   };
@@ -61,29 +63,24 @@ class SubmitReviewButtonComponent extends Component {
 
     const { isSubmitting } = formik;
 
-    const uiProps = _omit(ui, ['dispatch']);
+    const uiProps = _omit(ui, ["dispatch"]);
 
     const { isConfirmModalOpen } = this.state;
 
     return (
       <>
         <Button
-          disabled={this.isDisabled(
-            numberOfFiles,
-            disableSubmitForReviewButton
-          )}
+          disabled={this.isDisabled(numberOfFiles, disableSubmitForReviewButton)}
           name="SubmitReview"
           onClick={this.openConfirmModal}
           positive
           icon="upload"
-          loading={
-            isSubmitting && actionState === 'DRAFT_SUBMIT_REVIEW_STARTED'
-          }
+          loading={isSubmitting && actionState === "DRAFT_SUBMIT_REVIEW_STARTED"}
           labelPosition="left"
           content={
             isRecordSubmittedForReview
-              ? i18next.t('Submitted for review')
-              : i18next.t('Submit for review')
+              ? i18next.t("Submitted for review")
+              : i18next.t("Submit for review")
           }
           {...uiProps}
         />
@@ -101,12 +98,26 @@ class SubmitReviewButtonComponent extends Component {
   }
 }
 
+SubmitReviewButtonComponent.propTypes = {
+  actionState: PropTypes.string.isRequired,
+  actionStateExtra: PropTypes.object.isRequired,
+  community: PropTypes.object.isRequired,
+  numberOfFiles: PropTypes.number,
+  disableSubmitForReviewButton: PropTypes.bool,
+  isRecordSubmittedForReview: PropTypes.bool.isRequired,
+  formik: PropTypes.object.isRequired,
+};
+
+SubmitReviewButtonComponent.defaultProps = {
+  numberOfFiles: undefined,
+  disableSubmitForReviewButton: undefined,
+};
+
 const mapStateToProps = (state) => ({
   actionState: state.deposit.actionState,
   actionStateExtra: state.deposit.actionStateExtra,
   community: state.deposit.editorState.selectedCommunity,
-  isRecordSubmittedForReview:
-    state.deposit.record.status === DepositStatus.IN_REVIEW,
+  isRecordSubmittedForReview: state.deposit.record.status === DepositStatus.IN_REVIEW,
   disableSubmitForReviewButton:
     state.deposit.editorState.ui.disableSubmitForReviewButton,
   numberOfFiles: Object.values(state.files.entries).length,

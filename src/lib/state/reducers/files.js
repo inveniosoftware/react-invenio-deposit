@@ -18,14 +18,14 @@ import {
   FILE_UPLOAD_IN_PROGRESS,
   FILE_UPLOAD_SAVE_DRAFT_FAILED,
   FILE_UPLOAD_SET_CANCEL_FUNCTION,
-} from '../types';
+} from "../types";
 
 export const UploadState = {
   // initial: 'initial', // no file or the initial file selected
-  uploading: 'uploading', // currently uploading a file from the UI
-  error: 'error', // upload failed
-  finished: 'finished', // upload finished (uploaded file is the field's current file)
-  pending: 'pending', // files retrieved from the backend are in pending state
+  uploading: "uploading", // currently uploading a file from the UI
+  error: "error", // upload failed
+  finished: "finished", // upload finished (uploaded file is the field's current file)
+  pending: "pending", // files retrieved from the backend are in pending state
 };
 
 const initialState = {};
@@ -33,7 +33,7 @@ const initialState = {};
 const fileReducer = (state = initialState, action) => {
   let newState;
   // Filename needs to be normalised due to encoding differences between client and server.
-  const remoteFileName = action.payload?.filename?.normalize() ?? '';
+  const remoteFileName = action.payload?.filename?.normalize() ?? "";
   switch (action.type) {
     case FILE_UPLOAD_ADDED:
       return {
@@ -126,26 +126,25 @@ const fileReducer = (state = initialState, action) => {
         },
         actionState: action.type,
       };
-    case FILE_UPLOAD_CANCELLED:
-      const {
-        [remoteFileName]: cancelledFile,
-        ...afterCancellationEntriesState
-      } = state.entries;
+    case FILE_UPLOAD_CANCELLED: {
+      // eslint-disable-next-line no-unused-vars
+      const { [remoteFileName]: cancelledFile, ...afterCancellationEntriesState } =
+        state.entries;
       return {
         ...state,
         entries: {
           ...afterCancellationEntriesState,
         },
-        isFileUploadInProgress: Object.values(
-          afterCancellationEntriesState
-        ).some((value) => value.status === UploadState.uploading),
+        isFileUploadInProgress: Object.values(afterCancellationEntriesState).some(
+          (value) => value.status === UploadState.uploading
+        ),
         actionState: action.type,
       };
-    case FILE_DELETED_SUCCESS:
-      const {
-        [remoteFileName]: deletedFile,
-        ...afterDeletionEntriesState
-      } = state.entries;
+    }
+    case FILE_DELETED_SUCCESS: {
+      // eslint-disable-next-line no-unused-vars
+      const { [remoteFileName]: deletedFile, ...afterDeletionEntriesState } =
+        state.entries;
       return {
         ...state,
         entries: { ...afterDeletionEntriesState },
@@ -154,6 +153,7 @@ const fileReducer = (state = initialState, action) => {
         ),
         actionState: action.type,
       };
+    }
     case FILE_DELETE_FAILED:
       return {
         ...state,

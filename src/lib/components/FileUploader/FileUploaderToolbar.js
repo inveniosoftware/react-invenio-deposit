@@ -6,11 +6,12 @@
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
-import { useFormikContext } from 'formik';
-import React from 'react';
-import { Header, Checkbox, Grid, Icon, Label, List, Popup } from 'semantic-ui-react';
-import { humanReadableBytes } from './utils';
-import { i18next } from '@translations/i18next';
+import { useFormikContext } from "formik";
+import React from "react";
+import { Header, Checkbox, Grid, Icon, Label, List, Popup } from "semantic-ui-react";
+import { humanReadableBytes } from "./utils";
+import { i18next } from "@translations/i18next";
+import PropTypes from "prop-types";
 
 // NOTE: This component has to be a function component to allow
 //       the `useFormikContext` hook.
@@ -25,18 +26,24 @@ export const FileUploaderToolbar = ({
   const { setFieldValue } = useFormikContext();
 
   const handleOnChangeMetadataOnly = () => {
-    setFieldValue('files.enabled', !filesEnabled)
-    setFieldValue('access.files', 'public')
-  }
+    setFieldValue("files.enabled", !filesEnabled);
+    setFieldValue("access.files", "public");
+  };
 
   return (
     <>
-      <Grid.Column verticalAlign="middle" floated="left" mobile={16} tablet={6} computer={6}>
+      <Grid.Column
+        verticalAlign="middle"
+        floated="left"
+        mobile={16}
+        tablet={6}
+        computer={6}
+      >
         {config.canHaveMetadataOnlyRecords && (
           <List horizontal>
             <List.Item>
               <Checkbox
-                label={i18next.t('Metadata-only record')}
+                label={i18next.t("Metadata-only record")}
                 onChange={handleOnChangeMetadataOnly}
                 disabled={filesList.length > 0}
                 checked={!filesEnabled}
@@ -45,7 +52,7 @@ export const FileUploaderToolbar = ({
             <List.Item>
               <Popup
                 trigger={<Icon name="question circle outline" className="neutral" />}
-                content={i18next.t('Disable files for this record')}
+                content={i18next.t("Disable files for this record")}
                 position="top center"
               />
             </List.Item>
@@ -54,13 +61,13 @@ export const FileUploaderToolbar = ({
       </Grid.Column>
       {filesEnabled && (
         <Grid.Column mobile={16} tablet={10} computer={10} className="storage-col">
-          <Header size="tiny" className="mr-10">{i18next.t('Storage available')}</Header>
+          <Header size="tiny" className="mr-10">
+            {i18next.t("Storage available")}
+          </Header>
           <List horizontal floated="right">
             <List.Item>
               <Label
-                {...(filesList.length === quota.maxFiles
-                  ? { color: 'blue' }
-                  : {})}
+                {...(filesList.length === quota.maxFiles ? { color: "blue" } : {})}
               >
                 {i18next.t(`{{length}} out of {{maxfiles}} files`, {
                   length: filesList.length,
@@ -72,11 +79,11 @@ export const FileUploaderToolbar = ({
               <Label
                 {...(humanReadableBytes(filesSize, decimalSizeDisplay) ===
                 humanReadableBytes(quota.maxStorage, decimalSizeDisplay)
-                  ? { color: 'blue' }
+                  ? { color: "blue" }
                   : {})}
               >
-                {humanReadableBytes(filesSize, decimalSizeDisplay)}{' '}
-                {i18next.t('out of')}{' '}
+                {humanReadableBytes(filesSize, decimalSizeDisplay)}{" "}
+                {i18next.t("out of")}{" "}
                 {humanReadableBytes(quota.maxStorage, decimalSizeDisplay)}
               </Label>
             </List.Item>
@@ -85,4 +92,21 @@ export const FileUploaderToolbar = ({
       )}
     </>
   );
+};
+
+FileUploaderToolbar.propTypes = {
+  config: PropTypes.object,
+  filesList: PropTypes.array,
+  filesSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  filesEnabled: PropTypes.bool.isRequired,
+  quota: PropTypes.object,
+  decimalSizeDisplay: PropTypes.bool,
+};
+
+FileUploaderToolbar.defaultProps = {
+  config: undefined,
+  filesList: undefined,
+  filesSize: undefined,
+  quota: undefined,
+  decimalSizeDisplay: false,
 };

@@ -4,9 +4,9 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React from 'react';
-import { Container, Divider, Segment } from 'semantic-ui-react';
-import { Trans } from '@translations/i18next';
+import React from "react";
+import { Container, Divider, Segment } from "semantic-ui-react";
+import { Trans } from "@translations/i18next";
 
 export const CommunitySelectionFooter = () => {
   return (
@@ -16,8 +16,8 @@ export const CommunitySelectionFooter = () => {
         <Segment textAlign="center">
           <p>
             <Trans>
-              Did not find a community that fits you? Upload without a community
-              or <a href="/communities/new">create your own.</a>
+              Did not find a community that fits you? Upload without a community or{" "}
+              <a href="/communities/new">create your own.</a>
             </Trans>
           </p>
         </Segment>

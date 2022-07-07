@@ -5,7 +5,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import _isEmpty from 'lodash/isEmpty';
+import _isEmpty from "lodash/isEmpty";
 import {
   DISCARD_PID_FAILED,
   DISCARD_PID_STARTED,
@@ -29,16 +29,16 @@ import {
   RESERVE_PID_STARTED,
   RESERVE_PID_SUCCEEDED,
   SET_COMMUNITY,
-} from '../types';
+} from "../types";
 
 export class DepositStatus {
-  static DRAFT = 'draft';
-  static NEW_VERSION_DRAFT = 'new_version_draft';
-  static DRAFT_WITH_REVIEW = 'draft_with_review';
-  static IN_REVIEW = 'in_review';
-  static DECLINED = 'declined';
-  static EXPIRED = 'expired';
-  static PUBLISHED = 'published';
+  static DRAFT = "draft";
+  static NEW_VERSION_DRAFT = "new_version_draft";
+  static DRAFT_WITH_REVIEW = "draft_with_review";
+  static IN_REVIEW = "in_review";
+  static DECLINED = "declined";
+  static EXPIRED = "expired";
+  static PUBLISHED = "published";
 
   static allowsReviewDeletionStates = [
     DepositStatus.DRAFT_WITH_REVIEW,
@@ -66,7 +66,7 @@ function hasStatus(record, statuses = []) {
 
 function getSelectedCommunityMetadata(record, selectedCommunity) {
   switch (selectedCommunity) {
-    case undefined:
+    case undefined: {
       // when `undefined`, retrieve the community from the record, if previously selected
       const reviewCommunityId = record.parent?.review?.receiver?.community;
       const defaultCommunityId = record.parent?.communities?.default;
@@ -85,6 +85,7 @@ function getSelectedCommunityMetadata(record, selectedCommunity) {
       return alreadyPublished
         ? record.expanded.parent.communities.default
         : record.expanded.parent.review.receiver;
+    }
     case null:
       // when value is `null`, the selected community was deselected
       return null;
@@ -146,10 +147,7 @@ export function computeDepositState(record, selectedCommunity = undefined) {
   );
 
   // Serialize selectedCommunity
-  const _selectedCommunity = getSelectedCommunityMetadata(
-    record,
-    selectedCommunity
-  );
+  const _selectedCommunity = getSelectedCommunityMetadata(record, selectedCommunity);
   const communityIsSelected = !_isEmpty(_selectedCommunity);
 
   const draftReview = record?.parent?.review;
@@ -166,19 +164,14 @@ export function computeDepositState(record, selectedCommunity = undefined) {
 
   // check if the record is published without a community selected
   const isRecordPublishedWithoutCommunity =
-    hasStatus(record, [
-      DepositStatus.PUBLISHED,
-      DepositStatus.NEW_VERSION_DRAFT,
-    ]) && _isEmpty(record.parent?.communities);
+    hasStatus(record, [DepositStatus.PUBLISHED, DepositStatus.NEW_VERSION_DRAFT]) &&
+    _isEmpty(record.parent?.communities);
 
   // show submit for review button conditions extracted to be reused
   const _showSubmitReviewButton =
     communityIsSelected &&
     !isReviewForSelectedCommunityDeclinedOrExpired &&
-    !hasStatus(record, [
-      DepositStatus.PUBLISHED,
-      DepositStatus.NEW_VERSION_DRAFT,
-    ]);
+    !hasStatus(record, [DepositStatus.PUBLISHED, DepositStatus.NEW_VERSION_DRAFT]);
 
   // show community selection button conditions extracted to be reused
   const _showCommunitySelectionButton = !hasStatus(record, [
@@ -192,14 +185,12 @@ export function computeDepositState(record, selectedCommunity = undefined) {
     !isReviewForSelectedCommunityCreated &&
     !isReviewForSelectedCommunityDeclinedOrExpired;
 
-  const shouldDeleteReview =
-    !communityIsSelected && depositStatusAllowsReviewDeletion;
+  const shouldDeleteReview = !communityIsSelected && depositStatusAllowsReviewDeletion;
 
   const _disableCommunitySelectionButton =
     _showCommunitySelectionButton &&
     (isReviewForSelectedCommunityDeclinedOrExpired ||
-      (depositStatusDisallowsSubmitForReview &&
-        !isRecordPublishedWithoutCommunity));
+      (depositStatusDisallowsSubmitForReview && !isRecordPublishedWithoutCommunity));
 
   return {
     selectedCommunity: _selectedCommunity,
@@ -290,32 +281,31 @@ const depositReducer = (state = {}, action) => {
         actionState: action.type,
         actionStateExtra: {},
       };
-    case SET_COMMUNITY:
+    case SET_COMMUNITY: {
       let recordCopy = {
-        ...state.record
-      }
+        ...state.record,
+      };
 
-      const isCommunityRestricted = action.payload?.community?.access?.visibility === 'restricted';
-      const isRecordPublic = recordCopy.access.record === 'public';
+      const isCommunityRestricted =
+        action.payload?.community?.access?.visibility === "restricted";
+      const isRecordPublic = recordCopy.access.record === "public";
 
       if (isRecordPublic && isCommunityRestricted) {
         recordCopy = {
           ...state.record,
           access: {
-            files: 'restricted',
-            record: 'restricted'
-          }
+            files: "restricted",
+            record: "restricted",
+          },
         };
       }
 
       return {
         ...state,
         record: recordCopy,
-        editorState: computeDepositState(
-          recordCopy,
-          action.payload.community
-        ),
+        editorState: computeDepositState(recordCopy, action.payload.community),
       };
+    }
     default:
       return state;
   }

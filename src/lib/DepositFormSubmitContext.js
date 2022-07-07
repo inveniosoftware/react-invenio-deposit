@@ -5,17 +5,17 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React from 'react';
+import React from "react";
 
 export const DepositFormSubmitActions = {
-  SAVE: 'SAVE',
-  PUBLISH: 'PUBLISH',
-  PUBLISH_WITHOUT_COMMUNITY: 'PUBLISH_WITHOUT_COMMUNITY',
-  PREVIEW: 'PREVIEW',
-  DELETE: 'DELETE',
-  RESERVE_PID: 'RESERVE_PID',
-  DISCARD_PID: 'DISCARD_PID',
-  SUBMIT_REVIEW: 'SUBMIT_REVIEW',
+  SAVE: "SAVE",
+  PUBLISH: "PUBLISH",
+  PUBLISH_WITHOUT_COMMUNITY: "PUBLISH_WITHOUT_COMMUNITY",
+  PREVIEW: "PREVIEW",
+  DELETE: "DELETE",
+  RESERVE_PID: "RESERVE_PID",
+  DISCARD_PID: "DISCARD_PID",
+  SUBMIT_REVIEW: "SUBMIT_REVIEW",
 };
 
 /**

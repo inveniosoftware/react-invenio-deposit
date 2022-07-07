@@ -5,75 +5,71 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import {
   ArrayField,
   FieldLabel,
   GroupField,
   SelectField,
   TextField,
-} from 'react-invenio-forms';
-import { Button, Form } from 'semantic-ui-react';
-import { i18next } from '@translations/i18next';
-import { emptyIdentifier } from '../../record';
+} from "react-invenio-forms";
+import { Button, Form } from "semantic-ui-react";
+import { i18next } from "@translations/i18next";
+import { emptyIdentifier } from "../../record";
 
 /** Identifiers array component */
 export class IdentifiersField extends Component {
   render() {
     const { fieldPath, label, labelIcon, required, schemeOptions } = this.props;
     return (
-      <>
-        <ArrayField
-          addButtonLabel={i18next.t('Add identifier')}
-          defaultNewValue={emptyIdentifier}
-          fieldPath={fieldPath}
-          label={
-            <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
-          }
-          required={required}
-        >
-          {({ arrayHelpers, indexPath }) => {
-            const fieldPathPrefix = `${fieldPath}.${indexPath}`;
-            return (
-              <GroupField>
-                <TextField
-                  fieldPath={`${fieldPathPrefix}.identifier`}
-                  label={i18next.t('Identifier')}
+      <ArrayField
+        addButtonLabel={i18next.t("Add identifier")}
+        defaultNewValue={emptyIdentifier}
+        fieldPath={fieldPath}
+        label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
+        required={required}
+      >
+        {({ arrayHelpers, indexPath }) => {
+          const fieldPathPrefix = `${fieldPath}.${indexPath}`;
+          return (
+            <GroupField>
+              <TextField
+                fieldPath={`${fieldPathPrefix}.identifier`}
+                label={i18next.t("Identifier")}
+                required
+                width={11}
+              />
+              {schemeOptions && (
+                <SelectField
+                  fieldPath={`${fieldPathPrefix}.scheme`}
+                  label={i18next.t("Scheme")}
+                  options={schemeOptions}
+                  optimized
                   required
-                  width={11}
+                  width={5}
                 />
-                {schemeOptions && (
-                  <SelectField
-                    fieldPath={`${fieldPathPrefix}.scheme`}
-                    label={i18next.t('Scheme')}
-                    options={schemeOptions}
-                    optimized
-                    required
-                    width={5}
-                  />
-                )}
-                {!schemeOptions && (
-                  <TextField
-                    fieldPath={`${fieldPathPrefix}.scheme`}
-                    label={i18next.t('Scheme')}
-                    required
-                    width={5}
-                  />
-                )}
-                <Form.Field>
-                  <Button
-                    aria-label={i18next.t("Remove field")}
-                    className="close-btn"
-                    icon="close"
-                    onClick={() => arrayHelpers.remove(indexPath)}
-                  />
-                </Form.Field>
-              </GroupField>
-            );
-          }}
-        </ArrayField>
-      </>
+              )}
+              {!schemeOptions && (
+                <TextField
+                  fieldPath={`${fieldPathPrefix}.scheme`}
+                  label={i18next.t("Scheme")}
+                  required
+                  width={5}
+                />
+              )}
+              <Form.Field>
+                <Button
+                  aria-label={i18next.t("Remove field")}
+                  className="close-btn"
+                  icon="close"
+                  onClick={() => arrayHelpers.remove(indexPath)}
+                />
+              </Form.Field>
+            </GroupField>
+          );
+        }}
+      </ArrayField>
     );
   }
 }
@@ -92,7 +88,10 @@ IdentifiersField.propTypes = {
 };
 
 IdentifiersField.defaultProps = {
-  fieldPath: 'metadata.identifiers',
-  label: i18next.t('Identifiers'),
-  labelIcon: 'barcode',
+  // eslint-disable-next-line react/default-props-match-prop-types
+  fieldPath: "metadata.identifiers",
+  label: i18next.t("Identifiers"),
+  labelIcon: "barcode",
+  required: false,
+  schemeOptions: undefined,
 };

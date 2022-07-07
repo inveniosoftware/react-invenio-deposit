@@ -5,10 +5,10 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import PropTypes from 'prop-types';
-import React from 'react';
-import { Segment } from 'semantic-ui-react';
-import { i18next } from '@translations/i18next';
+import PropTypes from "prop-types";
+import React from "react";
+import { Segment } from "semantic-ui-react";
+import { i18next } from "@translations/i18next";
 
 export function NoAwardResults({ switchToCustom }) {
   return (
@@ -16,7 +16,7 @@ export function NoAwardResults({ switchToCustom }) {
       basic
       content={
         <p>
-          {i18next.t('Did not find your award? ')}
+          {i18next.t("Did not find your award? ")}
           <a
             href="#"
             onClick={(e) => {
@@ -24,7 +24,7 @@ export function NoAwardResults({ switchToCustom }) {
               switchToCustom();
             }}
           >
-            {i18next.t('Add a custom award.')}
+            {i18next.t("Add a custom award.")}
           </a>
         </p>
       }

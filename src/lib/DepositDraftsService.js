@@ -6,40 +6,41 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 export class DepositDraftsService {
+  /* eslint-disable no-unused-vars */
   constructor(apiClient) {
     if (this.constructor === DepositDraftsService) {
-      throw new Error('Abstract');
+      throw new Error("Abstract");
     }
   }
   async read(draftLinks) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
   async create(draft) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
   async save(draft) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
   async publish(draftLinks) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
   async delete(draftLinks) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
   async reservePID(draftLinks, pidType) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
   async discardPID(draftLinks, pidType) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
   async createOrUpdateReview(draftLinks, newCommunityId) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
   async deleteReview(draftLinks) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
   async submitReview(draftLinks) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 }
 

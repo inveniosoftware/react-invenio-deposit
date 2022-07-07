@@ -4,23 +4,23 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React from 'react';
-import i18n from 'i18next';
+import React from "react";
+import i18n from "i18next";
 
-import LanguageDetector from 'i18next-browser-languagedetector';
-import { translations } from './translations/messages';
-import { Trans as ReactTrans } from 'react-i18next';
+import LanguageDetector from "i18next-browser-languagedetector";
+import { translations } from "./translations/messages";
+import { Trans as ReactTrans } from "react-i18next";
 
 const options = {
-  fallbackLng: 'en', // fallback keys
+  fallbackLng: "en", // fallback keys
   returnEmptyString: false,
-  debug: process.env.NODE_ENV === 'development',
+  debug: process.env.NODE_ENV === "development",
   resources: translations,
   keySeparator: false,
   nsSeparator: false,
   // specify language detection order
   detection: {
-    order: ['htmlTag'],
+    order: ["htmlTag"],
     // cache user language off
     caches: [],
   },

@@ -6,12 +6,11 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import _get from 'lodash/get';
-import { FieldLabel, SelectField } from 'react-invenio-forms';
-import { i18next } from '@translations/i18next';
-import { Icon } from 'semantic-ui-react';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import _get from "lodash/get";
+import { FieldLabel, SelectField } from "react-invenio-forms";
+import { i18next } from "@translations/i18next";
 
 export class ResourceTypeField extends Component {
   groupErrors = (errors, fieldPath) => {
@@ -29,10 +28,7 @@ export class ResourceTypeField extends Component {
    * @returns {string} label
    */
   _label = (option) => {
-    return (
-      option.type_name +
-      (option.subtype_name ? ' / ' + option.subtype_name : '')
-    );
+    return option.type_name + (option.subtype_name ? " / " + option.subtype_name : "");
   };
 
   /**
@@ -60,10 +56,8 @@ export class ResourceTypeField extends Component {
     return (
       <SelectField
         fieldPath={fieldPath}
-        label={
-          <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
-        }
-        optimized={true}
+        label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
+        optimized
         options={frontEndOptions}
         selectOnBlur={false}
         {...restProps}
@@ -73,7 +67,7 @@ export class ResourceTypeField extends Component {
 }
 
 ResourceTypeField.propTypes = {
-  fieldPath: PropTypes.string,
+  fieldPath: PropTypes.string.isRequired,
   label: PropTypes.string,
   labelIcon: PropTypes.string,
   labelclassname: PropTypes.string,
@@ -89,8 +83,10 @@ ResourceTypeField.propTypes = {
 };
 
 ResourceTypeField.defaultProps = {
-  fieldPath: 'metadata.resource_type',
-  label: i18next.t('Resource type'),
-  labelIcon: 'tag',
-  labelclassname: 'field-label-class',
+  // eslint-disable-next-line react/default-props-match-prop-types
+  fieldPath: "metadata.resource_type",
+  label: i18next.t("Resource type"),
+  labelIcon: "tag",
+  labelclassname: "field-label-class",
+  required: false,
 };

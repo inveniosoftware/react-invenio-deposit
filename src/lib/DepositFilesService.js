@@ -8,7 +8,7 @@
 // Drives the business logic of the InvenioFormApp.
 // Defines what happens when a button is clicked.
 
-import { UploadState } from './state/reducers/files';
+import { UploadState } from "./state/reducers/files";
 
 class UploaderQueue {
   currents = [];
@@ -45,55 +45,56 @@ class UploaderQueue {
 }
 
 export class UploadProgressNotifier {
+  /* eslint-disable no-unused-vars */
   constructor(dispatcher) {
     this.dispatcher = dispatcher;
   }
   onUploadAdded(filename) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
   onUploadStarted(filename, cancelFunc) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
   onUploadProgress(filename, percent) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
   onUploadCompleted(filename, size, checksum, links) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
   onUploadCancelled(filename) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
   onUploadFailed(filename) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 }
 
 export class DepositFilesService {
   constructor(fileApiClient, fileUploadConcurrency) {
     if (this.constructor === DepositFilesService) {
-      throw new Error('Abstract');
+      throw new Error("Abstract");
     }
   }
 
   setProgressNotifier(progressNotifier) {
     if (!(progressNotifier instanceof UploadProgressNotifier)) {
       throw new Error(
-        'Progress notifier must be an instance of `UploadProgressNotifier`'
+        "Progress notifier must be an instance of `UploadProgressNotifier`"
       );
     }
     this.progressNotifier = progressNotifier;
   }
 
   async upload(initializeUploadURL, file, progressNotifier) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 
   async delete(fileLinks) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 
   async importParentRecordFiles(draftLinks) {
-    throw new Error('Not implemented.');
+    throw new Error("Not implemented.");
   }
 }
 
@@ -150,10 +151,7 @@ export class RDMDepositFilesService extends DepositFilesService {
   _startNewUpload = async (initializeUploadURL, file) => {
     let initializedFileMetadata;
     try {
-      initializedFileMetadata = await this._initializeUpload(
-        initializeUploadURL,
-        file
-      );
+      initializedFileMetadata = await this._initializeUpload(initializeUploadURL, file);
     } catch (error) {
       this._onError(file);
       return;
@@ -201,9 +199,7 @@ export class RDMDepositFilesService extends DepositFilesService {
   };
 
   importParentRecordFiles = async (draftLinks) => {
-    const response = await this.fileApiClient.importParentRecordFiles(
-      draftLinks
-    );
+    const response = await this.fileApiClient.importParentRecordFiles(draftLinks);
 
     return response.data.entries.reduce(
       (acc, file) => ({

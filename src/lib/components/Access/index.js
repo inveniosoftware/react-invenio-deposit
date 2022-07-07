@@ -5,7 +5,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-export { MetadataAccess } from './MetadataAccess';
-export { FilesAccess } from './FilesAccess';
-export { EmbargoAccess } from './EmbargoAccess';
-export { AccessMessage } from './AccessMessage';
+export { MetadataAccess } from "./MetadataAccess";
+export { FilesAccess } from "./FilesAccess";
+export { EmbargoAccess } from "./EmbargoAccess";
+export { AccessMessage } from "./AccessMessage";

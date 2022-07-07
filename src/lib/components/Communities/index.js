@@ -1,1 +1,1 @@
-export { CommunityHeader } from './CommunityHeader';
+export { CommunityHeader } from "./CommunityHeader";

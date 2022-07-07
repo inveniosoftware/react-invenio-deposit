@@ -4,10 +4,9 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { i18next } from '@translations/i18next';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { OverridableContext } from 'react-overridable';
+import { i18next } from "@translations/i18next";
+import React, { Component } from "react";
+import { OverridableContext } from "react-overridable";
 import {
   EmptyResults,
   Error,
@@ -17,12 +16,12 @@ import {
   ResultsList,
   ResultsLoader,
   SearchBar,
-} from 'react-searchkit';
-import { Container, Grid, Menu, Modal, Segment } from 'semantic-ui-react';
-import { CommunityListItem } from './CommunityListItem';
+} from "react-searchkit";
+import { Container, Grid, Menu, Modal, Segment } from "semantic-ui-react";
+import { CommunityListItem } from "./CommunityListItem";
 
 const overriddenComponents = {
-  'communities.ResultsList.item': CommunityListItem,
+  "communities.ResultsList.item": CommunityListItem,
 };
 
 export class CommunitySelectionSearch extends Component {
@@ -30,8 +29,8 @@ export class CommunitySelectionSearch extends Component {
     super(props);
 
     this.apiEndpoints = {
-      allCommunities: '/api/communities',
-      myCommunities: '/api/user/communities',
+      allCommunities: "/api/communities",
+      myCommunities: "/api/user/communities",
     };
 
     const defaultEndpoint = this.apiEndpoints.allCommunities;
@@ -48,14 +47,14 @@ export class CommunitySelectionSearch extends Component {
     const searchApi = new InvenioSearchApi({
       axios: {
         url: selectedEndpoint,
-        headers: { Accept: 'application/vnd.inveniordm.v1+json' },
+        headers: { Accept: "application/vnd.inveniordm.v1+json" },
       },
     });
 
     const searchbarPlaceholder =
       selectedEndpoint === allCommunities
-        ? i18next.t('Search in all communities')
-        : i18next.t('Search in my communities');
+        ? i18next.t("Search in all communities")
+        : i18next.t("Search in my communities");
 
     return (
       <OverridableContext.Provider value={overriddenComponents}>
@@ -79,7 +78,7 @@ export class CommunitySelectionSearch extends Component {
                       })
                     }
                   >
-                    {i18next.t('All')}
+                    {i18next.t("All")}
                   </Menu.Item>
                   <Menu.Item
                     name="My communities"
@@ -90,7 +89,7 @@ export class CommunitySelectionSearch extends Component {
                       })
                     }
                   >
-                    {i18next.t('My communities')}
+                    {i18next.t("My communities")}
                   </Menu.Item>
                 </Menu>
               </Grid.Column>
@@ -99,9 +98,9 @@ export class CommunitySelectionSearch extends Component {
                   placeholder={searchbarPlaceholder}
                   autofocus
                   actionProps={{
-                    icon: 'search',
+                    icon: "search",
                     content: null,
-                    className: 'search',
+                    className: "search",
                   }}
                 />
               </Grid.Column>
@@ -129,11 +128,3 @@ export class CommunitySelectionSearch extends Component {
     );
   }
 }
-
-CommunitySelectionSearch.propTypes = {
-  chosenCommunity: PropTypes.object,
-};
-
-CommunitySelectionSearch.defaultProps = {
-  chosenCommunity: null,
-};

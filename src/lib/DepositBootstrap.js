@@ -5,13 +5,13 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import { BaseForm } from 'react-invenio-forms';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { BaseForm } from "react-invenio-forms";
+import { connect } from "react-redux";
 import {
   DepositFormSubmitActions,
   DepositFormSubmitContext,
-} from './DepositFormSubmitContext';
+} from "./DepositFormSubmitContext";
 import {
   delete_,
   discardPID,
@@ -20,25 +20,27 @@ import {
   reservePID,
   save,
   submitReview,
-} from './state/actions';
-import { scrollTop } from './utils';
+} from "./state/actions";
+import { scrollTop } from "./utils";
+import PropTypes from "prop-types";
 
 class DepositBootstrapComponent extends Component {
-  submitContext = undefined;
-
   componentDidMount() {
-    window.addEventListener('beforeunload', (e) => {
-      if (this.props.fileUploadOngoing) {
-        e.returnValue = '';
-        return '';
+    const { fileUploadOngoing } = this.props;
+    window.addEventListener("beforeunload", (e) => {
+      if (fileUploadOngoing) {
+        e.returnValue = "";
+        return "";
       }
     });
-    window.addEventListener('unload', async (e) => {
+    window.addEventListener("unload", async () => {
       // TODO: cancel all uploads
       // Investigate if it's possible to wait for the deletion request to complete
       // before unloading the page
     });
   }
+
+  submitContext = undefined;
 
   setSubmitContext = (actionName, extra = {}) => {
     this.submitContext = {
@@ -70,29 +72,29 @@ class DepositBootstrapComponent extends Component {
         break;
       case DepositFormSubmitActions.PUBLISH_WITHOUT_COMMUNITY:
         actionFunc = publishAction;
-        params['withoutCommunity'] = true;
+        params["withoutCommunity"] = true;
         break;
       case DepositFormSubmitActions.SUBMIT_REVIEW:
         actionFunc = submitReview;
-        params['reviewComment'] = extra['reviewComment'];
+        params["reviewComment"] = extra["reviewComment"];
         break;
       case DepositFormSubmitActions.PREVIEW:
         actionFunc = previewAction;
         break;
       case DepositFormSubmitActions.DELETE:
         actionFunc = deleteAction;
-        params['isDiscardingVersion'] = extra['isDiscardingVersion'];
+        params["isDiscardingVersion"] = extra["isDiscardingVersion"];
         break;
       case DepositFormSubmitActions.RESERVE_PID:
         actionFunc = reservePIDAction;
-        params['pidType'] = extra['pidType'];
+        params["pidType"] = extra["pidType"];
         break;
       case DepositFormSubmitActions.DISCARD_PID:
         actionFunc = discardPIDAction;
-        params['pidType'] = extra['pidType'];
+        params["pidType"] = extra["pidType"];
         break;
       default:
-        throw Error('The submit btn must set the form action name.');
+        throw Error("The submit btn must set the form action name.");
     }
 
     try {
@@ -112,6 +114,7 @@ class DepositBootstrapComponent extends Component {
   };
 
   render() {
+    const { errors, record, children } = this.props;
     return (
       <DepositFormSubmitContext.Provider
         value={{ setSubmitContext: this.setSubmitContext }}
@@ -126,17 +129,37 @@ class DepositBootstrapComponent extends Component {
             // the new PID in its payload, otherwise a new PID
             // is requested on each action, generating countless drafts
             enableReinitialize: true,
-            initialValues: this.props.record,
+            initialValues: record,
             // errors need to be repopulated after form is reinitialised
-            ...(this.props.errors && { initialErrors: this.props.errors }),
+            ...(errors && { initialErrors: errors }),
           }}
         >
-          {this.props.children}
+          {children}
         </BaseForm>
       </DepositFormSubmitContext.Provider>
     );
   }
 }
+
+DepositBootstrapComponent.propTypes = {
+  errors: PropTypes.object,
+  record: PropTypes.object.isRequired,
+  children: PropTypes.node,
+  saveAction: PropTypes.func.isRequired,
+  publishAction: PropTypes.func.isRequired,
+  submitReview: PropTypes.func.isRequired,
+  previewAction: PropTypes.func.isRequired,
+  deleteAction: PropTypes.func.isRequired,
+  reservePIDAction: PropTypes.func.isRequired,
+  discardPIDAction: PropTypes.func.isRequired,
+  fileUploadOngoing: PropTypes.bool,
+};
+
+DepositBootstrapComponent.defaultProps = {
+  errors: undefined,
+  children: undefined,
+  fileUploadOngoing: false,
+};
 
 const mapStateToProps = (state) => {
   const { isFileUploadInProgress, ...files } = state.files;
@@ -158,10 +181,8 @@ const mapDispatchToProps = (dispatch) => ({
   previewAction: (values) => dispatch(preview(values)),
   deleteAction: (values, { isDiscardingVersion }) =>
     dispatch(delete_(values, { isDiscardingVersion })),
-  reservePIDAction: (values, { pidType }) =>
-    dispatch(reservePID(values, { pidType })),
-  discardPIDAction: (values, { pidType }) =>
-    dispatch(discardPID(values, { pidType })),
+  reservePIDAction: (values, { pidType }) => dispatch(reservePID(values, { pidType })),
+  discardPIDAction: (values, { pidType }) => dispatch(discardPID(values, { pidType })),
 });
 
 export const DepositBootstrap = connect(

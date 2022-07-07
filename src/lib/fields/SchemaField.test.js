@@ -4,26 +4,25 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import { Field } from './Field';
-import { SchemaField } from './SchemaField';
+import { Field } from "./Field";
+import { SchemaField } from "./SchemaField";
 
-
-describe('SchemaField tests', () => {
+describe("SchemaField tests", () => {
   const schemaField = new SchemaField({
-    fieldpath: 'aFieldPath',
+    fieldpath: "aFieldPath",
     schema: {
       fieldA: new Field({
-        fieldpath: 'fieldA',
+        fieldpath: "fieldA",
       }),
       fieldB: new Field({
-        fieldpath: 'fieldB',
+        fieldpath: "fieldB",
       }),
     },
-    deserializedDefault: [{fieldA: 'aDefaultValue'}],
+    deserializedDefault: [{ fieldA: "aDefaultValue" }],
   });
 
-  describe('deserialize', () => {
-    it('fills a __key attribute', () => {
+  describe("deserialize", () => {
+    it("fills a __key attribute", () => {
       let serialized = {
         aFieldPath: [
           { fieldA: "A1", fieldB: "B1" },
@@ -33,15 +32,14 @@ describe('SchemaField tests', () => {
 
       let deserialized = schemaField.deserialize(serialized);
 
-      deserialized.aFieldPath.forEach( (o, i) => {
+      deserialized.aFieldPath.forEach((o, i) => {
         expect(o.__key).toEqual(i);
       });
-
     });
   });
 
-  describe('serialize', () => {
-    it('deletes the __key attribute', () => {
+  describe("serialize", () => {
+    it("deletes the __key attribute", () => {
       let deserialized = {
         aFieldPath: [
           { fieldA: "A1", fieldB: "B1", __key: 0 },
@@ -51,10 +49,9 @@ describe('SchemaField tests', () => {
 
       let serialized = schemaField.serialize(deserialized);
 
-      serialized.aFieldPath.forEach( (o) => {
+      serialized.aFieldPath.forEach((o) => {
         expect("__key" in o).toEqual(false);
       });
-
     });
   });
 });
