@@ -14,3 +14,4 @@ export {
   RightsVocabularyField,
   VocabularyField,
 } from "./VocabularyField";
+export { CustomField } from "./CustomField";

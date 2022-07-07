@@ -8,4 +8,8 @@
 /docs/website/build
 npm-debug.log*
 .history
+
+# OSX files
+# =========
+
 *.DS_Store

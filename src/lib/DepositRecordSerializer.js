@@ -19,12 +19,14 @@ import _pickBy from "lodash/pickBy";
 import _set from "lodash/set";
 import {
   AllowAdditionsVocabularyField,
+  CustomField,
   Field,
   FundingField,
   RightsVocabularyField,
   SchemaField,
   VocabularyField,
 } from "./fields";
+
 import { emptyDate, emptyIdentifier, emptyRelatedWork } from "./record";
 
 export class DepositRecordSerializer {
@@ -47,206 +49,216 @@ export class DepositRecordSerializer {
 }
 
 export class RDMDepositRecordSerializer extends DepositRecordSerializer {
-  constructor(defaultLocale) {
+  constructor(defaultLocale, customFieldVocabularies = []) {
     super();
     this.defaultLocale = defaultLocale;
+    this.customFieldVocabularies = customFieldVocabularies;
   }
-  depositRecordSchema = {
-    files: new Field({
-      fieldpath: "files",
-    }),
-    links: new Field({
-      fieldpath: "links",
-    }),
-    expanded: new Field({
-      fieldpath: "expanded",
-      deserializedDefault: {},
-    }),
-    pids: new Field({
-      fieldpath: "pids",
-      deserializedDefault: {},
-      serializedDefault: {},
-    }),
-    title: new Field({
-      fieldpath: "metadata.title",
-      deserializedDefault: "",
-    }),
-    additional_titles: new SchemaField({
-      fieldpath: "metadata.additional_titles",
-      schema: {
-        title: new Field({
-          fieldpath: "title",
-        }),
-        type: new VocabularyField({
-          fieldpath: "type",
-          deserializedDefault: "",
-          serializedDefault: "",
-        }),
-        lang: new VocabularyField({
-          fieldpath: "lang",
-          deserializedDefault: "",
-          serializedDefault: "",
-        }),
-      },
-    }),
-    additional_descriptions: new SchemaField({
-      fieldpath: "metadata.additional_descriptions",
-      schema: {
-        description: new Field({
-          fieldpath: "description",
-        }),
-        type: new VocabularyField({
-          fieldpath: "type",
-          deserializedDefault: "",
-          serializedDefault: "",
-        }),
-        lang: new VocabularyField({
-          fieldpath: "lang",
-          deserializedDefault: "",
-          serializedDefault: "",
-        }),
-      },
-    }),
-    creators: new SchemaField({
-      fieldpath: "metadata.creators",
-      schema: {
-        person_or_org: new Field({
-          fieldpath: "person_or_org",
-        }),
-        role: new VocabularyField({
-          fieldpath: "role",
-          deserializedDefault: "",
-          serializedDefault: "",
-        }),
-        affiliations: new AllowAdditionsVocabularyField({
-          fieldpath: "affiliations",
-          deserializedDefault: [],
-          serializedDefault: [],
-          labelField: "name",
-        }),
-      },
-    }),
-    contributors: new SchemaField({
-      fieldpath: "metadata.contributors",
-      schema: {
-        person_or_org: new Field({
-          fieldpath: "person_or_org",
-        }),
-        role: new VocabularyField({
-          fieldpath: "role",
-          deserializedDefault: "",
-          serializedDefault: "",
-        }),
-        affiliations: new AllowAdditionsVocabularyField({
-          fieldpath: "affiliations",
-          deserializedDefault: [],
-          serializedDefault: [],
-          labelField: "name",
-        }),
-      },
-    }),
-    resource_type: new VocabularyField({
-      fieldpath: "metadata.resource_type",
-      deserializedDefault: "",
-      serializedDefault: "",
-    }),
-    access: new Field({
-      fieldpath: "access",
-      deserializedDefault: {
-        record: "public",
-        files: "public",
-      },
-    }),
-    publication_date: new Field({
-      fieldpath: "metadata.publication_date",
-      deserializedDefault: "",
-    }),
-    dates: new SchemaField({
-      fieldpath: "metadata.dates",
-      schema: {
-        date: new Field({
-          fieldpath: "date",
-        }),
-        type: new VocabularyField({
-          fieldpath: "type",
-          deserializedDefault: "",
-          serializedDefault: "",
-        }),
-        description: new Field({
-          fieldpath: "description",
-        }),
-      },
-      deserializedDefault: [emptyDate],
-    }),
-    languages: new VocabularyField({
-      fieldpath: "metadata.languages",
-      deserializedDefault: [],
-      serializedDefault: [],
-    }),
-    identifiers: new SchemaField({
-      fieldpath: "metadata.identifiers",
-      schema: {
-        scheme: new Field({
-          fieldpath: "scheme",
-        }),
-        identifier: new Field({
-          fieldpath: "identifier",
-        }),
-      },
-      deserializedDefault: [emptyIdentifier],
-    }),
-    related_identifiers: new SchemaField({
-      fieldpath: "metadata.related_identifiers",
-      schema: {
-        scheme: new Field({
-          fieldpath: "scheme",
-        }),
-        identifier: new Field({
-          fieldpath: "identifier",
-        }),
-        relation_type: new VocabularyField({
-          fieldpath: "relation_type",
-          deserializedDefault: "",
-          serializedDefault: "",
-        }),
-        resource_type: new VocabularyField({
-          fieldpath: "resource_type",
-          deserializedDefault: "",
-          serializedDefault: "",
-        }),
-      },
-      deserializedDefault: [emptyRelatedWork],
-    }),
-    subjects: new AllowAdditionsVocabularyField({
-      fieldpath: "metadata.subjects",
-      deserializedDefault: [],
-      serializedDefault: [],
-      labelField: "subject",
-    }),
-    funding: new SchemaField({
-      fieldpath: "metadata.funding",
-      schema: {
-        award: new FundingField({
-          fieldpath: "award",
-          deserializedDefault: {},
-        }),
-        funder: new FundingField({
-          fieldpath: "funder",
-          deserializedDefault: {},
-        }),
-      },
-    }),
-    version: new Field({
-      fieldpath: "metadata.version",
-      deserializedDefault: "",
-    }),
-    rights: new RightsVocabularyField({
-      fieldpath: "metadata.rights",
-      deserializedDefault: [],
-      serializedDefault: [],
-      localeFields: ["title", "description"],
-    }),
-  };
+
+  get depositRecordSchema() {
+    return {
+      files: new Field({
+        fieldpath: "files",
+      }),
+      links: new Field({
+        fieldpath: "links",
+      }),
+      expanded: new Field({
+        fieldpath: "expanded",
+        deserializedDefault: {},
+      }),
+      pids: new Field({
+        fieldpath: "pids",
+        deserializedDefault: {},
+        serializedDefault: {},
+      }),
+      title: new Field({
+        fieldpath: "metadata.title",
+        deserializedDefault: "",
+      }),
+      additional_titles: new SchemaField({
+        fieldpath: "metadata.additional_titles",
+        schema: {
+          title: new Field({
+            fieldpath: "title",
+          }),
+          type: new VocabularyField({
+            fieldpath: "type",
+            deserializedDefault: "",
+            serializedDefault: "",
+          }),
+          lang: new VocabularyField({
+            fieldpath: "lang",
+            deserializedDefault: "",
+            serializedDefault: "",
+          }),
+        },
+      }),
+      additional_descriptions: new SchemaField({
+        fieldpath: "metadata.additional_descriptions",
+        schema: {
+          description: new Field({
+            fieldpath: "description",
+          }),
+          type: new VocabularyField({
+            fieldpath: "type",
+            deserializedDefault: "",
+            serializedDefault: "",
+          }),
+          lang: new VocabularyField({
+            fieldpath: "lang",
+            deserializedDefault: "",
+            serializedDefault: "",
+          }),
+        },
+      }),
+      creators: new SchemaField({
+        fieldpath: "metadata.creators",
+        schema: {
+          person_or_org: new Field({
+            fieldpath: "person_or_org",
+          }),
+          role: new VocabularyField({
+            fieldpath: "role",
+            deserializedDefault: "",
+            serializedDefault: "",
+          }),
+          affiliations: new AllowAdditionsVocabularyField({
+            fieldpath: "affiliations",
+            deserializedDefault: [],
+            serializedDefault: [],
+            labelField: "name",
+          }),
+        },
+      }),
+      contributors: new SchemaField({
+        fieldpath: "metadata.contributors",
+        schema: {
+          person_or_org: new Field({
+            fieldpath: "person_or_org",
+          }),
+          role: new VocabularyField({
+            fieldpath: "role",
+            deserializedDefault: "",
+            serializedDefault: "",
+          }),
+          affiliations: new AllowAdditionsVocabularyField({
+            fieldpath: "affiliations",
+            deserializedDefault: [],
+            serializedDefault: [],
+            labelField: "name",
+          }),
+        },
+      }),
+      resource_type: new VocabularyField({
+        fieldpath: "metadata.resource_type",
+        deserializedDefault: "",
+        serializedDefault: "",
+      }),
+      access: new Field({
+        fieldpath: "access",
+        deserializedDefault: {
+          record: "public",
+          files: "public",
+        },
+      }),
+      publication_date: new Field({
+        fieldpath: "metadata.publication_date",
+        deserializedDefault: "",
+      }),
+      dates: new SchemaField({
+        fieldpath: "metadata.dates",
+        schema: {
+          date: new Field({
+            fieldpath: "date",
+          }),
+          type: new VocabularyField({
+            fieldpath: "type",
+            deserializedDefault: "",
+            serializedDefault: "",
+          }),
+          description: new Field({
+            fieldpath: "description",
+          }),
+        },
+        deserializedDefault: [emptyDate],
+      }),
+      languages: new VocabularyField({
+        fieldpath: "metadata.languages",
+        deserializedDefault: [],
+        serializedDefault: [],
+      }),
+      identifiers: new SchemaField({
+        fieldpath: "metadata.identifiers",
+        schema: {
+          scheme: new Field({
+            fieldpath: "scheme",
+          }),
+          identifier: new Field({
+            fieldpath: "identifier",
+          }),
+        },
+        deserializedDefault: [emptyIdentifier],
+      }),
+      related_identifiers: new SchemaField({
+        fieldpath: "metadata.related_identifiers",
+        schema: {
+          scheme: new Field({
+            fieldpath: "scheme",
+          }),
+          identifier: new Field({
+            fieldpath: "identifier",
+          }),
+          relation_type: new VocabularyField({
+            fieldpath: "relation_type",
+            deserializedDefault: "",
+            serializedDefault: "",
+          }),
+          resource_type: new VocabularyField({
+            fieldpath: "resource_type",
+            deserializedDefault: "",
+            serializedDefault: "",
+          }),
+        },
+        deserializedDefault: [emptyRelatedWork],
+      }),
+      subjects: new AllowAdditionsVocabularyField({
+        fieldpath: "metadata.subjects",
+        deserializedDefault: [],
+        serializedDefault: [],
+        labelField: "subject",
+      }),
+      funding: new SchemaField({
+        fieldpath: "metadata.funding",
+        schema: {
+          award: new FundingField({
+            fieldpath: "award",
+            deserializedDefault: {},
+          }),
+          funder: new FundingField({
+            fieldpath: "funder",
+            deserializedDefault: {},
+          }),
+        },
+      }),
+      version: new Field({
+        fieldpath: "metadata.version",
+        deserializedDefault: "",
+      }),
+      rights: new RightsVocabularyField({
+        fieldpath: "metadata.rights",
+        deserializedDefault: [],
+        serializedDefault: [],
+        localeFields: ["title", "description"],
+      }),
+      custom_fields: new CustomField({
+        fieldpath: "custom_fields",
+        deserializedDefault: {},
+        serializedDefault: {},
+        vocabularyFields: this.customFieldVocabularies,
+      }),
+    };
+  }
 
   /**
    * Remove empty fields from record
@@ -299,6 +311,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
       "status",
       "pids",
       "ui",
+      "custom_fields",
     ]);
 
     // FIXME: move logic in a more sophisticated PIDField that allows empty values
@@ -366,6 +379,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
       "files",
       "pids",
       "parent",
+      "custom_fields",
     ]);
 
     // FIXME: move logic in a more sophisticated PIDField that allows empty values
@@ -393,7 +407,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
     // Finally add back 'metadata' if absent
     // We need to do this for backend validation, unless we mark metadata as
     // required in the backend or find another alternative.
-    _defaults(serializedRecord, { metadata: {} });
+    _defaults(serializedRecord, { metadata: {}, custom_fields: {}});
 
     return serializedRecord;
   }
