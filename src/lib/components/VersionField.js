@@ -19,7 +19,7 @@ export class VersionField extends Component {
       <span>
         <Trans>
           Mostly relevant for software and dataset uploads. A semantic version
-          string is preferred see
+          string is preferred (see
           <a
             href="https://semver.org/"
             target="_blank"
@@ -28,7 +28,7 @@ export class VersionField extends Component {
             {' '}
             semver.org
           </a>
-          , but any version string is accepted.
+          ) but any version string is accepted.
         </Trans>
       </span>
     );
