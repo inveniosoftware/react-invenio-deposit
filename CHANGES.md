@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.19.15 (released 2022-07-08)
+
+* fix payload sent for restricted community
+
 Version 0.19.14 (released 2022-07-05)
 
 * utils: exports function humanReadableBytes to be used outside react-invenio-deposit.
