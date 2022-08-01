@@ -123,7 +123,7 @@ const ACTIONS = {
   [FILE_IMPORT_FAILED]: {
     feedback: "negative",
     message: i18next.t(
-      "Oops, something went wrong! Importing files from the previous draft version failed. Please try again. If the problem persists, contact user support."
+      "Oops, something went wrong! Importing files from the previous version failed. Please try again. If the problem persists, contact user support."
     ),
   },
 };
