@@ -79,7 +79,7 @@ const CustomFundingSchema = Yup.object().shape({
         },
       }),
       url: Yup.string()
-        .url(i18next.t("Url must be a valid url."))
+        .url(i18next.t("URL must be valid."))
         .test({
           name: "validateUrlDependencies",
           message: i18next.t("Url must be set alongside title and number."),

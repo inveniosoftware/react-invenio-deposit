@@ -16,12 +16,8 @@ import * as Yup from "yup";
 
 export class SubmitReviewModal extends Component {
   ConfirmSubmitReviewSchema = Yup.object({
-    acceptAccessToRecord: Yup.string().required(
-      i18next.t("You must click and accept this.")
-    ),
-    acceptAfterPublishRecord: Yup.string().required(
-      i18next.t("You must click and accept this.")
-    ),
+    acceptAccessToRecord: Yup.string().required(i18next.t("You must accept this.")),
+    acceptAfterPublishRecord: Yup.string().required(i18next.t("You must accept this.")),
     reviewComment: Yup.string(),
   });
 
