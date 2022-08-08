@@ -249,8 +249,8 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
         serializedDefault: [],
         localeFields: ['title', 'description'],
       }),
-      custom: new CustomField({
-        fieldpath: 'custom',
+      custom_fields: new CustomField({
+        fieldpath: 'custom_fields',
         deserializedDefault: '',
         serializedDefault: '',
         vocabularyFields: this.customFieldVocabularies,
@@ -311,7 +311,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
       'status',
       'pids',
       'ui',
-      'custom',
+      'custom_fields',
     ]);
 
     // FIXME: move logic in a more sophisticated PIDField that allows empty values
@@ -379,7 +379,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
       'files',
       'pids',
       'parent',
-      'custom',
+      'custom_fields',
     ]);
 
     // FIXME: move logic in a more sophisticated PIDField that allows empty values

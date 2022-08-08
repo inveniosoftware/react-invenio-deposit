@@ -33,9 +33,9 @@ export class CustomField extends Field {
           } else {
             _value = mapValue(value);
           }
-          record = _set(record, `custom.${key}`, _value);
+          record = _set(record, `custom_fields.${key}`, _value);
         } else {
-          record = _set(record, `custom.${key}`, value);
+          record = _set(record, `custom_fields.${key}`, value);
         }
       }
     }
