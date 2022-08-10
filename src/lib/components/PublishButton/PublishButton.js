@@ -53,6 +53,7 @@ class PublishButtonComponent extends Component {
       buttonLabel,
       publishWithoutCommunity,
       formik,
+      publishModalExtraContent,
       ...ui
     } = this.props;
     const { isConfirmModalOpen } = this.state;
@@ -72,6 +73,7 @@ class PublishButtonComponent extends Component {
           labelPosition="left"
           content={buttonLabel}
           {...uiProps}
+          type="button" // needed so the formik form doesn't handle it as submit button i.e enable HTML validation on required input fields
         />
         {isConfirmModalOpen && (
           <Modal
@@ -94,6 +96,9 @@ class PublishButtonComponent extends Component {
                   )}
                 </p>
               </Message>
+              {publishModalExtraContent && (
+                <div dangerouslySetInnerHTML={{ __html: publishModalExtraContent }} />
+              )}
             </Modal.Content>
             <Modal.Actions>
               <Button onClick={this.closeConfirmModal} floated="left">
@@ -120,17 +125,20 @@ PublishButtonComponent.propTypes = {
   actionState: PropTypes.string,
   numberOfFiles: PropTypes.number.isRequired,
   formik: PropTypes.object.isRequired,
+  publishModalExtraContent: PropTypes.string,
 };
 
 PublishButtonComponent.defaultProps = {
   buttonLabel: i18next.t("Publish"),
   publishWithoutCommunity: false,
   actionState: undefined,
+  publishModalExtraContent: undefined,
 };
 
 const mapStateToProps = (state) => ({
   actionState: state.deposit.actionState,
   numberOfFiles: Object.values(state.files.entries).length,
+  publishModalExtraContent: state.deposit.config.publish_modal_extra,
 });
 
 export const PublishButton = connect(

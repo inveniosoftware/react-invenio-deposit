@@ -24,28 +24,33 @@ class SubmitReviewOrPublishComponent extends Component {
       ...ui
     } = this.props;
 
-    return showSubmitForReviewButton ? (
-      <SubmitReviewButton {...ui} />
-    ) : showChangeCommunityButton ? (
-      <>
-        <CommunitySelectionModal
-          onCommunityChange={(community) => {
-            changeSelectedCommunity(community);
-          }}
-          chosenCommunity={community}
-          trigger={
-            <Button content={i18next.t("Change community")} fluid className="mb-10" />
-          }
-        />
-        <PublishButton
-          buttonLabel={i18next.t("Publish without community")}
-          publishWithoutCommunity
-          {...ui}
-        />
-      </>
-    ) : (
-      <PublishButton {...ui} />
-    );
+    let result;
+
+    if (showSubmitForReviewButton) {
+      result = <SubmitReviewButton {...ui} />;
+    } else if (showChangeCommunityButton) {
+      result = (
+        <>
+          <CommunitySelectionModal
+            onCommunityChange={(community) => {
+              changeSelectedCommunity(community);
+            }}
+            chosenCommunity={community}
+            trigger={
+              <Button content={i18next.t("Change community")} fluid className="mb-10" />
+            }
+          />
+          <PublishButton
+            buttonLabel={i18next.t("Publish without community")}
+            publishWithoutCommunity
+            {...ui}
+          />
+        </>
+      );
+    } else {
+      result = <PublishButton {...ui} />;
+    }
+    return result;
   }
 }
 
