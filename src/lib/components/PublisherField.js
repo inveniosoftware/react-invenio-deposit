@@ -1,6 +1,6 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2022 Northwestern University.
 // Copyright (C) 2021 Graz University of Technology.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
@@ -14,7 +14,7 @@ import { i18next } from "@translations/i18next";
 
 export class PublisherField extends Component {
   render() {
-    const { fieldPath, label, labelIcon, placeholder } = this.props;
+    const { fieldPath, label, labelIcon, placeholder, required } = this.props;
 
     return (
       <TextField
@@ -24,6 +24,7 @@ export class PublisherField extends Component {
         )}
         label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
         placeholder={placeholder}
+        required={required}
       />
     );
   }
@@ -34,6 +35,7 @@ PublisherField.propTypes = {
   label: PropTypes.string,
   labelIcon: PropTypes.string,
   placeholder: PropTypes.string,
+  required: PropTypes.bool,
 };
 
 PublisherField.defaultProps = {
@@ -42,4 +44,5 @@ PublisherField.defaultProps = {
   label: i18next.t("Publisher"),
   labelIcon: "building outline",
   placeholder: i18next.t("Publisher"),
+  required: true,
 };
