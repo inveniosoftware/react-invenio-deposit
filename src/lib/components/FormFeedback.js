@@ -209,8 +209,20 @@ class DisconnectedFormFeedback extends Component {
           return ['pids.' + key, value];
         })
       : [['pids', pids]];
+
+    const custom_fields = errors.custom_fields || {};
+    const step0_custom_fields = Object.entries(custom_fields).map(
+      ([key, value]) => {
+        return ['custom_fields.' + key, value];
+      }
+    );
+
     const step0 = Object.fromEntries(
-      step0_metadata.concat(step0_files).concat(step0_access).concat(step0_pids)
+      step0_metadata
+        .concat(step0_files)
+        .concat(step0_access)
+        .concat(step0_pids)
+        .concat(step0_custom_fields)
     );
 
     // Step 1 - Transform each error value into array of error messages
