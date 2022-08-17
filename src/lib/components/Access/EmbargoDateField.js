@@ -17,6 +17,7 @@ export function EmbargoDateField({
   labelIcon,
   placeholder,
   required,
+  helpText,
 }) {
   return (
     <TextField
@@ -24,6 +25,7 @@ export function EmbargoDateField({
       label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
       placeholder={placeholder}
       required={required}
+      helpText={helpText}
     />
   );
 }
@@ -34,6 +36,7 @@ EmbargoDateField.propTypes = {
   labelIcon: PropTypes.string,
   placeholder: PropTypes.string,
   required: PropTypes.bool,
+  helpText: PropTypes.string,
 };
 
 EmbargoDateField.defaultProps = {
@@ -43,4 +46,5 @@ EmbargoDateField.defaultProps = {
   // eslint-disable-next-line react/default-props-match-prop-types
   fieldPath: "access.embargo.until",
   label: i18next.t("Embargo until"),
+  helpText: `${i18next.t("Format")}: ${i18next.t("YYYY-MM-DD")}`,
 };
