@@ -29,27 +29,28 @@ export const EmbargoAccess = ({ access, accessCommunity, metadataOnly }) => {
   return (
     <List>
       <List.Item disabled={!embargoEnabled} data-testid="option-list-embargo">
-        <List.Icon>
+        <List.Icon aria-hidden="false">
           <EmbargoCheckboxField
             fieldPath="access.embargo.active"
             checked={embargoActive}
             disabled={!embargoEnabled}
           />
         </List.Icon>
+
         <List.Content>
-          <List.Header>
-            <label htmlFor="access.embargo.active">
-              {i18next.t("Apply an embargo")} <Icon name="clock outline" />
-            </label>
+          <List.Header as="label" htmlFor="access.embargo.active">
+            {i18next.t("Apply an embargo")} <Icon name="clock outline" />
           </List.Header>
+
           <List.Description>
             <Trans>
               Record or files protection must be <b>restricted</b> to apply an embargo.
             </Trans>
           </List.Description>
+
           {embargoActive && (
             <>
-              <Divider hidden />
+              <Divider hidden className="rel-mb-1" />
               <EmbargoDateField fieldPath="access.embargo.until" required />
               <TextAreaField
                 label={i18next.t("Embargo reason")}

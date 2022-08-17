@@ -18,8 +18,8 @@ export const AccessMessage = ({ access, metadataOnly, accessCommunity }) => {
   const restrictedFiles = !embargoActive && !filesPublic && recordPublic;
   const fullEmbargo = !recordPublic && embargoActive;
 
-  const fmtDate = access.embargo?.date
-    ? DateTime.fromISO(access.embargo.date).toLocaleString(DateTime.DATE_FULL)
+  const fmtDate = access.embargo?.until
+    ? DateTime.fromISO(access.embargo.until).toLocaleString(DateTime.DATE_FULL)
     : "???";
 
   if (fullyPublic) {
