@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.20.0 (released 2022-08-19)
+
+* Bump release for RDM v10
+
 Version 0.19.15 (released 2022-07-08)
 
 * fix payload sent for restricted community
