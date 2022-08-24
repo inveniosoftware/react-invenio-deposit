@@ -1,5 +1,5 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
+// Copyright (C) 2020-2022 CERN.
 // Copyright (C) 2020 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
@@ -23,16 +23,12 @@ export class CustomField extends Field {
     this.vocabularyFields = vocabularyFields;
   }
 
-  _mapCustomFields(record, customFields, mapValue) {
+  #mapCustomFields(record, customFields, mapValue) {
     if (customFields !== null) {
       for (const [key, value] of Object.entries(customFields)) {
-        if (this.vocabularyFields.includes(key)) {
-          let _value;
-          if (_isArray(value)) {
-            _value = value.map(mapValue);
-          } else {
-            _value = mapValue(value);
-          }
+        const isVocabularyField = this.vocabularyFields.includes(key);
+        if (isVocabularyField) {
+          const _value = _isArray(value) ? value.map(mapValue) : mapValue(value);
           record = _set(record, `custom_fields.${key}`, _value);
         } else {
           record = _set(record, `custom_fields.${key}`, value);
@@ -48,9 +44,9 @@ export class CustomField extends Field {
       }
       return value;
     };
-    let _record = _cloneDeep(record);
-    let customFields = _get(record, this.fieldpath, this.deserializedDefault);
-    this._mapCustomFields(_record, customFields, _deserialize);
+    const _record = _cloneDeep(record);
+    const customFields = _get(record, this.fieldpath, this.deserializedDefault);
+    this.#mapCustomFields(_record, customFields, _deserialize);
     return _record;
   }
 
@@ -61,9 +57,9 @@ export class CustomField extends Field {
       }
       return value;
     };
-    let _record = _cloneDeep(record);
-    let customFields = _get(record, this.fieldpath, this.serializedDefault);
-    this._mapCustomFields(_record, customFields, _serialize);
+    const _record = _cloneDeep(record);
+    const customFields = _get(record, this.fieldpath, this.serializedDefault);
+    this.#mapCustomFields(_record, customFields, _serialize);
     return _record;
   }
 }

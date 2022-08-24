@@ -18,7 +18,7 @@ export function NoAwardResults({ switchToCustom }) {
         <p>
           {i18next.t("Did not find your award? ")}
           <a
-            href="#"
+            href="/"
             onClick={(e) => {
               e.preventDefault();
               switchToCustom();

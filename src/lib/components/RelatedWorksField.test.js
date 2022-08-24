@@ -7,12 +7,17 @@ import { RelatedWorksField } from "./RelatedWorksField";
 
 it("renders without crashing", () => {
   const div = document.createElement("div");
+  const options = {
+    relations: [{ text: "Is supplemented by", value: "issupplementedby" }],
+    scheme: [{ text: "Arxiv", value: "arxiv" }],
+    resource_type: [{ text: "Dataset", value: "dataset", icon: "table" }],
+  };
 
   ReactDOM.render(
     <Formik>
       {() => (
         <Form>
-          <RelatedWorksField fieldPath="fieldPath" />
+          <RelatedWorksField fieldPath="fieldPath" options={options} />
         </Form>
       )}
     </Formik>,

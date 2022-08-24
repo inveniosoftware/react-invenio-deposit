@@ -407,7 +407,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
     // Finally add back 'metadata' if absent
     // We need to do this for backend validation, unless we mark metadata as
     // required in the backend or find another alternative.
-    _defaults(serializedRecord, { metadata: {}, custom_fields: {}});
+    _defaults(serializedRecord, { metadata: {}, custom_fields: {} });
 
     return serializedRecord;
   }
