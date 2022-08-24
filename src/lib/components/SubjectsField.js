@@ -101,7 +101,10 @@ export class SubjectsField extends Component {
                 }}
                 value={getIn(values, fieldPath, []).map((val) => val.subject)}
                 label={
-                  <label className="mobile-hidden">&nbsp;</label>
+                  <>
+                    {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                    <label className="mobile-hidden">&nbsp;</label>
+                  </>
                 } /** For alignment purposes */
                 allowAdditions
                 width={11}

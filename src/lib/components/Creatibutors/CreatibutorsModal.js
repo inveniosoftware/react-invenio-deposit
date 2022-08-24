@@ -196,13 +196,13 @@ export class CreatibutorsModal extends Component {
     let icon = null;
     let link = null;
 
-    if (identifier.scheme == "orcid") {
+    if (identifier.scheme === "orcid") {
       icon = "/static/images/orcid.svg";
       link = "https://orcid.org/" + identifier.identifier;
-    } else if (identifier.scheme == "gnd") {
+    } else if (identifier.scheme === "gnd") {
       icon = "/static/images/gnd-icon.svg";
       link = "https://d-nb.info/gnd/" + identifier.identifier;
-    } else if (identifier.scheme == "ror") {
+    } else if (identifier.scheme === "ror") {
       icon = "/static/images/ror-icon.svg";
       link = "https://ror.org/" + identifier.identifier;
     } else {
@@ -276,6 +276,7 @@ export class CreatibutorsModal extends Component {
             <Header.Content>
               <p>
                 <Trans>
+                  {/* eslint-disable-next-line jsx-a11y/anchor-is-valid*/}
                   Couldn't find your person? You can <a>create a new entry</a>.
                 </Trans>
               </p>

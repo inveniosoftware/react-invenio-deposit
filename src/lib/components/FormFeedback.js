@@ -1,5 +1,5 @@
 // This file is part of InvenioRDM
-// Copyright (C) 2020-2021 CERN.
+// Copyright (C) 2020-2022 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
 // Copyright (C) 2021 Graz University of Technology.
 //
@@ -193,45 +193,33 @@ class DisconnectedFormFeedback extends Component {
     //          e.g., {metadata: {creators: ,,,}} => {"metadata.creators": ...}
     // For now, only for metadata, files and access.embargo
     const metadata = errors.metadata || {};
-    // eslint-disable-next-line camelcase
-    const step0_metadata = Object.entries(metadata).map(([key, value]) => {
+    const step0Metadata = Object.entries(metadata).map(([key, value]) => {
       return ["metadata." + key, value];
     });
     const files = errors.files || {};
-    // eslint-disable-next-line camelcase
-    const step0_files = Object.entries(files).map(([key, value]) => {
+    const step0Files = Object.entries(files).map(([key, value]) => {
       return ["files." + key, value];
     });
     const access = errors.access?.embargo || {};
-    // eslint-disable-next-line camelcase
-    const step0_access = Object.entries(access).map(([key, value]) => {
+    const step0Access = Object.entries(access).map(([key, value]) => {
       return ["access.embargo." + key, value];
     });
     const pids = errors.pids || {};
-    // eslint-disable-next-line camelcase
-    const step0_pids = _isObject(pids)
+    const step0Pids = _isObject(pids)
       ? Object.entries(pids).map(([key, value]) => {
           return ["pids." + key, value];
         })
       : [["pids", pids]];
-
-    // eslint-disable-next-line camelcase
-    const custom_fields = errors.custom_fields || {};
-    // eslint-disable-next-line camelcase
-    const step0_custom_fields = Object.entries(custom_fields).map(
-      ([key, value]) => {
-        // eslint-disable-next-line camelcase
-        return ['custom_fields.' + key, value];
-      }
-    );
-
-    // eslint-disable-next-line camelcase
+    const customFields = errors.custom_fields || {};
+    const step0CustomFields = Object.entries(customFields).map(([key, value]) => {
+      return ["custom_fields." + key, value];
+    });
     const step0 = Object.fromEntries(
-      step0_metadata
-        .concat(step0_files)
-        .concat(step0_access)
-        .concat(step0_pids)
-        .concat(step0_custom_fields)
+      step0Metadata
+        .concat(step0Files)
+        .concat(step0Access)
+        .concat(step0Pids)
+        .concat(step0CustomFields)
     );
 
     // Step 1 - Transform each error value into array of error messages

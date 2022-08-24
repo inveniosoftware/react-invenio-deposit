@@ -12,11 +12,7 @@ import { withState } from "react-searchkit";
 import { i18next } from "@translations/i18next";
 
 export const FunderDropdown = withState(
-  ({
-    currentResultsState: awardsList,
-    updateQueryState: updateQueryState,
-    currentQueryState: currentQueryState,
-  }) => {
+  ({ currentResultsState: awardsList, updateQueryState, currentQueryState }) => {
     const [fundersFromFacets] = useFundersFromFacets(awardsList);
 
     /**
