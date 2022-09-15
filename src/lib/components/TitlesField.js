@@ -24,6 +24,7 @@ export class TitlesField extends Component {
           label={<FieldLabel htmlFor={fieldPath} icon="book" label={label} />}
           required={required}
           className="title-field"
+          optimized
         />
         <AdditionalTitlesField options={options} recordUI={recordUI} />
       </>
