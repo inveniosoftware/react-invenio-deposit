@@ -83,8 +83,6 @@ ResourceTypeField.propTypes = {
 };
 
 ResourceTypeField.defaultProps = {
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "metadata.resource_type",
   label: i18next.t("Resource type"),
   labelIcon: "tag",
   labelclassname: "field-label-class",

@@ -129,8 +129,6 @@ SubjectsField.propTypes = {
 };
 
 SubjectsField.defaultProps = {
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "metadata.subjects",
   required: false,
   label: i18next.t("Subjects"),
   labelIcon: "tag",

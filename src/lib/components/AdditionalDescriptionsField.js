@@ -112,7 +112,5 @@ AdditionalDescriptionsField.propTypes = {
 };
 
 AdditionalDescriptionsField.defaultProps = {
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "metadata.additional_descriptions",
   recordUI: {},
 };

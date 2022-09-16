@@ -106,8 +106,6 @@ AdditionalTitlesField.propTypes = {
 };
 
 AdditionalTitlesField.defaultProps = {
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "metadata.additional_titles",
   options: undefined,
   recordUI: undefined,
 };

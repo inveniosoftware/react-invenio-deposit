@@ -94,8 +94,6 @@ DatesField.propTypes = {
 };
 
 DatesField.defaultProps = {
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "metadata.dates",
   label: i18next.t("Dates"),
   labelIcon: "calendar",
   placeholderDate: i18next.t("YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD"),

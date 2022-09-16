@@ -26,7 +26,11 @@ export class TitlesField extends Component {
           className="title-field"
           optimized
         />
-        <AdditionalTitlesField options={options} recordUI={recordUI} />
+        <AdditionalTitlesField
+          options={options}
+          recordUI={recordUI}
+          fieldPath="metadata.additional_titles"
+        />
       </>
     );
   }
@@ -55,8 +59,6 @@ TitlesField.propTypes = {
 };
 
 TitlesField.defaultProps = {
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "metadata.title",
   label: i18next.t("Title"),
   required: false,
   recordUI: undefined,

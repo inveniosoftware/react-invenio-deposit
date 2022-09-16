@@ -49,8 +49,6 @@ VersionField.propTypes = {
 };
 
 VersionField.defaultProps = {
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "metadata.version",
   label: i18next.t("Version"),
   labelIcon: "code branch",
   placeholder: "",

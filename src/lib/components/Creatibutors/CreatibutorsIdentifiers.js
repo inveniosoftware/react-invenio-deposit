@@ -90,8 +90,6 @@ CreatibutorsIdentifiers.propTypes = {
 };
 
 CreatibutorsIdentifiers.defaultProps = {
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "person_or_org.identifiers",
   label: i18next.t("Name identifiers"),
   placeholder: i18next.t("e.g. ORCID, ISNI or GND."),
 };

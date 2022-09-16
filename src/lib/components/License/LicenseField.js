@@ -174,8 +174,6 @@ LicenseField.propTypes = {
 };
 
 LicenseField.defaultProps = {
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "metadata.rights",
   label: i18next.t("Licenses"),
   uiFieldPath: "ui.rights",
   labelIcon: "drivers license",

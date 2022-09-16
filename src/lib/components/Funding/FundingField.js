@@ -206,8 +206,6 @@ FundingField.propTypes = {
 };
 
 FundingField.defaultProps = {
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "metadata.funding",
   label: "Awards",
   labelIcon: "money bill alternate outline",
   required: false,
