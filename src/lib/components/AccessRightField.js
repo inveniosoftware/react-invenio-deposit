@@ -120,8 +120,6 @@ AccessRightField.propTypes = {
 };
 
 AccessRightField.defaultProps = {
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "access",
   labelIcon: undefined,
   isMetadataOnly: undefined,
 };

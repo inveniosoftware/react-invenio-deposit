@@ -37,8 +37,6 @@ PublisherField.propTypes = {
 };
 
 PublisherField.defaultProps = {
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "metadata.publisher",
   label: i18next.t("Publisher"),
   labelIcon: "building outline",
   placeholder: i18next.t("Publisher"),

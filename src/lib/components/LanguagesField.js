@@ -67,8 +67,6 @@ LanguagesField.propTypes = {
 };
 
 LanguagesField.defaultProps = {
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "metadata.languages",
   label: i18next.t("Languages"),
   labelIcon: "globe",
   multiple: true,

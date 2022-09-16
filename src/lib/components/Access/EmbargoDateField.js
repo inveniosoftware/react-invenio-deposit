@@ -43,8 +43,6 @@ EmbargoDateField.defaultProps = {
   required: false,
   labelIcon: "calendar",
   placeholder: i18next.t("YYYY-MM-DD"),
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "access.embargo.until",
   label: i18next.t("Embargo until"),
   helpText: `${i18next.t("Format")}: ${i18next.t("YYYY-MM-DD")}`,
 };

@@ -110,8 +110,6 @@ RelatedWorksField.propTypes = {
 };
 
 RelatedWorksField.defaultProps = {
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "metadata.related_identifiers",
   label: i18next.t("Related works"),
   labelIcon: "barcode",
   required: undefined,

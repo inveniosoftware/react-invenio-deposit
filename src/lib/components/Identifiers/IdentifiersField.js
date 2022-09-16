@@ -88,8 +88,6 @@ IdentifiersField.propTypes = {
 };
 
 IdentifiersField.defaultProps = {
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "metadata.identifiers",
   label: i18next.t("Identifiers"),
   labelIcon: "barcode",
   required: false,

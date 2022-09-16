@@ -39,8 +39,6 @@ PublicationDateField.propTypes = {
 };
 
 PublicationDateField.defaultProps = {
-  // eslint-disable-next-line react/default-props-match-prop-types
-  fieldPath: "metadata.publication_date",
   label: i18next.t("Publication date"),
   labelIcon: "calendar",
   required: undefined,
