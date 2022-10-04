@@ -1,5 +1,10 @@
 # Changes
 
+Version 0.20.4 (released 2022-10-03)
+
+- Adds prop to Publish or Submit button to show extra html/text coming from deposit
+  config.
+
 Version 0.20.1 (released 2022-08-30)
 
 - Adds support for custom fields
