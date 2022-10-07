@@ -103,7 +103,7 @@ export class LicenseModal extends Component {
             onOpen={() => this.openModal()}
             open={open}
             trigger={trigger}
-            onClose={() => this.closeModal}
+            onClose={this.closeModal}
             closeIcon
             closeOnDimmerClick={false}
           >
