@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.20.5 (released 2022-10-07)
+
+- components: fix license close modal handler
+
 Version 0.20.4 (released 2022-10-03)
 
 - Adds prop to Publish or Submit button to show extra html/text coming from deposit
