@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-05-26T15:29:43.004Z\n"
-"PO-Revision-Date: 2022-05-26T15:29:43.004Z\n"
+"POT-Creation-Date: 2022-10-12T08:43:11.707Z\n"
+"PO-Revision-Date: 2022-10-12T08:43:11.707Z\n"
 "Language: en\n"
 
 msgid "Embargo until"
@@ -20,17 +20,6 @@ msgstr "The full record is restricted."
 
 msgid "Embargoed (full record)"
 msgstr "Embargoed (full record)"
-
-msgid ""
-"On <bold>{{ date }}</bold> the record and the files will automatically be "
-"made publicly accessible. Until then, the record and the files can "
-"<bold>only</bold> be accessed by <bold>users specified</bold> in the "
-"permissions."
-msgstr ""
-"On <bold>{{ date }}</bold> the record and the files will automatically be "
-"made publicly accessible. Until then, the record and the files can "
-"<bold>only</bold> be accessed by <bold>users specified</bold> in the "
-"permissions."
 
 msgid "Embargoed (files-only)"
 msgstr "Embargoed (files-only)"
@@ -72,13 +61,6 @@ msgstr "The record is publicly accessible."
 
 msgid "Public with restricted files"
 msgstr "Public with restricted files"
-
-msgid ""
-"The record is publicly accessible. The files can <1>only</1> be accessed by "
-"<3>users specified</3> in the permissions."
-msgstr ""
-"The record is publicly accessible. The files can <1>only</1> be accessed by "
-"<3>users specified</3> in the permissions."
 
 msgid ""
 "The record can <1>only</1> be accessed by <3>users specified</3> in the "
@@ -183,12 +165,6 @@ msgstr "Organization"
 msgid "Family name"
 msgstr "Family name"
 
-msgid "Given name(s)"
-msgstr "Given name(s)"
-
-msgid "Given name"
-msgstr "Given name"
-
 msgid "Name"
 msgstr "Name"
 
@@ -271,9 +247,6 @@ msgstr ""
 msgid "You must create a new version to add, modify or delete files."
 msgstr "You must create a new version to add, modify or delete files."
 
-msgid "Drag and drop file(s)"
-msgstr "Drag and drop file(s)"
-
 msgid "Upload files"
 msgstr "Upload files"
 
@@ -304,9 +277,6 @@ msgstr "Pending"
 
 msgid "or"
 msgstr "or"
-
-msgid "This is a Metadata only record"
-msgstr "This is a Metadata only record"
 
 msgid "Metadata-only record"
 msgstr "Metadata-only record"
@@ -424,13 +394,6 @@ msgstr ""
 "Oops, something went wrong! The draft could not be saved before uploading "
 "the file. Please try again. If the problem persists, contact user support."
 
-msgid ""
-"Oops, something went wrong! Importing files from the previous draft version "
-"failed. Please try again. If the problem persists, contact user support."
-msgstr ""
-"Oops, something went wrong! Importing files from the previous draft version "
-"failed. Please try again. If the problem persists, contact user support."
-
 msgid "Add award"
 msgstr "Add award"
 
@@ -442,9 +405,6 @@ msgstr "Identifier"
 
 msgid "Scheme"
 msgstr "Scheme"
-
-msgid "Identifier(s)"
-msgstr "Identifier(s)"
 
 msgid "Search for languages..."
 msgstr "Search for languages..."
@@ -516,9 +476,6 @@ msgstr ""
 "The publisher is used to formulate the citation, so consider the prominence "
 "of the role."
 
-msgid "Enter publisher name"
-msgstr "Enter publisher name"
-
 msgid ""
 "Specify identifiers of related works. Supported identifiers include DOI, "
 "Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS "
@@ -567,13 +524,6 @@ msgstr "Yes"
 msgid "No"
 msgstr "No"
 
-msgid ""
-"The record and files can <1>only</1> be accessed by<3> users specified</3> "
-"in the permissions."
-msgstr ""
-"The record and files can <1>only</1> be accessed by<3> users specified</3> "
-"in the permissions."
-
 msgid "e.g. ROR, ISNI or GND."
 msgstr "e.g. ROR, ISNI or GND."
 
@@ -585,9 +535,6 @@ msgstr "Disable files for this record"
 
 msgid "DOI"
 msgstr "DOI"
-
-msgid "PIDS"
-msgstr "PIDS"
 
 msgid "Search"
 msgstr "Search"
@@ -613,9 +560,6 @@ msgstr "Search in all communities"
 msgid "Search in my communities"
 msgstr "Search in my communities"
 
-msgid "Close"
-msgstr "Close"
-
 msgid "Search for persons by name, identifier, or affiliation..."
 msgstr "Search for persons by name, identifier, or affiliation..."
 
@@ -631,38 +575,11 @@ msgstr "Publish"
 msgid "Are you sure you want to publish this record?"
 msgstr "Are you sure you want to publish this record?"
 
-msgid "Couldn't find your person? You can <1>create a new entry</1>."
-msgstr "Couldn't find your person? You can <1>create a new entry</1>."
-
 msgid "The draft was not published. Record saved with validation errors:"
 msgstr "The draft was not published. Record saved with validation errors:"
 
 msgid "The draft was not submitted for review. Record saved with validation errors:"
 msgstr "The draft was not submitted for review. Record saved with validation errors:"
-
-msgid "You must click and accept this."
-msgstr "You must click and accept this."
-
-msgid "Before requesting review please read and check the following."
-msgstr "Before requesting review please read and check the following."
-
-msgid ""
-"The '{{communityTitle}}' curators will have access to\n"
-"                 <bold>view</bold> and <bold>edit</bold> your\n"
-"                 upload's metadata and files."
-msgstr ""
-"The '{{communityTitle}}' curators will have access to\n"
-"                 <bold>view</bold> and <bold>edit</bold> your\n"
-"                 upload's metadata and files."
-
-msgid ""
-"If your upload is accepted by the community curators, it will be <bold> "
-"immediately published.</bold> Before that, you will still be able to modify "
-"metadata and files of this uploads."
-msgstr ""
-"If your upload is accepted by the community curators, it will be <bold> "
-"immediately published.</bold> Before that, you will still be able to modify "
-"metadata and files of this uploads."
 
 msgid "In review"
 msgstr "In review"
@@ -775,21 +692,6 @@ msgstr "URL"
 msgid "Award URL"
 msgstr "Award URL"
 
-msgid "Funder is required"
-msgstr "Funder is required"
-
-msgid "Title must be set alongside number"
-msgstr "Title must be set alongside number"
-
-msgid "Number must be set alongside title"
-msgstr "Number must be set alongside title"
-
-msgid "Url Must be a valid url"
-msgstr "Url Must be a valid url"
-
-msgid "Url must be set alongside title and number."
-msgstr "Url must be set alongside title and number."
-
 msgid "Add standard award"
 msgstr "Add standard award"
 
@@ -827,8 +729,73 @@ msgid "Search for awards"
 msgstr "Search for awards"
 
 msgid ""
+"The record is publicly accessible. The files can <1>only</1> be accessed by "
+"<4>users specified</4> in the permissions."
+msgstr ""
+"The record is publicly accessible. The files can <1>only</1> be accessed by "
+"<4>users specified</4> in the permissions."
+
+msgid "Format"
+msgstr "Format"
+
+msgid "The files of this record are restricted."
+msgstr "The files of this record are restricted."
+
+msgid "Remove field"
+msgstr "Remove field"
+
+msgid ""
 "Did not find a community that fits you? Upload without a community or "
-"<1>create your own.</1>"
+"<2>create your own.</2>"
 msgstr ""
 "Did not find a community that fits you? Upload without a community or "
-"<1>create your own.</1>"
+"<2>create your own.</2>"
+
+msgid "Given names"
+msgstr "Given names"
+
+msgid "Couldn't find your person? You can <2>create a new entry</2>."
+msgstr "Couldn't find your person? You can <2>create a new entry</2>."
+
+msgid "Drag and drop files"
+msgstr "Drag and drop files"
+
+msgid "Default preview"
+msgstr "Default preview"
+
+msgid "Delete file"
+msgstr "Delete file"
+
+msgid "This is a Metadata-only record."
+msgstr "This is a Metadata-only record."
+
+msgid ""
+"Oops, something went wrong! Importing files from the previous version "
+"failed. Please try again. If the problem persists, contact user support."
+msgstr ""
+"Oops, something went wrong! Importing files from the previous version "
+"failed. Please try again. If the problem persists, contact user support."
+
+msgid "Funder is required."
+msgstr "Funder is required."
+
+msgid "Title must be set alongside number."
+msgstr "Title must be set alongside number."
+
+msgid "Number must be set alongside title."
+msgstr "Number must be set alongside title."
+
+msgid "URL must be valid."
+msgstr "URL must be valid."
+
+msgid "URL must be set alongside title and number."
+msgstr "URL must be set alongside title and number."
+
+msgid "Identifiers"
+msgstr "Identifiers"
+
+msgid "You must accept this."
+msgstr "You must accept this."
+
+msgid "Before requesting review please read and check the following:"
+msgstr "Before requesting review please read and check the following:"
