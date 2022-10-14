@@ -59,14 +59,14 @@
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.0",
     "semantic-ui-react": "^2.1.0",
-    "yup": "^0.32.0",
+    "yup": "^0.32.11",
     "query-string": "^7.1.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.0",
     "@ckeditor/ckeditor5-build-classic": "^16.0.0",
     "@ckeditor/ckeditor5-react": "^2.1.0",
-    "@inveniosoftware/eslint-config-invenio": "^1.0.10",
+    "@inveniosoftware/eslint-config-invenio": "^2.0.0",
     "@rollup/plugin-alias": "^3.1.0",
     "@rollup/plugin-babel": "^5.0.0",
     "@rollup/plugin-commonjs": "^11.1.0",
@@ -96,7 +96,7 @@
     "react-dnd-html5-backend": "^11.1.0",
     "react-dom": "^16.13.0",
     "react-i18next": "^11.11.0",
-    "react-invenio-forms": "^0.10.7",
+    "react-invenio-forms": "^1.0.0",
     "react-overridable": "^0.0.3",
     "react-redux": "^7.2.0",
     "react-scripts": "^5.0.1",
@@ -112,7 +112,7 @@
     "rollup-plugin-url": "^3.0.0",
     "semantic-ui-css": "^2.4.0",
     "semantic-ui-react": "^2.1.0",
-    "yup": "^0.32.0"
+    "yup": "^0.32.11"
   },
   "author": {
     "name": "CERN",
