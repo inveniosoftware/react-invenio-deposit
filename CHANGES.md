@@ -1,5 +1,11 @@
 # Changes
 
+Version 1.0.0 (released 2022-10-24)
+
+- upgrade to node 18
+- align yup package version
+- update eslint-config-invenio
+
 Version 0.20.5 (released 2022-10-07)
 
 - components: fix license close modal handler
