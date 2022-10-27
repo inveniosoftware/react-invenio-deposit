@@ -6,17 +6,10 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import React, { useState } from "react";
-import axios from "axios";
+import { http } from "react-invenio-forms";
 import { Icon, Button, Popup } from "semantic-ui-react";
 import { i18next } from "@translations/i18next";
 import PropTypes from "prop-types";
-
-const apiConfig = {
-  withCredentials: true,
-  xsrfCookieName: "csrftoken",
-  xsrfHeaderName: "X-CSRFToken",
-};
-const axiosWithconfig = axios.create(apiConfig);
 
 export const NewVersionButton = ({ onError, record, disabled, ...uiProps }) => {
   const [loading, setLoading] = useState(false);
@@ -25,7 +18,7 @@ export const NewVersionButton = ({ onError, record, disabled, ...uiProps }) => {
     setLoading(true);
 
     try {
-      const response = await axiosWithconfig.post(record.links.versions);
+      const response = await http.post(record.links.versions);
       window.location = response.data.links.self_html;
     } catch (error) {
       console.error(error);
