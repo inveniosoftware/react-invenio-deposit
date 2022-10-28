@@ -1,15 +1,17 @@
 // This file is part of React-Invenio-Deposit
 // Copyright (C) 2020-2021 CERN.
 // Copyright (C) 2020-2021 Northwestern University.
-// Copyright (C) 2021 Graz University of Technology.
+// Copyright (C)      2021 Graz University of Technology.
+// Copyright (C)      2022 TU Wien.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
-import { useFormikContext } from 'formik';
-import React from 'react';
-import { Checkbox, Grid, Icon, Label, List, Popup } from 'semantic-ui-react';
-import { humanReadableBytes } from './utils';
-import { i18next } from '@translations/i18next';
+import { useFormikContext } from "formik";
+import React from "react";
+import { Header, Checkbox, Grid, Icon, Label, List, Popup } from "semantic-ui-react";
+import { humanReadableBytes } from "./utils";
+import { i18next } from "@translations/i18next";
+import PropTypes from "prop-types";
 
 // NOTE: This component has to be a function component to allow
 //       the `useFormikContext` hook.
@@ -19,28 +21,38 @@ export const FileUploaderToolbar = ({
   filesSize,
   filesEnabled,
   quota,
+  decimalSizeDisplay,
 }) => {
   const { setFieldValue } = useFormikContext();
 
+  const handleOnChangeMetadataOnly = () => {
+    setFieldValue("files.enabled", !filesEnabled);
+    setFieldValue("access.files", "public");
+  };
+
   return (
     <>
-      <Grid.Column verticalAlign="middle" floated="left" width={6}>
+      <Grid.Column
+        verticalAlign="middle"
+        floated="left"
+        mobile={16}
+        tablet={6}
+        computer={6}
+      >
         {config.canHaveMetadataOnlyRecords && (
           <List horizontal>
             <List.Item>
               <Checkbox
-                label={i18next.t('Metadata-only record')}
-                onChange={() => setFieldValue('files.enabled', !filesEnabled)}
+                label={i18next.t("Metadata-only record")}
+                onChange={handleOnChangeMetadataOnly}
                 disabled={filesList.length > 0}
                 checked={!filesEnabled}
               />
             </List.Item>
-            <List.Item style={{ marginLeft: '5px' }}>
+            <List.Item>
               <Popup
-                trigger={
-                  <Icon name="question circle outline" color="grey"></Icon>
-                }
-                content={i18next.t('Disable files for this record')}
+                trigger={<Icon name="question circle outline" className="neutral" />}
+                content={i18next.t("Disable files for this record")}
                 position="top center"
               />
             </List.Item>
@@ -48,14 +60,14 @@ export const FileUploaderToolbar = ({
         )}
       </Grid.Column>
       {filesEnabled && (
-        <Grid.Column width={10}>
+        <Grid.Column mobile={16} tablet={10} computer={10} className="storage-col">
+          <Header size="tiny" className="mr-10">
+            {i18next.t("Storage available")}
+          </Header>
           <List horizontal floated="right">
-            <List.Item>{i18next.t('Storage available')}</List.Item>
             <List.Item>
               <Label
-                {...(filesList.length === quota.maxFiles
-                  ? { color: 'blue' }
-                  : {})}
+                {...(filesList.length === quota.maxFiles ? { color: "blue" } : {})}
               >
                 {i18next.t(`{{length}} out of {{maxfiles}} files`, {
                   length: filesList.length,
@@ -65,13 +77,14 @@ export const FileUploaderToolbar = ({
             </List.Item>
             <List.Item>
               <Label
-                {...(humanReadableBytes(filesSize) ===
-                humanReadableBytes(quota.maxStorage)
-                  ? { color: 'blue' }
+                {...(humanReadableBytes(filesSize, decimalSizeDisplay) ===
+                humanReadableBytes(quota.maxStorage, decimalSizeDisplay)
+                  ? { color: "blue" }
                   : {})}
               >
-                {humanReadableBytes(filesSize)} {i18next.t('out of')}{' '}
-                {humanReadableBytes(quota.maxStorage)}
+                {humanReadableBytes(filesSize, decimalSizeDisplay)}{" "}
+                {i18next.t("out of")}{" "}
+                {humanReadableBytes(quota.maxStorage, decimalSizeDisplay)}
               </Label>
             </List.Item>
           </List>
@@ -79,4 +92,21 @@ export const FileUploaderToolbar = ({
       )}
     </>
   );
+};
+
+FileUploaderToolbar.propTypes = {
+  config: PropTypes.object,
+  filesList: PropTypes.array,
+  filesSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  filesEnabled: PropTypes.bool.isRequired,
+  quota: PropTypes.object,
+  decimalSizeDisplay: PropTypes.bool,
+};
+
+FileUploaderToolbar.defaultProps = {
+  config: undefined,
+  filesList: undefined,
+  filesSize: undefined,
+  quota: undefined,
+  decimalSizeDisplay: false,
 };

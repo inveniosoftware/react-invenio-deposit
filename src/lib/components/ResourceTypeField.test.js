@@ -1,32 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import { Form, Formik } from 'formik';
+import { Form, Formik } from "formik";
 
-import { ResourceTypeField } from './ResourceTypeField';
+import { ResourceTypeField } from "./ResourceTypeField";
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
+it("renders without crashing", () => {
+  const div = document.createElement("div");
   const options = [
     {
-      icon: '',
-      id: 'resource-type-id-A',
-      type_name: 'Type A',
-      subtype_name: 'Subtype A',
+      icon: "",
+      id: "resource-type-id-A",
+      type_name: "Type A",
+      subtype_name: "Subtype A",
     },
     {
-      icon: 'frown outline',
-      id: 'resource-type-id-B',
-      type_name: 'Type B',
-      subtype_name: 'Subtype B',
+      icon: "frown outline",
+      id: "resource-type-id-B",
+      type_name: "Type B",
+      subtype_name: "Subtype B",
     },
   ];
 
   ReactDOM.render(
     <Formik>
-      {(props) => (
+      {() => (
         <Form>
-          <ResourceTypeField fieldPath={'fieldPath'} options={options} />
+          <ResourceTypeField fieldPath="fieldPath" options={options} />
         </Form>
       )}
     </Formik>,

@@ -6,32 +6,13 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { SelectField } from 'react-invenio-forms';
-import _unickBy from 'lodash/unionBy';
-import { i18next } from '@translations/i18next';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { SelectField } from "react-invenio-forms";
+import _unickBy from "lodash/unionBy";
+import { i18next } from "@translations/i18next";
 
 export class CreatibutorsIdentifiers extends Component {
-  static propTypes = {
-    initialOptions: PropTypes.arrayOf(
-      PropTypes.shape({
-        key: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-    fieldPath: PropTypes.string,
-    label: PropTypes.string,
-    placeholder: PropTypes.string,
-  };
-
-  static defaultProps = {
-    fieldPath: 'person_or_org.identifiers',
-    label: i18next.t('Name identifiers'),
-    placeholder: i18next.t('e.g. ORCID, ISNI or GND.'),
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -50,7 +31,7 @@ export class CreatibutorsIdentifiers extends Component {
           },
           ...prevState.selectedOptions,
         ],
-        'value'
+        "value"
       ),
     }));
   };
@@ -63,20 +44,24 @@ export class CreatibutorsIdentifiers extends Component {
     }));
 
   handleChange = ({ data, formikProps }) => {
+    const { fieldPath } = this.props;
     this.setState({
       selectedOptions: this.valuesToOptions(data.value),
     });
-    formikProps.form.setFieldValue(this.props.fieldPath, data.value);
+    formikProps.form.setFieldValue(fieldPath, data.value);
   };
 
   render() {
+    const { fieldPath, label, placeholder } = this.props;
+    const { selectedOptions } = this.state;
+
     return (
       <SelectField
-        fieldPath={this.props.fieldPath}
-        label={this.props.label}
-        options={this.state.selectedOptions}
-        placeholder={this.props.placeholder}
-        noResultsMessage={i18next.t('Type the value of an identifier...')}
+        fieldPath={fieldPath}
+        label={label}
+        options={selectedOptions}
+        placeholder={placeholder}
+        noResultsMessage={i18next.t("Type the value of an identifier...")}
         search
         multiple
         selection
@@ -90,3 +75,21 @@ export class CreatibutorsIdentifiers extends Component {
     );
   }
 }
+
+CreatibutorsIdentifiers.propTypes = {
+  initialOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  fieldPath: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
+};
+
+CreatibutorsIdentifiers.defaultProps = {
+  label: i18next.t("Name identifiers"),
+  placeholder: i18next.t("e.g. ORCID, ISNI or GND."),
+};

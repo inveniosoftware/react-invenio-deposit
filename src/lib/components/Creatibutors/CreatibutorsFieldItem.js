@@ -6,12 +6,13 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React from 'react';
-import { useDrag, useDrop } from 'react-dnd';
-import { Button, Label, List, Ref } from 'semantic-ui-react';
-import _get from 'lodash/get';
-import { i18next } from '@translations/i18next';
-import { CreatibutorsModal } from './CreatibutorsModal';
+import { i18next } from "@translations/i18next";
+import _get from "lodash/get";
+import React from "react";
+import { useDrag, useDrop } from "react-dnd";
+import { Button, Label, List, Ref } from "semantic-ui-react";
+import { CreatibutorsModal } from "./CreatibutorsModal";
+import PropTypes from "prop-types";
 
 export const CreatibutorsFieldItem = ({
   compKey,
@@ -29,11 +30,12 @@ export const CreatibutorsFieldItem = ({
   autocompleteNames,
 }) => {
   const dropRef = React.useRef(null);
+  // eslint-disable-next-line no-unused-vars
   const [_, drag, preview] = useDrag({
-    item: { index, type: 'creatibutor' },
+    item: { index, type: "creatibutor" },
   });
   const [{ hidden }, drop] = useDrop({
-    accept: 'creatibutor',
+    accept: "creatibutor",
     hover(item, monitor) {
       if (!dropRef.current) {
         return;
@@ -74,9 +76,7 @@ export const CreatibutorsFieldItem = ({
     <Ref innerRef={dropRef} key={compKey}>
       <List.Item
         key={compKey}
-        className={
-          hidden ? 'deposit-drag-listitem hidden' : 'deposit-drag-listitem'
-        }
+        className={hidden ? "deposit-drag-listitem hidden" : "deposit-drag-listitem"}
       >
         <List.Content floated="right">
           <CreatibutorsModal
@@ -92,16 +92,12 @@ export const CreatibutorsFieldItem = ({
             action="edit"
             trigger={
               <Button size="mini" primary type="button">
-                {i18next.t('Edit')}
+                {i18next.t("Edit")}
               </Button>
             }
           />
-          <Button
-            size="mini"
-            type="button"
-            onClick={() => removeCreatibutor(index)}
-          >
-            {i18next.t('Remove')}
+          <Button size="mini" type="button" onClick={() => removeCreatibutor(index)}>
+            {i18next.t("Remove")}
           </Button>
         </List.Content>
         <Ref innerRef={drag}>
@@ -110,18 +106,46 @@ export const CreatibutorsFieldItem = ({
         <Ref innerRef={preview}>
           <List.Content>
             <List.Description>
-              <span class="creatibutor">
-              {_get(initialCreatibutor, 'person_or_org.identifiers', []).some(
-                (identifier) => identifier.scheme === 'orcid'
-              ) && (
-                <img alt="ORCID logo" className="inline-id-icon" src="/static/images/orcid.svg" width="16" height="16" />
-              )}
-              {displayName} {renderRole(initialCreatibutor?.role, roleOptions)}
+              <span className="creatibutor">
+                {_get(initialCreatibutor, "person_or_org.identifiers", []).some(
+                  (identifier) => identifier.scheme === "orcid"
+                ) && (
+                  <img
+                    alt="ORCID logo"
+                    className="inline-id-icon mr-5"
+                    src="/static/images/orcid.svg"
+                    width="16"
+                    height="16"
+                  />
+                )}
+                {_get(initialCreatibutor, "person_or_org.identifiers", []).some(
+                  (identifier) => identifier.scheme === "ror"
+                ) && (
+                  <img
+                    alt="ROR logo"
+                    className="inline-id-icon mr-5"
+                    src="/static/images/ror-icon.svg"
+                    width="16"
+                    height="16"
+                  />
+                )}
+                {_get(initialCreatibutor, "person_or_org.identifiers", []).some(
+                  (identifier) => identifier.scheme === "gnd"
+                ) && (
+                  <img
+                    alt="GND logo"
+                    className="inline-id-icon mr-5"
+                    src="/static/images/gnd-icon.svg"
+                    width="16"
+                    height="16"
+                  />
+                )}
+                {displayName} {renderRole(initialCreatibutor?.role, roleOptions)}
               </span>
             </List.Description>
             {firstError && (
               <Label pointing="left" prompt>
-                {firstError.scheme ? firstError.scheme : 'Invalid identifiers'}
+                {firstError.scheme ? firstError.scheme : "Invalid identifiers"}
               </Label>
             )}
           </List.Content>
@@ -129,4 +153,28 @@ export const CreatibutorsFieldItem = ({
       </List.Item>
     </Ref>
   );
+};
+
+CreatibutorsFieldItem.propTypes = {
+  compKey: PropTypes.string.isRequired,
+  identifiersError: PropTypes.array,
+  index: PropTypes.number.isRequired,
+  replaceCreatibutor: PropTypes.func.isRequired,
+  removeCreatibutor: PropTypes.func.isRequired,
+  moveCreatibutor: PropTypes.func.isRequired,
+  addLabel: PropTypes.node,
+  editLabel: PropTypes.node,
+  initialCreatibutor: PropTypes.object.isRequired,
+  displayName: PropTypes.string,
+  roleOptions: PropTypes.array.isRequired,
+  schema: PropTypes.string.isRequired,
+  autocompleteNames: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+};
+
+CreatibutorsFieldItem.defaultProps = {
+  identifiersError: undefined,
+  addLabel: undefined,
+  editLabel: undefined,
+  displayName: undefined,
+  autocompleteNames: undefined,
 };

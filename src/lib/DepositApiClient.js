@@ -1,60 +1,105 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
-// Copyright (C) 2020 Northwestern University.
+// Copyright (C) 2020-2022 CERN.
+// Copyright (C) 2020-2022 Northwestern University.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import axios from 'axios';
+import axios from "axios";
 
 const CancelToken = axios.CancelToken;
+const BASE_HEADERS = {
+  "json": { "Content-Type": "application/json" },
+  "vnd+json": {
+    "Content-Type": "application/json",
+    "Accept": "application/vnd.inveniordm.v1+json",
+  },
+  "octet-stream": { "Content-Type": "application/octet-stream" },
+};
 const apiConfig = {
   withCredentials: true,
-  xsrfCookieName: 'csrftoken',
-  xsrfHeaderName: 'X-CSRFToken',
+  xsrfCookieName: "csrftoken",
+  xsrfHeaderName: "X-CSRFToken",
+  headers: BASE_HEADERS.json,
 };
-const axiosWithconfig = axios.create(apiConfig);
+const axiosWithConfig = axios.create(apiConfig);
 
 /**
  * API client response.
- *
- * It's a wrapper/sieve around Axios to contain Axios coupling here. It maps
- * good and bad responses to a unified interface.
- *
  */
 export class DepositApiClientResponse {
-  constructor(data, errors, code) {
+  constructor(data, errors) {
     this.data = data;
     this.errors = errors;
-    this.code = code;
+  }
+}
+
+export class DepositApiClient {
+  /* eslint-disable no-unused-vars */
+  constructor(createDraftURL, recordSerializer) {
+    if (this.constructor === DepositApiClient) {
+      throw new Error("Abstract");
+    }
+  }
+
+  async createDraft(draft) {
+    throw new Error("Not implemented.");
+  }
+
+  async saveDraft(draft, draftLinks) {
+    throw new Error("Not implemented.");
+  }
+
+  async publishDraft(draftLinks) {
+    throw new Error("Not implemented.");
+  }
+
+  async deleteDraft(draftLinks) {
+    throw new Error("Not implemented.");
+  }
+
+  async reservePID(draftLinks, pidType) {
+    throw new Error("Not implemented.");
+  }
+
+  async discardPID(draftLinks, pidType) {
+    throw new Error("Not implemented.");
+  }
+
+  async createOrUpdateReview(draftLinks, communityId) {
+    throw new Error("Not implemented.");
+  }
+
+  async deleteReview(draftLinks) {
+    throw new Error("Not implemented.");
+  }
+
+  async submitReview(draftLinks) {
+    throw new Error("Not implemented.");
   }
 }
 
 /**
  * API Client for deposits.
- *
- * It mostly uses the API links passed to it from responses.
- *
  */
-export class DepositApiClient {
-  constructor(createUrl) {
-    this.createUrl = createUrl;
+export class RDMDepositApiClient extends DepositApiClient {
+  constructor(createDraftURL, recordSerializer) {
+    super();
+    this.createDraftURL = createDraftURL;
+    this.recordSerializer = recordSerializer;
   }
 
-  async createResponse(axios_call) {
+  async _createResponse(axiosRequest) {
     try {
-      let response = await axios_call();
-      return new DepositApiClientResponse(
-        response.data, // exclude errors?
-        response.data.errors,
-        response.status
+      const response = await axiosRequest();
+      const data = this.recordSerializer.deserialize(response.data || {});
+      const errors = this.recordSerializer.deserializeErrors(
+        response.data.errors || []
       );
+      return new DepositApiClientResponse(data, errors);
     } catch (error) {
-      return new DepositApiClientResponse(
-        error.response.data,
-        error.response.data.errors,
-        error.response.status
-      );
+      const errorData = error.response.data;
+      throw new DepositApiClientResponse({}, errorData);
     }
   }
 
@@ -63,13 +108,26 @@ export class DepositApiClient {
    *
    * @param {object} draft - Serialized draft
    */
-  async create(draft) {
-    return this.createResponse(() =>
-      axiosWithconfig.post(this.createUrl, draft, {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/vnd.inveniordm.v1+json',
-        },
+  async createDraft(draft) {
+    const payload = this.recordSerializer.serialize(draft);
+    return this._createResponse(() =>
+      axiosWithConfig.post(this.createDraftURL, payload, {
+        headers: BASE_HEADERS["vnd+json"],
+        params: { expand: 1 },
+      })
+    );
+  }
+
+  /**
+   * Calls the API to read a pre-existing draft.
+   *
+   * @param {object} draftLinks - the draft links object
+   */
+  async readDraft(draftLinks) {
+    return this._createResponse(() =>
+      axiosWithConfig.get(draftLinks.self, {
+        headers: BASE_HEADERS["vnd+json"],
+        params: { expand: 1 },
       })
     );
   }
@@ -77,15 +135,14 @@ export class DepositApiClient {
   /**
    * Calls the API to save a pre-existing draft.
    *
-   * @param {object} draft - Serialized draft
+   * @param {object} draft - the draft payload
    */
-  async save(draft) {
-    return this.createResponse(() =>
-      axiosWithconfig.put(draft.links.self, draft, {
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/vnd.inveniordm.v1+json',
-        },
+  async saveDraft(draft, draftLinks) {
+    const payload = this.recordSerializer.serialize(draft);
+    return this._createResponse(() =>
+      axiosWithConfig.put(draftLinks.self, payload, {
+        headers: BASE_HEADERS["vnd+json"],
+        params: { expand: 1 },
       })
     );
   }
@@ -93,111 +150,36 @@ export class DepositApiClient {
   /**
    * Publishes the draft by calling its publish link.
    *
-   * @param {object} draft - the payload from create()
+   * @param {string} draftLinks - the URL to publish the draft
    */
-  async publish(draft) {
-    return this.createResponse(() =>
-      axiosWithconfig.post(
-        draft.links.publish,
-        {},
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
+  async publishDraft(draftLinks) {
+    return this._createResponse(() =>
+      axiosWithConfig.post(draftLinks.publish, {}, { params: { expand: 1 } })
     );
   }
 
   /**
    * Deletes the draft by calling DELETE on its self link.
    *
-   * @param {object} draft - the payload from create()/save()
+   * @param {string} draftLinks - the URL to delete the draft
    */
-  async delete(draft) {
-    return this.createResponse(() =>
-      axiosWithconfig.delete(
-        draft.links.self,
-        {},
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
-      )
-    );
-  }
-
-  // TODO: Might consider extracting these out to a FilesApiClient.js
-
-  initializeFileUpload(initializeUploadUrl, filename) {
-    const payload = [
-      {
-        key: filename,
-      },
-    ];
-    return axiosWithconfig.post(initializeUploadUrl, payload, {
-      headers: {
-        'content-type': 'application/json',
-      },
-    });
-  }
-
-  uploadFile(uploadUrl, file, onUploadProgress, cancel) {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    return axiosWithconfig.put(uploadUrl, file, {
-      headers: {
-        'content-type': 'application/octet-stream',
-      },
-      onUploadProgress,
-      cancelToken: new CancelToken(cancel),
-    });
-  }
-
-  finalizeFileUpload(finalizeUploadUrl) {
-    return axiosWithconfig.post(
-      finalizeUploadUrl,
-      {},
-      {
-        headers: {
-          'content-type': 'application/json',
-        },
-      }
-    );
-  }
-
-  deleteFile(deleteUrl) {
-    return axiosWithconfig.delete(deleteUrl);
-  }
-
-  importParentRecordFiles(importFilesUrl) {
-    return axiosWithconfig.post(
-      importFilesUrl,
-      {},
-      {
-        headers: {
-          'content-type': 'application/json',
-        },
-      }
-    );
+  async deleteDraft(draftLinks) {
+    return this._createResponse(() => axiosWithConfig.delete(draftLinks.self, {}));
   }
 
   /**
    * Calls the API to reserve a PID.
    *
    */
-  async reservePID(links, pidType) {
-    return this.createResponse(() => {
-      const link = `${links.self}/pids/${pidType}`;
-      // PIDS-FIXME: should be uncommented when links for pids are released in backend
-      // const link = _get(links, `self_${pidType}`, '');
-      // if (link === '') {
-      //   throw Error(`Cannot get the link to discard the PID for ${pidType}`);
-      // }
-
-      return axiosWithconfig.post(
+  async reservePID(draftLinks, pidType) {
+    return this._createResponse(() => {
+      const linkName = `reserve_${pidType}`;
+      const link = draftLinks[linkName];
+      return axiosWithConfig.post(
         link,
         {},
         {
-          headers: { 'Content-Type': 'application/json' },
+          params: { expand: 1 },
         }
       );
     });
@@ -207,22 +189,151 @@ export class DepositApiClient {
    * Calls the API to discard a previously reserved PID.
    *
    */
-  async discardPID(links, pidType) {
-    return this.createResponse(() => {
-      const link = `${links.self}/pids/${pidType}`;
-      // PIDS-FIXME: should be uncommented when links for pids are released in backend
-      // const link = _get(links, `self_${pidType}`, '');
-      // if (link === '') {
-      //   throw Error(`Cannot get the link to discard the PID for ${pidType}`);
-      // }
+  async discardPID(draftLinks, pidType) {
+    return this._createResponse(() => {
+      const linkName = `reserve_${pidType}`;
+      const link = draftLinks[linkName];
+      return axiosWithConfig.delete(link, {
+        params: { expand: 1 },
+      });
+    });
+  }
 
-      return axiosWithconfig.delete(
-        link,
-        {},
-        {
-          headers: { 'Content-Type': 'application/json' },
-        }
+  /**
+   * Creates a review request in initial state for draft by calling its
+   * review link.
+   *
+   * @param {object} draftLinks - the draft links object
+   */
+  async createOrUpdateReview(draftLinks, communityId) {
+    return this._createResponse(() =>
+      axiosWithConfig.put(draftLinks.review, {
+        receiver: {
+          community: communityId,
+        },
+        type: "community-submission",
+      })
+    );
+  }
+
+  /**
+   * Deletes a review request associated with the draft using its review link.
+   *
+   * @param {object} draftLinks - the draft links object
+   */
+  async deleteReview(draftLinks) {
+    return this._createResponse(() => axiosWithConfig.delete(draftLinks.review, {}));
+  }
+
+  /**
+   * Submits the draft for review by calling its submit-review link.
+   *
+   * @param {object} draftLinks - the draft links object
+   */
+  async submitReview(draftLinks, reviewComment) {
+    return this._createResponse(() => {
+      return axiosWithConfig.post(
+        draftLinks["submit-review"],
+        reviewComment
+          ? {
+              payload: {
+                content: reviewComment,
+                format: "html",
+              },
+            }
+          : {}
       );
     });
+  }
+
+  /**
+   * Cancels the review for the draft by calling its cancel link.
+   *
+   * @param reviewLinks
+   * @param reviewComment
+   */
+  async cancelReview(reviewLinks, reviewComment) {
+    return axiosWithConfig.post(
+      reviewLinks.actions.cancel,
+      reviewComment
+        ? {
+            payload: {
+              content: reviewComment,
+              format: "html",
+            },
+          }
+        : {}
+    );
+  }
+}
+
+/**
+ * Abstract class for File API Client.
+ * @constructor
+ * @abstract
+ */
+export class DepositFileApiClient {
+  constructor() {
+    if (this.constructor === DepositFileApiClient) {
+      throw new Error("Abstract");
+    }
+  }
+
+  isCancelled(error) {
+    return axios.isCancel(error);
+  }
+
+  initializeFileUpload(initializeUploadUrl, filename) {
+    throw new Error("Not implemented.");
+  }
+
+  uploadFile(uploadUrl, file, onUploadProgress, cancel) {
+    throw new Error("Not implemented.");
+  }
+
+  finalizeFileUpload(finalizeUploadUrl) {
+    throw new Error("Not implemented.");
+  }
+
+  deleteFile(fileLinks) {
+    throw new Error("Not implemented.");
+  }
+}
+
+/**
+ * Default File API Client for deposits.
+ */
+export class RDMDepositFileApiClient extends DepositFileApiClient {
+  initializeFileUpload(initializeUploadUrl, filename) {
+    const payload = [
+      {
+        key: filename,
+      },
+    ];
+    return axiosWithConfig.post(initializeUploadUrl, payload, {});
+  }
+
+  uploadFile(uploadUrl, file, onUploadProgressFn, cancelFn) {
+    return axiosWithConfig.put(uploadUrl, file, {
+      headers: BASE_HEADERS["octet-stream"],
+      onUploadProgress: (event) => {
+        const percent = Math.floor((event.loaded / event.total) * 100);
+        onUploadProgressFn && onUploadProgressFn(percent);
+      },
+      cancelToken: new CancelToken(cancelFn),
+    });
+  }
+
+  finalizeFileUpload(finalizeUploadUrl) {
+    return axiosWithConfig.post(finalizeUploadUrl, {});
+  }
+
+  importParentRecordFiles(draftLinks) {
+    const link = `${draftLinks.self}/actions/files-import`;
+    return axiosWithConfig.post(link, {});
+  }
+
+  deleteFile(fileLinks) {
+    return axiosWithConfig.delete(fileLinks.self);
   }
 }

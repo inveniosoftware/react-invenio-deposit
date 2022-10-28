@@ -6,6 +6,6 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 export const CREATIBUTOR_TYPE = {
-  PERSON: 'personal',
-  ORGANIZATION: 'organizational',
+  PERSON: "personal",
+  ORGANIZATION: "organizational",
 };

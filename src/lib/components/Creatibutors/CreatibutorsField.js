@@ -6,102 +6,84 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { getIn, FieldArray } from 'formik';
-import { Button, Form, Label, List, Icon } from 'semantic-ui-react';
-import _get from 'lodash/get';
-import { FieldLabel } from 'react-invenio-forms';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { getIn, FieldArray } from "formik";
+import { Button, Form, Label, List, Icon } from "semantic-ui-react";
+import _get from "lodash/get";
+import { FieldLabel } from "react-invenio-forms";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 
-import { CreatibutorsModal } from './CreatibutorsModal';
-import { CreatibutorsFieldItem } from './CreatibutorsFieldItem';
-import { CREATIBUTOR_TYPE } from './type';
-import { i18next } from '@translations/i18next';
-import { sortOptions } from '../../utils';
+import { CreatibutorsModal } from "./CreatibutorsModal";
+import { CreatibutorsFieldItem } from "./CreatibutorsFieldItem";
+import { CREATIBUTOR_TYPE } from "./type";
+import { sortOptions } from "../../utils";
+import { i18next } from "../../i18next";
 
-const displayCreatibutorName = ({ familyName, givenName, affiliationName }) => {
-  let displayName = familyName;
-  if (givenName) {
-    displayName += `, ${givenName}`;
+const creatibutorNameDisplay = (value) => {
+  const creatibutorType = _get(value, "person_or_org.type", CREATIBUTOR_TYPE.PERSON);
+  const isPerson = creatibutorType === CREATIBUTOR_TYPE.PERSON;
+
+  const familyName = _get(value, "person_or_org.family_name", "");
+  const givenName = _get(value, "person_or_org.given_name", "");
+  const affiliationName = _get(value, `affiliations[0].name`, "");
+  const name = _get(value, `person_or_org.name`);
+
+  const affiliation = affiliationName ? ` (${affiliationName})` : "";
+
+  if (isPerson) {
+    const givenNameSuffix = givenName ? `, ${givenName}` : "";
+    return `${familyName}${givenNameSuffix}${affiliation}`;
   }
-  if (affiliationName) {
-    displayName += ` (${affiliationName})`;
-  }
-  return displayName;
+
+  return `${name}${affiliation}`;
 };
 
 class CreatibutorsFieldForm extends Component {
+  handleOnContributorChange = (selectedCreatibutor) => {
+    const { push: formikArrayPush } = this.props;
+    formikArrayPush(selectedCreatibutor);
+  };
+
   render() {
     const {
       form: { values, errors, initialErrors, initialValues },
       remove: formikArrayRemove,
       replace: formikArrayReplace,
       move: formikArrayMove,
-      push: formikArrayPush,
       name: fieldPath,
       label,
       labelIcon,
       roleOptions,
       schema,
+      modal,
+      autocompleteNames,
+      addButtonLabel,
     } = this.props;
-    const formikValues = getIn(values, fieldPath, []);
+
+    const creatibutorsList = getIn(values, fieldPath, []);
     const formikInitialValues = getIn(initialValues, fieldPath, []);
+
     const error = getIn(errors, fieldPath, null);
     const initialError = getIn(initialErrors, fieldPath, null);
     const creatibutorsError =
-      error || (formikValues === formikInitialValues && initialError);
+      error || (creatibutorsList === formikInitialValues && initialError);
+
     return (
       <DndProvider backend={HTML5Backend}>
         <Form.Field
-          required={schema === 'creators'}
-          className={creatibutorsError && 'error'}
+          required={schema === "creators"}
+          className={creatibutorsError ? "error" : ""}
         >
-          <FieldLabel
-            htmlFor={fieldPath}
-            icon={labelIcon}
-            label={label}
-          ></FieldLabel>
+          <FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />
           <List>
-            {getIn(values, fieldPath, []).map((value, index, array) => {
+            {creatibutorsList.map((value, index) => {
               const key = `${fieldPath}.${index}`;
-              const personOrOrgPath = 'person_or_org';
-              const typeFieldPath = `${personOrOrgPath}.type`;
-              const familyNameFieldPath = `${personOrOrgPath}.family_name`;
-              const givenNameFieldPath = `${personOrOrgPath}.given_name`;
-              const nameFieldPath = `${personOrOrgPath}.name`;
-              const affiliationsFieldPath = 'affiliations';
               const identifiersError =
-                creatibutorsError && creatibutorsError[index]?.person_or_org?.identifiers;
-              // Default to person type
-              const isPerson =
-                _get(value, typeFieldPath, CREATIBUTOR_TYPE.PERSON) ===
-                CREATIBUTOR_TYPE.PERSON;
-              let displayName = isPerson
-                ? displayCreatibutorName({
-                    familyName: _get(
-                      value,
-                      familyNameFieldPath,
-                      'No family name'
-                    ),
-                    givenName: _get(value, givenNameFieldPath, 'No given name'),
-                    affiliationName: _get(
-                      value,
-                      `${affiliationsFieldPath}[0].name`
-                    ),
-                  })
-                : displayCreatibutorName({
-                    familyName: _get(
-                      value,
-                      nameFieldPath,
-                      'No organization name'
-                    ),
-                    affiliationName: _get(
-                      value,
-                      `${affiliationsFieldPath}[0].name`
-                    ),
-                  });
+                creatibutorsError &&
+                creatibutorsError[index]?.person_or_org?.identifiers;
+              const displayName = creatibutorNameDisplay(value);
 
               return (
                 <CreatibutorsFieldItem
@@ -117,31 +99,29 @@ class CreatibutorsFieldForm extends Component {
                     removeCreatibutor: formikArrayRemove,
                     replaceCreatibutor: formikArrayReplace,
                     moveCreatibutor: formikArrayMove,
-                    addLabel: this.props.modal.addLabel,
-                    editLabel: this.props.modal.editLabel,
-                    autocompleteNames: this.props.autocompleteNames,
+                    addLabel: modal.addLabel,
+                    editLabel: modal.editLabel,
+                    autocompleteNames: autocompleteNames,
                   }}
                 />
               );
             })}
             <CreatibutorsModal
-              onCreatibutorChange={(selectedCreatibutor) => {
-                formikArrayPush(selectedCreatibutor);
-              }}
+              onCreatibutorChange={this.handleOnContributorChange}
               action="add"
-              addLabel={this.props.modal.addLabel}
-              editLabel={this.props.modal.editLabel}
+              addLabel={modal.addLabel}
+              editLabel={modal.editLabel}
               roleOptions={sortOptions(roleOptions)}
               schema={schema}
-              autocompleteNames={this.props.autocompleteNames}
+              autocompleteNames={autocompleteNames}
               trigger={
-                <Button type="button">
+                <Button type="button" icon labelPosition="left">
                   <Icon name="add" />
-                  {this.props.addButtonLabel}
+                  {addButtonLabel}
                 </Button>
               }
             />
-            {creatibutorsError && typeof creatibutorsError == 'string' && (
+            {creatibutorsError && typeof creatibutorsError == "string" && (
               <Label pointing="left" prompt>
                 {creatibutorsError}
               </Label>
@@ -155,9 +135,11 @@ class CreatibutorsFieldForm extends Component {
 
 export class CreatibutorsField extends Component {
   render() {
+    const { fieldPath } = this.props;
+
     return (
       <FieldArray
-        name={this.props.fieldPath}
+        name={fieldPath}
         component={(formikProps) => (
           <CreatibutorsFieldForm {...formikProps} {...this.props} />
         )}
@@ -166,25 +148,59 @@ export class CreatibutorsField extends Component {
   }
 }
 
-CreatibutorsField.propTypes = {
+CreatibutorsFieldForm.propTypes = {
   fieldPath: PropTypes.string.isRequired,
-  addButtonLabel: PropTypes.string.isRequired,
+  addButtonLabel: PropTypes.string,
   modal: PropTypes.shape({
     addLabel: PropTypes.string.isRequired,
     editLabel: PropTypes.string.isRequired,
-  }).isRequired,
-  schema: PropTypes.oneOf(['creators', 'contributors']).isRequired,
-  autocompleteNames: PropTypes.bool,
+  }),
+  schema: PropTypes.oneOf(["creators", "contributors"]).isRequired,
+  autocompleteNames: PropTypes.oneOf(["search", "search_only", "off"]),
+  label: PropTypes.string,
+  labelIcon: PropTypes.string,
+  roleOptions: PropTypes.array.isRequired,
+  form: PropTypes.object.isRequired,
+  remove: PropTypes.func.isRequired,
+  replace: PropTypes.func.isRequired,
+  move: PropTypes.func.isRequired,
+  push: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+};
+
+CreatibutorsFieldForm.defaultProps = {
+  autocompleteNames: "search",
+  label: i18next.t("Creators"),
+  labelIcon: "user",
+  modal: {
+    addLabel: i18next.t("Add creator"),
+    editLabel: i18next.t("Edit creator"),
+  },
+  addButtonLabel: i18next.t("Add creator"),
+};
+
+CreatibutorsField.propTypes = {
+  fieldPath: PropTypes.string.isRequired,
+  addButtonLabel: PropTypes.string,
+  modal: PropTypes.shape({
+    addLabel: PropTypes.string.isRequired,
+    editLabel: PropTypes.string.isRequired,
+  }),
+  schema: PropTypes.oneOf(["creators", "contributors"]).isRequired,
+  autocompleteNames: PropTypes.oneOf(["search", "search_only", "off"]),
   label: PropTypes.string,
   labelIcon: PropTypes.string,
   roleOptions: PropTypes.array,
 };
 
 CreatibutorsField.defaultProps = {
+  autocompleteNames: "search",
+  label: undefined,
+  labelIcon: undefined,
+  roleOptions: undefined,
   modal: {
-    addLabel: i18next.t('Add creator'),
-    editLabel: i18next.t('Edit creator'),
+    addLabel: i18next.t("Add creator"),
+    editLabel: i18next.t("Edit creator"),
   },
-  autocompleteNames: false,
-  addButtonLabel: i18next.t('Add creator'),
+  addButtonLabel: i18next.t("Add creator"),
 };

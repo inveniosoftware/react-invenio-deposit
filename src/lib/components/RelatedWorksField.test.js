@@ -1,18 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import { Form, Formik } from 'formik';
+import { Form, Formik } from "formik";
 
-import { RelatedWorksField } from './RelatedWorksField';
+import { RelatedWorksField } from "./RelatedWorksField";
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
+it("renders without crashing", () => {
+  const div = document.createElement("div");
+  const options = {
+    relations: [{ text: "Is supplemented by", value: "issupplementedby" }],
+    scheme: [{ text: "Arxiv", value: "arxiv" }],
+    resource_type: [{ text: "Dataset", value: "dataset", icon: "table" }],
+  };
 
   ReactDOM.render(
     <Formik>
-      {(props) => (
+      {() => (
         <Form>
-          <RelatedWorksField fieldPath={'fieldPath'} />
+          <RelatedWorksField fieldPath="fieldPath" options={options} />
         </Form>
       )}
     </Formik>,

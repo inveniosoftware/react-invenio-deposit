@@ -7,7 +7,10 @@ on:
   push:
     branches: [ master ]
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+      - 'maint-**'
+      - 'feature/**'
 
 jobs:
   Tests:
@@ -16,7 +19,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [18.x]
 
     steps:
     - name: Checkout
@@ -31,6 +34,9 @@ jobs:
       run: |
         npm install
         npm run build
+
+    - name: Lint
+      run: npm run lint
   
     - name: Test
       run: npm test

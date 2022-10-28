@@ -6,28 +6,24 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Button, Form, Icon } from 'semantic-ui-react';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Button, Form, Icon } from "semantic-ui-react";
 
-import {
-  ArrayField,
-  GroupField,
-  SelectField,
-  TextField,
-} from 'react-invenio-forms';
-import { emptyAdditionalTitle } from '../record';
-import { LanguagesField } from './LanguagesField';
-import { i18next } from '@translations/i18next';
+import { ArrayField, GroupField, SelectField, TextField } from "react-invenio-forms";
+import { emptyAdditionalTitle } from "../record";
+import { LanguagesField } from "./LanguagesField";
+import { i18next } from "@translations/i18next";
 
 export class AdditionalTitlesField extends Component {
   render() {
     const { fieldPath, options, recordUI } = this.props;
     return (
       <ArrayField
-        addButtonLabel={i18next.t('Add titles')}
+        addButtonLabel={i18next.t("Add titles")}
         defaultNewValue={emptyAdditionalTitle}
         fieldPath={fieldPath}
+        className="additional-titles"
       >
         {({ arrayHelpers, indexPath }) => {
           const fieldPathPrefix = `${fieldPath}.${indexPath}`;
@@ -36,13 +32,13 @@ export class AdditionalTitlesField extends Component {
             <GroupField fieldPath={fieldPath} optimized>
               <TextField
                 fieldPath={`${fieldPathPrefix}.title`}
-                label={'Additional title'}
+                label="Additional title"
                 required
                 width={5}
               />
               <SelectField
                 fieldPath={`${fieldPathPrefix}.type`}
-                label={'Type'}
+                label="Type"
                 optimized
                 options={options.type}
                 required
@@ -63,17 +59,21 @@ export class AdditionalTitlesField extends Component {
                     : []
                 }
                 fieldPath={`${fieldPathPrefix}.lang`}
-                label={'Language'}
+                label="Language"
                 multiple={false}
-                placeholder={'Select language'}
+                placeholder="Select language"
                 labelIcon={null}
                 clearable
                 selectOnBlur={false}
                 width={5}
               />
-              <Form.Field width={1}>
-                <label>&nbsp;</label>
-                <Button icon onClick={() => arrayHelpers.remove(indexPath)}>
+              <Form.Field>
+                <Button
+                  aria-label={i18next.t("Remove field")}
+                  className="close-btn"
+                  icon
+                  onClick={() => arrayHelpers.remove(indexPath)}
+                >
                   <Icon name="close" />
                 </Button>
               </Form.Field>
@@ -86,6 +86,7 @@ export class AdditionalTitlesField extends Component {
 }
 
 AdditionalTitlesField.propTypes = {
+  fieldPath: PropTypes.string.isRequired,
   options: PropTypes.shape({
     type: PropTypes.arrayOf(
       PropTypes.shape({
@@ -105,5 +106,6 @@ AdditionalTitlesField.propTypes = {
 };
 
 AdditionalTitlesField.defaultProps = {
-  fieldPath: 'metadata.additional_titles',
+  options: undefined,
+  recordUI: undefined,
 };

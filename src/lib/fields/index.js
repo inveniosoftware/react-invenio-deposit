@@ -5,11 +5,13 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-export { DatesField } from './DatesField';
-export { Field } from './Field';
-export { SchemaField } from './SchemaField';
+export { DatesField } from "./DatesField";
+export { Field } from "./Field";
+export { SchemaField } from "./SchemaField";
 export {
   AllowAdditionsVocabularyField,
-  VocabularyField,
+  FundingField,
   RightsVocabularyField,
-} from './VocabularyField';
+  VocabularyField,
+} from "./VocabularyField";
+export { CustomField } from "./CustomField";

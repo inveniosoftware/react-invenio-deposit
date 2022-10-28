@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2022-02-23T10:09:02.029Z\n"
-"PO-Revision-Date: 2022-02-23T10:09:02.029Z\n"
+"POT-Creation-Date: 2022-10-12T08:43:11.707Z\n"
+"PO-Revision-Date: 2022-10-12T08:43:11.707Z\n"
 "Language: en\n"
 
 msgid "Embargo until"
@@ -20,17 +20,6 @@ msgstr "The full record is restricted."
 
 msgid "Embargoed (full record)"
 msgstr "Embargoed (full record)"
-
-msgid ""
-"On <bold>{{ date }}</bold> the record and the files will automatically be "
-"made publicly accessible. Until then, the record and the files can "
-"<bold>only</bold> be accessed by <bold>users specified</bold> in the "
-"permissions."
-msgstr ""
-"On <bold>{{ date }}</bold> the record and the files will automatically be "
-"made publicly accessible. Until then, the record and the files can "
-"<bold>only</bold> be accessed by <bold>users specified</bold> in the "
-"permissions."
 
 msgid "Embargoed (files-only)"
 msgstr "Embargoed (files-only)"
@@ -72,13 +61,6 @@ msgstr "The record is publicly accessible."
 
 msgid "Public with restricted files"
 msgstr "Public with restricted files"
-
-msgid ""
-"The record is publicly accessible. The files can <1>only</1> be accessed by "
-"<3>users specified</3> in the permissions."
-msgstr ""
-"The record is publicly accessible. The files can <1>only</1> be accessed by "
-"<3>users specified</3> in the permissions."
 
 msgid ""
 "The record can <1>only</1> be accessed by <3>users specified</3> in the "
@@ -183,12 +165,6 @@ msgstr "Organization"
 msgid "Family name"
 msgstr "Family name"
 
-msgid "Given name(s)"
-msgstr "Given name(s)"
-
-msgid "Given name"
-msgstr "Given name"
-
 msgid "Name"
 msgstr "Name"
 
@@ -271,9 +247,6 @@ msgstr ""
 msgid "You must create a new version to add, modify or delete files."
 msgstr "You must create a new version to add, modify or delete files."
 
-msgid "Drag and drop file(s)"
-msgstr "Drag and drop file(s)"
-
 msgid "Upload files"
 msgstr "Upload files"
 
@@ -304,9 +277,6 @@ msgstr "Pending"
 
 msgid "or"
 msgstr "or"
-
-msgid "This is a Metadata only record"
-msgstr "This is a Metadata only record"
 
 msgid "Metadata-only record"
 msgstr "Metadata-only record"
@@ -368,29 +338,64 @@ msgstr "Record successfully saved."
 msgid "Record saved with validation errors:"
 msgstr "Record saved with validation errors:"
 
-msgid "There was an internal error (and the record was not saved)."
-msgstr "There was an internal error (and the record was not saved)."
+msgid ""
+"Oops, something went wrong! The draft was not saved. Please try again. If "
+"the problem persists, contact user support."
+msgstr ""
+"Oops, something went wrong! The draft was not saved. Please try again. If "
+"the problem persists, contact user support."
 
-msgid "There was an internal error (and the record was not deleted)."
-msgstr "There was an internal error (and the record was not deleted)."
+msgid ""
+"Oops, something went wrong! The draft was not published. Please try again. "
+"If the problem persists, contact user support."
+msgstr ""
+"Oops, something went wrong! The draft was not published. Please try again. "
+"If the problem persists, contact user support."
+
+msgid ""
+"Oops, something went wrong! The draft was not submitted for review. Please "
+"try again. If the problem persists, contact user support."
+msgstr ""
+"Oops, something went wrong! The draft was not submitted for review. Please "
+"try again. If the problem persists, contact user support."
+
+msgid ""
+"Oops, something went wrong! The draft was not deleted. Please try again. If "
+"the problem persists, contact user support."
+msgstr ""
+"Oops, something went wrong! The draft was not deleted. Please try again. If "
+"the problem persists, contact user support."
+
+msgid ""
+"Oops, something went wrong! The draft cannot be previewed. Please try "
+"again. If the problem persists, contact user support."
+msgstr ""
+"Oops, something went wrong! The draft cannot be previewed. Please try "
+"again. If the problem persists, contact user support."
+
+msgid ""
+"Oops, something went wrong! The identifier was not reserved. Please try "
+"again. If the problem persists, contact user support."
+msgstr ""
+"Oops, something went wrong! The identifier was not reserved. Please try "
+"again. If the problem persists, contact user support."
+
+msgid ""
+"Oops, something went wrong! The identifier was not discarded. Please try "
+"again. If the problem persists, contact user support."
+msgstr ""
+"Oops, something went wrong! The identifier was not discarded. Please try "
+"again. If the problem persists, contact user support."
+
+msgid ""
+"Oops, something went wrong! The draft could not be saved before uploading "
+"the file. Please try again. If the problem persists, contact user support."
+msgstr ""
+"Oops, something went wrong! The draft could not be saved before uploading "
+"the file. Please try again. If the problem persists, contact user support."
 
 msgid "Add award"
 msgstr "Add award"
-
-msgid "Funding Organization"
-msgstr "Funding Organization"
-
-msgid "Funding organization..."
-msgstr "Funding organization..."
-
-msgid "Award"
-msgstr "Award"
-
-msgid "Award number/acronym/name ..."
-msgstr "Award number/acronym/name ..."
-
-msgid "Awards"
-msgstr "Awards"
 
 msgid "Add identifier"
 msgstr "Add identifier"
@@ -400,9 +405,6 @@ msgstr "Identifier"
 
 msgid "Scheme"
 msgstr "Scheme"
-
-msgid "Identifier(s)"
-msgstr "Identifier(s)"
 
 msgid "Search for languages..."
 msgstr "Search for languages..."
@@ -467,21 +469,12 @@ msgstr ""
 msgid "YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD for intervals. MM and DD are optional."
 msgstr "YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD for intervals. MM and DD are optional."
 
-msgid "publish"
-msgstr "publish"
-
-msgid "Are you sure you want to {{action}} this record?"
-msgstr "Are you sure you want to {{action}} this record?"
-
 msgid ""
 "The publisher is used to formulate the citation, so consider the prominence "
 "of the role."
 msgstr ""
 "The publisher is used to formulate the citation, so consider the prominence "
 "of the role."
-
-msgid "Enter publisher name"
-msgstr "Enter publisher name"
 
 msgid ""
 "Specify identifiers of related works. Supported identifiers include DOI, "
@@ -531,13 +524,6 @@ msgstr "Yes"
 msgid "No"
 msgstr "No"
 
-msgid ""
-"The record and files can <1>only</1> be accessed by<3> users specified</3> "
-"in the permissions."
-msgstr ""
-"The record and files can <1>only</1> be accessed by<3> users specified</3> "
-"in the permissions."
-
 msgid "e.g. ROR, ISNI or GND."
 msgstr "e.g. ROR, ISNI or GND."
 
@@ -549,9 +535,6 @@ msgstr "Disable files for this record"
 
 msgid "DOI"
 msgstr "DOI"
-
-msgid "PIDS"
-msgstr "PIDS"
 
 msgid "Search"
 msgstr "Search"
@@ -568,8 +551,251 @@ msgstr "Add {{mode}} license"
 msgid "Change {{mode}} license"
 msgstr "Change {{mode}} license"
 
-msgid "No community selected."
-msgstr "No community selected."
+msgid "My communities"
+msgstr "My communities"
+
+msgid "Search in all communities"
+msgstr "Search in all communities"
+
+msgid "Search in my communities"
+msgstr "Search in my communities"
 
 msgid "Search for persons by name, identifier, or affiliation..."
 msgstr "Search for persons by name, identifier, or affiliation..."
+
+msgid "Select a community"
+msgstr "Select a community"
+
+msgid "Submit review"
+msgstr "Submit review"
+
+msgid "Publish"
+msgstr "Publish"
+
+msgid "Are you sure you want to publish this record?"
+msgstr "Are you sure you want to publish this record?"
+
+msgid "The draft was not published. Record saved with validation errors:"
+msgstr "The draft was not published. Record saved with validation errors:"
+
+msgid "The draft was not submitted for review. Record saved with validation errors:"
+msgstr "The draft was not submitted for review. Record saved with validation errors:"
+
+msgid "In review"
+msgstr "In review"
+
+msgid ""
+"Community curators will review your upload. Once accepted, it will be "
+"published."
+msgstr ""
+"Community curators will review your upload. Once accepted, it will be "
+"published."
+
+msgid "Declined"
+msgstr "Declined"
+
+msgid "The request to submit this upload to the community was declined."
+msgstr "The request to submit this upload to the community was declined."
+
+msgid "Expired"
+msgstr "Expired"
+
+msgid "The request to submit this upload to the community has expired."
+msgstr "The request to submit this upload to the community has expired."
+
+msgid "Published"
+msgstr "Published"
+
+msgid "Your upload is published."
+msgstr "Your upload is published."
+
+msgid "Draft"
+msgstr "Draft"
+
+msgid ""
+"Once your upload is complete, you can submit it for review to the community "
+"curators."
+msgstr ""
+"Once your upload is complete, you can submit it for review to the community "
+"curators."
+
+msgid ""
+"Once your upload is complete, you can publish or submit it for review to "
+"the community curators."
+msgstr ""
+"Once your upload is complete, you can publish or submit it for review to "
+"the community curators."
+
+msgid "New version draft"
+msgstr "New version draft"
+
+msgid "Once your upload is complete, you can publish it."
+msgstr "Once your upload is complete, you can publish it."
+
+msgid "View request"
+msgstr "View request"
+
+msgid "Submitted for review"
+msgstr "Submitted for review"
+
+msgid "Change community"
+msgstr "Change community"
+
+msgid "Publish without community"
+msgstr "Publish without community"
+
+msgid "Select the community where you want to submit your record."
+msgstr "Select the community where you want to submit your record."
+
+msgid "View community"
+msgstr "View community"
+
+msgid "Opens in new tab"
+msgstr "Opens in new tab"
+
+msgid "Selected"
+msgstr "Selected"
+
+msgid "Select"
+msgstr "Select"
+
+msgid "Select "
+msgstr "Select "
+
+msgid "Change"
+msgstr "Change"
+
+msgid "Search for a funder by name"
+msgstr "Search for a funder by name"
+
+msgid "Funder"
+msgstr "Funder"
+
+msgid "Search for funder..."
+msgstr "Search for funder..."
+
+msgid "Award information"
+msgstr "Award information"
+
+msgid "Number"
+msgstr "Number"
+
+msgid "Award number"
+msgstr "Award number"
+
+msgid "Award Title"
+msgstr "Award Title"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Award URL"
+msgstr "Award URL"
+
+msgid "Add standard award"
+msgstr "Add standard award"
+
+msgid "Add custom award"
+msgstr "Add custom award"
+
+msgid "Change award"
+msgstr "Change award"
+
+msgid "Did not find your award? "
+msgstr "Did not find your award? "
+
+msgid "Add a custom award."
+msgstr "Add a custom award."
+
+msgid ""
+"Once the record is published you will no longer be able to change the files "
+"in the upload! However, you will still be able to update the record's "
+"metadata later."
+msgstr ""
+"Once the record is published you will no longer be able to change the files "
+"in the upload! However, you will still be able to update the record's "
+"metadata later."
+
+msgid "Submit for review"
+msgstr "Submit for review"
+
+msgid "optional"
+msgstr "optional"
+
+msgid "Open external link"
+msgstr "Open external link"
+
+msgid "Search for awards"
+msgstr "Search for awards"
+
+msgid ""
+"The record is publicly accessible. The files can <1>only</1> be accessed by "
+"<4>users specified</4> in the permissions."
+msgstr ""
+"The record is publicly accessible. The files can <1>only</1> be accessed by "
+"<4>users specified</4> in the permissions."
+
+msgid "Format"
+msgstr "Format"
+
+msgid "The files of this record are restricted."
+msgstr "The files of this record are restricted."
+
+msgid "Remove field"
+msgstr "Remove field"
+
+msgid ""
+"Did not find a community that fits you? Upload without a community or "
+"<2>create your own.</2>"
+msgstr ""
+"Did not find a community that fits you? Upload without a community or "
+"<2>create your own.</2>"
+
+msgid "Given names"
+msgstr "Given names"
+
+msgid "Couldn't find your person? You can <2>create a new entry</2>."
+msgstr "Couldn't find your person? You can <2>create a new entry</2>."
+
+msgid "Drag and drop files"
+msgstr "Drag and drop files"
+
+msgid "Default preview"
+msgstr "Default preview"
+
+msgid "Delete file"
+msgstr "Delete file"
+
+msgid "This is a Metadata-only record."
+msgstr "This is a Metadata-only record."
+
+msgid ""
+"Oops, something went wrong! Importing files from the previous version "
+"failed. Please try again. If the problem persists, contact user support."
+msgstr ""
+"Oops, something went wrong! Importing files from the previous version "
+"failed. Please try again. If the problem persists, contact user support."
+
+msgid "Funder is required."
+msgstr "Funder is required."
+
+msgid "Title must be set alongside number."
+msgstr "Title must be set alongside number."
+
+msgid "Number must be set alongside title."
+msgstr "Number must be set alongside title."
+
+msgid "URL must be valid."
+msgstr "URL must be valid."
+
+msgid "URL must be set alongside title and number."
+msgstr "URL must be set alongside title and number."
+
+msgid "Identifiers"
+msgstr "Identifiers"
+
+msgid "You must accept this."
+msgstr "You must accept this."
+
+msgid "Before requesting review please read and check the following:"
+msgstr "Before requesting review please read and check the following:"
