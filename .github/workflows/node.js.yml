@@ -40,3 +40,6 @@ jobs:
   
     - name: Test
       run: npm test
+
+    - name: Run translations test
+      run: ./run-i18n-tests.sh
