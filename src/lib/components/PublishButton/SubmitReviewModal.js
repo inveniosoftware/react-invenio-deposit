@@ -78,7 +78,6 @@ export class SubmitReviewModal extends Component {
                             communityTitle,
                           }}
                           components={{ bold: <b /> }}
-                          shouldUnescape
                         />
                       }
                       checked={_get(values, "acceptAccessToRecord") === "checked"}

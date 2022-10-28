@@ -1,0 +1,69 @@
+name: i18n:pull JS translations
+on: workflow_dispatch # manually trigger
+
+jobs:
+  pull-translations:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install & Build
+      run: |
+        npm install
+
+      # setup python
+    - name: Set up Python ${{ env.PYTHON-VERSION }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+      # install transifex-client
+    - name: install transifex-client
+      run: |
+        pip install transifex-client
+
+      # store token
+    - name: store token
+      run: |
+        touch ~/.transifexrc
+        echo [https://www.transifex.com] >> ~/.transifexrc
+        echo api_hostname=https://api.transifex.com >> ~/.transifexrc
+        echo hostname=https://www.transifex.com >> ~/.transifexrc
+        echo password=${{ secrets.TRANSIFEX_TOKEN }} >> ~/.transifexrc
+        echo username=api  >> ~/.transifexrc
+
+    # pull all lang
+    - name: pull translations
+      run: |
+        tx pull -a -f
+
+    # compile .po file to json
+    - name: compile
+      run: |
+        npm run compile_catalog
+
+      # remove transifex credential file
+    - name: remove transifexrc file
+      uses: JesseTG/rm@v1.0.2
+      with:
+        path: ~/.transifexrc
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        commit-message: i18n:pull translations
+        title: i18n:pull translations
+        body: i18n:pull translations
+        branch: 101-translations  # name of branch which PR is created from
+        delete-branch: true  # delete branch once merged,closed
