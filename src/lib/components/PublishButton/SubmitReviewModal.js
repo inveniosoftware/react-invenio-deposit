@@ -53,7 +53,7 @@ export class SubmitReviewModal extends Component {
               closeOnDimmerClick={false}
             >
               <Modal.Header>
-              <Trans>Submit for review</Trans>
+                <Trans>Submit for review</Trans>
               </Modal.Header>
               <Modal.Content>
                 <Message visible warning>
