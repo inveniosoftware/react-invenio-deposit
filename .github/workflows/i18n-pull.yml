@@ -2,7 +2,7 @@ name: i18n:pull JS translations
 on: workflow_dispatch # manually trigger
 
 jobs:
-  translations:
+  pull-translations:
     runs-on: ubuntu-20.04
 
     strategy:
@@ -21,7 +21,14 @@ jobs:
     - name: Install & Build
       run: |
         npm install
-  
+
+      # setup python
+    - name: Set up Python ${{ env.PYTHON-VERSION }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+      # install transifex-client
     - name: install transifex-client
       run: |
         pip install transifex-client
@@ -29,7 +36,12 @@ jobs:
       # store token
     - name: store token
       run: |
-        tx init --token ${{ secrets.TRANSIFEX_TOKEN }} --force --no-interactive
+        touch ~/.transifexrc
+        echo [https://www.transifex.com] >> ~/.transifexrc
+        echo api_hostname=https://api.transifex.com >> ~/.transifexrc
+        echo hostname=https://www.transifex.com >> ~/.transifexrc
+        echo password=${{ secrets.TRANSIFEX_TOKEN }} >> ~/.transifexrc
+        echo username=api  >> ~/.transifexrc
 
     # pull all lang
     - name: pull translations
@@ -40,6 +52,12 @@ jobs:
     - name: compile
       run: |
         npm run compile_catalog
+
+      # remove transifex credential file
+    - name: remove transifexrc file
+      uses: JesseTG/rm@v1.0.2
+      with:
+        path: ~/.transifexrc
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3

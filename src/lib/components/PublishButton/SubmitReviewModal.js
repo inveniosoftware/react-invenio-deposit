@@ -53,7 +53,7 @@ export class SubmitReviewModal extends Component {
               closeOnDimmerClick={false}
             >
               <Modal.Header>
-                <Trans>Submit for review</Trans>
+              <Trans>Submit for review</Trans>
               </Modal.Header>
               <Modal.Content>
                 <Message visible warning>
@@ -78,7 +78,6 @@ export class SubmitReviewModal extends Component {
                             communityTitle,
                           }}
                           components={{ bold: <b /> }}
-                          shouldUnescape
                         />
                       }
                       checked={_get(values, "acceptAccessToRecord") === "checked"}
