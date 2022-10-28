@@ -1,8 +1,6 @@
 name: i18n:extract,push,pull JS translations
-on:
-  push:
-    branches:
-      - master
+on: workflow_dispatch # manually trigger
+
 
 jobs:
   translations:
@@ -32,7 +30,7 @@ jobs:
       # store token
       - name: store token
         run: |
-          tx init --token ${{ secrets.TRANS_TOKEN }} --force --no-interactive
+          tx init --token ${{ secrets.TRANSIFEX_TOKEN }} --force --no-interactive
 
       # extract
       - name: extract_messages
