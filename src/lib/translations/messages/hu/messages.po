@@ -1,0 +1,836 @@
+# 
+# Translators:
+# Tibor Simko <tibor.simko@cern.ch>, 2021
+# Andrea Dömötör, 2022
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"POT-Creation-Date: 2022-10-28T08:02:09.099Z\n"
+"PO-Revision-Date: 2021-06-29 13:20+0000\n"
+"Last-Translator: Andrea Dömötör, 2022\n"
+"Language-Team: Hungarian (https://www.transifex.com/inveniosoftware/teams/23537/hu/)\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hu\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"mime-version: 1.0\n"
+
+msgid "Embargo until"
+msgstr "Zárolás eddig:"
+
+msgid "YYYY-MM-DD"
+msgstr "YYYY-MM-DD"
+
+msgid "The full record is restricted."
+msgstr "A teljes rekord korlátozott hozzáférésű."
+
+msgid "Embargoed (full record)"
+msgstr "Zárolva (teljes rekord)"
+
+msgid "Embargoed (files-only)"
+msgstr "Zárolva (csak fájlok)"
+
+msgid ""
+"The record is publicly accessible. On <bold>{{ date }}</bold> the files will"
+" automatically be made publicly accessible. Until then, the files can "
+"<bold>only</bold> be accessed by <bold>users specified</bold> in the "
+"permissions."
+msgstr ""
+"A rekord nyilbánosan elérhető. <bold>{{date}}</bold> naptól a fájlok "
+"automatikusan nyilvánosan elérhetők lesznek. Addig a fájlokhoz "
+"<bold>csak</bold> az engedélyeknél <bold>meghatározott felhasználók</bold> "
+"férhetnek hozzá."
+
+msgid "The record has no files."
+msgstr "A rekordhoz nem tartoznak fájlok. "
+
+msgid ""
+"On <bold>{{ date }}</bold> the record will automatically be made publicly "
+"accessible. Until then, the record can <bold>only</bold> be accessed by "
+"<bold>users specified</bold> in the permissions."
+msgstr ""
+"<bold>{{date}}</bold> naptól a rekord automatikusan nyilvánosan elérhető "
+"lesz. Addig a rekordhoz <bold>csak</bold> az engedélyeknél "
+"<bold>meghatározott felhasználók</bold> férhetnek hozzá."
+
+msgid "Public"
+msgstr "Nyilvános"
+
+msgid "Restricted"
+msgstr "Korlátozott hozzáférés"
+
+msgid "The record and files are publicly accessible."
+msgstr "A rekord és a fájlok nyilvánosan elérhetőek."
+
+msgid "The record is publicly accessible."
+msgstr "A rekord nyilvánosan elérhető."
+
+msgid "Public with restricted files"
+msgstr "Nyilvánosan elérhető, korlátozott hozzáférésű fájlokkal"
+
+msgid ""
+"The record can <1>only</1> be accessed by <3>users specified</3> in the "
+"permissions."
+msgstr ""
+"A rekordhoz <1>csak</1> az engedélyeknél <3>meghatározott felhasználók</3> "
+"férhetnek hozzá."
+
+msgid "Full record"
+msgstr "Teljes rekord"
+
+msgid "Files only"
+msgstr "Csak fájlok"
+
+msgid "Apply an embargo"
+msgstr "Zárolás alkalmazása"
+
+msgid "Embargo reason"
+msgstr "Zárolás oka"
+
+msgid "Optionally, describe the reason for the embargo."
+msgstr "Opcionálisan adja meg a zárolás okát."
+
+msgid "Embargo was lifted on {{fmtDate}}."
+msgstr "Zárolás feloldva ekkor: {{fmtDate}}"
+
+msgid "Reason"
+msgstr "Indoklás"
+
+msgid ""
+"Record or files protection must be <1>restricted</1> to apply an embargo."
+msgstr "A zároláshoz <1>korlátozni</1> kell a rekordok vagy fájlok védelmét."
+
+msgid "Options"
+msgstr "Lehetőségek"
+
+msgid "Add description"
+msgstr "Leírás hozzáadása"
+
+msgid "Additional Description"
+msgstr "További leírás"
+
+msgid "Type"
+msgstr "Típus"
+
+msgid "Language"
+msgstr "Nyelv"
+
+msgid "Select language"
+msgstr "Nyelv kiválasztása"
+
+msgid "Add titles"
+msgstr "Címek hozzáadása"
+
+msgid "Search or create affiliation'"
+msgstr "Affiliáció keresése vagy létrehozása"
+
+msgid "Affiliations"
+msgstr "Affiliációk"
+
+msgid "Search for affiliations.."
+msgstr "Keresés affiliáció szerint"
+
+msgid "Add creator"
+msgstr "Létrehozó hozzáadása"
+
+msgid "Edit"
+msgstr "Szerkesztés"
+
+msgid "Remove"
+msgstr "Törlés"
+
+msgid "Name identifiers"
+msgstr "Névazonosítók"
+
+msgid "e.g. ORCID, ISNI or GND."
+msgstr "pl. ORCID, ISNI vagy GND."
+
+msgid "Type the value of an identifier..."
+msgstr "Írja be egy azonosító értékét..."
+
+msgid "Save and add another"
+msgstr "Mentés és új hozzáadása"
+
+msgid "Family name is a required field."
+msgstr "A családnév megadása kötelező."
+
+msgid "Name is a required field."
+msgstr "A név megadása kötelező."
+
+msgid "Role is a required field."
+msgstr "A szerepkör megadása kötelező."
+
+msgid "Added"
+msgstr "Hozzáadva"
+
+msgid "Person"
+msgstr "Személy"
+
+msgid "Organization"
+msgstr "Szervezet"
+
+msgid "Family name"
+msgstr "Családnév"
+
+msgid "Name"
+msgstr "Név"
+
+msgid "Organization name"
+msgstr "Szervezet neve"
+
+msgid "Role"
+msgstr "Szerepkör"
+
+msgid "Select role"
+msgstr "Szerepkör kiválasztása"
+
+msgid "Cancel"
+msgstr "Mégsem"
+
+msgid "Save"
+msgstr "Mentés"
+
+msgid "Add date"
+msgstr "Dátum hozzáadása"
+
+msgid "Format: DATE or DATE/DATE where DATE is YYYY or YYYY-MM or YYYY-MM-DD."
+msgstr ""
+"Formátum: DÁTUM vagy DÁTUM/DÁTUM, ahol a DÁTUM ÉÉÉÉ vagy ÉÉÉÉ-HH vagy ÉÉÉÉ-"
+"HH-NN."
+
+msgid "Date"
+msgstr "Dátum"
+
+msgid "Description"
+msgstr "Leírás"
+
+msgid "Dates"
+msgstr "Dátumok"
+
+msgid "YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD"
+msgstr "YYYY-MM-DD vagy YYYY-MM-DD/YYYY-MM-DD"
+
+msgid "discard changes"
+msgstr "változtatások elvetése"
+
+msgid "discard version"
+msgstr "verzió elvetése"
+
+msgid "delete"
+msgstr "törlés"
+
+msgid "Are you sure you want to discard the changes to this draft?"
+msgstr "Biztosan elveti a piszkozat változtatásait?"
+
+msgid "Are you sure you want to delete this new version?"
+msgstr "Biztosan törli ezt az új verziót?"
+
+msgid "Are you sure you want to delete this draft?"
+msgstr "Biztosan törli a piszkozatot?"
+
+msgid "New version"
+msgstr "Új verzió"
+
+msgid "New upload"
+msgstr "Új feltöltés"
+
+msgid "Edit upload"
+msgstr "Feltöltés szerkesztése"
+
+msgid "Uploading the selected files would result in"
+msgstr "A kiválasztott fájlok feltöltése ezt eredményezheti:"
+
+msgid "but the limit is"
+msgstr "de a limit"
+
+msgid "You can import files from the previous version."
+msgstr "Importálhat fájlokat az előző verzióból."
+
+msgid ""
+"File addition, removal or modification are not allowed after you have "
+"published your upload."
+msgstr ""
+"A feltöltés közzététele után nem engedélyezett a fájlok hozzáadása, "
+"eltávolítása vagy módosítása."
+
+msgid "You must create a new version to add, modify or delete files."
+msgstr ""
+"Fájlok hozzáadásához, módosításához vagy törléséhez új verziót kell "
+"létrehoznia."
+
+msgid "Upload files"
+msgstr "Fájlok feltöltése"
+
+msgid "Import files"
+msgstr "Fájlok importálása"
+
+msgid "Preview"
+msgstr "Előnézet"
+
+msgid "Filename"
+msgstr "Fájlnév"
+
+msgid "Size"
+msgstr "Méret"
+
+msgid "Progress"
+msgstr "Előrehaladás"
+
+msgid ""
+"This is the file fingerprint (MD5 checksum), which can be used to verify the"
+" file integrity."
+msgstr ""
+"Ez a fájl ujjlenyomata (MD5 ellenőrző összeg), amely a fájl integritásának "
+"ellenőrzésére használható."
+
+msgid "Pending"
+msgstr "Függőben"
+
+msgid "or"
+msgstr "vagy"
+
+msgid "Metadata-only record"
+msgstr "Csak metaadatot tartalmazó rekord"
+
+msgid "Storage available"
+msgstr "Készlet elérhető"
+
+msgid "{{length}} out of {{maxfiles}} files"
+msgstr "{{length}} {{maxfiles}} fájlból"
+
+msgid "out of"
+msgstr "ennyiből:"
+
+msgid "Files"
+msgstr "Fájlok"
+
+msgid "Resource type"
+msgstr "Forrástípus"
+
+msgid "Title"
+msgstr "Cím"
+
+msgid "Additional titles"
+msgstr "További címek"
+
+msgid "Publication date"
+msgstr "Publikálás dátuma"
+
+msgid "Creators"
+msgstr "Készítők"
+
+msgid "Contributors"
+msgstr "Közreműködők"
+
+msgid "Additional descriptions"
+msgstr "További leírások"
+
+msgid "Licenses"
+msgstr "Licenszek"
+
+msgid "Languages"
+msgstr "Nyelvek"
+
+msgid "Version"
+msgstr "Verzió"
+
+msgid "Publisher"
+msgstr "Kiadó"
+
+msgid "Related works"
+msgstr "Kapcsolódó munkák"
+
+msgid "Alternate identifiers"
+msgstr "Alternatív azonosítók"
+
+msgid "Record successfully saved."
+msgstr "A rekordot sikeresen mentettük."
+
+msgid "Record saved with validation errors:"
+msgstr "A rekordot validálási hibákkal mentettük:"
+
+msgid ""
+"Oops, something went wrong! The draft was not saved. Please try again. If "
+"the problem persists, contact user support."
+msgstr ""
+"Ajaj, valami hiba történt! Nem sikerült menteni a piszkozatot. Kérjük, "
+"próbálja újra! Ha a probléma továbbra is fennáll, forduljon az "
+"ügyfélszolgálathoz!"
+
+msgid ""
+"Oops, something went wrong! The draft was not published. Please try again. "
+"If the problem persists, contact user support."
+msgstr ""
+"Ajaj, valami hiba történt! A piszkozat nem lett közzétéve. Kérjük, próbálja "
+"újra! Ha a probléma továbbra is fennáll, forduljon az ügyfélszolgálathoz!"
+
+msgid ""
+"Oops, something went wrong! The draft was not submitted for review. Please "
+"try again. If the problem persists, contact user support."
+msgstr ""
+"Ajaj, valami hiba történt! A piszkozat nem lett bírálatra benyújtva. Kérjük,"
+" próbálja újra! Ha a probléma továbbra is fennáll, forduljon az "
+"ügyfélszolgálathoz!"
+
+msgid ""
+"Oops, something went wrong! The draft was not deleted. Please try again. If "
+"the problem persists, contact user support."
+msgstr ""
+"Ajaj, valami hiba történt! A piszkozat nem lett törölve. Kérjük, próbálja "
+"újra! Ha a probléma továbbra is fennáll, forduljon az ügyfélszolgálathoz!"
+
+msgid ""
+"Oops, something went wrong! The draft cannot be previewed. Please try again."
+" If the problem persists, contact user support."
+msgstr ""
+"Ajaj, valami hiba történt! Nem sikerült megnyitni a piszkozat előnézetét. "
+"Kérjük, próbálja újra! Ha a probléma továbbra is fennáll, forduljon az "
+"ügyfélszolgálathoz!"
+
+msgid ""
+"Oops, something went wrong! The identifier was not reserved. Please try "
+"again. If the problem persists, contact user support."
+msgstr ""
+"Ajaj, valami hiba történt! Az azonosító nem lett lefoglalva. Kérjük, "
+"próbálja újra! Ha a probléma továbbra is fennáll, forduljon az "
+"ügyfélszolgálathoz!"
+
+msgid ""
+"Oops, something went wrong! The identifier was not discarded. Please try "
+"again. If the problem persists, contact user support."
+msgstr ""
+"Ajaj, valami hiba történt! Az azonosító nem lett elvetve. Kérjük, próbálja "
+"újra! Ha a probléma továbbra is fennáll, forduljon az ügyfélszolgálathoz!"
+
+msgid ""
+"Oops, something went wrong! The draft could not be saved before uploading "
+"the file. Please try again. If the problem persists, contact user support."
+msgstr ""
+"Ajaj, valami hiba történt! Nem sikerült menteni a piszkozatot a fájl "
+"feltöltése előtt. Kérjük, próbálja újra! Ha a probléma továbbra is fennáll, "
+"forduljon az ügyfélszolgálathoz!"
+
+msgid "Add award"
+msgstr "Díj hozzáadása"
+
+msgid "Add identifier"
+msgstr "Azonosító hozzáadása"
+
+msgid "Identifier"
+msgstr "Azonosító"
+
+msgid "Scheme"
+msgstr "Séma"
+
+msgid "Search for languages..."
+msgstr "Nyelvek keresése..."
+
+msgid "Search for a language by name (e.g \"eng\", \"fr\" or \"Polish\")"
+msgstr "Nyelv keresése név szerint (pl. \"eng\", \"fr\", \"lengyel\")"
+
+msgid "Add standard"
+msgstr "Szabvány hozzáadása"
+
+msgid "Add custom"
+msgstr "Egyéni hozzáadás"
+
+msgid "Read more"
+msgstr "Tudjon meg többet!"
+
+msgid "Title is a required field."
+msgstr "A cím megadása kötelező."
+
+msgid "Link must be a valid URL"
+msgstr "A linknek érvényes URL-nek kell lennie"
+
+msgid "Recommended"
+msgstr "Ajánlott"
+
+msgid "All"
+msgstr "Összes"
+
+msgid "Data"
+msgstr "Adat"
+
+msgid "Software"
+msgstr "Szoftver"
+
+msgid "License title"
+msgstr "Licensz címe"
+
+msgid "Link"
+msgstr "Link"
+
+msgid "License link"
+msgstr "Licensz link"
+
+msgid "Add license"
+msgstr "Licensz hozzáadása"
+
+msgid "Change license"
+msgstr "Licensz cseréje"
+
+msgid "You don't have permissions to create a new version."
+msgstr "Önnek nincs jogosultsága új verziót létrehozni."
+
+msgid ""
+"In case your upload was already published elsewhere, please use the date of "
+"the first publication. Format: YYYY-MM-DD, YYYY-MM, or YYYY. For intervals "
+"use DATE/DATE, e.g. 1939/1945."
+msgstr ""
+"Abban az esetben, ha a feltöltést már közzétették máshol, kérjük, használja "
+"az első közzététel dátumát. Formátum: ÉÉÉÉ-HH-NN, ÉÉÉÉ-HH vagy ÉÉÉÉ. Az "
+"intervallumokhoz használja a DÁTUM/DÁTUM értéket, pl. 1939/1945."
+
+msgid ""
+"YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD for intervals. MM and DD are optional."
+msgstr ""
+"ÉÉÉÉ-HH-NN vagy ÉÉÉÉ-HH-NN/ÉÉÉÉ-HH-NN intervallumokhoz. HH és NN opcionális."
+
+msgid ""
+"The publisher is used to formulate the citation, so consider the prominence "
+"of the role."
+msgstr ""
+
+msgid ""
+"Specify identifiers of related works. Supported identifiers include DOI, "
+"Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS "
+"Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, "
+"URNs, and URLs."
+msgstr ""
+"Adja meg a kapcsolódó művek azonosítóit! Támogatott azonosítók: DOI, Handle,"
+" ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS bibliográfiai kód,"
+" arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, URN és URL."
+
+msgid "Add related work"
+msgstr "Kapcsolódó munka hozzáadása"
+
+msgid "Relation"
+msgstr "Reláció"
+
+msgid "Select relation..."
+msgstr "Reláció kiválasztása..."
+
+msgid "Save draft"
+msgstr "Piszkozat mentése"
+
+msgid "Suggest from"
+msgstr "Javaslat innen:"
+
+msgid "Subjects"
+msgstr "Témák"
+
+msgid "Search for a subject by name"
+msgstr "Téma keresése név szerint"
+
+msgid ""
+"Mostly relevant for software and dataset uploads. A semantic version string "
+"is preferred see<1> semver.org</1>, but any version string is accepted."
+msgstr ""
+"Leginkább a szoftverek és adatkészletek feltöltésére vonatkozik. A "
+"szemantikus verziójú karakterláncok előnyben részesítettek, lásd a "
+"<1>semver.org</1> oldalt, de bármilyen verziójú karakterlánc elfogadható."
+
+msgid "Do you already have a {{pidLabel}} for this upload?"
+msgstr "Már van {{pidLabel}} ehhez a feltöltéshez?"
+
+msgid "Yes"
+msgstr "Igen"
+
+msgid "No"
+msgstr "Nem"
+
+msgid "e.g. ROR, ISNI or GND."
+msgstr "pl. ROR, ISNI vagy GND."
+
+msgid "The following files already exist"
+msgstr "A következő fájlok már léteznek"
+
+msgid "Disable files for this record"
+msgstr "Fájlok letiltása ehhez a rekordhoz"
+
+msgid "DOI"
+msgstr "DOI"
+
+msgid "Search"
+msgstr "Keresés"
+
+msgid "Search or create subjects..."
+msgstr "Témák keresése vagy létrehozása..."
+
+msgid "Edit creator"
+msgstr "Létrehozó szerkesztése"
+
+msgid "Add {{mode}} license"
+msgstr "{{mode}} licensz hozzáadása"
+
+msgid "Change {{mode}} license"
+msgstr "{{mode}} licensz cseréje"
+
+msgid "My communities"
+msgstr "Közösségeim"
+
+msgid "Search in all communities"
+msgstr "Keresés az összes közösségben"
+
+msgid "Search in my communities"
+msgstr "Keresés a saját közösségeimben"
+
+msgid "Search for persons by name, identifier, or affiliation..."
+msgstr "Emberek keresése név, azonosító vagy affiliáció szerint..."
+
+msgid "Select a community"
+msgstr "Közösség kiválasztása"
+
+msgid "Submit review"
+msgstr "Bírálat beküldése"
+
+msgid "Publish"
+msgstr "Közzététel"
+
+msgid "Are you sure you want to publish this record?"
+msgstr "Biztosan közzé akarja tenni ezt a rekordot?"
+
+msgid "The draft was not published. Record saved with validation errors:"
+msgstr ""
+"A piszkozatot nem tettük közzé. A rekordot validálási hibákkal mentettük:"
+
+msgid ""
+"The draft was not submitted for review. Record saved with validation errors:"
+msgstr ""
+"A vázlat nem lett bírálatra benyújtva. A rekordot érvényesítési hibákkal "
+"mentettük: "
+
+msgid "In review"
+msgstr "Bírálás alatt"
+
+msgid ""
+"Community curators will review your upload. Once accepted, it will be "
+"published."
+msgstr ""
+"A közösségi bírálók elbírálják az ön feltöltését. Ha elfogadták, "
+"publikálásra fog kerülni."
+
+msgid "Declined"
+msgstr "Elutasítva"
+
+msgid "The request to submit this upload to the community was declined."
+msgstr "A feltöltés benyújtási kérelmét elutasították."
+
+msgid "Expired"
+msgstr "Lejárt"
+
+msgid "The request to submit this upload to the community has expired."
+msgstr "A feltöltés benyújtási kérelme lejárt."
+
+msgid "Published"
+msgstr "Publikálva"
+
+msgid "Your upload is published."
+msgstr "A feltöltését közzétettük."
+
+msgid "Draft"
+msgstr "Piszkozat"
+
+msgid ""
+"Once your upload is complete, you can submit it for review to the community "
+"curators."
+msgstr "A feltöltés befejezése után beadhatja bírálatra a dokumentumot."
+
+msgid ""
+"Once your upload is complete, you can publish or submit it for review to the"
+" community curators."
+msgstr ""
+"A feltöltés befejezése után közzéteheti a dokumentumot, vagy beadhatja "
+"bírálatra."
+
+msgid "New version draft"
+msgstr "Piszkozat új verzióhoz"
+
+msgid "Once your upload is complete, you can publish it."
+msgstr "A feltöltés befejezése után közzéteheti a dokumentumot."
+
+msgid "View request"
+msgstr "Kérés megtekintése"
+
+msgid "Submitted for review"
+msgstr "Bírálatra benyújtva"
+
+msgid "Change community"
+msgstr "Váltás másik közösségre"
+
+msgid "Publish without community"
+msgstr "Közzététel közösség nélkül"
+
+msgid "Select the community where you want to submit your record."
+msgstr "Válassza ki a közösséget, ahova be szeretné nyújtani a rekordot!"
+
+msgid "View community"
+msgstr "Közösség megtekintése"
+
+msgid "Opens in new tab"
+msgstr "Új lapon nyílik meg"
+
+msgid "Selected"
+msgstr "Kiválasztva"
+
+msgid "Select"
+msgstr "Kiválasztás"
+
+msgid "Select "
+msgstr "Kiválasztás"
+
+msgid "Change"
+msgstr "Módosítás"
+
+msgid "Search for a funder by name"
+msgstr "Finanszírozó keresése név szerint"
+
+msgid "Funder"
+msgstr "Finanszírozó"
+
+msgid "Search for funder..."
+msgstr "Finanszírozó keresése..."
+
+msgid "Award information"
+msgstr "Díj információ"
+
+msgid "Number"
+msgstr "Szám"
+
+msgid "Award number"
+msgstr "Díj száma"
+
+msgid "Award Title"
+msgstr "Díj címe"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Award URL"
+msgstr "Díj URL"
+
+msgid "Add standard award"
+msgstr "Standard díj hozzáadása"
+
+msgid "Add custom award"
+msgstr "Egyéni díj hozzáadása"
+
+msgid "Change award"
+msgstr "Díj módosítása"
+
+msgid "Did not find your award? "
+msgstr "Nem találja a díját?"
+
+msgid "Add a custom award."
+msgstr "Egyéni díj hozzáadása"
+
+msgid ""
+"Once the record is published you will no longer be able to change the files "
+"in the upload! However, you will still be able to update the record's "
+"metadata later."
+msgstr ""
+"A rekord közzététele után nem módosíthatja a feltöltött fájlokat! A rekord "
+"metaadatait később is módosíthatja."
+
+msgid "Submit for review"
+msgstr "Benyújtás bírálatra"
+
+msgid "optional"
+msgstr "opcionális"
+
+msgid "Open external link"
+msgstr "Külső link megnyitása"
+
+msgid "Search for awards"
+msgstr "Díjak keresése"
+
+msgid ""
+"The record is publicly accessible. The files can <1>only</1> be accessed by "
+"<4>users specified</4> in the permissions."
+msgstr ""
+"A rekord nyilvánosan elérhető. A fájlokat <1>csak</1> az engedélyeknél "
+"<4>meghatározott felhasználók</4> érhetik el."
+
+msgid "Format"
+msgstr "Formátum"
+
+msgid "The files of this record are restricted."
+msgstr "A rekordhoz tartozó fájlok korlátozott hozzáférésűek."
+
+msgid "Remove field"
+msgstr "Mező eltávolítása"
+
+msgid ""
+"Did not find a community that fits you? Upload without a community or "
+"<2>create your own.</2>"
+msgstr ""
+"Nem talált önnek megfelelő közösséget? Töltsön fel fájlokat közösség nélkül,"
+" vagy <2>hozza létre a saját közösségét!</2>"
+
+msgid "Given names"
+msgstr "Keresztnevek"
+
+msgid "Couldn't find your person? You can <2>create a new entry</2>."
+msgstr "Nem találja, akit keresett? Létrehozhat <2>új bejegyzést</2>."
+
+msgid "Drag and drop files"
+msgstr "Húzza ide a fájlokat"
+
+msgid "Default preview"
+msgstr "Alapértelmezett előnézet"
+
+msgid "Delete file"
+msgstr "Fájl törlése"
+
+msgid "This is a Metadata-only record."
+msgstr "Ez egy csak-metaadat rekord."
+
+msgid ""
+"Oops, something went wrong! Importing files from the previous version "
+"failed. Please try again. If the problem persists, contact user support."
+msgstr ""
+"Ajaj, valami hiba történt! A fájlok importálása az előző verzióból "
+"sikertelen. Kérjük, próbálja újra! Ha a hiba továbbra is fennáll, forduljon "
+"az ügyfélszolgálathoz!"
+
+msgid "Funder is required."
+msgstr "A finanszírozó megadása kötelező."
+
+msgid "Title must be set alongside number."
+msgstr "A címet a szám mellett kell megadni."
+
+msgid "Number must be set alongside title."
+msgstr "A számot a cím mellett kell megadni."
+
+msgid "URL must be valid."
+msgstr "Az URL-nek érvényesnek kell lennie."
+
+msgid "URL must be set alongside title and number."
+msgstr "Az URL-t a cím és a szám mellett kell megadni."
+
+msgid "Identifiers"
+msgstr "Azonosítók"
+
+msgid "You must accept this."
+msgstr "El kell fogadnia ezt."
+
+msgid "Before requesting review please read and check the following:"
+msgstr ""
+"Mielőtt bírálatot kér, kérjük, olvassa el és ellenőrizze a következőket:"
+
+msgid ""
+"The '{{communityTitle}}' curators will have access to\n"
+"                 <bold>view</bold> and <bold>edit</bold> your\n"
+"                 upload's metadata and files."
+msgstr ""
+"A(z) '{{communityTitle}}' közösség bírálói hozzáférést kapnak, hogy "
+"<bold>megtekintsék </bold> és <bold>szerkesszék</bold> az ön feltöltésének "
+"metaadatait és fájljait."
+
+msgid ""
+"If your upload is accepted by the community curators, it will be "
+"<bold>immediately published</bold>. Before that, you will still be able to "
+"modify metadata and files of this upload."
+msgstr ""
