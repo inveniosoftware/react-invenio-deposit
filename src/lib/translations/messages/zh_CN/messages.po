@@ -1,35 +1,36 @@
 # 
 # Translators:
-# Berat Aldemir <berataldemir@gmail.com>, 2021
-# Ben Translation and Interpreting Services <info@bentercume.com>, 2022
+# Tibor Simko <tibor.simko@cern.ch>, 2022
+# Weizheng Lu, 2022
+# Kalven Richie, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
 "POT-Creation-Date: 2022-10-28T08:02:09.099Z\n"
 "PO-Revision-Date: 2021-06-29 13:20+0000\n"
-"Last-Translator: Ben Translation and Interpreting Services <info@bentercume.com>, 2022\n"
-"Language-Team: Turkish (https://www.transifex.com/inveniosoftware/teams/23537/tr/)\n"
+"Last-Translator: Kalven Richie, 2022\n"
+"Language-Team: Chinese (China) (https://www.transifex.com/inveniosoftware/teams/23537/zh_CN/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: tr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "mime-version: 1.0\n"
 
 msgid "Embargo until"
-msgstr "Şu tarihe kadar ambargo uygula: "
+msgstr "禁运直到"
 
 msgid "YYYY-MM-DD"
-msgstr "YYYY-AA-GG"
+msgstr "年-月-日"
 
 msgid "The full record is restricted."
-msgstr "Tam kayda erişim kısıtlanmıştır."
+msgstr "完整数据记录受到限制。"
 
 msgid "Embargoed (full record)"
-msgstr "Ambargo uygulanmış (tam kayıt)"
+msgstr "禁运（完整记录）"
 
 msgid "Embargoed (files-only)"
-msgstr "Ambargo uygulanmış (yalnızca dosyalar)"
+msgstr "禁运（仅文件）"
 
 msgid ""
 "The record is publicly accessible. On <bold>{{ date }}</bold> the files will"
@@ -37,444 +38,425 @@ msgid ""
 "<bold>only</bold> be accessed by <bold>users specified</bold> in the "
 "permissions."
 msgstr ""
-"Kayıt herkese açıktır. <bold>{{ date }}</bold> tarihinde dosyalar otomatik "
-"olarak herkesin erişimine açılacak. O zamana kadar dosyalara "
-"<bold>sadece</bold> izinlerde <bold>belirtilen kullanıcılar</bold> "
-"erişebilir."
+"该记录可公开获取。在<bold>{{ date "
+"}}</bold>时，文件将自动公开。在此之前，文件<bold>只能</bold>由权限中<bold>指定的用户</bold>访问。"
 
 msgid "The record has no files."
-msgstr "Bu kayıt hiç dosya içermemekte."
+msgstr "本记录没有文件"
 
 msgid ""
 "On <bold>{{ date }}</bold> the record will automatically be made publicly "
 "accessible. Until then, the record can <bold>only</bold> be accessed by "
 "<bold>users specified</bold> in the permissions."
 msgstr ""
-"<bold>{{ date }}</bold> tarihinde, kayıt otomatik olarak herkesin erişimine "
-"açılacaktır. O zamana kadar kayda <bold>sadece</bold> izinlerde "
-"<bold>belirtilen kullanıcılar</bold> erişebilir."
+"在<bold>{{ date "
+"}}</bold>该记录将自动公开。在此之前，记录<bold>只能</bold>由权限中<bold>指定的用户</bold>访问。"
 
 msgid "Public"
-msgstr "Herkese açık"
+msgstr "公开"
 
 msgid "Restricted"
-msgstr "Kısıtlı"
+msgstr "被限制"
 
 msgid "The record and files are publicly accessible."
-msgstr "Kayıt ve dosyalar herkesin erişimine açık."
+msgstr "记录和文件可公开访问。"
 
 msgid "The record is publicly accessible."
-msgstr "Kayıt herkesin erişimine açık."
+msgstr "该记录可公开获取。"
 
 msgid "Public with restricted files"
-msgstr "Kısıtlanmış dosyalarla beraber herkese açık"
+msgstr "公开受限制的文件"
 
 msgid ""
 "The record can <1>only</1> be accessed by <3>users specified</3> in the "
 "permissions."
-msgstr ""
-"Kayda <1>sadece</1> izinlerde <3>belirtilen kullanıcılar</3> erişebilir."
+msgstr "记录<1>只能</1>由权限中<3>指定的用户</3>访问。"
 
 msgid "Full record"
-msgstr "Tam kayıt"
+msgstr "完整记录"
 
 msgid "Files only"
-msgstr "Yalnızca dosyalar"
+msgstr "仅文件"
 
 msgid "Apply an embargo"
-msgstr "Ambargo uygula"
+msgstr "实施禁运"
 
 msgid "Embargo reason"
-msgstr "Ambargo uygulama nedeni"
+msgstr "禁运原因"
 
 msgid "Optionally, describe the reason for the embargo."
-msgstr "İsteğe bağlı olarak, ambargonun nedenini açıklayın."
+msgstr "或者，描述禁运的原因。"
 
 msgid "Embargo was lifted on {{fmtDate}}."
-msgstr "Ambargo {{fmtDate}} tarihinde kaldırıldı."
+msgstr "禁运于 {{fmtDate}}解除。"
 
 msgid "Reason"
-msgstr "Sebep"
+msgstr "原因"
 
 msgid ""
 "Record or files protection must be <1>restricted</1> to apply an embargo."
-msgstr ""
-"Ambargo uygulamak için kayıt veya dosya koruması "
-"<1>kısıtlandırılmalıdır</1>."
+msgstr "必须<1>限制</1>记录或文件保护以实施禁运。"
 
 msgid "Options"
-msgstr "Seçenekler"
+msgstr "选项"
 
 msgid "Add description"
-msgstr "Açıklama ekle"
+msgstr "添加描述"
 
 msgid "Additional Description"
-msgstr "Ek açıklama"
+msgstr "额外的描述"
 
 msgid "Type"
-msgstr "Tür"
+msgstr "类型"
 
 msgid "Language"
-msgstr "Dil"
+msgstr "语言"
 
 msgid "Select language"
-msgstr "Dil Seçin"
+msgstr "选择语言"
 
 msgid "Add titles"
-msgstr "Başlık ekleyin"
+msgstr "添加标题"
 
 msgid "Search or create affiliation'"
-msgstr "Bağlı olunan kurum/kuruluş ara veya oluştur"
+msgstr "搜索或创建附属关系'"
 
 msgid "Affiliations"
-msgstr "Bağlı olunan kurumlar/kuruluşlar"
+msgstr "从属关系"
 
 msgid "Search for affiliations.."
-msgstr "Bağlı olunan kurumları/kuruluşları ara"
+msgstr "搜索附属机构…"
 
 msgid "Add creator"
-msgstr "Oluşturan kişi ekle"
+msgstr "添加创建者"
 
 msgid "Edit"
-msgstr "Düzenle"
+msgstr "编辑"
 
 msgid "Remove"
-msgstr "Kaldır"
+msgstr "移除"
 
 msgid "Name identifiers"
-msgstr "Ad tanımlayıcıları"
+msgstr "名称标识符"
 
 msgid "e.g. ORCID, ISNI or GND."
-msgstr "Örneğin. ORCID, ISNI veya GND."
+msgstr "e.g. ORCID, ISNI或GND。"
 
 msgid "Type the value of an identifier..."
-msgstr "Bir tanımlayıcının değerini yazın..."
+msgstr "键入标识符的值…"
 
 msgid "Save and add another"
-msgstr "Kaydet ve başka bir tane ekle"
+msgstr "保存并添加另一个"
 
 msgid "Family name is a required field."
-msgstr "Soyadı zorunlu bir alan."
+msgstr "姓氏是必填字段。"
 
 msgid "Name is a required field."
-msgstr "Ad, zorunlu bir alan."
+msgstr "名称是必填字段。"
 
 msgid "Role is a required field."
-msgstr "Rol zorunlu bir alan."
+msgstr "角色是必填字段。"
 
 msgid "Added"
-msgstr "Eklendi"
+msgstr "补充"
 
 msgid "Person"
-msgstr "Kişi"
+msgstr "人"
 
 msgid "Organization"
-msgstr "Kuruluş"
+msgstr "组织"
 
 msgid "Family name"
-msgstr "Soyadı"
+msgstr "姓"
 
 msgid "Name"
-msgstr "Ad"
+msgstr "名称"
 
 msgid "Organization name"
-msgstr "Kuruluş Adı"
+msgstr "组织名称"
 
 msgid "Role"
-msgstr "Rol"
+msgstr "角色"
 
 msgid "Select role"
-msgstr "Rol Seçin"
+msgstr "选择角色"
 
 msgid "Cancel"
-msgstr "İptal"
+msgstr "取消"
 
 msgid "Save"
-msgstr "Kaydet"
+msgstr "保存"
 
 msgid "Add date"
-msgstr "Tarih ekle"
+msgstr "添加日期"
 
 msgid "Format: DATE or DATE/DATE where DATE is YYYY or YYYY-MM or YYYY-MM-DD."
-msgstr ""
-"Biçim: TARİH veya TARİH/TARİH, burada TARİH YYYY veya YYYY-AA veya YYYY-AA-"
-"GG'dir."
+msgstr "格式：日期或日期/日期，其中日期为YYYY或YYYY-MM或YYYY-MM-DD。"
 
 msgid "Date"
-msgstr "Tarih"
+msgstr "日期"
 
 msgid "Description"
-msgstr "Tanım"
+msgstr "描述"
 
 msgid "Dates"
-msgstr "Tarihler"
+msgstr "日期"
 
 msgid "YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD"
-msgstr "YYYY-AA-GG veya YYYY-AA-GG/YYYY-AA-GG"
+msgstr "YYYY-MM-DD或YYYY-MM-DD/YYYY-MM-DD"
 
 msgid "discard changes"
-msgstr "değişiklikleri gözardı et"
+msgstr "放弃更改"
 
 msgid "discard version"
-msgstr "sürümü gözardı et"
+msgstr "放弃版本"
 
 msgid "delete"
-msgstr "sil"
+msgstr "删除"
 
 msgid "Are you sure you want to discard the changes to this draft?"
-msgstr ""
-"Bu taslakta yapılan değişikliklerden vazgeçmek istediğinize emin misiniz?"
+msgstr "是否确实要放弃对此草稿的更改？"
 
 msgid "Are you sure you want to delete this new version?"
-msgstr "Bu yeni sürümü silmek istediğinizden emin misiniz?"
+msgstr "是否确实要删除此新版本？"
 
 msgid "Are you sure you want to delete this draft?"
-msgstr "Bu taslağı silmek istediğinize emin misiniz?"
+msgstr "是否确定要删除此草稿？"
 
 msgid "New version"
-msgstr "Yeni sürüm"
+msgstr "新版本"
 
 msgid "New upload"
-msgstr "Yeni Yükleme"
+msgstr "最新上传"
 
 msgid "Edit upload"
-msgstr "Yüklemeyi düzenle"
+msgstr "编辑上传"
 
 msgid "Uploading the selected files would result in"
-msgstr "Seçili dosyaların yüklenmesi şuna neden olur: "
+msgstr "上载所选文件将导致"
 
 msgid "but the limit is"
-msgstr "fakat limit: "
+msgstr "但限制是"
 
 msgid "You can import files from the previous version."
-msgstr "Dosyaları önceki sürümden içe aktarabilirsiniz."
+msgstr "您可以从以前的版本导入文件。"
 
 msgid ""
 "File addition, removal or modification are not allowed after you have "
 "published your upload."
-msgstr ""
-"Yüklemenizi yayınladıktan sonra dosya ekleme, kaldırma veya değiştirmeye "
-"izin verilmez."
+msgstr "发布上传后，不允许添加、删除或修改文件。"
 
 msgid "You must create a new version to add, modify or delete files."
-msgstr ""
-"Dosya eklemek, değiştirmek veya silmek için yeni bir sürüm oluşturmalısınız."
+msgstr "您必须创建新版本才能添加、修改或删除文件。"
 
 msgid "Upload files"
-msgstr "Dosyaları yükle"
+msgstr "上传文件"
 
 msgid "Import files"
-msgstr "Dosyaları içe aktar"
+msgstr "导入文件"
 
 msgid "Preview"
-msgstr "Ön İzleme"
+msgstr "预览"
 
 msgid "Filename"
-msgstr "Dosya adı"
+msgstr "文件名"
 
 msgid "Size"
-msgstr "Boyut"
+msgstr "规模"
 
 msgid "Progress"
-msgstr "İlerleme durumu"
+msgstr "进程"
 
 msgid ""
 "This is the file fingerprint (MD5 checksum), which can be used to verify the"
 " file integrity."
-msgstr ""
-"Bu, dosya bütünlüğünü doğrulamak için kullanılabilen dosya parmak izidir "
-"(MD5 sağlama toplamı)."
+msgstr "这是文件指纹（MD5校验和），可用于验证文件完整性。"
 
 msgid "Pending"
-msgstr "Bekliyor"
+msgstr "等待中"
 
 msgid "or"
-msgstr "veya"
+msgstr "或"
 
 msgid "Metadata-only record"
-msgstr "yalnızca-üstveri kaydı"
+msgstr "仅元数据记录"
 
 msgid "Storage available"
-msgstr "Kullanılabilir depolama alanı"
+msgstr "可用存储空间"
 
 msgid "{{length}} out of {{maxfiles}} files"
-msgstr "{{maxfiles}} dosyadan {{length}} tanesi"
+msgstr "{{length}}共{{maxfiles}}个文件"
 
 msgid "out of"
-msgstr "dosyadan"
+msgstr "从…里面"
 
 msgid "Files"
-msgstr "Dosyalar"
+msgstr "文件"
 
 msgid "Resource type"
-msgstr "Kaynak türü"
+msgstr "资源类型"
 
 msgid "Title"
-msgstr "Başlık"
+msgstr "标题"
 
 msgid "Additional titles"
-msgstr "Ek başlıklar"
+msgstr "其他标题"
 
 msgid "Publication date"
-msgstr "Yayın tarihi"
+msgstr "发布日期"
 
 msgid "Creators"
-msgstr "Oluşturanlar"
+msgstr "创建人"
 
 msgid "Contributors"
-msgstr "Katkıda Bulunan Kişiler"
+msgstr "贡献者"
 
 msgid "Additional descriptions"
-msgstr "Ek açıklamalar"
+msgstr "其他说明"
 
 msgid "Licenses"
-msgstr "Lisanslar"
+msgstr "许可证"
 
 msgid "Languages"
-msgstr "Diller"
+msgstr "语言"
 
 msgid "Version"
-msgstr "Sürüm"
+msgstr "版本"
 
 msgid "Publisher"
-msgstr "Yayımcı"
+msgstr "发布者"
 
 msgid "Related works"
-msgstr "İlgili çalışmalar"
+msgstr "相关的工作"
 
 msgid "Alternate identifiers"
-msgstr "Alternatif tanımlayıcılar"
+msgstr "可选的标识符"
 
 msgid "Record successfully saved."
-msgstr "Kayıt başarıyla kaydedildi."
+msgstr "记录已成功保存。"
 
 msgid "Record saved with validation errors:"
-msgstr "Kayıt doğrulama hatalarıyla kaydedildi: "
+msgstr "保存了带有验证错误的记录："
 
 msgid ""
 "Oops, something went wrong! The draft was not saved. Please try again. If "
 "the problem persists, contact user support."
-msgstr ""
+msgstr "哎呀，出了点问题！草稿未保存。请重试。如果问题仍然存在，请联系用户支持。"
 
 msgid ""
 "Oops, something went wrong! The draft was not published. Please try again. "
 "If the problem persists, contact user support."
-msgstr ""
+msgstr "哎呀，出了点问题！草案未公布。请重试。如果问题仍然存在，请联系用户支持。"
 
 msgid ""
 "Oops, something went wrong! The draft was not submitted for review. Please "
 "try again. If the problem persists, contact user support."
-msgstr ""
+msgstr "哎呀，出了点问题！草案未提交审查。请重试。如果问题仍然存在，请联系用户支持。"
 
 msgid ""
 "Oops, something went wrong! The draft was not deleted. Please try again. If "
 "the problem persists, contact user support."
-msgstr ""
+msgstr "哎呀，出了点问题！草案未删除。请重试。如果问题仍然存在，请联系用户支持。"
 
 msgid ""
 "Oops, something went wrong! The draft cannot be previewed. Please try again."
 " If the problem persists, contact user support."
-msgstr ""
+msgstr "哎呀，出了点问题！无法预览草稿。请重试。如果问题仍然存在，请联系用户支持。"
 
 msgid ""
 "Oops, something went wrong! The identifier was not reserved. Please try "
 "again. If the problem persists, contact user support."
-msgstr ""
+msgstr "哎呀，出了点问题！标识符未保留。请重试。如果问题仍然存在，请联系用户支持。"
 
 msgid ""
 "Oops, something went wrong! The identifier was not discarded. Please try "
 "again. If the problem persists, contact user support."
-msgstr ""
+msgstr "哎呀，出了点问题！标识符未被丢弃。请重试。如果问题仍然存在，请联系用户支持。"
 
 msgid ""
 "Oops, something went wrong! The draft could not be saved before uploading "
 "the file. Please try again. If the problem persists, contact user support."
-msgstr ""
+msgstr "哎呀，出了点问题！上载文件之前无法保存草稿。请重试。如果问题仍然存在，请联系用户支持。"
 
 msgid "Add award"
-msgstr "Ödül ekle"
+msgstr "添加奖励"
 
 msgid "Add identifier"
-msgstr "Tanımlayıcı ekle"
+msgstr "添加标识符"
 
 msgid "Identifier"
-msgstr "Tanımlayıcı"
+msgstr "标识符"
 
 msgid "Scheme"
-msgstr "Şema"
+msgstr "计划"
 
 msgid "Search for languages..."
-msgstr "Dilleri ara..."
+msgstr "搜索语言…"
 
 msgid "Search for a language by name (e.g \"eng\", \"fr\" or \"Polish\")"
-msgstr "Ada göre bir dil arayın (ör. \"eng\", \"fr\" veya \"Lehçe\")"
+msgstr "按名称搜索语言（例如“eng”、“fr”或“Polish”）"
 
 msgid "Add standard"
-msgstr "Standart ekle: "
+msgstr "添加标准"
 
 msgid "Add custom"
-msgstr "Özelleştirilmiş ekle: "
+msgstr "添加自定义"
 
 msgid "Read more"
-msgstr "Devamını okuyun"
+msgstr "阅读更多"
 
 msgid "Title is a required field."
-msgstr "Başlık zorunlu bir alan."
+msgstr "标题是必填字段。"
 
 msgid "Link must be a valid URL"
-msgstr "Bağlantı geçerli bir URL olmalıdır"
+msgstr "链接必须是有效的URL"
 
 msgid "Recommended"
-msgstr "Tavsiye edilen"
+msgstr "Recommended"
 
 msgid "All"
-msgstr "Tümü"
+msgstr "全部"
 
 msgid "Data"
-msgstr "Veri"
+msgstr "数据"
 
 msgid "Software"
-msgstr "Yazılım"
+msgstr "软件"
 
 msgid "License title"
-msgstr "Lisans başlığı"
+msgstr "许可证标题"
 
 msgid "Link"
-msgstr "Bağlantı"
+msgstr "链接"
 
 msgid "License link"
-msgstr "Lisans bağlantısı"
+msgstr "许可证链接"
 
 msgid "Add license"
-msgstr "Lisans ekle"
+msgstr "添加许可证"
 
 msgid "Change license"
-msgstr "Lisansı değiştir"
+msgstr "更改许可证"
 
 msgid "You don't have permissions to create a new version."
-msgstr "Yeni bir sürüm oluşturma izniniz yok."
+msgstr "您没有创建新版本的权限。"
 
 msgid ""
 "In case your upload was already published elsewhere, please use the date of "
 "the first publication. Format: YYYY-MM-DD, YYYY-MM, or YYYY. For intervals "
 "use DATE/DATE, e.g. 1939/1945."
 msgstr ""
-"Yüklemeniz başka bir yerde yayınlanmışsa, lütfen ilk yayının tarihini "
-"kullanın. Biçim: YYYY-AA-GG, YYYY-AA veya YYYY. Aralıklar için TARİH/TARİH "
-"kullanın, ör. 1939/1945."
+"如果您的上传已经在其他地方发布，请使用第一次发布的日期。格式：YYYY-MM-DD、YYYY-"
+"MM或YYYY。对于间隔，使用日期/日期，例如1939/1945。"
 
 msgid ""
 "YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD for intervals. MM and DD are optional."
-msgstr ""
-"Aralıklar için YYYY-AA-GG veya YYYY-AA-GG/YYYY-AA-GG. MM ve DD isteğe "
-"bağlıdır."
+msgstr "YYYY-MM-DD或YYYY-MM-DD/YYYY-MM-DD表示间隔。MM和DD是可选的。"
 
 msgid ""
 "The publisher is used to formulate the citation, so consider the prominence "
 "of the role."
-msgstr ""
-"Yayıncı, alıntıyı formüle etmek için kullanılır, bu nedenle rolün önemini "
-"göz önünde bulundurun."
+msgstr "出版商是用来制定引文的，所以要考虑角色的突出性。"
 
 msgid ""
 "Specify identifiers of related works. Supported identifiers include DOI, "
@@ -482,244 +464,239 @@ msgid ""
 "Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, ISTC, "
 "URNs, and URLs."
 msgstr ""
-"İlgili çalışmaların tanımlayıcılarını belirtin. Desteklenen tanımlayıcılar "
-"arasında DOI, Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, "
-"ADS Bibliographic Code, arXiv, Life Science Identifiers (LSID), EAN-13, "
-"ISTC, URN'ler ve URL'ler bulunur."
+"指定相关工程的标识符。支持的标识符包括DOI、Handle、ARK、PURL、ISSN、ISBN、PubMed ID、PubMed Central "
+"ID、ADS书目代码、arXiv、生命科学标识符（LSID）、EAN-13、ISTC、URNs和URL。"
 
 msgid "Add related work"
-msgstr "İlgili çalışma ekle"
+msgstr "添加相关工作"
 
 msgid "Relation"
-msgstr "İlişki"
+msgstr "关系"
 
 msgid "Select relation..."
-msgstr "İlişki seçin..."
+msgstr "选择关系…"
 
 msgid "Save draft"
-msgstr "Taslağı kaydet"
+msgstr "保存草稿"
 
 msgid "Suggest from"
-msgstr "Şuradan öner: "
+msgstr "建议从"
 
 msgid "Subjects"
-msgstr "Konular"
+msgstr "Subjects"
 
 msgid "Search for a subject by name"
-msgstr "Ada göre bir konu arayın"
+msgstr "按名称搜索主题"
 
 msgid ""
 "Mostly relevant for software and dataset uploads. A semantic version string "
 "is preferred see<1> semver.org</1>, but any version string is accepted."
-msgstr ""
-"Çoğunlukla yazılım ve veri kümesi yüklemeleriyle ilgilidir. Semantik bir "
-"sürüm dizesi tercih edilir, bkz. <1>semver.org</1>, ancak herhangi bir sürüm"
-" dizesi kabul edilir."
+msgstr "主要与软件和数据集上传相关。语义版本字符串最好参见<1>semver.org</1>，但接受任何版本字符串。"
 
 msgid "Do you already have a {{pidLabel}} for this upload?"
-msgstr "Bu yükleme için zaten bir {{pidLabel}} var mı?"
+msgstr "你已经有一个{{pidLabel}}上传了吗？"
 
 msgid "Yes"
-msgstr "Evet"
+msgstr "是"
 
 msgid "No"
-msgstr "Hayır"
+msgstr "否"
 
 msgid "e.g. ROR, ISNI or GND."
-msgstr "Örneğin. ROR, ISNI veya GND."
+msgstr "e.g. ROR, ISNI或GND。"
 
 msgid "The following files already exist"
-msgstr "Aşağıdaki dosyalar zaten var"
+msgstr "以下文件已存在"
 
 msgid "Disable files for this record"
-msgstr ""
+msgstr "禁用此记录的文件"
 
 msgid "DOI"
-msgstr "DOI"
+msgstr "数字对象唯一标识符"
 
 msgid "Search"
-msgstr "Ara"
+msgstr "搜寻"
 
 msgid "Search or create subjects..."
-msgstr ""
+msgstr "搜索或创建主题…"
 
 msgid "Edit creator"
-msgstr ""
+msgstr "编辑创建者"
 
 msgid "Add {{mode}} license"
-msgstr ""
+msgstr "添加{{mode}}许可证"
 
 msgid "Change {{mode}} license"
-msgstr ""
+msgstr "更改{{mode}}许可证"
 
 msgid "My communities"
-msgstr "Topluluklarım"
+msgstr "我的社区"
 
 msgid "Search in all communities"
-msgstr ""
+msgstr "在所有社区中搜索"
 
 msgid "Search in my communities"
-msgstr ""
+msgstr "在我的社区中搜索"
 
 msgid "Search for persons by name, identifier, or affiliation..."
-msgstr ""
+msgstr "按姓名、标识符或附属关系搜索人员…"
 
 msgid "Select a community"
-msgstr ""
+msgstr "选择社区"
 
 msgid "Submit review"
-msgstr ""
+msgstr "提交审查"
 
 msgid "Publish"
-msgstr "Yayınla"
+msgstr "发表"
 
 msgid "Are you sure you want to publish this record?"
-msgstr ""
+msgstr "确实要发布此记录吗？"
 
 msgid "The draft was not published. Record saved with validation errors:"
-msgstr ""
+msgstr "草稿未公布。保存了带有验证错误的记录："
 
 msgid ""
 "The draft was not submitted for review. Record saved with validation errors:"
-msgstr ""
+msgstr "草稿未提交审查。保存了带有验证错误的记录："
 
 msgid "In review"
-msgstr ""
+msgstr "检查中"
 
 msgid ""
 "Community curators will review your upload. Once accepted, it will be "
 "published."
-msgstr ""
+msgstr "社区管理员将审查您的上传。一旦被接受，它将被公布。"
 
 msgid "Declined"
-msgstr ""
+msgstr "拒绝"
 
 msgid "The request to submit this upload to the community was declined."
-msgstr ""
+msgstr "向社区提交此上传的请求被拒绝。"
 
 msgid "Expired"
-msgstr ""
+msgstr "已过期"
 
 msgid "The request to submit this upload to the community has expired."
-msgstr ""
+msgstr "向社区提交此上载的请求已过期。"
 
 msgid "Published"
-msgstr "Yayınlanmış"
+msgstr "已发布"
 
 msgid "Your upload is published."
-msgstr ""
+msgstr "您的上传已发布。"
 
 msgid "Draft"
-msgstr ""
+msgstr "草稿"
 
 msgid ""
 "Once your upload is complete, you can submit it for review to the community "
 "curators."
-msgstr ""
+msgstr "上传完成后，您可以将其提交给社区管理员审查。"
 
 msgid ""
 "Once your upload is complete, you can publish or submit it for review to the"
 " community curators."
-msgstr ""
+msgstr "上传完成后，您可以将其发布或提交给社区策展人审查。"
 
 msgid "New version draft"
-msgstr ""
+msgstr "新版本草稿"
 
 msgid "Once your upload is complete, you can publish it."
-msgstr ""
+msgstr "上传完成后，您可以发布它。"
 
 msgid "View request"
-msgstr ""
+msgstr "查看请求"
 
 msgid "Submitted for review"
-msgstr ""
+msgstr "提交审查"
 
 msgid "Change community"
-msgstr ""
+msgstr "改变社区"
 
 msgid "Publish without community"
-msgstr ""
+msgstr "在没有社区的情况下发布"
 
 msgid "Select the community where you want to submit your record."
-msgstr ""
+msgstr "选择要提交记录的社区。"
 
 msgid "View community"
-msgstr ""
+msgstr "查看社区"
 
 msgid "Opens in new tab"
-msgstr ""
+msgstr "在新选项卡中打开"
 
 msgid "Selected"
-msgstr ""
+msgstr "选定的"
 
 msgid "Select"
-msgstr "Seç"
+msgstr "选择"
 
 msgid "Select "
-msgstr ""
+msgstr "选择"
 
 msgid "Change"
-msgstr ""
+msgstr "更改"
 
 msgid "Search for a funder by name"
-msgstr ""
+msgstr "按姓名搜索资助者"
 
 msgid "Funder"
-msgstr ""
+msgstr "资助机构"
 
 msgid "Search for funder..."
-msgstr ""
+msgstr "搜索资助机构…"
 
 msgid "Award information"
-msgstr ""
+msgstr "项目资助信息"
 
 msgid "Number"
-msgstr ""
+msgstr "编号"
 
 msgid "Award number"
-msgstr ""
+msgstr "项目编号"
 
 msgid "Award Title"
-msgstr ""
+msgstr "项目名称"
 
 msgid "URL"
-msgstr "URL"
+msgstr "统一资源定位系统"
 
 msgid "Award URL"
-msgstr ""
+msgstr "项目URL"
 
 msgid "Add standard award"
-msgstr ""
+msgstr "添加标准化项目信息"
 
 msgid "Add custom award"
-msgstr ""
+msgstr "添加自定义项目信息"
 
 msgid "Change award"
-msgstr ""
+msgstr "变更项目"
 
 msgid "Did not find your award? "
-msgstr ""
+msgstr "没有找到你的项目？"
 
 msgid "Add a custom award."
-msgstr ""
+msgstr "添加自定义项目。"
 
 msgid ""
 "Once the record is published you will no longer be able to change the files "
 "in the upload! However, you will still be able to update the record's "
 "metadata later."
-msgstr ""
+msgstr "一旦记录发布，您将无法再更改上传中的文件！但是，稍后您仍然可以更新记录的元数据。"
 
 msgid "Submit for review"
-msgstr ""
+msgstr "提交供审查"
 
 msgid "optional"
-msgstr "isteğe bağlı"
+msgstr "可选择的"
 
 msgid "Open external link"
-msgstr ""
+msgstr "打开外部链接"
 
 msgid "Search for awards"
-msgstr ""
+msgstr "搜索项目"
 
 msgid ""
 "The record is publicly accessible. The files can <1>only</1> be accessed by "
@@ -779,7 +756,7 @@ msgid "URL must be set alongside title and number."
 msgstr ""
 
 msgid "Identifiers"
-msgstr ""
+msgstr "标识符"
 
 msgid "You must accept this."
 msgstr ""
@@ -792,6 +769,9 @@ msgid ""
 "                 <bold>view</bold> and <bold>edit</bold> your\n"
 "                 upload's metadata and files."
 msgstr ""
+"“{{communityTitle}}”策展人可以访问\n"
+"<bold>查看</bold>和<bold>编辑</bold>您的\n"
+"上传的元数据和文件。"
 
 msgid ""
 "If your upload is accepted by the community curators, it will be "
