@@ -1,17 +1,17 @@
 # 
 # Translators:
+# Alizee Pace <alizee.pace@gmail.com>, 2021
 # Mojib Wali <mojib.wali@tugraz.at>, 2022
-# David Eckhard <dabombeeer@gmail.com>, 2022
-# Alizee Pace <alizee.pace@gmail.com>, 2022
 # Alexander Gruber <alexander.gruber@tugraz.at>, 2022
 # Tibor Simko <tibor.simko@cern.ch>, 2022
 # Hermann Schranzhofer <hermann.schranzhofer@tugraz.at>, 2022
+# David Eckhard <dabombeeer@gmail.com>, 2022
 # chriz_uniba <christina.zeller@uni-bamberg.de>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2022-05-26T15:29:43.004Z\n"
+"POT-Creation-Date: 2022-10-28T08:02:09.099Z\n"
 "PO-Revision-Date: 2021-06-29 13:20+0000\n"
 "Last-Translator: chriz_uniba <christina.zeller@uni-bamberg.de>, 2022\n"
 "Language-Team: German (https://www.transifex.com/inveniosoftware/teams/23537/de/)\n"
@@ -32,17 +32,6 @@ msgstr "Der gesamte Eintrag ist eingeschränkt."
 
 msgid "Embargoed (full record)"
 msgstr "Embargo (vollständiger Eintrag)"
-
-msgid ""
-"On <bold>{{ date }}</bold> the record and the files will automatically be "
-"made publicly accessible. Until then, the record and the files can "
-"<bold>only</bold> be accessed by <bold>users specified</bold> in the "
-"permissions."
-msgstr ""
-"Am <bold>{{ date }}</bold> wird der Eintrag und die Dateien automatisch "
-"öffentlich zugänglich gemacht. Bis dahin können <bold>nur</bold> die in den "
-"Berechtigungen <bold>angegebenen BenutzerInnen</bold> auf den Eintrag und "
-"die Dateien zugreifen."
 
 msgid "Embargoed (files-only)"
 msgstr "Embargo (nur auf Dateien)"
@@ -84,13 +73,6 @@ msgstr "Der Eintrag ist öffentlich zugänglich."
 
 msgid "Public with restricted files"
 msgstr "Öffentlich mit nicht öffentlichen Dateien"
-
-msgid ""
-"The record is publicly accessible. The files can <1>only</1> be accessed by "
-"<3>users specified</3> in the permissions."
-msgstr ""
-"Der Eintrag ist öffentlich zugänglich. Auf die Dateien können <1>nur</1> die"
-" in den Berechtigungen <3>angegebenen BenutzerInnen</3> zugreifen."
 
 msgid ""
 "The record can <1>only</1> be accessed by <3>users specified</3> in the "
@@ -198,12 +180,6 @@ msgstr "Organisation"
 msgid "Family name"
 msgstr "Familienname"
 
-msgid "Given name(s)"
-msgstr "Vornamen"
-
-msgid "Given name"
-msgstr "Vornamen"
-
 msgid "Name"
 msgstr "Name"
 
@@ -291,9 +267,6 @@ msgstr ""
 "Sie müssen eine neue Version erstellen, um Dateien hinzuzufügen, zu ändern "
 "oder zu löschen."
 
-msgid "Drag and drop file(s)"
-msgstr "Ziehen und Ablegen von Dateien"
-
 msgid "Upload files"
 msgstr "Dateien hochladen"
 
@@ -324,9 +297,6 @@ msgstr "Ausstehend"
 
 msgid "or"
 msgstr "oder"
-
-msgid "This is a Metadata only record"
-msgstr "Dies ist ein Reiner-Metadateneintrag."
 
 msgid "Metadata-only record"
 msgstr "Reiner-Metadateneintrag"
@@ -452,14 +422,6 @@ msgstr ""
 "Datei nicht gespeichert werden. Bitte versuchen Sie es erneut. Wenn das "
 "Problem weiterhin besteht, wenden Sie sich an Ihren Repositoriumssupport."
 
-msgid ""
-"Oops, something went wrong! Importing files from the previous draft version "
-"failed. Please try again. If the problem persists, contact user support."
-msgstr ""
-"Ups, da ist etwas schief gelaufen! Der Import von Dateien aus der vorherigen"
-" Entwurfsversion ist fehlgeschlagen. Bitte versuchen Sie es erneut. Wenn das"
-" Problem weiterhin besteht, wenden Sie sich an Ihren Repositoriumssupport."
-
 msgid "Add award"
 msgstr "Förderprogramm hinzufügen"
 
@@ -471,9 +433,6 @@ msgstr "Kennung"
 
 msgid "Scheme"
 msgstr "Schema"
-
-msgid "Identifier(s)"
-msgstr "Kennungen"
 
 msgid "Search for languages..."
 msgstr "Suche nach Sprachen..."
@@ -548,9 +507,6 @@ msgid ""
 "of the role."
 msgstr "Der Name wird in Zitierungen verwendet und ist daher von Bedeutung."
 
-msgid "Enter publisher name"
-msgstr "HerausgeberIn"
-
 msgid ""
 "Specify identifiers of related works. Supported identifiers include DOI, "
 "Handle, ARK, PURL, ISSN, ISBN, PubMed ID, PubMed Central ID, ADS "
@@ -600,13 +556,6 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nein"
 
-msgid ""
-"The record and files can <1>only</1> be accessed by<3> users specified</3> "
-"in the permissions."
-msgstr ""
-"Auf den Eintrag und die Dateien können <1>nur</1> die in den Berechtigungen "
-"<3>angegebenen BenutzerInnen</3> zugreifen."
-
 msgid "e.g. ROR, ISNI or GND."
 msgstr "z.B. ROR, ISNI oder GND."
 
@@ -618,9 +567,6 @@ msgstr "Dateien für diesen Datensatz deaktivieren"
 
 msgid "DOI"
 msgstr "DOI"
-
-msgid "PIDS"
-msgstr "PIDS"
 
 msgid "Search"
 msgstr "Suchen"
@@ -646,9 +592,6 @@ msgstr "Suche in allen Communitys"
 msgid "Search in my communities"
 msgstr "Suche in meinen Communitys"
 
-msgid "Close"
-msgstr "Schließen"
-
 msgid "Search for persons by name, identifier, or affiliation..."
 msgstr ""
 "Suche nach Personen anhand des Namens, der Kennung oder Zugehörigkeit..."
@@ -665,11 +608,6 @@ msgstr "Veröffentlichen"
 msgid "Are you sure you want to publish this record?"
 msgstr "Sind Sie sicher, dass Sie diesen Eintrag veröffentlichen wollen?"
 
-msgid "Couldn't find your person? You can <1>create a new entry</1>."
-msgstr ""
-"Konnte die gesuchte Person nicht gefunden werden? Sie können einen<1>neuen "
-"Eintrag erstellen</1>."
-
 msgid "The draft was not published. Record saved with validation errors:"
 msgstr ""
 "Der Entwurf wurde nicht veröffentlicht. Der Eintrag wurde mit "
@@ -680,32 +618,6 @@ msgid ""
 msgstr ""
 "Der Entwurf wurde nicht zur Begutachtung eingereicht. Der Eintrag wurde mit "
 "Validierungsfehlern gespeichert:"
-
-msgid "You must click and accept this."
-msgstr "Sie müssen diese Bedingung akzeptieren."
-
-msgid "Before requesting review please read and check the following."
-msgstr ""
-"Bevor Sie eine Begutachtung beantragen, lesen und überprüfen Sie bitte die "
-"folgenden Punkte:"
-
-msgid ""
-"The '{{communityTitle}}' curators will have access to\n"
-"                 <bold>view</bold> and <bold>edit</bold> your\n"
-"                 upload's metadata and files."
-msgstr ""
-"Die '{{communityTitle}}'-KuratorInnen erhalten <bold>Sicht-</bold> und "
-"<bold>Bearbeitungsrechte</bold> für die Metadaten und Dateien Ihres "
-"Eintrags."
-
-msgid ""
-"If your upload is accepted by the community curators, it will be <bold> "
-"immediately published.</bold> Before that, you will still be able to modify "
-"metadata and files of this uploads."
-msgstr ""
-"Wenn Ihr Eintrag von den KuratorInnen der Community akzeptiert wird, wird er"
-" <bold>sofort veröffentlicht</bold>. Bis dahin können Sie noch die Metadaten"
-" und Dateien dieses Eintrags ändern."
 
 msgid "In review"
 msgstr "In Begutachtung"
@@ -821,21 +733,6 @@ msgstr "URL"
 msgid "Award URL"
 msgstr "URL des Förderprogramms"
 
-msgid "Funder is required"
-msgstr "FördermittelgeberIn ist ein Pflichtfeld."
-
-msgid "Title must be set alongside number"
-msgstr "Der Titel muss zusätzlich zur Nummer angegeben werden."
-
-msgid "Number must be set alongside title"
-msgstr "Die Nummer muss zusätzlich zum Titel angegeben werden."
-
-msgid "Url Must be a valid url"
-msgstr "Die URL muss gültig sein."
-
-msgid "Url must be set alongside title and number."
-msgstr "Eine URL muss zusätzlich zum Titel und der Nummer angegeben werden."
-
 msgid "Add standard award"
 msgstr "Standardförderprogramm hinzufügen"
 
@@ -873,8 +770,82 @@ msgid "Search for awards"
 msgstr "Suche nach Förderprogrammen"
 
 msgid ""
-"Did not find a community that fits you? Upload without a community or "
-"<1>create your own.</1>"
+"The record is publicly accessible. The files can <1>only</1> be accessed by "
+"<4>users specified</4> in the permissions."
 msgstr ""
-"Sie haben keine passende Community gefunden? Veröffentlichen Sie ohne eine "
-"Community oder <1>erstellen Sie eine eigene</1>."
+
+msgid "Format"
+msgstr ""
+
+msgid "The files of this record are restricted."
+msgstr ""
+
+msgid "Remove field"
+msgstr ""
+
+msgid ""
+"Did not find a community that fits you? Upload without a community or "
+"<2>create your own.</2>"
+msgstr ""
+
+msgid "Given names"
+msgstr ""
+
+msgid "Couldn't find your person? You can <2>create a new entry</2>."
+msgstr ""
+
+msgid "Drag and drop files"
+msgstr ""
+
+msgid "Default preview"
+msgstr ""
+
+msgid "Delete file"
+msgstr ""
+
+msgid "This is a Metadata-only record."
+msgstr ""
+
+msgid ""
+"Oops, something went wrong! Importing files from the previous version "
+"failed. Please try again. If the problem persists, contact user support."
+msgstr ""
+
+msgid "Funder is required."
+msgstr ""
+
+msgid "Title must be set alongside number."
+msgstr ""
+
+msgid "Number must be set alongside title."
+msgstr ""
+
+msgid "URL must be valid."
+msgstr ""
+
+msgid "URL must be set alongside title and number."
+msgstr ""
+
+msgid "Identifiers"
+msgstr "Kennungen"
+
+msgid "You must accept this."
+msgstr ""
+
+msgid "Before requesting review please read and check the following:"
+msgstr ""
+
+msgid ""
+"The '{{communityTitle}}' curators will have access to\n"
+"                 <bold>view</bold> and <bold>edit</bold> your\n"
+"                 upload's metadata and files."
+msgstr ""
+"Die '{{communityTitle}}'-KuratorInnen erhalten <bold>Sicht-</bold> und "
+"<bold>Bearbeitungsrechte</bold> für die Metadaten und Dateien Ihres "
+"Eintrags."
+
+msgid ""
+"If your upload is accepted by the community curators, it will be "
+"<bold>immediately published</bold>. Before that, you will still be able to "
+"modify metadata and files of this upload."
+msgstr ""
