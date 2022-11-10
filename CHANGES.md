@@ -1,5 +1,9 @@
 # Changes
 
+Version 1.0.2 (released 2022-11-10)
+
+- configurable axios api request headers
+
 Version 1.0.1 (released 2022-10-24)
 
 - update missing peer dependency
