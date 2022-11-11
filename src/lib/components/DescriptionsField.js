@@ -28,6 +28,7 @@ export class DescriptionsField extends Component {
         <AdditionalDescriptionsField
           recordUI={recordUI}
           options={options}
+          editorConfig={editorConfig}
           fieldPath="metadata.additional_descriptions"
         />
       </>
