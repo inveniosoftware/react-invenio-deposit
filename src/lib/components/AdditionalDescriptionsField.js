@@ -1,7 +1,8 @@
 // This file is part of React-Invenio-Deposit
-// Copyright (C) 2020 CERN.
+// Copyright (C) 2020      CERN.
 // Copyright (C) 2020-2022 Northwestern University.
-// Copyright (C) 2021 Graz University of Technology.
+// Copyright (C) 2021      Graz University of Technology.
+// Copyright (C) 2022      TU Wien.
 //
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
@@ -18,7 +19,7 @@ import { sortOptions } from "../utils";
 
 export class AdditionalDescriptionsField extends Component {
   render() {
-    const { fieldPath, options, recordUI } = this.props;
+    const { fieldPath, options, recordUI, editorConfig } = this.props;
     return (
       <ArrayField
         addButtonLabel={i18next.t("Add description")}
@@ -36,6 +37,7 @@ export class AdditionalDescriptionsField extends Component {
                   <RichInputField
                     fieldPath={`${fieldPathPrefix}.description`}
                     label={i18next.t("Additional Description")}
+                    editorConfig={editorConfig}
                     optimized
                     required
                   />
@@ -109,8 +111,10 @@ AdditionalDescriptionsField.propTypes = {
     ),
   }).isRequired,
   recordUI: PropTypes.object,
+  editorConfig: PropTypes.object,
 };
 
 AdditionalDescriptionsField.defaultProps = {
   recordUI: {},
+  editorConfig: undefined,
 };
