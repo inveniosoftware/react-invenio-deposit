@@ -24,6 +24,7 @@ export class AccessRightFieldCmp extends Component {
       label,
       labelIcon,
       community,
+      canEditFullRecordVisibility,
     } = this.props;
 
     const communityAccess = community?.access.visibility || "public";
@@ -38,12 +39,16 @@ export class AccessRightFieldCmp extends Component {
             </Card.Header>
           </Card.Content>
           <Card.Content>
-            <MetadataAccess
-              recordAccess={formik.field.value.record}
-              communityAccess={communityAccess}
-            />
+            {canEditFullRecordVisibility && (
+              <>
+                <MetadataAccess
+                  recordAccess={formik.field.value.record}
+                  communityAccess={communityAccess}
+                />
 
-            <Divider hidden />
+                <Divider hidden />
+              </>
+            )}
 
             <FilesAccess
               access={formik.field.value}
@@ -84,15 +89,18 @@ AccessRightFieldCmp.propTypes = {
   formik: PropTypes.object.isRequired,
   label: PropTypes.string.isRequired,
   labelIcon: PropTypes.string.isRequired,
+  canEditFullRecordVisibility: PropTypes.bool,
   community: PropTypes.object,
 };
 
 AccessRightFieldCmp.defaultProps = {
   community: undefined,
+  canEditFullRecordVisibility: true,
 };
 
 const mapStateToPropsAccessRightFieldCmp = (state) => ({
   community: state.deposit.editorState.selectedCommunity,
+  canEditFullRecordVisibility: state.deposit.config.can_edit_full_record_visibility,
 });
 
 export const AccessRightFieldComponent = connect(

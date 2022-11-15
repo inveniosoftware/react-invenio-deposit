@@ -39,7 +39,7 @@ export const FileUploaderToolbar = ({
         tablet={6}
         computer={6}
       >
-        {config.canHaveMetadataOnlyRecords && (
+        {config.require_files || (
           <List horizontal>
             <List.Item>
               <Checkbox
