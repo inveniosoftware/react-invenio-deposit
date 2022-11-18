@@ -1,5 +1,9 @@
 # Changes
 
+Version 0.20.6 (released 2022-11-18)
+
+- Add pulled translations
+
 Version 0.20.5 (released 2022-10-07)
 
 - components: fix license close modal handler
