@@ -21,7 +21,8 @@ import { emptyIdentifier } from "../../record";
 /** Identifiers array component */
 export class IdentifiersField extends Component {
   render() {
-    const { fieldPath, label, labelIcon, required, schemeOptions } = this.props;
+    const { fieldPath, label, labelIcon, required, schemeOptions, showEmptyValue } =
+      this.props;
     return (
       <ArrayField
         addButtonLabel={i18next.t("Add identifier")}
@@ -29,6 +30,7 @@ export class IdentifiersField extends Component {
         fieldPath={fieldPath}
         label={<FieldLabel htmlFor={fieldPath} icon={labelIcon} label={label} />}
         required={required}
+        showEmptyValue={showEmptyValue}
       >
         {({ arrayHelpers, indexPath }) => {
           const fieldPathPrefix = `${fieldPath}.${indexPath}`;
@@ -85,6 +87,7 @@ IdentifiersField.propTypes = {
       value: PropTypes.string,
     })
   ),
+  showEmptyValue: PropTypes.bool,
 };
 
 IdentifiersField.defaultProps = {
@@ -92,4 +95,5 @@ IdentifiersField.defaultProps = {
   labelIcon: "barcode",
   required: false,
   schemeOptions: undefined,
+  showEmptyValue: false,
 };

@@ -27,8 +27,6 @@ import {
   VocabularyField,
 } from "./fields";
 
-import { emptyDate, emptyIdentifier, emptyRelatedWork } from "./record";
-
 export class DepositRecordSerializer {
   /* eslint-disable no-unused-vars */
   constructor(defaultLocale) {
@@ -181,7 +179,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
             fieldpath: "description",
           }),
         },
-        deserializedDefault: [emptyDate],
+        deserializedDefault: [],
       }),
       languages: new VocabularyField({
         fieldpath: "metadata.languages",
@@ -198,7 +196,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
             fieldpath: "identifier",
           }),
         },
-        deserializedDefault: [emptyIdentifier],
+        deserializedDefault: [],
       }),
       related_identifiers: new SchemaField({
         fieldpath: "metadata.related_identifiers",
@@ -220,7 +218,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
             serializedDefault: "",
           }),
         },
-        deserializedDefault: [emptyRelatedWork],
+        deserializedDefault: [],
       }),
       subjects: new AllowAdditionsVocabularyField({
         fieldpath: "metadata.subjects",
