@@ -1,5 +1,11 @@
 # Changes
 
+Version 1.0.3 (released 2022-11-18)
+
+- `humanReadableBytes` is now returning a string instead of jsx
+- normalize ck editor config for additional descriptions field
+- centralize axios import
+
 Version 1.0.2 (released 2022-11-10)
 
 - configurable axios api request headers
