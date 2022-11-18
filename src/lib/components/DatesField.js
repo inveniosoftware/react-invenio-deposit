@@ -10,16 +10,47 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { ArrayField, GroupField, SelectField, TextField } from "react-invenio-forms";
 import { Button, Form, Icon } from "semantic-ui-react";
-
+import _isEmpty from "lodash/isEmpty";
+import _matches from "lodash/matches";
+import _filter from "lodash/filter";
+import _isEqual from "lodash/isEqual";
+import _has from "lodash/has";
 import { emptyDate } from "../record";
 import { i18next } from "@translations/i18next";
 import { sortOptions } from "../utils";
 
 export class DatesField extends Component {
   /** Top-level Dates Component */
+
+  /**
+   * Returns the required option if the current value passed does match it
+   * @param  {Object} currentValue The current value
+   * @param  {Array} arrayOfValues The array of values for the field
+   * @return {Object} The required option if any
+   */
+  getRequiredOption = (currentValue, arrayOfValues) => {
+    const { requiredOptions } = this.props;
+    for (const requiredOption of requiredOptions) {
+      // If more values matched we do take the first value
+      const matchingValue = _filter(arrayOfValues, _matches(requiredOption))[0];
+      if (_isEqual(matchingValue, currentValue)) {
+        return requiredOption;
+      }
+    }
+    return null;
+  };
+
   render() {
-    const { fieldPath, options, label, labelIcon, placeholderDate, required } =
-      this.props;
+    const {
+      fieldPath,
+      options,
+      label,
+      labelIcon,
+      placeholderDate,
+      required,
+      requiredOptions,
+      showEmptyValue,
+    } = this.props;
 
     return (
       <ArrayField
@@ -32,16 +63,22 @@ export class DatesField extends Component {
         label={label}
         labelIcon={labelIcon}
         required={required}
+        requiredOptions={requiredOptions}
+        showEmptyValue={showEmptyValue}
       >
-        {({ arrayHelpers, indexPath }) => {
+        {({ array, arrayHelpers, indexPath, value }) => {
           const fieldPathPrefix = `${fieldPath}.${indexPath}`;
-
+          const requiredOption = this.getRequiredOption(value, array);
+          const hasRequiredDateValue = _has(requiredOption, "date");
+          const hasRequiredTypeValue = _has(requiredOption, "type");
+          const hasRequiredDescriptionValue = _has(requiredOption, "description");
           return (
             <GroupField fieldPath={fieldPath} optimized>
               <TextField
                 fieldPath={`${fieldPathPrefix}.date`}
                 label={i18next.t("Date")}
                 placeholder={placeholderDate}
+                disabled={hasRequiredDateValue}
                 required
                 width={5}
               />
@@ -49,6 +86,7 @@ export class DatesField extends Component {
                 fieldPath={`${fieldPathPrefix}.type`}
                 label={i18next.t("Type")}
                 options={sortOptions(options.type)}
+                disabled={hasRequiredTypeValue}
                 required
                 width={5}
                 optimized
@@ -56,12 +94,14 @@ export class DatesField extends Component {
               <TextField
                 fieldPath={`${fieldPathPrefix}.description`}
                 label={i18next.t("Description")}
+                disabled={hasRequiredDescriptionValue}
                 width={5}
               />
               <Form.Field>
                 <Button
                   aria-label={i18next.t("Remove field")}
                   className="close-btn"
+                  disabled={!_isEmpty(requiredOption)}
                   icon
                   onClick={() => arrayHelpers.remove(indexPath)}
                   type="button"
@@ -91,6 +131,8 @@ DatesField.propTypes = {
   }).isRequired,
   required: PropTypes.bool,
   placeholderDate: PropTypes.string,
+  requiredOptions: PropTypes.array,
+  showEmptyValue: PropTypes.bool,
 };
 
 DatesField.defaultProps = {
@@ -98,4 +140,6 @@ DatesField.defaultProps = {
   labelIcon: "calendar",
   placeholderDate: i18next.t("YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD"),
   required: false,
+  requiredOptions: [],
+  showEmptyValue: false,
 };
