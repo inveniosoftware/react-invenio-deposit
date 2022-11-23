@@ -12,17 +12,13 @@ import { Header, Checkbox, Grid, Icon, Label, List, Popup } from "semantic-ui-re
 import { humanReadableBytes } from "./utils";
 import { i18next } from "@translations/i18next";
 import PropTypes from "prop-types";
+import Overridable from "react-overridable";
 
 // NOTE: This component has to be a function component to allow
 //       the `useFormikContext` hook.
-export const FileUploaderToolbar = ({
-  config,
-  filesList,
-  filesSize,
-  filesEnabled,
-  quota,
-  decimalSizeDisplay,
-}) => {
+export const FileUploaderToolbar = (props) => {
+  const { config, filesList, filesSize, filesEnabled, quota, decimalSizeDisplay } =
+    props;
   const { setFieldValue } = useFormikContext();
 
   const handleOnChangeMetadataOnly = () => {
@@ -40,23 +36,25 @@ export const FileUploaderToolbar = ({
         computer={6}
       >
         {config.canHaveMetadataOnlyRecords && (
-          <List horizontal>
-            <List.Item>
-              <Checkbox
-                label={i18next.t("Metadata-only record")}
-                onChange={handleOnChangeMetadataOnly}
-                disabled={filesList.length > 0}
-                checked={!filesEnabled}
-              />
-            </List.Item>
-            <List.Item>
-              <Popup
-                trigger={<Icon name="question circle outline" className="neutral" />}
-                content={i18next.t("Disable files for this record")}
-                position="top center"
-              />
-            </List.Item>
-          </List>
+          <Overridable id="ReactInvenioDeposit.MetadataOnlyToggle.layout" {...props}>
+            <List horizontal>
+              <List.Item>
+                <Checkbox
+                  label={i18next.t("Metadata-only record")}
+                  onChange={handleOnChangeMetadataOnly}
+                  disabled={filesList.length > 0}
+                  checked={!filesEnabled}
+                />
+              </List.Item>
+              <List.Item>
+                <Popup
+                  trigger={<Icon name="question circle outline" className="neutral" />}
+                  content={i18next.t("Disable files for this record")}
+                  position="top center"
+                />
+              </List.Item>
+            </List>
+          </Overridable>
         )}
       </Grid.Column>
       {filesEnabled && (
