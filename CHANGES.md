@@ -1,5 +1,9 @@
 # Changes
 
+Version 1.0.4 (released 2022-11-25)
+
+- add overridable to metadata-only button and metadata access
+
 Version 1.0.3 (released 2022-11-18)
 
 - `humanReadableBytes` is now returning a string instead of jsx
