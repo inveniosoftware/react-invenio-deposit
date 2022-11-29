@@ -1,5 +1,10 @@
 # Changes
 
+Version 1.1.0 (released 2022-11-29)
+
+- add overridable id to the deposit form components
+- add required options to DateField
+
 Version 1.0.4 (released 2022-11-25)
 
 - add overridable to metadata-only button and metadata access
