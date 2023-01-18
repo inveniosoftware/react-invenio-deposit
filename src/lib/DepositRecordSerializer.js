@@ -314,7 +314,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
 
     // FIXME: move logic in a more sophisticated PIDField that allows empty values
     // to be sent in the backend
-    const savedPidsFieldValue = originalRecord.pids || {};
+    const savedPIDsFieldValue = originalRecord.pids || {};
 
     // Remove empty null values from record. This happens when we create a new
     // draft and the backend produces an empty record filled in with null
@@ -326,7 +326,7 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
     // FIXME: Add back pids field in case it was removed
     deserializedRecord = {
       ...deserializedRecord,
-      ...(!_isEmpty(savedPidsFieldValue) ? { pids: savedPidsFieldValue } : {}),
+      ...(!_isEmpty(savedPIDsFieldValue) ? { pids: savedPIDsFieldValue } : {}),
     };
 
     for (const key in this.depositRecordSchema) {
@@ -380,9 +380,8 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
       "custom_fields",
     ]);
 
-    // FIXME: move logic in a more sophisticated PIDField that allows empty values
-    // to be sent in the backend
-    let savedPidsFieldValue = originalRecord.pids || {};
+    // Save pids so they are not removed when an empty value is passed
+    let savedPIDsFieldValue = originalRecord.pids || {};
 
     let serializedRecord = this._removeEmptyValues(originalRecord);
 
@@ -396,10 +395,12 @@ export class RDMDepositRecordSerializer extends DepositRecordSerializer {
     // Remove empty values again because serialization may add some back
     serializedRecord = this._removeEmptyValues(serializedRecord);
 
-    // FIXME: Add back pids field in case it was removed
+    // Add back pids field in case it was removed
     serializedRecord = {
       ...serializedRecord,
-      ...(!_isEmpty(savedPidsFieldValue) ? { pids: savedPidsFieldValue } : {}),
+      // always send a `pids` key even if it's empty so the backend doesn't depend on
+      // the previous state.
+      ...{ pids: _isEmpty(savedPIDsFieldValue) ? {} : savedPIDsFieldValue },
     };
 
     // Finally add back 'metadata' if absent
