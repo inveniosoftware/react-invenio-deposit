@@ -61,7 +61,7 @@ describe("RDMDepositRecordSerializer tests", () => {
 
         const serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord).toEqual({ metadata: {}, custom_fields: {} });
+        expect(serializedRecord).toEqual({ metadata: {}, custom_fields: {}, pids: {} });
       });
     });
 
@@ -92,7 +92,7 @@ describe("RDMDepositRecordSerializer tests", () => {
 
         const serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord).toEqual({ metadata: {}, custom_fields: {} });
+        expect(serializedRecord).toEqual({ metadata: {}, custom_fields: {}, pids: {} });
       });
     });
 
@@ -132,7 +132,7 @@ describe("RDMDepositRecordSerializer tests", () => {
 
         const serializedRecord = serializer.serialize(record);
 
-        expect(serializedRecord).toEqual({ metadata: {}, custom_fields: {} });
+        expect(serializedRecord).toEqual({ metadata: {}, custom_fields: {}, pids: {} });
       });
     });
   });
