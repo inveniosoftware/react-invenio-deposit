@@ -1,5 +1,11 @@
 # Changes
 
+Version 1.2.0 (released 2023-01-20)
+
+- Always send a `pids` key to the backend. That change is needed as the backend behavior
+  changed and now it always falls back to the previous saved pids instead of setting an
+  empty dict when the key is absent (https://github.com/inveniosoftware/invenio-rdm-records/pull/1139).
+
 Version 1.1.0 (released 2022-11-29)
 
 - add overridable id to the deposit form components
