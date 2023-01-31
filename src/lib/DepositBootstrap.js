@@ -5,6 +5,7 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { BaseForm } from "react-invenio-forms";
 import { connect } from "react-redux";
@@ -22,7 +23,6 @@ import {
   submitReview,
 } from "./state/actions";
 import { scrollTop } from "./utils";
-import PropTypes from "prop-types";
 
 class DepositBootstrapComponent extends Component {
   componentDidMount() {
@@ -72,11 +72,12 @@ class DepositBootstrapComponent extends Component {
         break;
       case DepositFormSubmitActions.PUBLISH_WITHOUT_COMMUNITY:
         actionFunc = publishAction;
-        params["withoutCommunity"] = true;
+        params["removeSelectedCommunity"] = true;
         break;
       case DepositFormSubmitActions.SUBMIT_REVIEW:
         actionFunc = submitReview;
         params["reviewComment"] = extra["reviewComment"];
+        params["directPublish"] = extra["directPublish"];
         break;
       case DepositFormSubmitActions.PREVIEW:
         actionFunc = previewAction;
@@ -173,10 +174,10 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  publishAction: (values, { withoutCommunity = false }) =>
-    dispatch(publish(values, { withoutCommunity })),
-  submitReview: (values, { reviewComment }) =>
-    dispatch(submitReview(values, { reviewComment })),
+  publishAction: (values, { removeSelectedCommunity = false }) =>
+    dispatch(publish(values, { removeSelectedCommunity })),
+  submitReview: (values, { reviewComment, directPublish }) =>
+    dispatch(submitReview(values, { reviewComment, directPublish })),
   saveAction: (values) => dispatch(save(values)),
   previewAction: (values) => dispatch(preview(values)),
   deleteAction: (values, { isDiscardingVersion }) =>

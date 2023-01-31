@@ -40,6 +40,11 @@ const fakeSelectedCommunities = [
     links: {
       self_html: "/",
     },
+    ui: {
+      permissions: {
+        can_direct_publish: false,
+      },
+    },
   },
   {
     id: "comid2",
@@ -51,6 +56,28 @@ const fakeSelectedCommunities = [
     },
     links: {
       self_html: "/",
+    },
+    ui: {
+      permissions: {
+        can_direct_publish: false,
+      },
+    },
+  },
+  {
+    id: "comid3",
+    slug: "comid3",
+    metadata: {
+      title: "My third community",
+      description: "My third community",
+      type: "Type",
+    },
+    links: {
+      self_html: "/",
+    },
+    ui: {
+      permissions: {
+        can_direct_publish: true,
+      },
     },
   },
 ];
@@ -123,6 +150,7 @@ describe("Test deposit reducer", () => {
         selectedCommunity: fakeSelectedCommunities[0],
         ui: {
           showSubmitForReviewButton: true,
+          showDirectPublishButton: false,
           disableSubmitForReviewButton: false,
           showChangeCommunityButton: false,
           showCommunitySelectionButton: true,
@@ -140,11 +168,35 @@ describe("Test deposit reducer", () => {
         expectedDepositState
       );
     });
+    it("user selects a community (that can direct publish)", async () => {
+      const expectedDepositState = {
+        selectedCommunity: fakeSelectedCommunities[2],
+        ui: {
+          showSubmitForReviewButton: true,
+          showDirectPublishButton: true,
+          disableSubmitForReviewButton: false,
+          showChangeCommunityButton: false,
+          showCommunitySelectionButton: true,
+          disableCommunitySelectionButton: false,
+          showCommunityHeader: true,
+        },
+        actions: {
+          shouldUpdateReview: true,
+          shouldDeleteReview: false,
+          communityStateMustBeChecked: true,
+        },
+      };
+
+      expect(computeDepositState(initialRecord, fakeSelectedCommunities[2])).toEqual(
+        expectedDepositState
+      );
+    });
     it("user deselects a community", async () => {
       const expectedDepositState = {
         selectedCommunity: null,
         ui: {
           showSubmitForReviewButton: false,
+          showDirectPublishButton: false,
           disableSubmitForReviewButton: false,
           showChangeCommunityButton: false,
           showCommunitySelectionButton: true,
@@ -167,6 +219,7 @@ describe("Test deposit reducer", () => {
         selectedCommunity: fakeSelectedCommunities[0],
         ui: {
           showSubmitForReviewButton: true,
+          showDirectPublishButton: false,
           disableSubmitForReviewButton: false,
           showChangeCommunityButton: false,
           showCommunitySelectionButton: true,
@@ -184,11 +237,35 @@ describe("Test deposit reducer", () => {
         computeDepositState(savedDraftRecordNoCommunity, fakeSelectedCommunities[0])
       ).toEqual(expectedDepositState);
     });
+    it("user selects a community (that can direct publish) and saves draft", async () => {
+      const expectedDepositState = {
+        selectedCommunity: fakeSelectedCommunities[2],
+        ui: {
+          showSubmitForReviewButton: true,
+          showDirectPublishButton: true,
+          disableSubmitForReviewButton: false,
+          showChangeCommunityButton: false,
+          showCommunitySelectionButton: true,
+          disableCommunitySelectionButton: false,
+          showCommunityHeader: true,
+        },
+        actions: {
+          shouldUpdateReview: true,
+          shouldDeleteReview: false,
+          communityStateMustBeChecked: true,
+        },
+      };
+
+      expect(
+        computeDepositState(savedDraftRecordNoCommunity, fakeSelectedCommunities[2])
+      ).toEqual(expectedDepositState);
+    });
     it("user deselects a community and saves draft", async () => {
       const expectedDepositState = {
         selectedCommunity: null,
         ui: {
           showSubmitForReviewButton: false,
+          showDirectPublishButton: false,
           disableSubmitForReviewButton: false,
           showChangeCommunityButton: false,
           showCommunitySelectionButton: true,
@@ -211,6 +288,7 @@ describe("Test deposit reducer", () => {
         selectedCommunity: fakeSelectedCommunities[1],
         ui: {
           showSubmitForReviewButton: true,
+          showDirectPublishButton: false,
           disableSubmitForReviewButton: false,
           showChangeCommunityButton: false,
           showCommunitySelectionButton: true,
@@ -228,11 +306,35 @@ describe("Test deposit reducer", () => {
         computeDepositState(savedDraftRecordWithCommunity, fakeSelectedCommunities[1])
       ).toEqual(expectedDepositState);
     });
+    it("user changes the selected community (that can direct publish) and saves draft", async () => {
+      const expectedDepositState = {
+        selectedCommunity: fakeSelectedCommunities[2],
+        ui: {
+          showSubmitForReviewButton: true,
+          showDirectPublishButton: true,
+          disableSubmitForReviewButton: false,
+          showChangeCommunityButton: false,
+          showCommunitySelectionButton: true,
+          disableCommunitySelectionButton: false,
+          showCommunityHeader: true,
+        },
+        actions: {
+          shouldUpdateReview: true,
+          shouldDeleteReview: false,
+          communityStateMustBeChecked: true,
+        },
+      };
+
+      expect(
+        computeDepositState(savedDraftRecordWithCommunity, fakeSelectedCommunities[2])
+      ).toEqual(expectedDepositState);
+    });
     it("user access a submitted for review draft", async () => {
       const expectedDepositState = {
         selectedCommunity: fakeSelectedCommunities[0],
         ui: {
           showSubmitForReviewButton: true,
+          showDirectPublishButton: false,
           disableSubmitForReviewButton: true,
           showChangeCommunityButton: false,
           showCommunitySelectionButton: true,
@@ -255,6 +357,7 @@ describe("Test deposit reducer", () => {
         selectedCommunity: fakeSelectedCommunities[0],
         ui: {
           showSubmitForReviewButton: false,
+          showDirectPublishButton: false,
           disableSubmitForReviewButton: false,
           showChangeCommunityButton: true,
           showCommunitySelectionButton: true,
@@ -278,6 +381,7 @@ describe("Test deposit reducer", () => {
         selectedCommunity: fakeSelectedCommunities[0],
         ui: {
           showSubmitForReviewButton: false,
+          showDirectPublishButton: false,
           disableSubmitForReviewButton: false,
           showChangeCommunityButton: true,
           showCommunitySelectionButton: true,
@@ -301,6 +405,7 @@ describe("Test deposit reducer", () => {
         selectedCommunity: fakeSelectedCommunities[1],
         ui: {
           showSubmitForReviewButton: true,
+          showDirectPublishButton: false,
           disableSubmitForReviewButton: false,
           showChangeCommunityButton: false,
           showCommunitySelectionButton: true,
@@ -319,11 +424,36 @@ describe("Test deposit reducer", () => {
       ).toEqual(expectedDepositState);
     });
 
+    it("user changes community (that can direct publish) for a declined draft and resubmits", async () => {
+      const expectedDepositState = {
+        selectedCommunity: fakeSelectedCommunities[2],
+        ui: {
+          showSubmitForReviewButton: true,
+          showDirectPublishButton: true,
+          disableSubmitForReviewButton: false,
+          showChangeCommunityButton: false,
+          showCommunitySelectionButton: true,
+          disableCommunitySelectionButton: false,
+          showCommunityHeader: true,
+        },
+        actions: {
+          shouldUpdateReview: true,
+          shouldDeleteReview: false,
+          communityStateMustBeChecked: true,
+        },
+      };
+
+      expect(
+        computeDepositState(declinedReviewDraft, fakeSelectedCommunities[2])
+      ).toEqual(expectedDepositState);
+    });
+
     it("user changes community for an expired draft and resubmits", async () => {
       const expectedDepositState = {
         selectedCommunity: fakeSelectedCommunities[1],
         ui: {
           showSubmitForReviewButton: true,
+          showDirectPublishButton: false,
           disableSubmitForReviewButton: false,
           showChangeCommunityButton: false,
           showCommunitySelectionButton: true,
@@ -343,11 +473,36 @@ describe("Test deposit reducer", () => {
     });
   });
 
+  it("user changes community (that can direct publish) for an expired draft and resubmits", async () => {
+    const expectedDepositState = {
+      selectedCommunity: fakeSelectedCommunities[1],
+      ui: {
+        showSubmitForReviewButton: true,
+        showDirectPublishButton: false,
+        disableSubmitForReviewButton: false,
+        showChangeCommunityButton: false,
+        showCommunitySelectionButton: true,
+        disableCommunitySelectionButton: false,
+        showCommunityHeader: true,
+      },
+      actions: {
+        shouldUpdateReview: true,
+        shouldDeleteReview: false,
+        communityStateMustBeChecked: true,
+      },
+    };
+
+    expect(computeDepositState(expiredReviewDraft, fakeSelectedCommunities[1])).toEqual(
+      expectedDepositState
+    );
+  });
+
   it("user publishes without community for a declined draft", async () => {
     const expectedDepositState = {
       selectedCommunity: null,
       ui: {
         showSubmitForReviewButton: false,
+        showDirectPublishButton: false,
         disableSubmitForReviewButton: false,
         showChangeCommunityButton: false,
         showCommunitySelectionButton: true,
@@ -371,6 +526,7 @@ describe("Test deposit reducer", () => {
       selectedCommunity: null,
       ui: {
         showSubmitForReviewButton: false,
+        showDirectPublishButton: false,
         disableSubmitForReviewButton: false,
         showChangeCommunityButton: false,
         showCommunitySelectionButton: false,
@@ -394,6 +550,7 @@ describe("Test deposit reducer", () => {
       selectedCommunity: null,
       ui: {
         showSubmitForReviewButton: false,
+        showDirectPublishButton: false,
         disableSubmitForReviewButton: false,
         showChangeCommunityButton: false,
         showCommunitySelectionButton: false,

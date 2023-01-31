@@ -239,17 +239,15 @@ export class RDMDepositApiClient extends DepositApiClient {
    */
   async submitReview(draftLinks, reviewComment) {
     return this._createResponse(() => {
-      return this.axiosWithConfig.post(
-        draftLinks["submit-review"],
-        reviewComment
-          ? {
-              payload: {
-                content: reviewComment,
-                format: "html",
-              },
-            }
-          : {}
-      );
+      const payload = reviewComment
+        ? {
+            payload: {
+              content: reviewComment,
+              format: "html",
+            },
+          }
+        : {};
+      return this.axiosWithConfig.post(draftLinks["submit-review"], payload);
     });
   }
 

@@ -5,6 +5,7 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import { i18next } from "@translations/i18next";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button } from "semantic-ui-react";
@@ -12,14 +13,14 @@ import { changeSelectedCommunity } from "../../state/actions";
 import { CommunitySelectionModal } from "../CommunitySelectionModal";
 import { PublishButton } from "./PublishButton";
 import { SubmitReviewButton } from "./SubmitReviewButton";
-import PropTypes from "prop-types";
 
 class SubmitReviewOrPublishComponent extends Component {
   render() {
     const {
       community,
-      changeSelectedCommunity,
+      changeSelectedCommunityFn,
       showChangeCommunityButton,
+      showDirectPublishButton,
       showSubmitForReviewButton,
       ...ui
     } = this.props;
@@ -27,13 +28,20 @@ class SubmitReviewOrPublishComponent extends Component {
     let result;
 
     if (showSubmitForReviewButton) {
-      result = <SubmitReviewButton {...ui} />;
+      result = (
+        <SubmitReviewButton
+          directPublish={showDirectPublishButton}
+          {...ui}
+          fluid
+          className="mb-10"
+        />
+      );
     } else if (showChangeCommunityButton) {
       result = (
         <>
           <CommunitySelectionModal
             onCommunityChange={(community) => {
-              changeSelectedCommunity(community);
+              changeSelectedCommunityFn(community);
             }}
             chosenCommunity={community}
             trigger={
@@ -56,8 +64,9 @@ class SubmitReviewOrPublishComponent extends Component {
 
 SubmitReviewOrPublishComponent.propTypes = {
   community: PropTypes.object,
-  changeSelectedCommunity: PropTypes.func.isRequired,
+  changeSelectedCommunityFn: PropTypes.func.isRequired,
   showChangeCommunityButton: PropTypes.bool.isRequired,
+  showDirectPublishButton: PropTypes.bool.isRequired,
   showSubmitForReviewButton: PropTypes.bool.isRequired,
 };
 
@@ -67,12 +76,14 @@ SubmitReviewOrPublishComponent.defaultProps = {
 
 const mapStateToProps = (state) => ({
   community: state.deposit.editorState.selectedCommunity,
-  showSubmitForReviewButton: state.deposit.editorState.ui.showSubmitForReviewButton,
+  showDirectPublishButton: state.deposit.editorState.ui.showDirectPublishButton,
   showChangeCommunityButton: state.deposit.editorState.ui.showChangeCommunityButton,
+  showSubmitForReviewButton: state.deposit.editorState.ui.showSubmitForReviewButton,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeSelectedCommunity: (community) => dispatch(changeSelectedCommunity(community)),
+  changeSelectedCommunityFn: (community) =>
+    dispatch(changeSelectedCommunity(community)),
 });
 
 export const SubmitReviewOrPublishButton = connect(
