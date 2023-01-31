@@ -114,6 +114,10 @@ function getSelectedCommunityMetadata(record, selectedCommunity) {
  *     - user has selected a community
  *     - the associated review for the selected community is not declined/expired
  *     - the record is not published
+ * - `ui.showDirectPublishButton`: true if all of the following are true:
+ *     - user has selected a community
+ *     - user can direct publish to a community
+ *     - the record is not published
  * - `ui.disableSubmitForReviewButton`: true if all the following are true
  *     - `ui.showSubmitForReviewButton` is true
  *     - the draft status is one of `DepositStatus.disallowsSubmitForReviewStates`
@@ -167,6 +171,12 @@ export function computeDepositState(record, selectedCommunity = undefined) {
     hasStatus(record, [DepositStatus.PUBLISHED, DepositStatus.NEW_VERSION_DRAFT]) &&
     _isEmpty(record.parent?.communities);
 
+  // show direct publish button
+  const _showDirectPublishButton =
+    communityIsSelected &&
+    !hasStatus(record, [DepositStatus.PUBLISHED, DepositStatus.NEW_VERSION_DRAFT]) &&
+    _selectedCommunity.ui.permissions.can_direct_publish;
+
   // show submit for review button conditions extracted to be reused
   const _showSubmitReviewButton =
     communityIsSelected &&
@@ -196,6 +206,7 @@ export function computeDepositState(record, selectedCommunity = undefined) {
     selectedCommunity: _selectedCommunity,
     ui: {
       showSubmitForReviewButton: _showSubmitReviewButton,
+      showDirectPublishButton: _showDirectPublishButton,
       disableSubmitForReviewButton:
         _showSubmitReviewButton && depositStatusDisallowsSubmitForReview,
       showChangeCommunityButton: isReviewForSelectedCommunityDeclinedOrExpired,
@@ -225,7 +236,10 @@ const depositReducer = (state = {}, action) => {
       return {
         ...state,
         actionState: action.type,
-        actionStateExtra: { reviewComment: action.payload.reviewComment },
+        actionStateExtra: {
+          reviewComment: action.payload.reviewComment,
+          directPublish: action.payload.directPublish,
+        },
       };
     case RESERVE_PID_STARTED:
     case DISCARD_PID_STARTED:

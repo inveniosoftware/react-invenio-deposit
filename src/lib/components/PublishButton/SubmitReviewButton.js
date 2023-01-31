@@ -5,20 +5,20 @@
 // React-Invenio-Deposit is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
-import React, { Component } from "react";
 import { i18next } from "@translations/i18next";
+import { connect as connectFormik } from "formik";
 import _get from "lodash/get";
+import _omit from "lodash/omit";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button } from "semantic-ui-react";
-import { connect as connectFormik } from "formik";
 import {
   DepositFormSubmitActions,
   DepositFormSubmitContext,
 } from "../../DepositFormSubmitContext";
-import { SubmitReviewModal } from "./SubmitReviewModal";
 import { DepositStatus } from "../../state/reducers/deposit";
-import _omit from "lodash/omit";
-import PropTypes from "prop-types";
+import { SubmitReviewModal } from "./SubmitReviewModal";
 
 class SubmitReviewButtonComponent extends Component {
   state = { isConfirmModalOpen: false };
@@ -29,12 +29,13 @@ class SubmitReviewButtonComponent extends Component {
   closeConfirmModal = () => this.setState({ isConfirmModalOpen: false });
 
   handleSubmitReview = ({ reviewComment }) => {
-    const { formik } = this.props;
+    const { formik, directPublish } = this.props;
     const { handleSubmit } = formik;
     const { setSubmitContext } = this.context;
 
     setSubmitContext(DepositFormSubmitActions.SUBMIT_REVIEW, {
       reviewComment,
+      directPublish,
     });
     handleSubmit();
     this.closeConfirmModal();
@@ -54,10 +55,11 @@ class SubmitReviewButtonComponent extends Component {
       actionState,
       actionStateExtra,
       community,
-      numberOfFiles,
       disableSubmitForReviewButton,
-      isRecordSubmittedForReview,
+      directPublish,
       formik,
+      isRecordSubmittedForReview,
+      numberOfFiles,
       publishModalExtraContent,
       ...ui
     } = this.props;
@@ -67,6 +69,13 @@ class SubmitReviewButtonComponent extends Component {
     const uiProps = _omit(ui, ["dispatch"]);
 
     const { isConfirmModalOpen } = this.state;
+
+    const btnLblSubmitReview = isRecordSubmittedForReview
+      ? i18next.t("Submitted for review")
+      : i18next.t("Submit for review");
+    const buttonLbl = directPublish
+      ? i18next.t("Publish directly to community")
+      : btnLblSubmitReview;
 
     return (
       <>
@@ -78,11 +87,7 @@ class SubmitReviewButtonComponent extends Component {
           icon="upload"
           loading={isSubmitting && actionState === "DRAFT_SUBMIT_REVIEW_STARTED"}
           labelPosition="left"
-          content={
-            isRecordSubmittedForReview
-              ? i18next.t("Submitted for review")
-              : i18next.t("Submit for review")
-          }
+          content={buttonLbl}
           {...uiProps}
           type="button" // needed so the formik form doesn't handle it as submit button i.e enable HTML validation on required input fields
         />
@@ -94,6 +99,7 @@ class SubmitReviewButtonComponent extends Component {
             community={community}
             onClose={this.closeConfirmModal}
             publishModalExtraContent={publishModalExtraContent}
+            directPublish={directPublish}
           />
         )}
       </>
@@ -102,20 +108,23 @@ class SubmitReviewButtonComponent extends Component {
 }
 
 SubmitReviewButtonComponent.propTypes = {
-  actionState: PropTypes.string.isRequired,
+  actionState: PropTypes.string,
   actionStateExtra: PropTypes.object.isRequired,
   community: PropTypes.object.isRequired,
   numberOfFiles: PropTypes.number,
   disableSubmitForReviewButton: PropTypes.bool,
   isRecordSubmittedForReview: PropTypes.bool.isRequired,
+  directPublish: PropTypes.bool,
   formik: PropTypes.object.isRequired,
   publishModalExtraContent: PropTypes.string,
 };
 
 SubmitReviewButtonComponent.defaultProps = {
+  actionState: undefined,
   numberOfFiles: undefined,
   disableSubmitForReviewButton: undefined,
   publishModalExtraContent: undefined,
+  directPublish: false,
 };
 
 const mapStateToProps = (state) => ({

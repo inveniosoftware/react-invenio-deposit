@@ -138,13 +138,13 @@ export const save = (draft) => {
   };
 };
 
-export const publish = (draft, { withoutCommunity = false }) => {
+export const publish = (draft, { removeSelectedCommunity = false }) => {
   return async (dispatch, getState, config) => {
     dispatch({
       type: DRAFT_PUBLISH_STARTED,
     });
 
-    if (withoutCommunity) {
+    if (removeSelectedCommunity) {
       // we set the community to null so we delete the associated review when
       // saving the draft
       await dispatch(changeSelectedCommunity(null));
@@ -173,13 +173,14 @@ export const publish = (draft, { withoutCommunity = false }) => {
   };
 };
 
-export const submitReview = (draft, { reviewComment }) => {
+export const submitReview = (draft, { reviewComment, directPublish }) => {
   return async (dispatch, getState, config) => {
     dispatch({
       type: DRAFT_SUBMIT_REVIEW_STARTED,
       payload: {
         reviewComment,
       },
+      directPublish,
     });
 
     const response = await _saveDraft(draft, config.service.drafts, {
@@ -196,10 +197,16 @@ export const submitReview = (draft, { reviewComment }) => {
         reviewComment
       );
       const request = reqResponse.data;
-      // after submitting for review, redirect to the review record
-      const rawRequestURL = config.config.links.user_dashboard_request;
-      const requestURL = rawRequestURL.replace("<request_pid_value>", request.id);
-      window.location.replace(requestURL);
+      if (directPublish) {
+        // after publishing, redirect to the published record
+        const recordURL = draftWithLinks.links.record_html;
+        window.location.replace(recordURL);
+      } else {
+        // after submitting for review, redirect to the review record
+        const rawRequestURL = config.config.links.user_dashboard_request;
+        const requestURL = rawRequestURL.replace("<request_pid_value>", request.id);
+        window.location.replace(requestURL);
+      }
     } catch (error) {
       dispatch({
         type: DRAFT_SUBMIT_REVIEW_FAILED,

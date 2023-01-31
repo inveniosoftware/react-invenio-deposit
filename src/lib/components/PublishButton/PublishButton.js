@@ -6,9 +6,11 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import { i18next } from "@translations/i18next";
+import { connect as connectFormik } from "formik";
 import _get from "lodash/get";
-import React, { Component } from "react";
+import _omit from "lodash/omit";
 import PropTypes from "prop-types";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Icon, Message, Modal } from "semantic-ui-react";
 import {
@@ -16,8 +18,6 @@ import {
   DepositFormSubmitContext,
 } from "../../DepositFormSubmitContext";
 import { DRAFT_PUBLISH_STARTED } from "../../state/types";
-import { connect as connectFormik } from "formik";
-import _omit from "lodash/omit";
 
 class PublishButtonComponent extends Component {
   state = { isConfirmModalOpen: false };

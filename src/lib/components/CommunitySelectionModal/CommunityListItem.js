@@ -14,7 +14,8 @@ import { Button, Icon, Item, Label } from "semantic-ui-react";
 import { CommunityContext } from "./CommunityContext";
 
 export const CommunityListItem = ({ result }) => {
-  const { setLocalCommunity, getChosenCommunity } = useContext(CommunityContext);
+  const { setLocalCommunity, getChosenCommunity, userCommunitiesMemberships } =
+    useContext(CommunityContext);
 
   const { metadata, ui } = result;
   const linkToCommunityPage = result.links.self_html;
@@ -22,6 +23,7 @@ export const CommunityListItem = ({ result }) => {
   const itemSelected = getChosenCommunity()?.id === result.id;
   const typeL10n = ui.type?.title_l10n;
   const isRestricted = result.access.visibility === "restricted";
+  const userMembership = userCommunitiesMemberships[result["id"]];
 
   return (
     <Item key={result.id} className={itemSelected ? "selected" : ""}>
@@ -36,6 +38,12 @@ export const CommunityListItem = ({ result }) => {
       <Item.Content>
         <Item.Header>
           {metadata.title}
+          {userMembership && (
+            <Label size="tiny" color="green" className="rel-ml-1">
+              <Icon name="check" />
+              {_capitalize(userMembership)}
+            </Label>
+          )}
           {isRestricted && (
             <Label size="tiny" color="red" className="rel-ml-1">
               <Icon name="ban" />

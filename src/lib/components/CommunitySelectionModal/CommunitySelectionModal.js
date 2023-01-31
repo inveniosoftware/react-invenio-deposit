@@ -7,35 +7,35 @@
 import { i18next } from "@translations/i18next";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Header, Modal } from "semantic-ui-react";
 import { CommunityContext } from "./CommunityContext";
 import { CommunitySelectionSearch } from "./CommunitySelectionSearch";
 
-export class CommunitySelectionModal extends Component {
+class CommunitySelectionModalComponent extends Component {
   constructor(props) {
     super(props);
-    const { chosenCommunity, onCommunityChange } = props;
+    const { chosenCommunity, onCommunityChange, userCommunitiesMemberships } = props;
 
     this.state = {
       modalOpen: false,
       localChosenCommunity: chosenCommunity,
     };
 
-    const { localChosenCommunity } = this.state;
-
     this.contextValue = {
       setLocalCommunity: (community) => {
         onCommunityChange(community);
         this.setState({ localChosenCommunity: null, modalOpen: false });
       },
-      getChosenCommunity: () => localChosenCommunity,
+      // eslint-disable-next-line react/destructuring-assignment
+      getChosenCommunity: () => this.state.localChosenCommunity,
+      userCommunitiesMemberships,
     };
   }
 
   render() {
     const { modalOpen } = this.state;
     const { chosenCommunity, trigger } = this.props;
-
     return (
       <CommunityContext.Provider value={this.contextValue}>
         <Modal
@@ -47,12 +47,12 @@ export class CommunitySelectionModal extends Component {
           closeOnDimmerClick={false}
           open={modalOpen}
           onClose={() => this.setState({ modalOpen: false })}
-          onOpen={() =>
+          onOpen={() => {
             this.setState({
               modalOpen: true,
               localChosenCommunity: chosenCommunity,
-            })
-          }
+            });
+          }}
           trigger={React.cloneElement(trigger, {
             "aria-haspopup": "dialog",
             "aria-expanded": modalOpen,
@@ -73,12 +73,22 @@ export class CommunitySelectionModal extends Component {
   }
 }
 
-CommunitySelectionModal.propTypes = {
+CommunitySelectionModalComponent.propTypes = {
   chosenCommunity: PropTypes.object,
   onCommunityChange: PropTypes.func.isRequired,
   trigger: PropTypes.object.isRequired,
+  userCommunitiesMemberships: PropTypes.object.isRequired,
 };
 
-CommunitySelectionModal.defaultProps = {
+CommunitySelectionModalComponent.defaultProps = {
   chosenCommunity: null,
 };
+
+const mapStateToProps = (state) => ({
+  userCommunitiesMemberships: state.deposit.config.user_communities_memberships,
+});
+
+export const CommunitySelectionModal = connect(
+  mapStateToProps,
+  null
+)(CommunitySelectionModalComponent);

@@ -16,8 +16,11 @@ import * as Yup from "yup";
 
 export class SubmitReviewModal extends Component {
   ConfirmSubmitReviewSchema = Yup.object({
-    acceptAccessToRecord: Yup.string().required(i18next.t("You must accept this.")),
-    acceptAfterPublishRecord: Yup.string().required(i18next.t("You must accept this.")),
+    acceptAccessToRecord: Yup.bool().oneOf([true], i18next.t("You must accept this.")),
+    acceptAfterPublishRecord: Yup.bool().oneOf(
+      [true],
+      i18next.t("You must accept this.")
+    ),
     reviewComment: Yup.string(),
   });
 
@@ -29,13 +32,36 @@ export class SubmitReviewModal extends Component {
       onClose,
       onSubmit,
       publishModalExtraContent,
+      directPublish,
     } = this.props;
     const communityTitle = community.metadata.title;
+
+    let headerTitle, msgWarningTitle, msgWarningText1, submitBtnLbl;
+    if (directPublish) {
+      headerTitle = i18next.t("Publish directly to community");
+      msgWarningTitle = i18next.t(
+        "Before publishing to the community, please read and check the following:"
+      );
+      msgWarningText1 = i18next.t(
+        "Your upload will be <bold>immediately published</bold> in '{{communityTitle}}'. You will no longer be able to change the files in the upload! However, you will still be able to update the record's metadata later."
+      );
+      submitBtnLbl = i18next.t("Publish record to community");
+    } else {
+      headerTitle = i18next.t("Submit for review");
+      msgWarningTitle = i18next.t(
+        "Before requesting review, please read and check the following:"
+      );
+      msgWarningText1 = i18next.t(
+        "If your upload is accepted by the community curators, it will be <bold>immediately published</bold>. Before that, you will still be able to modify metadata and files of this upload."
+      );
+      submitBtnLbl = i18next.t("Submit review");
+    }
+
     return (
       <Formik
         initialValues={{
-          acceptAccessToRecord: "",
-          acceptAfterPublishRecord: "",
+          acceptAccessToRecord: false,
+          acceptAfterPublishRecord: false,
           reviewComment: initialReviewComment || "",
         }}
         onSubmit={onSubmit}
@@ -52,16 +78,12 @@ export class SubmitReviewModal extends Component {
               closeIcon
               closeOnDimmerClick={false}
             >
-              <Modal.Header>
-                <Trans>Submit for review</Trans>
-              </Modal.Header>
+              <Modal.Header>{headerTitle}</Modal.Header>
               <Modal.Content>
                 <Message visible warning>
                   <p>
                     <Icon name="warning sign" />
-                    {i18next.t(
-                      "Before requesting review please read and check the following:"
-                    )}
+                    {msgWarningTitle}
                   </p>
                 </Message>
                 <Form>
@@ -81,11 +103,11 @@ export class SubmitReviewModal extends Component {
                           shouldUnescape
                         />
                       }
-                      checked={_get(values, "acceptAccessToRecord") === "checked"}
+                      checked={_get(values, "acceptAccessToRecord") === true}
                       onChange={({ data, formikProps }) => {
                         formikProps.form.setFieldValue(
                           "acceptAccessToRecord",
-                          data.checked ? "checked" : ""
+                          data.checked
                         );
                       }}
                       optimized
@@ -101,18 +123,18 @@ export class SubmitReviewModal extends Component {
                       fieldPath="acceptAfterPublishRecord"
                       label={
                         <Trans
-                          defaults="If your upload is accepted by the community curators, it will be <bold>immediately published</bold>. Before that, you will still be able to modify metadata and files of this upload."
+                          defaults={msgWarningText1}
                           values={{
                             communityTitle: communityTitle,
                           }}
                           components={{ bold: <b /> }}
                         />
                       }
-                      checked={_get(values, "acceptAfterPublishRecord") === "checked"}
+                      checked={_get(values, "acceptAfterPublishRecord") === true}
                       onChange={({ data, formikProps }) => {
                         formikProps.form.setFieldValue(
                           "acceptAfterPublishRecord",
-                          data.checked ? "checked" : ""
+                          data.checked
                         );
                       }}
                       optimized
@@ -124,7 +146,7 @@ export class SubmitReviewModal extends Component {
                   </Form.Field>
                   <TextAreaField
                     fieldPath="reviewComment"
-                    label="Message to curators (optional)"
+                    label={i18next.t("Message to curators (optional)")}
                   />
                   {publishModalExtraContent && (
                     <div
@@ -143,7 +165,7 @@ export class SubmitReviewModal extends Component {
                     handleSubmit(event);
                   }}
                   positive
-                  content={i18next.t("Submit review")}
+                  content={submitBtnLbl}
                 />
               </Modal.Actions>
             </Modal>
@@ -161,9 +183,11 @@ SubmitReviewModal.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   initialReviewComment: PropTypes.string,
   publishModalExtraContent: PropTypes.string,
+  directPublish: PropTypes.bool,
 };
 
 SubmitReviewModal.defaultProps = {
   initialReviewComment: "",
-  publishModalExtraContent: "",
+  publishModalExtraContent: undefined,
+  directPublish: false,
 };
