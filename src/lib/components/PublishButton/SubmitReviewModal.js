@@ -93,9 +93,9 @@ export class SubmitReviewModal extends Component {
                       fieldPath="acceptAccessToRecord"
                       label={
                         <Trans
-                          defaults="The '{{communityTitle}}' curators will have access to
-                 <bold>view</bold> and <bold>edit</bold> your
-                 upload's metadata and files."
+                          defaults={i18next.t(
+                            "The '{{communityTitle}}' curators will have access to <bold>view</bold> and <bold>edit</bold> your upload's metadata and files."
+                          )}
                           values={{
                             communityTitle,
                           }}

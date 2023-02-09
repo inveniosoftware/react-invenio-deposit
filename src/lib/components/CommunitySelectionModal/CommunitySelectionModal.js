@@ -27,6 +27,10 @@ class CommunitySelectionModalComponent extends Component {
         onCommunityChange(community);
         this.setState({ localChosenCommunity: null, modalOpen: false });
       },
+      // NOTE: We disable the eslint check as the actual destructing leads to a problem
+      // related to the updated state value. To avoid this, we need to access the
+      // `this.state` variable directly in the definition of the function so that any
+      // consumption of it, will return always the latest updated value.
       // eslint-disable-next-line react/destructuring-assignment
       getChosenCommunity: () => this.state.localChosenCommunity,
       userCommunitiesMemberships,
