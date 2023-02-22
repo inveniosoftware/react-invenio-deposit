@@ -35,7 +35,7 @@ export const FileUploaderToolbar = (props) => {
         tablet={6}
         computer={6}
       >
-        {config.canHaveMetadataOnlyRecords && (
+        {config.can_have_metadata_only_records && (
           <Overridable id="ReactInvenioDeposit.MetadataOnlyToggle.layout" {...props}>
             <List horizontal>
               <List.Item>
