@@ -35,3 +35,4 @@ export { SubjectsField } from "./SubjectsField";
 export { TitlesField } from "./TitlesField";
 export { VersionField } from "./VersionField";
 export { Journal } from "./Journal";
+export { Meeting } from "./Meeting";
