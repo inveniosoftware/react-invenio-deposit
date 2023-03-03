@@ -1,6 +1,6 @@
 {
   "name": "react-invenio-deposit",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "React components to build forms in Invenio",
   "main": "dist/cjs/index.js",
   "browser": "dist/cjs/index.js",
@@ -80,7 +80,7 @@
     "react-dom": "^16.13.0",
     "react-dropzone": "^11.0.0",
     "react-i18next": "^11.11.0",
-    "react-invenio-forms": "^1.0.0",
+    "react-invenio-forms": "^2.0.0",
     "react-overridable": "^0.0.3",
     "react-redux": "^7.2.0",
     "react-searchkit": "^2.0.0",
@@ -181,7 +181,7 @@
     ]
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=16.0.0"
   },
   "jest": {
     "snapshotSerializers": [
