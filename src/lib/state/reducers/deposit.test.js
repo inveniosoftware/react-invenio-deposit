@@ -80,6 +80,19 @@ const fakeSelectedCommunities = [
       },
     },
   },
+  {
+    id: "comid4",
+    metadata: {
+      title: "Deleted community",
+      description: "This community is deleted.",
+    },
+    is_ghost: true,
+    ui: {
+      permissions: {
+        can_include_directly: true,
+      },
+    },
+  },
 ];
 
 const savedDraftRecordNoCommunity = {
@@ -104,6 +117,36 @@ const savedDraftRecordWithCommunity = {
       },
     },
   },
+  expanded: {
+    parent: {
+      review: {
+        receiver: fakeSelectedCommunities[0],
+      },
+    },
+  },
+};
+
+const savedDraftRecordWithDeletedCommunity = {
+  ...initialRecord,
+  id: "w7s4s-nyj77",
+  status: DepositStatus.DRAFT_WITH_REVIEW,
+  parent: {
+    id: "2bh62-33343",
+    review: {
+      id: "1234",
+      receiver: {
+        community: fakeSelectedCommunities[3].id,
+        type: "community-submission",
+      },
+    },
+  },
+  expanded: {
+    parent: {
+      review: {
+        receiver: fakeSelectedCommunities[3],
+      },
+    },
+  },
 };
 
 const submittedForReviewDraft = {
@@ -114,6 +157,12 @@ const submittedForReviewDraft = {
 
 const declinedReviewDraft = {
   ...savedDraftRecordWithCommunity,
+  id: "w7s4s-nyj77",
+  status: DepositStatus.DECLINED,
+};
+
+const declinedReviewDraftForDeletedCommunity = {
+  ...savedDraftRecordWithDeletedCommunity,
   id: "w7s4s-nyj77",
   status: DepositStatus.DECLINED,
 };
@@ -131,6 +180,31 @@ const publishedRecordInCommunity = {
     id: "2bh62-33343",
     communities: {
       default: fakeSelectedCommunities[0].id,
+    },
+  },
+  expanded: {
+    parent: {
+      communities: {
+        default: fakeSelectedCommunities[0],
+      },
+    },
+  },
+};
+
+const publishedRecordInDeletedCommunity = {
+  ...savedDraftRecordNoCommunity,
+  status: DepositStatus.PUBLISHED,
+  parent: {
+    id: "2bh62-33343",
+    communities: {
+      default: fakeSelectedCommunities[3].id,
+    },
+  },
+  expanded: {
+    parent: {
+      communities: {
+        default: fakeSelectedCommunities[3],
+      },
     },
   },
 };
@@ -473,6 +547,33 @@ describe("Test deposit reducer", () => {
     });
   });
 
+  it("user acces a declined draft for a community that was deleted", async () => {
+    const expectedDepositState = {
+      selectedCommunity: fakeSelectedCommunities[3],
+      ui: {
+        showSubmitForReviewButton: false,
+        showDirectPublishButton: true,
+        disableSubmitForReviewButton: false,
+        showChangeCommunityButton: true,
+        showCommunitySelectionButton: true,
+        disableCommunitySelectionButton: true,
+        showCommunityHeader: true,
+      },
+      actions: {
+        shouldUpdateReview: false,
+        shouldDeleteReview: false,
+        communityStateMustBeChecked: false,
+      },
+    };
+
+    expect(
+      computeDepositState(
+        declinedReviewDraftForDeletedCommunity,
+        fakeSelectedCommunities[3]
+      )
+    ).toEqual(expectedDepositState);
+  });
+
   it("user changes community (that can direct publish) for an expired draft and resubmits", async () => {
     const expectedDepositState = {
       selectedCommunity: fakeSelectedCommunities[1],
@@ -547,7 +648,7 @@ describe("Test deposit reducer", () => {
 
   it("user accesses a published draft accepted in a community", async () => {
     const expectedDepositState = {
-      selectedCommunity: null,
+      selectedCommunity: fakeSelectedCommunities[0],
       ui: {
         showSubmitForReviewButton: false,
         showDirectPublishButton: false,
@@ -564,7 +665,30 @@ describe("Test deposit reducer", () => {
       },
     };
 
-    expect(computeDepositState(publishedRecordInCommunity, null)).toEqual(
+    expect(computeDepositState(publishedRecordInCommunity, undefined)).toEqual(
+      expectedDepositState
+    );
+  });
+  it("user accesses a published draft accepted in a community that was deleted", async () => {
+    const expectedDepositState = {
+      selectedCommunity: fakeSelectedCommunities[3],
+      ui: {
+        showSubmitForReviewButton: false,
+        showDirectPublishButton: false,
+        disableSubmitForReviewButton: false,
+        showChangeCommunityButton: false,
+        showCommunitySelectionButton: false,
+        disableCommunitySelectionButton: false,
+        showCommunityHeader: false,
+      },
+      actions: {
+        shouldUpdateReview: false,
+        shouldDeleteReview: false,
+        communityStateMustBeChecked: false,
+      },
+    };
+
+    expect(computeDepositState(publishedRecordInDeletedCommunity, undefined)).toEqual(
       expectedDepositState
     );
   });

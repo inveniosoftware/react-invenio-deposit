@@ -127,8 +127,9 @@ function getSelectedCommunityMetadata(record, selectedCommunity) {
  *     - the associated review for the selected community is declined/expired
  *     - the draft status is one of `DepositStatus.disallowsSubmitForReviewStates` and `ui.showCommunityHeader` is false
  * - `ui.showCommunityHeader`: false if all of the following is true:
- *     - the draft is published
- *     - the `record.parent.communities` is empty i.e the record was published without a community selected.
+ *     - the draft is published and
+ *     - the `record.parent.communities` is empty i.e the record was published without a community selected or,
+ *     - the selectedCommunity equals to `unresolvedCommunity` i.e the linked community is not found.
  *
  * When the `selectedCommunity` param is omitted, it will retrieve the community from the draft, if any.
  *
@@ -167,9 +168,11 @@ export function computeDepositState(record, selectedCommunity = undefined) {
     draftReview?.receiver?.community === _selectedCommunity?.id;
 
   // check if the record is published without a community selected
-  const isRecordPublishedWithoutCommunity =
+  const _isCommunityResolved = communityIsSelected && !_selectedCommunity.is_ghost;
+
+  const isRecordPublishedWithoutOrUnresolvedCommunity =
     hasStatus(record, [DepositStatus.PUBLISHED, DepositStatus.NEW_VERSION_DRAFT]) &&
-    _isEmpty(record.parent?.communities);
+    (_isEmpty(record.parent?.communities) || !_isCommunityResolved);
 
   // show direct publish button
   const _showDirectPublishButton =
@@ -200,7 +203,8 @@ export function computeDepositState(record, selectedCommunity = undefined) {
   const _disableCommunitySelectionButton =
     _showCommunitySelectionButton &&
     (isReviewForSelectedCommunityDeclinedOrExpired ||
-      (depositStatusDisallowsSubmitForReview && !isRecordPublishedWithoutCommunity));
+      (depositStatusDisallowsSubmitForReview &&
+        !isRecordPublishedWithoutOrUnresolvedCommunity));
 
   return {
     selectedCommunity: _selectedCommunity,
@@ -211,7 +215,7 @@ export function computeDepositState(record, selectedCommunity = undefined) {
         _showSubmitReviewButton && depositStatusDisallowsSubmitForReview,
       showChangeCommunityButton: isReviewForSelectedCommunityDeclinedOrExpired,
       showCommunitySelectionButton: _showCommunitySelectionButton,
-      showCommunityHeader: !isRecordPublishedWithoutCommunity,
+      showCommunityHeader: !isRecordPublishedWithoutOrUnresolvedCommunity,
       disableCommunitySelectionButton: _disableCommunitySelectionButton,
     },
     actions: {
