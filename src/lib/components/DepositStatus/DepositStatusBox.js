@@ -98,8 +98,12 @@ const DepositStatusBoxComponent = ({ depositReview, depositStatus }) => {
 };
 
 DepositStatusBoxComponent.propTypes = {
-  depositReview: PropTypes.bool.isRequired,
+  depositReview: PropTypes.bool,
   depositStatus: PropTypes.string.isRequired,
+};
+
+DepositStatusBoxComponent.defaultProps = {
+  depositReview: undefined,
 };
 
 const mapStateToProps = (state) => ({
