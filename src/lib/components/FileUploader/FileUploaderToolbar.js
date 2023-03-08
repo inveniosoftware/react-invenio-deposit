@@ -17,8 +17,14 @@ import Overridable from "react-overridable";
 // NOTE: This component has to be a function component to allow
 //       the `useFormikContext` hook.
 export const FileUploaderToolbar = (props) => {
-  const { config, filesList, filesSize, filesEnabled, quota, decimalSizeDisplay } =
-    props;
+  const {
+    filesList,
+    filesSize,
+    filesEnabled,
+    showMetadataOnlyToggle,
+    quota,
+    decimalSizeDisplay,
+  } = props;
   const { setFieldValue } = useFormikContext();
 
   const handleOnChangeMetadataOnly = () => {
@@ -29,111 +35,106 @@ export const FileUploaderToolbar = (props) => {
   return (
     <Overridable
       id="ReactInvenioDeposit.FileUploaderToolbar.layout"
-      config={config}
       filesList={filesList}
       filesSize={filesSize}
       filesEnabled={filesEnabled}
+      showMetadataOnlyToggle={showMetadataOnlyToggle}
       quota={quota}
       decimalSizeDisplay={decimalSizeDisplay}
       handleOnChangeMetadataOnly={handleOnChangeMetadataOnly}
     >
-      <>
-        <Grid.Column
-          verticalAlign="middle"
-          floated="left"
-          mobile={16}
-          tablet={6}
-          computer={6}
-        >
-          <Overridable
-            id="ReactInvenioDeposit.FileUploaderToolbar.MetadataOnlyToggle.container"
-            config={config}
-            filesList={filesList}
-            filesEnabled={filesEnabled}
-            handleOnChangeMetadataOnly={handleOnChangeMetadataOnly}
-          >
-            {config.can_have_metadata_only_records && (
-              <List horizontal>
-                <List.Item>
-                  <Checkbox
-                    label={i18next.t("Metadata-only record")}
-                    onChange={handleOnChangeMetadataOnly}
-                    disabled={filesList.length > 0}
-                    checked={!filesEnabled}
-                  />
-                </List.Item>
-                <List.Item>
-                  <Popup
-                    trigger={
-                      <Icon name="question circle outline" className="neutral" />
-                    }
-                    content={i18next.t("Disable files for this record")}
-                    position="top center"
-                  />
-                </List.Item>
-              </List>
-            )}
-          </Overridable>
-        </Grid.Column>
+      <Grid.Column
+        verticalAlign="middle"
+        floated="left"
+        mobile={16}
+        tablet={6}
+        computer={6}
+      >
         <Overridable
-          id="ReactInvenioDeposit.FileUploaderToolbar.FileList.container"
-          config={config}
+          id="ReactInvenioDeposit.FileUploaderToolbar.MetadataOnlyToggle.container"
           filesList={filesList}
-          filesSize={filesSize}
           filesEnabled={filesEnabled}
-          quota={quota}
-          decimalSizeDisplay={decimalSizeDisplay}
+          showMetadataOnlyToggle={showMetadataOnlyToggle}
+          handleOnChangeMetadataOnly={handleOnChangeMetadataOnly}
         >
-          {filesEnabled && (
-            <Grid.Column mobile={16} tablet={10} computer={10} className="storage-col">
-              <Header size="tiny" className="mr-10">
-                {i18next.t("Storage available")}
-              </Header>
-              <List horizontal floated="right">
-                <List.Item>
-                  <Label
-                    {...(filesList.length === quota.maxFiles ? { color: "blue" } : {})}
-                  >
-                    {i18next.t(`{{length}} out of {{maxfiles}} files`, {
-                      length: filesList.length,
-                      maxfiles: quota.maxFiles,
-                    })}
-                  </Label>
-                </List.Item>
-                <List.Item>
-                  <Label
-                    {...(humanReadableBytes(filesSize, decimalSizeDisplay) ===
-                    humanReadableBytes(quota.maxStorage, decimalSizeDisplay)
-                      ? { color: "blue" }
-                      : {})}
-                  >
-                    {humanReadableBytes(filesSize, decimalSizeDisplay)}{" "}
-                    {i18next.t("out of")}{" "}
-                    {humanReadableBytes(quota.maxStorage, decimalSizeDisplay)}
-                  </Label>
-                </List.Item>
-              </List>
-            </Grid.Column>
+          {showMetadataOnlyToggle && (
+            <List horizontal>
+              <List.Item>
+                <Checkbox
+                  label={i18next.t("Metadata-only record")}
+                  onChange={handleOnChangeMetadataOnly}
+                  disabled={filesList.length > 0}
+                  checked={!filesEnabled}
+                />
+              </List.Item>
+              <List.Item>
+                <Popup
+                  trigger={<Icon name="question circle outline" className="neutral" />}
+                  content={i18next.t("Disable files for this record")}
+                  position="top center"
+                />
+              </List.Item>
+            </List>
           )}
         </Overridable>
-      </>
+      </Grid.Column>
+      <Overridable
+        id="ReactInvenioDeposit.FileUploaderToolbar.FileList.container"
+        filesList={filesList}
+        filesSize={filesSize}
+        filesEnabled={filesEnabled}
+        quota={quota}
+        decimalSizeDisplay={decimalSizeDisplay}
+      >
+        {filesEnabled && (
+          <Grid.Column mobile={16} tablet={10} computer={10} className="storage-col">
+            <Header size="tiny" className="mr-10">
+              {i18next.t("Storage available")}
+            </Header>
+            <List horizontal floated="right">
+              <List.Item>
+                <Label
+                  {...(filesList.length === quota.maxFiles ? { color: "blue" } : {})}
+                >
+                  {i18next.t(`{{length}} out of {{maxfiles}} files`, {
+                    length: filesList.length,
+                    maxfiles: quota.maxFiles,
+                  })}
+                </Label>
+              </List.Item>
+              <List.Item>
+                <Label
+                  {...(humanReadableBytes(filesSize, decimalSizeDisplay) ===
+                  humanReadableBytes(quota.maxStorage, decimalSizeDisplay)
+                    ? { color: "blue" }
+                    : {})}
+                >
+                  {humanReadableBytes(filesSize, decimalSizeDisplay)}{" "}
+                  {i18next.t("out of")}{" "}
+                  {humanReadableBytes(quota.maxStorage, decimalSizeDisplay)}
+                </Label>
+              </List.Item>
+            </List>
+          </Grid.Column>
+        )}
+      </Overridable>
     </Overridable>
   );
 };
 
 FileUploaderToolbar.propTypes = {
-  config: PropTypes.object,
   filesList: PropTypes.array,
   filesSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   filesEnabled: PropTypes.bool.isRequired,
   quota: PropTypes.object,
   decimalSizeDisplay: PropTypes.bool,
+  showMetadataOnlyToggle: PropTypes.bool,
 };
 
 FileUploaderToolbar.defaultProps = {
-  config: undefined,
   filesList: undefined,
   filesSize: undefined,
   quota: undefined,
   decimalSizeDisplay: false,
+  showMetadataOnlyToggle: true,
 };
