@@ -74,7 +74,7 @@ class SubmitReviewButtonComponent extends Component {
       ? i18next.t("Submitted for review")
       : i18next.t("Submit for review");
     const buttonLbl = directPublish
-      ? i18next.t("Publish directly to community")
+      ? i18next.t("Publish to community")
       : btnLblSubmitReview;
 
     return (
@@ -83,7 +83,8 @@ class SubmitReviewButtonComponent extends Component {
           disabled={this.isDisabled(numberOfFiles, disableSubmitForReviewButton)}
           name="SubmitReview"
           onClick={this.openConfirmModal}
-          positive
+          positive={directPublish}
+          primary={!directPublish}
           icon="upload"
           loading={isSubmitting && actionState === "DRAFT_SUBMIT_REVIEW_STARTED"}
           labelPosition="left"
