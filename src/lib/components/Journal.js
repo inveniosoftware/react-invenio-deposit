@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-import { GroupField, Input } from "react-invenio-forms";
-import { Grid } from "semantic-ui-react";
+import { FieldLabel, Input } from "react-invenio-forms";
+import { Divider, Grid } from "semantic-ui-react";
 
 import PropTypes from "prop-types";
 
@@ -14,52 +14,70 @@ export class Journal extends Component {
       issue,
       pages,
       issn,
+      icon,
+      label,
     } = this.props;
     return (
-      <GroupField fieldPath={fieldPath}>
-        <Grid>
-          <Grid.Column width="8">
+      <>
+        {label && (
+          <>
+            <FieldLabel htmlFor={fieldPath} icon={icon} label={label} />
+            <Divider fitted />
+          </>
+        )}
+        <Grid padded>
+          <Grid.Column width="12">
             <Input
               fieldPath={`${fieldPath}.title`}
               label={title.label}
               placeholder={title.placeholder}
-              description={title.description}
             />
+            {title.description && (
+              <label className="helptext mb-0">{title.description}</label>
+            )}
           </Grid.Column>
-          <Grid.Column width="8">
-            <Input
-              fieldPath={`${fieldPath}.volume`}
-              label={volume.label}
-              placeholder={volume.placeholder}
-              description={volume.description}
-            />
-          </Grid.Column>
-          <Grid.Column width="8">
-            <Input
-              fieldPath={`${fieldPath}.issue`}
-              label={issue.label}
-              placeholder={issue.placeholder}
-              description={issue.description}
-            />
-          </Grid.Column>
-          <Grid.Column width="8">
-            <Input
-              fieldPath={`${fieldPath}.pages`}
-              label={pages.label}
-              placeholder={pages.placeholder}
-              description={pages.description}
-            />
-          </Grid.Column>
-          <Grid.Column width="8">
+          <Grid.Column width="4">
             <Input
               fieldPath={`${fieldPath}.issn`}
               label={issn.label}
               placeholder={issn.placeholder}
-              description={issn.description}
             />
+            {issn.description && (
+              <label className="helptext mb-0">{issn.description}</label>
+            )}
+          </Grid.Column>
+          <Grid.Column width="6">
+            <Input
+              fieldPath={`${fieldPath}.volume`}
+              label={volume.label}
+              placeholder={volume.placeholder}
+            />
+            {volume.description && (
+              <label className="helptext mb-0">{volume.description}</label>
+            )}
+          </Grid.Column>
+          <Grid.Column width="6">
+            <Input
+              fieldPath={`${fieldPath}.issue`}
+              label={issue.label}
+              placeholder={issue.placeholder}
+            />
+            {issue.description && (
+              <label className="helptext mb-0">{issue.description}</label>
+            )}
+          </Grid.Column>
+          <Grid.Column width="4">
+            <Input
+              fieldPath={`${fieldPath}.pages`}
+              label={pages.label}
+              placeholder={pages.placeholder}
+            />
+            {pages.description && (
+              <label className="helptext mb-0">{pages.description}</label>
+            )}
           </Grid.Column>
         </Grid>
-      </GroupField>
+      </>
     );
   }
 }
@@ -71,4 +89,11 @@ Journal.propTypes = {
   issue: PropTypes.object.isRequired,
   pages: PropTypes.object.isRequired,
   issn: PropTypes.object.isRequired,
+  icon: PropTypes.string,
+  label: PropTypes.string,
+};
+
+Journal.defaultProps = {
+  icon: undefined,
+  label: undefined,
 };
