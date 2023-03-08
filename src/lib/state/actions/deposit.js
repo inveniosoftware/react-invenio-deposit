@@ -196,17 +196,8 @@ export const submitReview = (draft, { reviewComment, directPublish }) => {
         draftWithLinks.links,
         reviewComment
       );
-      const request = reqResponse.data;
-      if (directPublish) {
-        // after publishing, redirect to the published record
-        const recordURL = draftWithLinks.links.record_html;
-        window.location.replace(recordURL);
-      } else {
-        // after submitting for review, redirect to the review record
-        const rawRequestURL = config.config.links.user_dashboard_request;
-        const requestURL = rawRequestURL.replace("<request_pid_value>", request.id);
-        window.location.replace(requestURL);
-      }
+      const nextURL = reqResponse.data.links.next_html;
+      window.location.replace(nextURL);
     } catch (error) {
       dispatch({
         type: DRAFT_SUBMIT_REVIEW_FAILED,
