@@ -23,6 +23,7 @@ export class AccessRightFieldCmp extends Component {
       formik, // this is our access to the shared current draft
       label,
       labelIcon,
+      showMetadataAccess,
       community,
     } = this.props;
 
@@ -38,13 +39,15 @@ export class AccessRightFieldCmp extends Component {
             </Card.Header>
           </Card.Content>
           <Card.Content>
-            <MetadataAccess
-              recordAccess={formik.field.value.record}
-              communityAccess={communityAccess}
-            />
-
-            <Divider hidden />
-
+            {showMetadataAccess && (
+              <>
+                <MetadataAccess
+                  recordAccess={formik.field.value.record}
+                  communityAccess={communityAccess}
+                />
+                <Divider hidden />
+              </>
+            )}
             <FilesAccess
               access={formik.field.value}
               accessCommunity={communityAccess}
@@ -84,10 +87,12 @@ AccessRightFieldCmp.propTypes = {
   formik: PropTypes.object.isRequired,
   label: PropTypes.string.isRequired,
   labelIcon: PropTypes.string.isRequired,
+  showMetadataAccess: PropTypes.bool,
   community: PropTypes.object,
 };
 
 AccessRightFieldCmp.defaultProps = {
+  showMetadataAccess: true,
   community: undefined,
 };
 
