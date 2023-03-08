@@ -47,3 +47,4 @@ export { VersionField } from "./VersionField";
 export { Journal } from "./Journal";
 export { Meeting } from "./Meeting";
 export { Imprint } from "./Imprint";
+export { Thesis } from "./Thesis";

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-import { GroupField, Input } from "react-invenio-forms";
-import { Grid } from "semantic-ui-react";
+import { FieldLabel, Input } from "react-invenio-forms";
+import { Divider, Grid } from "semantic-ui-react";
 
 import PropTypes from "prop-types";
 
@@ -10,57 +10,63 @@ export class Imprint extends Component {
     const {
       fieldPath, // injected by the custom field loader via the `field` config property
       title,
-      publisher,
       place,
       isbn,
       pages,
+      label,
+      icon,
     } = this.props;
     return (
-      <GroupField fieldPath={fieldPath}>
-        <Grid>
-          <Grid.Column width="8">
-            <Input
-              fieldPath={`${fieldPath}.publisher`}
-              label={publisher.label}
-              placeholder={publisher.placeholder}
-              description={publisher.description}
-            />
-          </Grid.Column>
-          <Grid.Column width="8">
-            <Input
-              fieldPath={`${fieldPath}.place`}
-              label={place.label}
-              placeholder={place.placeholder}
-              description={place.description}
-            />
-          </Grid.Column>
-
-          <Grid.Column width="8">
-            <Input
-              fieldPath={`${fieldPath}.isbn`}
-              label={isbn.label}
-              placeholder={isbn.placeholder}
-              description={isbn.description}
-            />
-          </Grid.Column>
-          <Grid.Column width="8">
+      <>
+        {label && (
+          <>
+            <FieldLabel htmlFor={fieldPath} icon={icon} label={label} />
+            <Divider fitted />
+          </>
+        )}
+        <Grid padded>
+          <Grid.Column width="12">
             <Input
               fieldPath={`${fieldPath}.title`}
               label={title.label}
               placeholder={title.placeholder}
-              description={title.description}
             />
+            {title.description && (
+              <label className="helptext mb-0">{title.description}</label>
+            )}
           </Grid.Column>
-          <Grid.Column width="8">
+          <Grid.Column width="4">
+            <Input
+              fieldPath={`${fieldPath}.isbn`}
+              label={isbn.label}
+              placeholder={isbn.placeholder}
+            />
+            {isbn.description && (
+              <label className="helptext mb-0">{isbn.description}</label>
+            )}
+          </Grid.Column>
+          <Grid.Column width="6">
+            <Input
+              fieldPath={`${fieldPath}.place`}
+              label={place.label}
+              placeholder={place.placeholder}
+            />
+            {place.description && (
+              <label className="helptext mb-0">{place.description}</label>
+            )}
+          </Grid.Column>
+          <Grid.Column width="6">
             <Input
               fieldPath={`${fieldPath}.pages`}
               label={pages.label}
               placeholder={pages.placeholder}
-              description={pages.description}
             />
+            {pages.description && (
+              <label className="helptext mb-0">{pages.description}</label>
+            )}
           </Grid.Column>
         </Grid>
-      </GroupField>
+      </>
     );
   }
 }
@@ -68,8 +74,14 @@ export class Imprint extends Component {
 Imprint.propTypes = {
   fieldPath: PropTypes.string.isRequired,
   title: PropTypes.object.isRequired,
-  publisher: PropTypes.object.isRequired,
   place: PropTypes.object.isRequired,
   isbn: PropTypes.object.isRequired,
   pages: PropTypes.object.isRequired,
+  icon: PropTypes.string,
+  label: PropTypes.string,
+};
+
+Imprint.defaultProps = {
+  icon: undefined,
+  label: undefined,
 };
