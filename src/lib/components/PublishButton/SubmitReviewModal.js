@@ -38,12 +38,13 @@ export class SubmitReviewModal extends Component {
 
     let headerTitle, msgWarningTitle, msgWarningText1, submitBtnLbl;
     if (directPublish) {
-      headerTitle = i18next.t("Publish directly to community");
+      headerTitle = i18next.t("Publish to community");
       msgWarningTitle = i18next.t(
         "Before publishing to the community, please read and check the following:"
       );
       msgWarningText1 = i18next.t(
-        "Your upload will be <bold>immediately published</bold> in '{{communityTitle}}'. You will no longer be able to change the files in the upload! However, you will still be able to update the record's metadata later."
+        "Your upload will be <bold>immediately published</bold> in '{{communityTitle}}'. You will no longer be able to change the files in the upload! However, you will still be able to update the record's metadata later.",
+        { communityTitle }
       );
       submitBtnLbl = i18next.t("Publish record to community");
     } else {
@@ -54,7 +55,7 @@ export class SubmitReviewModal extends Component {
       msgWarningText1 = i18next.t(
         "If your upload is accepted by the community curators, it will be <bold>immediately published</bold>. Before that, you will still be able to modify metadata and files of this upload."
       );
-      submitBtnLbl = i18next.t("Submit review");
+      submitBtnLbl = i18next.t("Submit record for review");
     }
 
     return (
@@ -94,7 +95,8 @@ export class SubmitReviewModal extends Component {
                       label={
                         <Trans
                           defaults={i18next.t(
-                            "The '{{communityTitle}}' curators will have access to <bold>view</bold> and <bold>edit</bold> your upload's metadata and files."
+                            "The '{{communityTitle}}' curators will have access to <bold>view</bold> and <bold>edit</bold> your upload's metadata and files.",
+                            { communityTitle }
                           )}
                           values={{
                             communityTitle,
@@ -144,10 +146,14 @@ export class SubmitReviewModal extends Component {
                       className="mt-0 mb-5"
                     />
                   </Form.Field>
-                  <TextAreaField
-                    fieldPath="reviewComment"
-                    label={i18next.t("Message to curators (optional)")}
-                  />
+
+                  {!directPublish && (
+                    <TextAreaField
+                      fieldPath="reviewComment"
+                      label={i18next.t("Message to curators (optional)")}
+                    />
+                  )}
+
                   {publishModalExtraContent && (
                     <div
                       dangerouslySetInnerHTML={{ __html: publishModalExtraContent }}
@@ -164,7 +170,8 @@ export class SubmitReviewModal extends Component {
                   onClick={(event) => {
                     handleSubmit(event);
                   }}
-                  positive
+                  positive={directPublish}
+                  primary={!directPublish}
                   content={submitBtnLbl}
                 />
               </Modal.Actions>
