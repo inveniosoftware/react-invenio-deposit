@@ -175,7 +175,7 @@ export function computeDepositState(record, selectedCommunity = undefined) {
   const _showDirectPublishButton =
     communityIsSelected &&
     !hasStatus(record, [DepositStatus.PUBLISHED, DepositStatus.NEW_VERSION_DRAFT]) &&
-    _selectedCommunity.ui.permissions.can_direct_publish;
+    _selectedCommunity.ui.permissions.can_include_directly;
 
   // show submit for review button conditions extracted to be reused
   const _showSubmitReviewButton =
