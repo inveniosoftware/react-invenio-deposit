@@ -42,7 +42,7 @@ const fakeSelectedCommunities = [
     },
     ui: {
       permissions: {
-        can_direct_publish: false,
+        can_include_directly: false,
       },
     },
   },
@@ -59,7 +59,7 @@ const fakeSelectedCommunities = [
     },
     ui: {
       permissions: {
-        can_direct_publish: false,
+        can_include_directly: false,
       },
     },
   },
@@ -76,7 +76,7 @@ const fakeSelectedCommunities = [
     },
     ui: {
       permissions: {
-        can_direct_publish: true,
+        can_include_directly: true,
       },
     },
   },
