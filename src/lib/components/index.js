@@ -9,7 +9,12 @@ export { AccessRightField } from "./AccessRightField";
 export { AdditionalTitlesField } from "./AdditionalTitlesField";
 export { AffiliationsField } from "./AffiliationsField";
 export { ComingSoonField } from "./ComingSoonField";
-export { CommunityHeader } from "./Communities";
+export {
+  CommunityHeader,
+  CommunityCompactItem,
+  CommunityTypeLabel,
+  RestrictedLabel,
+} from "./Communities";
 export { CommunitySelectionModal } from "./CommunitySelectionModal";
 export { CreatibutorsField } from "./Creatibutors";
 export { DatesField } from "./DatesField";
