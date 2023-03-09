@@ -1,5 +1,17 @@
 # Changes
 
+Version 2.1.2 (released 2023-03-09)
+
+- review: update redirect link
+
+Version 2.1.1 (released 2023-03-03)
+
+- file uploader toolbar: fix property name
+
+Version 2.1.0 (released 2023-03-03)
+
+- fields: add custom widgets: journal, meeting, imprint 
+
 Version 2.0.0 (released 2023-02-09)
 
 - Add direct publish workflow for submitting to communities
