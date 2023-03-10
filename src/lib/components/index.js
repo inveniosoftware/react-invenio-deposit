@@ -22,7 +22,12 @@ export { DeleteButton } from "./DeleteButton";
 export { DepositFormTitle } from "./DepositFormTitle";
 export { DepositStatusBox } from "./DepositStatus";
 export { DescriptionsField } from "./DescriptionsField";
-export { FileUploader, humanReadableBytes } from "./FileUploader";
+export {
+  FileUploader,
+  humanReadableBytes,
+  FileUploaderArea,
+  FileUploaderToolbar,
+} from "./FileUploader";
 export { FormFeedback } from "./FormFeedback";
 export { FundingField } from "./Funding";
 export { IdentifiersField, PIDField } from "./Identifiers";
