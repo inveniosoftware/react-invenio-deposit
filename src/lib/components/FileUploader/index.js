@@ -36,3 +36,5 @@ export const FileUploader = connect(
 )(FileUploaderComponent);
 
 export { humanReadableBytes } from "./utils";
+export { FileUploaderArea } from "./FileUploaderArea";
+export { FileUploaderToolbar } from "./FileUploaderToolbar";

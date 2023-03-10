@@ -19,6 +19,7 @@ import { NewVersionButton } from "../NewVersionButton";
 import { FileUploaderArea } from "./FileUploaderArea";
 import { FileUploaderToolbar } from "./FileUploaderToolbar";
 import { humanReadableBytes } from "./utils";
+import Overridable from "react-overridable";
 
 // NOTE: This component has to be a function component to allow
 //       the `useFormikContext` hook.
@@ -144,102 +145,166 @@ export const FileUploaderComponent = ({
     filesEnabled && isDraftRecord && hasParentRecord && !filesList.length;
 
   return (
-    <>
-      <Grid>
-        <Grid.Row className="pt-10 pb-5">
-          {isDraftRecord && (
-            <FileUploaderToolbar
-              {...uiProps}
-              config={config}
-              filesEnabled={filesEnabled}
-              filesList={filesList}
-              filesSize={filesSize}
-              isDraftRecord={isDraftRecord}
-              quota={quota}
-              decimalSizeDisplay={decimalSizeDisplay}
-            />
-          )}
-        </Grid.Row>
-        {displayImportBtn && (
-          <Grid.Row className="pb-5 pt-5">
-            <Grid.Column width={16}>
-              <Message visible info>
-                <div style={{ display: "inline-block", float: "right" }}>
-                  <Button
-                    type="button"
-                    size="mini"
-                    primary
-                    icon={importButtonIcon}
-                    content={importButtonText}
-                    onClick={() => importParentFiles()}
-                    disabled={isFileImportInProgress}
-                    loading={isFileImportInProgress}
-                  />
-                </div>
-                <p style={{ marginTop: "5px", display: "inline-block" }}>
-                  <Icon name="info circle" />
-                  {i18next.t("You can import files from the previous version.")}
-                </p>
-              </Message>
-            </Grid.Column>
+    <Overridable
+      id="ReactInvenioDeposit.FileUploader.layout"
+      config={config}
+      files={files}
+      isDraftRecord={isDraftRecord}
+      hasParentRecord={hasParentRecord}
+      quota={quota}
+      permissions={permissions}
+      record={record}
+      uploadFiles={uploadFiles}
+      deleteFile={deleteFile}
+      importParentFiles={importParentFiles}
+      importButtonIcon={importButtonIcon}
+      importButtonText={importButtonText}
+      isFileImportInProgress={isFileImportInProgress}
+      decimalSizeDisplay={decimalSizeDisplay}
+      filesEnabled={filesEnabled}
+      filesList={filesList}
+      displayImportBtn={displayImportBtn}
+      filesSize={filesSize}
+      dropzoneParams={dropzoneParams}
+      warningMsg={warningMsg}
+      setWarningMsg={setWarningMsg}
+      {...uiProps}
+    >
+      <>
+        <Grid>
+          <Grid.Row className="pt-10 pb-5">
+            {isDraftRecord && (
+              <FileUploaderToolbar
+                {...uiProps}
+                config={config}
+                filesEnabled={filesEnabled}
+                filesList={filesList}
+                filesSize={filesSize}
+                isDraftRecord={isDraftRecord}
+                quota={quota}
+                decimalSizeDisplay={decimalSizeDisplay}
+              />
+            )}
           </Grid.Row>
-        )}
-        {filesEnabled && (
-          <Grid.Row className="pt-0 pb-0">
-            <FileUploaderArea
-              {...uiProps}
-              filesList={filesList}
-              dropzoneParams={dropzoneParams}
-              isDraftRecord={isDraftRecord}
-              filesEnabled={filesEnabled}
-              deleteFile={deleteFile}
-              decimalSizeDisplay={decimalSizeDisplay}
-            />
-          </Grid.Row>
-        )}
-        {isDraftRecord ? (
-          <Grid.Row className="file-upload-note pt-5">
-            <Grid.Column width={16}>
-              <Message visible warning>
-                <p>
-                  <Icon name="warning sign" />
-                  {i18next.t(
-                    "File addition, removal or modification are not allowed after you have published your upload."
-                  )}
-                </p>
-              </Message>
-            </Grid.Column>
-          </Grid.Row>
-        ) : (
-          <Grid.Row className="file-upload-note pt-5">
-            <Grid.Column width={16}>
-              <Message info>
-                <NewVersionButton
-                  record={record}
-                  onError={() => {}}
-                  className=""
-                  disabled={!permissions.can_new_version}
-                  style={{ float: "right" }}
+          <Overridable
+            id="ReactInvenioDeposit.FileUploader.ImportButton.container"
+            importButtonIcon={importButtonIcon}
+            importButtonText={importButtonText}
+            importParentFiles={importParentFiles}
+            isFileImportInProgress={isFileImportInProgress}
+            displayImportBtn={displayImportBtn}
+            {...uiProps}
+          >
+            {displayImportBtn && (
+              <Grid.Row className="pb-5 pt-5">
+                <Grid.Column width={16}>
+                  <Message visible info>
+                    <div style={{ display: "inline-block", float: "right" }}>
+                      <Button
+                        type="button"
+                        size="mini"
+                        primary
+                        icon={importButtonIcon}
+                        content={importButtonText}
+                        onClick={() => importParentFiles()}
+                        disabled={isFileImportInProgress}
+                        loading={isFileImportInProgress}
+                      />
+                    </div>
+                    <p style={{ marginTop: "5px", display: "inline-block" }}>
+                      <Icon name="info circle" />
+                      {i18next.t("You can import files from the previous version.")}
+                    </p>
+                  </Message>
+                </Grid.Column>
+              </Grid.Row>
+            )}
+          </Overridable>
+
+          <Overridable
+            id="ReactInvenioDeposit.FileUploader.FileUploaderArea.container"
+            filesList={filesList}
+            dropzoneParams={dropzoneParams}
+            isDraftRecord={isDraftRecord}
+            filesEnabled={filesEnabled}
+            deleteFile={deleteFile}
+            decimalSizeDisplay={decimalSizeDisplay}
+            {...uiProps}
+          >
+            {filesEnabled && (
+              <Grid.Row className="pt-0 pb-0">
+                <FileUploaderArea
+                  {...uiProps}
+                  filesList={filesList}
+                  dropzoneParams={dropzoneParams}
+                  isDraftRecord={isDraftRecord}
+                  filesEnabled={filesEnabled}
+                  deleteFile={deleteFile}
+                  decimalSizeDisplay={decimalSizeDisplay}
                 />
-                <p style={{ marginTop: "5px", display: "inline-block" }}>
-                  <Icon name="info circle" size="large" />
-                  {i18next.t(
-                    "You must create a new version to add, modify or delete files."
-                  )}
-                </p>
-              </Message>
-            </Grid.Column>
-          </Grid.Row>
-        )}
-      </Grid>
-      <Modal
-        open={!!warningMsg}
-        header="Warning!"
-        content={warningMsg}
-        onClose={() => setWarningMsg()}
-        closeIcon
-      />
-    </>
+              </Grid.Row>
+            )}
+          </Overridable>
+
+          <Overridable
+            id="ReactInvenioDeposit.FileUploader.NewVersionButton.container"
+            isDraftRecord={isDraftRecord}
+            permissions={permissions}
+            record={record}
+            {...uiProps}
+          >
+            {isDraftRecord ? (
+              <Grid.Row className="file-upload-note pt-5">
+                <Grid.Column width={16}>
+                  <Message visible warning>
+                    <p>
+                      <Icon name="warning sign" />
+                      {i18next.t(
+                        "File addition, removal or modification are not allowed after you have published your upload."
+                      )}
+                    </p>
+                  </Message>
+                </Grid.Column>
+              </Grid.Row>
+            ) : (
+              <Grid.Row className="file-upload-note pt-5">
+                <Grid.Column width={16}>
+                  <Message info>
+                    <NewVersionButton
+                      record={record}
+                      onError={() => {}}
+                      className=""
+                      disabled={!permissions.can_new_version}
+                      style={{ float: "right" }}
+                    />
+                    <p style={{ marginTop: "5px", display: "inline-block" }}>
+                      <Icon name="info circle" size="large" />
+                      {i18next.t(
+                        "You must create a new version to add, modify or delete files."
+                      )}
+                    </p>
+                  </Message>
+                </Grid.Column>
+              </Grid.Row>
+            )}
+          </Overridable>
+        </Grid>
+        <Overridable
+          id="ReactInvenioDeposit.FileUploader.Modal.container"
+          warningMsg={warningMsg}
+          setWarningMsg={setWarningMsg}
+          {...uiProps}
+        >
+          <Modal
+            open={!!warningMsg}
+            header="Warning!"
+            content={warningMsg}
+            onClose={() => setWarningMsg()}
+            closeIcon
+          />
+        </Overridable>
+      </>
+    </Overridable>
   );
 };
 
