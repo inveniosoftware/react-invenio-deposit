@@ -1,5 +1,9 @@
 # Changes
 
+Version 2.2.0 (released 2023-03-13)
+
+- rename ui permissions for direct publish action
+
 Version 2.1.2 (released 2023-03-09)
 
 - review: update redirect link
