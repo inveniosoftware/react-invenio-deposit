@@ -130,7 +130,7 @@ SubjectsField.propTypes = {
 
 SubjectsField.defaultProps = {
   required: false,
-  label: i18next.t("Subjects"),
+  label: i18next.t("Keywords and subjects"),
   labelIcon: "tag",
   multiple: true,
   clearable: true,
