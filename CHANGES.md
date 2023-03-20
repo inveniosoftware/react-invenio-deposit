@@ -1,5 +1,13 @@
 # Changes
 
+Version 2.3.0 (released 2023-03-20)
+
+- review: update button labels
+- community header: refactor community selection modal components
+- file uploader: add overridable ids
+- file uploader and access field: configurable record access display
+- keywords: update field label
+
 Version 2.2.0 (released 2023-03-13)
 
 - rename ui permissions for direct publish action
