@@ -1,5 +1,9 @@
 # Changes
 
+Version 2.3.1 (released 2023-03-21)
+
+- fix overridable id wrapper rendering of FileUploaderToolbar
+
 Version 2.3.0 (released 2023-03-20)
 
 - review: update button labels
