@@ -43,81 +43,85 @@ export const FileUploaderToolbar = (props) => {
       decimalSizeDisplay={decimalSizeDisplay}
       handleOnChangeMetadataOnly={handleOnChangeMetadataOnly}
     >
-      <Grid.Column
-        verticalAlign="middle"
-        floated="left"
-        mobile={16}
-        tablet={6}
-        computer={6}
-      >
-        <Overridable
-          id="ReactInvenioDeposit.FileUploaderToolbar.MetadataOnlyToggle.container"
-          filesList={filesList}
-          filesEnabled={filesEnabled}
-          showMetadataOnlyToggle={showMetadataOnlyToggle}
-          handleOnChangeMetadataOnly={handleOnChangeMetadataOnly}
+      <>
+        <Grid.Column
+          verticalAlign="middle"
+          floated="left"
+          mobile={16}
+          tablet={6}
+          computer={6}
         >
-          {showMetadataOnlyToggle && (
-            <List horizontal>
-              <List.Item>
-                <Checkbox
-                  label={i18next.t("Metadata-only record")}
-                  onChange={handleOnChangeMetadataOnly}
-                  disabled={filesList.length > 0}
-                  checked={!filesEnabled}
-                />
-              </List.Item>
-              <List.Item>
-                <Popup
-                  trigger={<Icon name="question circle outline" className="neutral" />}
-                  content={i18next.t("Disable files for this record")}
-                  position="top center"
-                />
-              </List.Item>
-            </List>
+          <Overridable
+            id="ReactInvenioDeposit.FileUploaderToolbar.MetadataOnlyToggle.container"
+            filesList={filesList}
+            filesEnabled={filesEnabled}
+            showMetadataOnlyToggle={showMetadataOnlyToggle}
+            handleOnChangeMetadataOnly={handleOnChangeMetadataOnly}
+          >
+            {showMetadataOnlyToggle && (
+              <List horizontal>
+                <List.Item>
+                  <Checkbox
+                    label={i18next.t("Metadata-only record")}
+                    onChange={handleOnChangeMetadataOnly}
+                    disabled={filesList.length > 0}
+                    checked={!filesEnabled}
+                  />
+                </List.Item>
+                <List.Item>
+                  <Popup
+                    trigger={
+                      <Icon name="question circle outline" className="neutral" />
+                    }
+                    content={i18next.t("Disable files for this record")}
+                    position="top center"
+                  />
+                </List.Item>
+              </List>
+            )}
+          </Overridable>
+        </Grid.Column>
+        <Overridable
+          id="ReactInvenioDeposit.FileUploaderToolbar.FileList.container"
+          filesList={filesList}
+          filesSize={filesSize}
+          filesEnabled={filesEnabled}
+          quota={quota}
+          decimalSizeDisplay={decimalSizeDisplay}
+        >
+          {filesEnabled && (
+            <Grid.Column mobile={16} tablet={10} computer={10} className="storage-col">
+              <Header size="tiny" className="mr-10">
+                {i18next.t("Storage available")}
+              </Header>
+              <List horizontal floated="right">
+                <List.Item>
+                  <Label
+                    {...(filesList.length === quota.maxFiles ? { color: "blue" } : {})}
+                  >
+                    {i18next.t(`{{length}} out of {{maxfiles}} files`, {
+                      length: filesList.length,
+                      maxfiles: quota.maxFiles,
+                    })}
+                  </Label>
+                </List.Item>
+                <List.Item>
+                  <Label
+                    {...(humanReadableBytes(filesSize, decimalSizeDisplay) ===
+                    humanReadableBytes(quota.maxStorage, decimalSizeDisplay)
+                      ? { color: "blue" }
+                      : {})}
+                  >
+                    {humanReadableBytes(filesSize, decimalSizeDisplay)}{" "}
+                    {i18next.t("out of")}{" "}
+                    {humanReadableBytes(quota.maxStorage, decimalSizeDisplay)}
+                  </Label>
+                </List.Item>
+              </List>
+            </Grid.Column>
           )}
         </Overridable>
-      </Grid.Column>
-      <Overridable
-        id="ReactInvenioDeposit.FileUploaderToolbar.FileList.container"
-        filesList={filesList}
-        filesSize={filesSize}
-        filesEnabled={filesEnabled}
-        quota={quota}
-        decimalSizeDisplay={decimalSizeDisplay}
-      >
-        {filesEnabled && (
-          <Grid.Column mobile={16} tablet={10} computer={10} className="storage-col">
-            <Header size="tiny" className="mr-10">
-              {i18next.t("Storage available")}
-            </Header>
-            <List horizontal floated="right">
-              <List.Item>
-                <Label
-                  {...(filesList.length === quota.maxFiles ? { color: "blue" } : {})}
-                >
-                  {i18next.t(`{{length}} out of {{maxfiles}} files`, {
-                    length: filesList.length,
-                    maxfiles: quota.maxFiles,
-                  })}
-                </Label>
-              </List.Item>
-              <List.Item>
-                <Label
-                  {...(humanReadableBytes(filesSize, decimalSizeDisplay) ===
-                  humanReadableBytes(quota.maxStorage, decimalSizeDisplay)
-                    ? { color: "blue" }
-                    : {})}
-                >
-                  {humanReadableBytes(filesSize, decimalSizeDisplay)}{" "}
-                  {i18next.t("out of")}{" "}
-                  {humanReadableBytes(quota.maxStorage, decimalSizeDisplay)}
-                </Label>
-              </List.Item>
-            </List>
-          </Grid.Column>
-        )}
-      </Overridable>
+      </>
     </Overridable>
   );
 };
