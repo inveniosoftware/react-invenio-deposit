@@ -1,5 +1,10 @@
 # Changes
 
+Version 2.4.0 (released 2023-03-24)
+
+- community: show/hide community header based on community resolution
+- components: updated custom fields components
+
 Version 2.3.1 (released 2023-03-21)
 
 - fix overridable id wrapper rendering of FileUploaderToolbar
@@ -26,7 +31,7 @@ Version 2.1.1 (released 2023-03-03)
 
 Version 2.1.0 (released 2023-03-03)
 
-- fields: add custom widgets: journal, meeting, imprint 
+- fields: add custom widgets: journal, meeting, imprint
 
 Version 2.0.0 (released 2023-02-09)
 
