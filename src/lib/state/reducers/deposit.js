@@ -168,7 +168,8 @@ export function computeDepositState(record, selectedCommunity = undefined) {
     draftReview?.receiver?.community === _selectedCommunity?.id;
 
   // check if the record is published without a community selected
-  const _isCommunityResolved = communityIsSelected && !_selectedCommunity.is_ghost;
+  const isGhostCommunity = _selectedCommunity?.is_ghost === true;
+  const _isCommunityResolved = communityIsSelected && !isGhostCommunity;
 
   const isRecordPublishedWithoutOrUnresolvedCommunity =
     hasStatus(record, [DepositStatus.PUBLISHED, DepositStatus.NEW_VERSION_DRAFT]) &&

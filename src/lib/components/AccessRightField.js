@@ -27,8 +27,9 @@ export class AccessRightFieldCmp extends Component {
       community,
     } = this.props;
 
+    const isGhostCommunity = community?.is_ghost === true;
     const communityAccess =
-      (community && !community.is_ghost && community.access.visibility) || "public";
+      (community && !isGhostCommunity && community.access.visibility) || "public";
     const isMetadataOnly = !formik.form.values.files.enabled;
 
     return (
