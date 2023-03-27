@@ -29,7 +29,7 @@ export const CommunityCompactItemComputer = ({
     >
       <Image as={Item.Image} size="tiny" src={links.logo} />
       <Grid>
-        <Grid.Column width={10}>
+        <Grid.Column width={12}>
           <Item.Content verticalAlign="middle">
             <Item.Header
               as="h3"
@@ -39,7 +39,6 @@ export const CommunityCompactItemComputer = ({
                 {metadata.title}
               </a>
             </Item.Header>
-
             <Item.Description>
               <div
                 dangerouslySetInnerHTML={{
@@ -47,7 +46,7 @@ export const CommunityCompactItemComputer = ({
                 }}
               />
             </Item.Description>
-            <Item.Extra>
+            <Item.Extra className="display-contents">
               <RestrictedLabel access={access.visibility} />
               <CommunityTypeLabel type={communityType} />
               {extraLabels}

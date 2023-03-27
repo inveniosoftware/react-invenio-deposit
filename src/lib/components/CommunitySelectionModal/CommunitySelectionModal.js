@@ -62,6 +62,7 @@ export class CommunitySelectionModalComponent extends Component {
       modalHeader,
       onModalChange,
       modalOpen,
+      apiConfigs,
     } = this.props;
 
     return (
@@ -92,7 +93,7 @@ export class CommunitySelectionModalComponent extends Component {
           </Modal.Header>
 
           <Modal.Content>
-            <CommunitySelectionSearch />
+            <CommunitySelectionSearch apiConfigs={apiConfigs} />
             {extraContentComponents}
           </Modal.Content>
         </Modal>
@@ -111,6 +112,7 @@ CommunitySelectionModalComponent.propTypes = {
   onModalChange: PropTypes.func,
   displaySelected: PropTypes.bool,
   modalOpen: PropTypes.bool,
+  apiConfigs: PropTypes.object,
 };
 
 CommunitySelectionModalComponent.defaultProps = {
@@ -121,6 +123,7 @@ CommunitySelectionModalComponent.defaultProps = {
   displaySelected: false,
   modalOpen: false,
   trigger: undefined,
+  apiConfigs: undefined,
 };
 
 const mapStateToProps = (state) => ({
