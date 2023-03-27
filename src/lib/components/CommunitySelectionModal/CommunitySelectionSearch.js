@@ -19,49 +19,46 @@ import {
 } from "react-searchkit";
 import { Container, Grid, Menu, Modal, Segment } from "semantic-ui-react";
 import { CommunityListItem } from "./CommunityListItem";
-
-const overriddenComponents = {
-  "communities.ResultsList.item": CommunityListItem,
-};
+import PropTypes from "prop-types";
 
 export class CommunitySelectionSearch extends Component {
   constructor(props) {
     super(props);
+    const {
+      apiConfigs: { allCommunities },
+    } = this.props;
 
-    this.apiEndpoints = {
-      allCommunities: "/api/communities",
-      myCommunities: "/api/user/communities",
-    };
-
-    const defaultEndpoint = this.apiEndpoints.allCommunities;
+    const defaultConfig = allCommunities;
 
     this.state = {
-      selectedEndpoint: defaultEndpoint,
+      selectedConfig: defaultConfig,
     };
   }
 
   render() {
-    const { selectedEndpoint } = this.state;
-    const { allCommunities, myCommunities } = this.apiEndpoints;
-    const searchApi = new InvenioSearchApi({
-      axios: {
-        url: selectedEndpoint,
-        headers: { Accept: "application/vnd.inveniordm.v1+json" },
+    const {
+      selectedConfig: {
+        searchApi: selectedsearchApi,
+        appId: selectedAppId,
+        initialQueryState: selectedInitialQueryState,
+        toggleText,
       },
-    });
-
-    const searchbarPlaceholder =
-      selectedEndpoint === allCommunities
-        ? i18next.t("Search in all communities")
-        : i18next.t("Search in my communities");
+    } = this.state;
+    const {
+      apiConfigs: { allCommunities, myCommunities },
+    } = this.props;
+    const searchApi = new InvenioSearchApi(selectedsearchApi);
+    const overriddenComponents = {
+      [`${selectedAppId}.ResultsList.item`]: CommunityListItem,
+    };
     return (
       <OverridableContext.Provider value={overriddenComponents}>
         <ReactSearchKit
-          appName="communities"
+          appName={selectedAppId}
           urlHandlerApi={{ enabled: false }}
           searchApi={searchApi}
-          key={selectedEndpoint}
-          initialQueryState={{ size: 5, page: 1 }}
+          key={selectedAppId}
+          initialQueryState={selectedInitialQueryState}
         >
           <Grid>
             <Grid.Row verticalAlign="middle">
@@ -69,10 +66,10 @@ export class CommunitySelectionSearch extends Component {
                 <Menu compact>
                   <Menu.Item
                     name="All"
-                    active={selectedEndpoint === allCommunities}
+                    active={selectedAppId === allCommunities.appId}
                     onClick={() =>
                       this.setState({
-                        selectedEndpoint: allCommunities,
+                        selectedConfig: allCommunities,
                       })
                     }
                   >
@@ -80,10 +77,10 @@ export class CommunitySelectionSearch extends Component {
                   </Menu.Item>
                   <Menu.Item
                     name="My communities"
-                    active={selectedEndpoint === myCommunities}
+                    active={selectedAppId === myCommunities.appId}
                     onClick={() =>
                       this.setState({
-                        selectedEndpoint: myCommunities,
+                        selectedConfig: myCommunities,
                       })
                     }
                   >
@@ -93,7 +90,7 @@ export class CommunitySelectionSearch extends Component {
               </Grid.Column>
               <Grid.Column width={8} floated="right" verticalAlign="middle">
                 <SearchBar
-                  placeholder={searchbarPlaceholder}
+                  placeholder={toggleText}
                   autofocus
                   actionProps={{
                     icon: "search",
@@ -126,3 +123,45 @@ export class CommunitySelectionSearch extends Component {
     );
   }
 }
+
+CommunitySelectionSearch.propTypes = {
+  apiConfigs: PropTypes.shape({
+    allCommunities: PropTypes.shape({
+      appId: PropTypes.string.isRequired,
+      initialQueryState: PropTypes.object.isRequired,
+      searchApi: PropTypes.object.isRequired,
+    }),
+    myCommunities: PropTypes.shape({
+      appId: PropTypes.string.isRequired,
+      initialQueryState: PropTypes.object.isRequired,
+      searchApi: PropTypes.object.isRequired,
+    }),
+  }),
+};
+
+CommunitySelectionSearch.defaultProps = {
+  apiConfigs: {
+    allCommunities: {
+      initialQueryState: { size: 5, page: 1 },
+      searchApi: {
+        axios: {
+          url: "/api/communities",
+          headers: { Accept: "application/vnd.inveniordm.v1+json" },
+        },
+      },
+      appId: "ReactInvenioDeposit.CommunitySelectionSearch.AllCommunities",
+      toggleText: "Search in all communities",
+    },
+    myCommunities: {
+      initialQueryState: { size: 5, page: 1 },
+      searchApi: {
+        axios: {
+          url: "/api/user/communities",
+          headers: { Accept: "application/vnd.inveniordm.v1+json" },
+        },
+      },
+      appId: "ReactInvenioDeposit.CommunitySelectionSearch.MyCommunities",
+      toggleText: "Search in my communities",
+    },
+  },
+};

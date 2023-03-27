@@ -34,6 +34,7 @@ export class SubmitReviewModal extends Component {
       publishModalExtraContent,
       directPublish,
       errors,
+      loading,
     } = this.props;
     const communityTitle = community.metadata.title;
 
@@ -164,7 +165,12 @@ export class SubmitReviewModal extends Component {
                 </Form>
               </Modal.Content>
               <Modal.Actions>
-                <Button onClick={onClose} floated="left">
+                <Button
+                  onClick={onClose}
+                  floated="left"
+                  loading={loading}
+                  disabled={loading}
+                >
                   {i18next.t("Cancel")}
                 </Button>
                 <Button
@@ -172,6 +178,8 @@ export class SubmitReviewModal extends Component {
                   onClick={(event) => {
                     handleSubmit(event);
                   }}
+                  loading={loading}
+                  disabled={loading}
                   positive={directPublish}
                   primary={!directPublish}
                   content={submitBtnLbl}
@@ -194,6 +202,7 @@ SubmitReviewModal.propTypes = {
   publishModalExtraContent: PropTypes.string,
   directPublish: PropTypes.bool,
   errors: PropTypes.node, // TODO FIXME: Use a common error cmp to display errros.
+  loading: PropTypes.bool,
 };
 
 SubmitReviewModal.defaultProps = {
@@ -201,4 +210,5 @@ SubmitReviewModal.defaultProps = {
   publishModalExtraContent: undefined,
   directPublish: false,
   errors: undefined,
+  loading: false,
 };
