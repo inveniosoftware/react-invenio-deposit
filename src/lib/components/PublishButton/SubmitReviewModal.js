@@ -33,6 +33,7 @@ export class SubmitReviewModal extends Component {
       onSubmit,
       publishModalExtraContent,
       directPublish,
+      errors,
     } = this.props;
     const communityTitle = community.metadata.title;
 
@@ -81,6 +82,7 @@ export class SubmitReviewModal extends Component {
             >
               <Modal.Header>{headerTitle}</Modal.Header>
               <Modal.Content>
+                {errors}
                 <Message visible warning>
                   <p>
                     <Icon name="warning sign" />
@@ -191,10 +193,12 @@ SubmitReviewModal.propTypes = {
   initialReviewComment: PropTypes.string,
   publishModalExtraContent: PropTypes.string,
   directPublish: PropTypes.bool,
+  errors: PropTypes.node, // TODO FIXME: Use a common error cmp to display errros.
 };
 
 SubmitReviewModal.defaultProps = {
   initialReviewComment: "",
   publishModalExtraContent: undefined,
   directPublish: false,
+  errors: undefined,
 };

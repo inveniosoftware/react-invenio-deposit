@@ -16,6 +16,12 @@ import { changeSelectedCommunity } from "../../state/actions";
 import { CommunitySelectionModal } from "../CommunitySelectionModal";
 
 class CommunityHeaderComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalOpen: false,
+    };
+  }
   render() {
     const {
       changeSelectedCommunity,
@@ -25,6 +31,7 @@ class CommunityHeaderComponent extends Component {
       disableCommunitySelectionButton,
       showCommunityHeader,
     } = this.props;
+    const { modalOpen } = this.state;
 
     return (
       showCommunityHeader && (
@@ -60,12 +67,17 @@ class CommunityHeaderComponent extends Component {
                   <CommunitySelectionModal
                     onCommunityChange={(community) => {
                       changeSelectedCommunity(community);
+                      this.setState({ modalOpen: false });
                     }}
+                    onModalChange={(value) => this.setState({ modalOpen: value })}
+                    modalOpen={modalOpen}
                     chosenCommunity={community}
+                    displaySelected
                     trigger={
                       <Button
                         className="community-header-button"
                         disabled={disableCommunitySelectionButton}
+                        onClick={() => this.setState({ modalOpen: true })}
                         primary
                         size="mini"
                         name="setting"

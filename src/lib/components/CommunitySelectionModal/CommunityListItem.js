@@ -14,8 +14,12 @@ import { CommunityCompactItem } from "../Communities/search";
 import { CommunityContext } from "./CommunityContext";
 
 export const CommunityListItem = ({ result }) => {
-  const { setLocalCommunity, getChosenCommunity, userCommunitiesMemberships } =
-    useContext(CommunityContext);
+  const {
+    setLocalCommunity,
+    getChosenCommunity,
+    userCommunitiesMemberships,
+    displaySelected,
+  } = useContext(CommunityContext);
 
   const { metadata } = result;
   const itemSelected = getChosenCommunity()?.id === result.id;
@@ -23,9 +27,11 @@ export const CommunityListItem = ({ result }) => {
 
   const actions = (
     <Button
-      content={itemSelected ? i18next.t("Selected") : i18next.t("Select")}
+      content={
+        displaySelected && itemSelected ? i18next.t("Selected") : i18next.t("Select")
+      }
       size="small"
-      positive={itemSelected}
+      positive={displaySelected && itemSelected}
       onClick={() => setLocalCommunity(result)}
       aria-label={
         <Trans defaults="Select {{title}}" values={{ title: metadata.title }} />

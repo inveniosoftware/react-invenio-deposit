@@ -15,7 +15,11 @@ export {
   CommunityTypeLabel,
   RestrictedLabel,
 } from "./Communities";
-export { CommunitySelectionModal } from "./CommunitySelectionModal";
+export {
+  CommunitySelectionModal,
+  CommunitySelectionModalComponent,
+  CommunityContext,
+} from "./CommunitySelectionModal";
 export { CreatibutorsField } from "./Creatibutors";
 export { DatesField } from "./DatesField";
 export { DeleteButton } from "./DeleteButton";
@@ -36,7 +40,7 @@ export * from "./License";
 export { NewVersionButton } from "./NewVersionButton";
 export { PreviewButton } from "./PreviewButton";
 export { PublicationDateField } from "./PublicationDateField";
-export { PublishButton } from "./PublishButton";
+export { PublishButton, SubmitReviewModal } from "./PublishButton";
 export { PublisherField } from "./PublisherField";
 export { RelatedWorksField } from "./RelatedWorksField";
 export { ResourceTypeField } from "./ResourceTypeField";

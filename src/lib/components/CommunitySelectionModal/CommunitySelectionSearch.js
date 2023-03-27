@@ -43,7 +43,6 @@ export class CommunitySelectionSearch extends Component {
   render() {
     const { selectedEndpoint } = this.state;
     const { allCommunities, myCommunities } = this.apiEndpoints;
-
     const searchApi = new InvenioSearchApi({
       axios: {
         url: selectedEndpoint,
@@ -55,7 +54,6 @@ export class CommunitySelectionSearch extends Component {
       selectedEndpoint === allCommunities
         ? i18next.t("Search in all communities")
         : i18next.t("Search in my communities");
-
     return (
       <OverridableContext.Provider value={overriddenComponents}>
         <ReactSearchKit

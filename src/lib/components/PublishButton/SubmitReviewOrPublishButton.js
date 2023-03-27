@@ -15,6 +15,12 @@ import { PublishButton } from "./PublishButton";
 import { SubmitReviewButton } from "./SubmitReviewButton";
 
 class SubmitReviewOrPublishComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalOpen: false,
+    };
+  }
   render() {
     const {
       community,
@@ -24,7 +30,7 @@ class SubmitReviewOrPublishComponent extends Component {
       showSubmitForReviewButton,
       ...ui
     } = this.props;
-
+    const { modalOpen } = this.state;
     let result;
 
     if (showSubmitForReviewButton) {
@@ -43,6 +49,9 @@ class SubmitReviewOrPublishComponent extends Component {
             onCommunityChange={(community) => {
               changeSelectedCommunityFn(community);
             }}
+            onModalChange={(value) => this.setState({ modalOpen: value })}
+            modalOpen={modalOpen}
+            displaySelected
             chosenCommunity={community}
             trigger={
               <Button content={i18next.t("Change community")} fluid className="mb-10" />
