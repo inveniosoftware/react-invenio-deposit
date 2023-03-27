@@ -12,20 +12,26 @@ import { Header, Modal } from "semantic-ui-react";
 import { CommunityContext } from "./CommunityContext";
 import { CommunitySelectionSearch } from "./CommunitySelectionSearch";
 
-class CommunitySelectionModalComponent extends Component {
+export class CommunitySelectionModalComponent extends Component {
   constructor(props) {
     super(props);
-    const { chosenCommunity, onCommunityChange, userCommunitiesMemberships } = props;
+    const {
+      chosenCommunity,
+      onCommunityChange,
+      userCommunitiesMemberships,
+      displaySelected,
+    } = props;
 
     this.state = {
-      modalOpen: false,
       localChosenCommunity: chosenCommunity,
     };
 
     this.contextValue = {
       setLocalCommunity: (community) => {
         onCommunityChange(community);
-        this.setState({ localChosenCommunity: null, modalOpen: false });
+        this.setState({
+          localChosenCommunity: community,
+        });
       },
       // NOTE: We disable the eslint check as the actual destructing leads to a problem
       // related to the updated state value. To avoid this, we need to access the
@@ -34,12 +40,20 @@ class CommunitySelectionModalComponent extends Component {
       // eslint-disable-next-line react/destructuring-assignment
       getChosenCommunity: () => this.state.localChosenCommunity,
       userCommunitiesMemberships,
+      displaySelected,
     };
   }
 
   render() {
-    const { modalOpen } = this.state;
-    const { chosenCommunity, trigger } = this.props;
+    const {
+      chosenCommunity,
+      trigger,
+      extraContentComponents,
+      modalHeader,
+      onModalChange,
+      modalOpen,
+    } = this.props;
+
     return (
       <CommunityContext.Provider value={this.contextValue}>
         <Modal
@@ -50,12 +64,14 @@ class CommunitySelectionModalComponent extends Component {
           closeIcon
           closeOnDimmerClick={false}
           open={modalOpen}
-          onClose={() => this.setState({ modalOpen: false })}
+          onClose={() => {
+            onModalChange && onModalChange(false);
+          }}
           onOpen={() => {
             this.setState({
-              modalOpen: true,
               localChosenCommunity: chosenCommunity,
             });
+            onModalChange && onModalChange(true);
           }}
           trigger={React.cloneElement(trigger, {
             "aria-haspopup": "dialog",
@@ -64,12 +80,13 @@ class CommunitySelectionModalComponent extends Component {
         >
           <Modal.Header>
             <Header as="h2" id="community-modal-header">
-              {i18next.t("Select a community")}
+              {modalHeader}
             </Header>
           </Modal.Header>
 
           <Modal.Content>
             <CommunitySelectionSearch />
+            {extraContentComponents}
           </Modal.Content>
         </Modal>
       </CommunityContext.Provider>
@@ -82,10 +99,20 @@ CommunitySelectionModalComponent.propTypes = {
   onCommunityChange: PropTypes.func.isRequired,
   trigger: PropTypes.object.isRequired,
   userCommunitiesMemberships: PropTypes.object.isRequired,
+  extraContentComponents: PropTypes.node,
+  modalHeader: PropTypes.string,
+  onModalChange: PropTypes.func,
+  displaySelected: PropTypes.bool,
+  modalOpen: PropTypes.bool,
 };
 
 CommunitySelectionModalComponent.defaultProps = {
-  chosenCommunity: null,
+  chosenCommunity: undefined,
+  extraContentComponents: undefined,
+  modalHeader: i18next.t("Select a community"),
+  onModalChange: undefined,
+  displaySelected: false,
+  modalOpen: false,
 };
 
 const mapStateToProps = (state) => ({
