@@ -70,7 +70,7 @@ export const CommunityCompactItemComputer = ({
           </Item.Content>
         </Grid.Column>
       </Grid>
-      <div className="flex align-items-start">{actions}</div>
+      <div className="flex flex-direction-column align-items-end">{actions}</div>
     </Item>
   );
 };

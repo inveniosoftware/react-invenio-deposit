@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { Header, Modal } from "semantic-ui-react";
 import { CommunityContext } from "./CommunityContext";
 import { CommunitySelectionSearch } from "./CommunitySelectionSearch";
+import _isEmpty from "lodash/isEmpty";
 
 export class CommunitySelectionModalComponent extends Component {
   constructor(props) {
@@ -44,10 +45,19 @@ export class CommunitySelectionModalComponent extends Component {
     };
   }
 
+  modalTrigger = () => {
+    const { trigger, modalOpen } = this.props;
+    if (!_isEmpty(trigger)) {
+      return React.cloneElement(trigger, {
+        "aria-haspopup": "dialog",
+        "aria-expanded": modalOpen,
+      });
+    }
+  };
+
   render() {
     const {
       chosenCommunity,
-      trigger,
       extraContentComponents,
       modalHeader,
       onModalChange,
@@ -73,10 +83,7 @@ export class CommunitySelectionModalComponent extends Component {
             });
             onModalChange && onModalChange(true);
           }}
-          trigger={React.cloneElement(trigger, {
-            "aria-haspopup": "dialog",
-            "aria-expanded": modalOpen,
-          })}
+          trigger={this.modalTrigger()}
         >
           <Modal.Header>
             <Header as="h2" id="community-modal-header">
@@ -97,7 +104,7 @@ export class CommunitySelectionModalComponent extends Component {
 CommunitySelectionModalComponent.propTypes = {
   chosenCommunity: PropTypes.object,
   onCommunityChange: PropTypes.func.isRequired,
-  trigger: PropTypes.object.isRequired,
+  trigger: PropTypes.object,
   userCommunitiesMemberships: PropTypes.object.isRequired,
   extraContentComponents: PropTypes.node,
   modalHeader: PropTypes.string,
@@ -113,6 +120,7 @@ CommunitySelectionModalComponent.defaultProps = {
   onModalChange: undefined,
   displaySelected: false,
   modalOpen: false,
+  trigger: undefined,
 };
 
 const mapStateToProps = (state) => ({
