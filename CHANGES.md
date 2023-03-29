@@ -1,5 +1,10 @@
 # Changes
 
+Version 2.5.0 (released 2023-03-29)
+
+- communities: selection modal external state management
+- communities: compact item styling
+
 Version 2.4.0 (released 2023-03-24)
 
 - community: show/hide community header based on community resolution
