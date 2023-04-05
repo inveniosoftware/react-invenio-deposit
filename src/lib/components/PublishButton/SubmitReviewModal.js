@@ -24,6 +24,13 @@ export class SubmitReviewModal extends Component {
     reviewComment: Yup.string(),
   });
 
+  componentDidMount() {
+    // For focusing the first input field in the form (a11y)
+    const firstFormFieldWrap = document.getElementById("accept-access-checkbox");
+    const checkboxElem = firstFormFieldWrap.querySelector("input");
+    checkboxElem?.focus();
+  }
+
   render() {
     const {
       initialReviewComment,
@@ -82,7 +89,7 @@ export class SubmitReviewModal extends Component {
             >
               <Modal.Header>{headerTitle}</Modal.Header>
               <Modal.Content>
-                {errors}
+                <div role="alert">{errors}</div>
                 <Message visible warning>
                   <p>
                     <Icon name="warning sign" />
@@ -90,7 +97,7 @@ export class SubmitReviewModal extends Component {
                   </p>
                 </Message>
                 <Form>
-                  <Form.Field>
+                  <Form.Field id="accept-access-checkbox">
                     <RadioField
                       control={Checkbox}
                       fieldPath="acceptAccessToRecord"
@@ -117,6 +124,7 @@ export class SubmitReviewModal extends Component {
                       optimized
                     />
                     <ErrorLabel
+                      role="alert"
                       fieldPath="acceptAccessToRecord"
                       className="mt-0 mb-5"
                     />
@@ -144,6 +152,7 @@ export class SubmitReviewModal extends Component {
                       optimized
                     />
                     <ErrorLabel
+                      role="alert"
                       fieldPath="acceptAfterPublishRecord"
                       className="mt-0 mb-5"
                     />

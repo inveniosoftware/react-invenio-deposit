@@ -33,16 +33,14 @@ export const CommunityListItem = ({ result }) => {
       size="small"
       positive={displaySelected && itemSelected}
       onClick={() => setLocalCommunity(result)}
-      aria-label={
-        <Trans defaults="Select {{title}}" values={{ title: metadata.title }} />
-      }
+      aria-label={i18next.t("Select {{ title }}", { title: metadata.title })}
     />
   );
 
   const extraLabels = (
     <>
       {userMembership && (
-        <Label size="tiny" color="teal">
+        <Label size="tiny" horizontal color="teal">
           <Icon name="key" />
           {_capitalize(userMembership)}
         </Label>

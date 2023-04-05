@@ -108,7 +108,10 @@ export class CommunitySelectionSearch extends Component {
               <Grid.Column>
                 <ResultsLoader>
                   <Segment className="community-list-container p-0">
-                    <Modal.Content scrolling className="community-list-results">
+                    <Modal.Content
+                      scrolling
+                      className="community-list-results rel-pb-2"
+                    >
                       <EmptyResults />
                       <Error />
                       <ResultsList />

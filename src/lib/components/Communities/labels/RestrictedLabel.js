@@ -12,7 +12,7 @@ import { Label, Icon } from "semantic-ui-react";
 
 export const RestrictedLabel = ({ access }) =>
   access === "restricted" && (
-    <Label size="small" horizontal className="negative">
+    <Label size="tiny" horizontal className="negative">
       <Icon name="ban" />
       {i18next.t("Restricted")}
     </Label>

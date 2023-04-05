@@ -23,10 +23,10 @@ export const CommunityCompactItemMobile = ({
 
   return (
     <Item key={id} className={`mobile only justify-space-between ${itemClassName}`}>
-      <Image size="mini" src={links.logo} />
+      <Image size="mini" src={links.logo} alt="" />
 
       <Item.Content verticalAlign="middle">
-        <Item.Header as="h3" className="ui small header flex align-items-center mb-5">
+        <Item.Header as="h3" className="ui small header text-align-center mb-5">
           <a href={links.self_html} className="p-0">
             {metadata.title}
           </a>
@@ -37,14 +37,16 @@ export const CommunityCompactItemMobile = ({
             __html: _truncate(metadata.description, { length: 50 }),
           }}
         />
-        <Item.Extra>
+        <Item.Extra className="text-align-center">
           <RestrictedLabel access={access.visibility} />
           <CommunityTypeLabel type={communityType} />
           {extraLabels}
         </Item.Extra>
       </Item.Content>
 
-      <div className="flex align-items-start">{actions}</div>
+      <div className="flex flex-direction-column align-items-center rel-mt-1">
+        {actions}
+      </div>
     </Item>
   );
 };

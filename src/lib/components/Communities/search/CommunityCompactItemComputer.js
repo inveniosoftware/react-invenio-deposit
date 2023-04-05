@@ -4,13 +4,16 @@
 // InvenioRDM is free software; you can redistribute it and/or modify it
 // under the terms of the MIT License; see LICENSE file for more details.
 
+import { i18next } from "@translations/i18next";
 import { CommunityTypeLabel } from "../labels";
 import _truncate from "lodash/truncate";
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Item, Image, Grid, Icon } from "semantic-ui-react";
+import { Image } from "react-invenio-forms";
+import { Item, Grid, Icon } from "semantic-ui-react";
 import { RestrictedLabel } from "../labels";
+import { A11yPopup } from "react-invenio-forms";
 
 export const CommunityCompactItemComputer = ({
   result,
@@ -21,13 +24,12 @@ export const CommunityCompactItemComputer = ({
   const { metadata, ui, links, access, id } = result;
 
   const communityType = ui?.type?.title_l10n;
-
   return (
     <Item
       key={id}
       className={`computer tablet only justify-space-between community-item ${itemClassName}`}
     >
-      <Image as={Item.Image} size="tiny" src={links.logo} />
+      <Image size="tiny" src={links.logo} alt="" />
       <Grid>
         <Grid.Column width={10}>
           <Item.Content verticalAlign="middle">
@@ -54,26 +56,41 @@ export const CommunityCompactItemComputer = ({
             </Item.Extra>
           </Item.Content>
         </Grid.Column>
-        <Grid.Column width={4}>
+        <Grid.Column width={5} verticalAlign="middle" align="right">
           <Item.Content>
             <Item.Meta>
               {ui.permissions.can_include_directly && (
-                <Icon name="paper plane outline" size="big" />
+                <A11yPopup
+                  size="small"
+                  trigger={<Icon name="paper plane outline" size="large" />}
+                  ariaLabel={i18next.t("Submission information")}
+                  content={i18next.t(
+                    "Submission does not require review, and will be published directly."
+                  )}
+                />
               )}
               {!ui.permissions.can_include_directly && (
-                <>
-                  <Icon name="comments outline" size="big" />
-                  <Icon corner="top right" name="question" size="small" fitted />
-                </>
+                <A11yPopup
+                  size="small"
+                  ariaLabel={i18next.t("Submission information")}
+                  trigger={
+                    <span>
+                      <Icon name="comments outline" size="large" />
+                      <Icon corner="top right" name="question" size="small" fitted />
+                    </span>
+                  }
+                  content={i18next.t("Submission requires review.")}
+                />
               )}
             </Item.Meta>
           </Item.Content>
         </Grid.Column>
       </Grid>
-      <div className="flex flex-direction-column align-items-end">{actions}</div>
+      <div className="flex align-items-center">{actions}</div>
     </Item>
   );
 };
+
 CommunityCompactItemComputer.propTypes = {
   result: PropTypes.object.isRequired,
   actions: PropTypes.node,
