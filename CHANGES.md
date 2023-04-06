@@ -1,5 +1,9 @@
 # Changes
 
+Version 2.6.0 (released 2023-03-04)
+
+- communities: customizable selection modal api endpoints
+
 Version 2.5.0 (released 2023-03-29)
 
 - communities: selection modal external state management
