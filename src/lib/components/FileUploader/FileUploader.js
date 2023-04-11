@@ -103,13 +103,16 @@ export const FileUploaderComponent = ({
               header="Could not upload files."
               content={
                 <>
-                  {i18next.t("Uploading the selected files would result in")}{" "}
-                  {humanReadableBytes(
-                    filesSize + acceptedFilesSize,
-                    decimalSizeDisplay
+                  {i18next.t(
+                    "Uploading the selected files would result in {{totalSize}} but the limit is {{maxSize}}.",
+                    {
+                      totalSize: humanReadableBytes(
+                        filesSize + acceptedFilesSize,
+                        decimalSizeDisplay
+                      ),
+                      maxSize: humanReadableBytes(quota.maxStorage, decimalSizeDisplay),
+                    }
                   )}
-                  {i18next.t("but the limit is")}
-                  {humanReadableBytes(quota.maxStorage, decimalSizeDisplay)}.
                 </>
               }
             />

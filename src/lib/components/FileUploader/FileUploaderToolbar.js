@@ -112,9 +112,10 @@ export const FileUploaderToolbar = (props) => {
                       ? { color: "blue" }
                       : {})}
                   >
-                    {humanReadableBytes(filesSize, decimalSizeDisplay)}{" "}
-                    {i18next.t("out of")}{" "}
-                    {humanReadableBytes(quota.maxStorage, decimalSizeDisplay)}
+                    {i18next.t("{{totalSize}} out of {{maxSize}}", {
+                      totalSize: humanReadableBytes(filesSize, decimalSizeDisplay),
+                      maxSize: humanReadableBytes(quota.maxStorage, decimalSizeDisplay),
+                    })}
                   </Label>
                 </List.Item>
               </List>
