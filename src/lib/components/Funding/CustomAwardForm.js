@@ -87,7 +87,7 @@ function CustomAwardForm({ deserializeFunder, selectedFunding }) {
       />
 
       <Header as="h3" size="small">
-        {i18next.t("Award information")} ({i18next.t("optional")})
+        {i18next.t("Award information (optional)")}
       </Header>
       <Form.Group widths="equal">
         <TextField

@@ -44,5 +44,5 @@ EmbargoDateField.defaultProps = {
   labelIcon: "calendar",
   placeholder: i18next.t("YYYY-MM-DD"),
   label: i18next.t("Embargo until"),
-  helpText: `${i18next.t("Format")}: ${i18next.t("YYYY-MM-DD")}`,
+  helpText: i18next.t("Format: YYYY-MM-DD"),
 };
