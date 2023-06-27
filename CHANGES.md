@@ -1,5 +1,9 @@
 # Changes
 
+Version 2.6.1 (released 2023-06-27)
+
+- customFields: fix error on objects with nested arrays
+
 Version 2.6.0 (released 2023-03-04)
 
 - communities: customizable selection modal api endpoints
