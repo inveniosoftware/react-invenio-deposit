@@ -1,15 +1,16 @@
 # 
 # Translators:
 # Tibor Simko <tibor.simko@cern.ch>, 2021
-# Andrea Dömötör, 2022
+# Andrea Dömötör, 2023
+# Dorottya Szemigán, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
 "POT-Creation-Date: 2022-10-28T08:02:09.099Z\n"
 "PO-Revision-Date: 2021-06-29 13:20+0000\n"
-"Last-Translator: Andrea Dömötör, 2022\n"
-"Language-Team: Hungarian (https://www.transifex.com/inveniosoftware/teams/23537/hu/)\n"
+"Last-Translator: Dorottya Szemigán, 2023\n"
+"Language-Team: Hungarian (https://app.transifex.com/inveniosoftware/teams/23537/hu/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: hu\n"
@@ -492,6 +493,8 @@ msgid ""
 "The publisher is used to formulate the citation, so consider the prominence "
 "of the role."
 msgstr ""
+"A kiadót használják az idézet megformálására, ezért vegye figyelembe a "
+"szerep kiemelkedőségét."
 
 msgid ""
 "Specify identifiers of related works. Supported identifiers include DOI, "
@@ -609,7 +612,7 @@ msgid ""
 "Community curators will review your upload. Once accepted, it will be "
 "published."
 msgstr ""
-"A közösségi bírálók elbírálják az ön feltöltését. Ha elfogadták, "
+"A közösségi bírálók elbírálják az Ön feltöltését. Ha elfogadták, "
 "publikálásra fog kerülni."
 
 msgid "Declined"
@@ -826,7 +829,7 @@ msgid ""
 "                 upload's metadata and files."
 msgstr ""
 "A(z) '{{communityTitle}}' közösség bírálói hozzáférést kapnak, hogy "
-"<bold>megtekintsék </bold> és <bold>szerkesszék</bold> az ön feltöltésének "
+"<bold>megtekintsék </bold> és <bold>szerkesszék</bold> az Ön feltöltésének "
 "metaadatait és fájljait."
 
 msgid ""
@@ -834,3 +837,6 @@ msgid ""
 "<bold>immediately published</bold>. Before that, you will still be able to "
 "modify metadata and files of this upload."
 msgstr ""
+"Ha a feltöltést a közösség kurátorai elfogadják, <bold>azonnal "
+"közzétesszük</bold>. Ezt megelőzően továbbra is módosíthatja a feltöltés "
+"metaadatait és fájljait."

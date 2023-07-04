@@ -1,18 +1,14 @@
 # 
-# Translators:
-# Tibor Simko <tibor.simko@cern.ch>, 2022
-# 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
 "POT-Creation-Date: 2022-10-28T08:02:09.099Z\n"
 "PO-Revision-Date: 2021-06-29 13:20+0000\n"
-"Last-Translator: Tibor Simko <tibor.simko@cern.ch>, 2022\n"
-"Language-Team: Romanian (https://app.transifex.com/inveniosoftware/teams/23537/ro/)\n"
+"Language-Team: German (Austria) (https://app.transifex.com/inveniosoftware/teams/23537/de_AT/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ro\n"
-"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+"Language: de_AT\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "mime-version: 1.0\n"
 
 msgid "Embargo until"
@@ -125,10 +121,10 @@ msgid "Add creator"
 msgstr ""
 
 msgid "Edit"
-msgstr "Editează"
+msgstr ""
 
 msgid "Remove"
-msgstr "Elimină"
+msgstr ""
 
 msgid "Name identifiers"
 msgstr ""
@@ -164,7 +160,7 @@ msgid "Family name"
 msgstr ""
 
 msgid "Name"
-msgstr "Nume"
+msgstr ""
 
 msgid "Organization name"
 msgstr ""
@@ -176,7 +172,7 @@ msgid "Select role"
 msgstr ""
 
 msgid "Cancel"
-msgstr "Anulează"
+msgstr ""
 
 msgid "Save"
 msgstr ""
@@ -188,10 +184,10 @@ msgid "Format: DATE or DATE/DATE where DATE is YYYY or YYYY-MM or YYYY-MM-DD."
 msgstr ""
 
 msgid "Date"
-msgstr "Dată"
+msgstr ""
 
 msgid "Description"
-msgstr "Descriere"
+msgstr ""
 
 msgid "Dates"
 msgstr ""
@@ -270,7 +266,7 @@ msgid "Pending"
 msgstr ""
 
 msgid "or"
-msgstr "sau"
+msgstr ""
 
 msgid "Metadata-only record"
 msgstr ""
@@ -291,7 +287,7 @@ msgid "Resource type"
 msgstr ""
 
 msgid "Title"
-msgstr "Titlu"
+msgstr ""
 
 msgid "Additional titles"
 msgstr ""
@@ -487,10 +483,10 @@ msgid "Do you already have a {{pidLabel}} for this upload?"
 msgstr ""
 
 msgid "Yes"
-msgstr "Da"
+msgstr ""
 
 msgid "No"
-msgstr "Nu"
+msgstr ""
 
 msgid "e.g. ROR, ISNI or GND."
 msgstr ""
@@ -505,7 +501,7 @@ msgid "DOI"
 msgstr ""
 
 msgid "Search"
-msgstr "Caută"
+msgstr ""
 
 msgid "Search or create subjects..."
 msgstr ""
@@ -538,7 +534,7 @@ msgid "Submit review"
 msgstr ""
 
 msgid "Publish"
-msgstr "Publicare"
+msgstr ""
 
 msgid "Are you sure you want to publish this record?"
 msgstr ""
@@ -620,7 +616,7 @@ msgid "Selected"
 msgstr ""
 
 msgid "Select"
-msgstr "Selectaţi"
+msgstr ""
 
 msgid "Select "
 msgstr ""
@@ -680,7 +676,7 @@ msgid "Submit for review"
 msgstr ""
 
 msgid "optional"
-msgstr "opţional"
+msgstr ""
 
 msgid "Open external link"
 msgstr ""
