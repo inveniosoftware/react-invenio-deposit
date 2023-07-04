@@ -3,14 +3,15 @@
 # Zacharias Zacharodimos <zacharias.zacharodimos@cern.ch>, 2021
 # Tibor Simko <tibor.simko@cern.ch>, 2022
 # Alizee Pace <alizee.pace@gmail.com>, 2022
+# Fare Fare <fare@polito.it>, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
 "POT-Creation-Date: 2022-10-28T08:02:09.099Z\n"
 "PO-Revision-Date: 2021-06-29 13:20+0000\n"
-"Last-Translator: Alizee Pace <alizee.pace@gmail.com>, 2022\n"
-"Language-Team: Italian (https://www.transifex.com/inveniosoftware/teams/23537/it/)\n"
+"Last-Translator: Fare Fare <fare@polito.it>, 2023\n"
+"Language-Team: Italian (https://app.transifex.com/inveniosoftware/teams/23537/it/)\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: it\n"
@@ -87,7 +88,7 @@ msgid "Embargo was lifted on {{fmtDate}}."
 msgstr ""
 
 msgid "Reason"
-msgstr ""
+msgstr "Motivo"
 
 msgid ""
 "Record or files protection must be <1>restricted</1> to apply an embargo."
@@ -196,7 +197,7 @@ msgid "Description"
 msgstr "Descrizione"
 
 msgid "Dates"
-msgstr ""
+msgstr "Date"
 
 msgid "YYYY-MM-DD or YYYY-MM-DD/YYYY-MM-DD"
 msgstr ""
@@ -220,13 +221,13 @@ msgid "Are you sure you want to delete this draft?"
 msgstr ""
 
 msgid "New version"
-msgstr ""
+msgstr "Nuova versione"
 
 msgid "New upload"
-msgstr ""
+msgstr "Nuovo caricamento"
 
 msgid "Edit upload"
-msgstr ""
+msgstr "Modifica caricamento"
 
 msgid "Uploading the selected files would result in"
 msgstr ""
@@ -252,7 +253,7 @@ msgid "Import files"
 msgstr ""
 
 msgid "Preview"
-msgstr ""
+msgstr "Anteprima"
 
 msgid "Filename"
 msgstr ""
@@ -290,19 +291,19 @@ msgid "Files"
 msgstr "File"
 
 msgid "Resource type"
-msgstr ""
+msgstr "Tipo di risorsa"
 
 msgid "Title"
 msgstr "Titolo"
 
 msgid "Additional titles"
-msgstr ""
+msgstr "Titoli aggiuntivi"
 
 msgid "Publication date"
 msgstr "Data di publicazione"
 
 msgid "Creators"
-msgstr ""
+msgstr "Creatori"
 
 msgid "Contributors"
 msgstr ""
@@ -314,7 +315,7 @@ msgid "Licenses"
 msgstr ""
 
 msgid "Languages"
-msgstr ""
+msgstr "Linguaggi"
 
 msgid "Version"
 msgstr "Versione"
@@ -323,7 +324,7 @@ msgid "Publisher"
 msgstr "Editore"
 
 msgid "Related works"
-msgstr ""
+msgstr "Lavori correlati"
 
 msgid "Alternate identifiers"
 msgstr ""
@@ -504,7 +505,7 @@ msgid "Disable files for this record"
 msgstr ""
 
 msgid "DOI"
-msgstr ""
+msgstr "DOI"
 
 msgid "Search"
 msgstr "Cerca"
@@ -616,7 +617,7 @@ msgid "View community"
 msgstr ""
 
 msgid "Opens in new tab"
-msgstr ""
+msgstr "Apre in una nuova tab"
 
 msgid "Selected"
 msgstr ""
@@ -685,7 +686,7 @@ msgid "optional"
 msgstr "facoltativo"
 
 msgid "Open external link"
-msgstr ""
+msgstr "Apri link esterno"
 
 msgid "Search for awards"
 msgstr ""
@@ -748,7 +749,7 @@ msgid "URL must be set alongside title and number."
 msgstr ""
 
 msgid "Identifiers"
-msgstr ""
+msgstr "Identificatori"
 
 msgid "You must accept this."
 msgstr ""
