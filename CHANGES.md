@@ -1,5 +1,8 @@
 # Changes
 
+Version 0.19.6 (released 2023-08-23)
+* update yup version to ^0.32.0 for compatibility with invenio-app-rdm v9 LTS
+
 Version 0.19.5 (released 2022-05-06)
 * add new Funding field
 * fix community image loading
