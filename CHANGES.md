@@ -1,5 +1,10 @@
 # Changes
 
+Version 0.19.16 (released 2023-08-23)
+
+* update yup version to ^0.32.0 for compatibility with invenio-app-rdm v9 LTS
+
+
 Version 0.19.15 (released 2022-07-08)
 
 * fix payload sent for restricted community
