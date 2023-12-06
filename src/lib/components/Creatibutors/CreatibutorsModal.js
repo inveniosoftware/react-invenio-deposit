@@ -223,7 +223,6 @@ export class CreatibutorsModal extends Component {
           />
           {identifier.identifier}
         </a>
-        ;
       </span>
     );
   };
