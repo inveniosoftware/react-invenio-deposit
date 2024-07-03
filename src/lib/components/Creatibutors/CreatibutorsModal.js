@@ -208,7 +208,7 @@ export class CreatibutorsModal extends Component {
     } else {
       return (
         <>
-          {identifier.scehme}: {identifier.identifier}
+          {identifier.scheme}: {identifier.identifier}
         </>
       );
     }
